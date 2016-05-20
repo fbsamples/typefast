@@ -19,7 +19,6 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 
 jest.unmock('../src/SpecRegistry');
@@ -36,7 +35,7 @@ describe('SpecRegistry', () => {
   };
 
   const makeSpec = () => {
-    let spec = new NodeSpec(/* mock */);
+    const spec = new NodeSpec(/* mock */);
     spec.getType.mockReturnValue(type);
     return spec;
   };
@@ -46,7 +45,7 @@ describe('SpecRegistry', () => {
   });
 
   it('return registred specs', () => {
-    let registry = makeSpecRegistry();
+    const registry = makeSpecRegistry();
     registry.register(makeSpec());
     expect(registry.has(type)).toBeTruthy();
     expect(registry.get(type)).not.toBeNull();

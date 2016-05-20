@@ -18,7 +18,6 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 
 jest.unmock('../../src/http/Request');
@@ -35,7 +34,7 @@ describe('Request', () => {
   const params = new Map();
 
   const makeApi = () => {
-    let api = new Api(/* mock */);
+    const api = new Api(/* mock */);
     api.getGraphVersion.mockReturnValue(graph_version);
     return api;
   };
@@ -46,7 +45,7 @@ describe('Request', () => {
 
   it('can return the provided arguments', () => {
     const api = makeApi();
-    let request = new Request(api, path, method, params);
+    const request = new Request(api, path, method, params);
     expect(request.getApi()).toBe(api);
     expect(request.getPath()).toBe(path);
     expect(request.getMethod()).toBe(method);
@@ -54,19 +53,19 @@ describe('Request', () => {
   });
 
   it('can allow domain override', () => {
-    let request = makeRequest();
+    const request = makeRequest();
     const domain = 'whatever.internet.domain';
     request.setDomain(domain);
     expect(request.getDomain()).toBe(domain);
   });
 
   it('can default graph version', () => {
-    let request = makeRequest();
+    const request = makeRequest();
     expect(request.getGraphVersion()).toBe(request.getApi().getGraphVersion());
   });
 
   it('can allow graph version override', () => {
-    let request = makeRequest();
+    const request = makeRequest();
     const version = [1, 0];
     request.setGraphVersion(version);
     expect(request.getGraphVersion()).not.toBe(request.getApi().getGraphVersion());
@@ -74,7 +73,7 @@ describe('Request', () => {
   });
 
   it('won\'t build a body for GET requests', () => {
-    let request = makeRequest();
+    const request = makeRequest();
     request.setParams(new Map({k: 1}));
     expect(request.getBody()).toBeNull();
     request.setMethod('POST');
@@ -82,7 +81,7 @@ describe('Request', () => {
   });
 
   it('can build a URL string', () => {
-    let request = makeRequest();
+    const request = makeRequest();
     expect(request.getUrl()).toMatch(/^https:\/\/[^\/]+\/v\d+\.\d+\/[^\?]+$/);
     request.setPath('');
     expect(request.getUrl()).toMatch(/^https:\/\/[^\/]+\/v\d+\.\d+\/$/);
@@ -91,9 +90,9 @@ describe('Request', () => {
   });
 
   it('can execute through the provided Api', () => {
-    let request = makeRequest();
-    let response = {success: true};
+    const request = makeRequest();
+    const response = {success: true};
     request.getApi().execRequest.mockReturnValue(response);
     expect(request.execute()).toBe(response);
-  })
+  });
 });

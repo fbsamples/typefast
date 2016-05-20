@@ -31,7 +31,7 @@ const Response = require('../Response');
 class NodejsSynchronousAdapter {
 
   executeRequest(request: Request): Response {
-    var out = SyncRequest(request.getMethod(), request.getUrl(), {
+    const out = SyncRequest(request.getMethod(), request.getUrl(), {
       qs: !request.willSendBody()
         ? request.getParams().toObject()
         : {},
@@ -42,7 +42,7 @@ class NodejsSynchronousAdapter {
 
     // FIXME handle proxy errors
     return new Response(request, out.statusCode, out.body.toString());
-  };
+  }
 }
 
 module.exports = NodejsSynchronousAdapter;

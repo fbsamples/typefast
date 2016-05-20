@@ -19,13 +19,11 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 
 jest.unmock('../../src/specs/NodeSpec');
 jest.mock('../../src/specs/EdgeSpec', () => {
-  let Map = require('immutable').Map;
-  let Request = jest.genMockFromModule('../../src/specs/EdgeSpec');
+  const Request = jest.genMockFromModule('../../src/specs/EdgeSpec');
   // Needs unique name
   let c = 0;
   Request.prototype.getName = jest.fn(() => 'edge_name_' + c++);
@@ -86,7 +84,7 @@ describe('NodeSpec', () => {
   };
 
   it('can return the provided arguments', () => {
-    let spec = makeSpec();
+    const spec = makeSpec();
     expect(spec.getType()).toBe(type);
     expect(spec.getFieldSpecs()).toBe(fields);
     expect(spec.getEdgeSpecs()).toBe(edges);
@@ -97,10 +95,10 @@ describe('NodeSpec', () => {
   });
 
   it('can deserialize JSON specs', () => {
-    let registry = new SpecRegistry();
-    let spec = NodeSpec.fromJson(registry, serial);
-    let fields = spec.getFieldSpecs();
-    let edges = spec.getEdgeSpecs();
+    const registry = new SpecRegistry();
+    const spec = NodeSpec.fromJson(registry, serial);
+    const fields = spec.getFieldSpecs();
+    const edges = spec.getEdgeSpecs();
     expect(fields.count()).toBe(1);
     expect(edges.count()).toBe(2);
     expect(spec.getReadSpec()).not.toBeNull();
@@ -109,10 +107,10 @@ describe('NodeSpec', () => {
   });
 
   it('can deserialize JSON specs with missing APIs or fields', () => {
-    let registry = new SpecRegistry();
-    let spec = NodeSpec.fromJson(registry, JSON.stringify({type:type}));
-    let fields = spec.getFieldSpecs();
-    let edges = spec.getEdgeSpecs();
+    const registry = new SpecRegistry();
+    const spec = NodeSpec.fromJson(registry, JSON.stringify({type:type}));
+    const fields = spec.getFieldSpecs();
+    const edges = spec.getEdgeSpecs();
     expect(fields.count()).toBe(0);
     expect(edges.count()).toBe(0);
     expect(spec.getReadSpec()).toBeNull();

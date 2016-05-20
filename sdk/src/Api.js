@@ -45,7 +45,7 @@ class Api {
 
   getHttpAdapter(): AbstractHttpAdapter {
     return this.httpAdapter;
-  };
+  }
 
   getSession(): Session {
     return this.session;
@@ -57,10 +57,9 @@ class Api {
 
   execRequest(request: Request): Response {
     request.setParams(
-      request.getParams().asMutable()
+      request.getParams()
         .set('access_token', this.getSession().getAccessToken())
         .set('appsecret_proof', this.getSession().getApplicationSecretProof())
-        .asImmutable()
     );
     return this.getHttpAdapter().executeRequest(request);
   }

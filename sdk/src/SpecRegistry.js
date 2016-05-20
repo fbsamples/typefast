@@ -22,8 +22,8 @@
  * @flow
  */
 
-import type {NodeType} from "./specs/NodeSpec";
-import type NodeSpec from "./specs/NodeSpec";
+import type {NodeType} from './specs/NodeSpec';
+import type NodeSpec from './specs/NodeSpec';
 
 const {Map} = require('immutable');
 
@@ -45,9 +45,9 @@ class SpecRegistry {
   }
 
   get(key: NodeType): NodeSpec {
-    let node = this.nodes.get(key, undefined);
+    const node = this.nodes.get(key, undefined);
     if (node === undefined) {
-      throw `Unregistred node type ${key}`;
+      throw new Error(`Unregistred node type ${key}`);
     }
 
     return node;

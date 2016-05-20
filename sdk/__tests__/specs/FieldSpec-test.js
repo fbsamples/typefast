@@ -19,7 +19,6 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 
 jest.unmock('../../src/specs/FieldSpec');
@@ -30,14 +29,14 @@ describe('FieldSpec', () => {
 
   const name = 'field_name';
   const type = 'int';
-  const description = 'field_description'
+  const description = 'field_description';
 
   const makeFieldSpec = () => {
     return new FieldSpec(name, type, description);
   };
 
   it('can return the provided arguments', () => {
-    let spec = makeFieldSpec();
+    const spec = makeFieldSpec();
     expect(spec.getName()).toBe(name);
     expect(spec.getType()).toBe(type);
     expect(spec.getDescription()).toBe(description);

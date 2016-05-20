@@ -18,14 +18,13 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 
 const HttpResponse = require('http-response-object');
 
 const SyncRequest = jest.genMockFromModule('sync-request');
 
-let response = new HttpResponse(/* mock */);
+const response = new HttpResponse(/* mock */);
 response.statusCode = 200;
 response.body = {
   toString: () => '{}'

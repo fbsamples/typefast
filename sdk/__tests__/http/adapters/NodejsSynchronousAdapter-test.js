@@ -18,7 +18,6 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 
 jest.unmock('../../../src/http/adapters/NodejsSynchronousAdapter');
@@ -35,7 +34,7 @@ describe('NodejsSynchronousAdapter', () => {
   };
 
   const makeRequest = (method) => {
-    let request = new Request();
+    const request = new Request();
     request.getMethod.mockReturnValue(method);
     request.willSendBody.mockReturnValue(method !== 'GET');
     request.getUrl.mockReturnValue('https://doma.in/path');
@@ -51,7 +50,7 @@ describe('NodejsSynchronousAdapter', () => {
     expect(makeAdapter().executeRequest(makeRequest('POST'))).toEqual(jasmine.any(Response));
   });
 
-  it('can execute DELETE requests', () => {
-    expect(makeAdapter().executeRequest(makeRequest('DELETE'))).toEqual(jasmine.any(Response));
+  it('can execute DEconstE requests', () => {
+    expect(makeAdapter().executeRequest(makeRequest('DEconstE'))).toEqual(jasmine.any(Response));
   });
 });

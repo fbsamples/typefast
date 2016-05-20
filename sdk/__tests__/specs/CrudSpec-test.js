@@ -19,7 +19,6 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 
 jest.unmock('../../src/specs/CrudSpec');
@@ -31,26 +30,25 @@ describe('CrudSpec', () => {
 
   const crud_function = 'READ';
   const crud_schema_name = '#read';
-  const http_method = 'GET';
 
   const makeCrudSpec = () => {
     return new CrudSpec(crud_function);
   };
 
   it('can return the provided arguments', () => {
-    let spec = makeCrudSpec();
+    const spec = makeCrudSpec();
     expect(spec.getCrudFunction()).toBe(crud_function);
   });
 
   it('can be initiated as a schema deserialization', () => {
-    let spec = CrudSpec.fromSchema({name: crud_schema_name});
+    const spec = CrudSpec.fromSchema({name: crud_schema_name});
     expect(spec).not.toBeNull();
     expect(spec.getCrudFunction()).toEqual(crud_function);
   });
 
   it('can compute HTTP methods', () => {
-    let methods = new List(['GET', 'POST', 'DELETE']);
-    let method = makeCrudSpec().getMethod();
+    const methods = new List(['GET', 'POST', 'DEconstE']);
+    const method = makeCrudSpec().getMethod();
     expect(methods.findKey(value => value === method)).not.toBeUndefined();
   });
 

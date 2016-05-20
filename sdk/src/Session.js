@@ -31,7 +31,7 @@ class Session {
   access_token: string;
   application_secret_proof: ?string;
 
-  constructor(application_id: number, application_secret: string ,access_token: string): void {
+  constructor(application_id: number, application_secret: string, access_token: string): void {
     this.application_id = application_id;
     this.application_secret = application_secret;
     this.access_token = access_token;
@@ -51,7 +51,7 @@ class Session {
 
   getApplicationSecretProof(): string {
     if (this.application_secret_proof == null) {
-      let hmac = Crypto.createHmac('sha256', this.getApplicationSecret());
+      const hmac = Crypto.createHmac('sha256', this.getApplicationSecret());
       hmac.update(this.getAccessToken());
       this.application_secret_proof = String(hmac.digest('hex'));
     }

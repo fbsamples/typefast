@@ -38,9 +38,7 @@ const idx = function(obj: Object, key: string, default_value: any): any {
 };
 
 const listToMap = function<Tk, Tv>(list: List<Tv>, fn: (value: Tv) => Tk): Map<Tk, Tv> {
-  let map = new Map().asMutable();
-  list.map(value => map.set(fn(value), value));
-  return map.asImmutable();
+  return Map(list.map(value => [fn(value), value]).toSeq());
 };
 
 class NodeSpec {
@@ -53,7 +51,7 @@ class NodeSpec {
   deleteSpec: ?CrudSpec;
 
   static fromJson(registry: SpecRegistry, json: string): NodeSpec {
-    let obj = JSON.parse(json);
+    const obj = JSON.parse(json);
     let fields = new List(idx(obj, 'fields', []));
     let edges = new List(idx(obj, 'apis', []));
     let cruds = new Map({
@@ -64,7 +62,7 @@ class NodeSpec {
 
     fields = fields.map(schema => new FieldSpec(schema.name, schema.type, schema.description));
     edges = edges.filter(schema => {
-      let name = schema.name.substr(1);
+      const name = schema.name.substr(1);
       if (cruds.has(name)) {
         cruds = cruds.set(name, CrudSpec.fromSchema(schema));
         return false;

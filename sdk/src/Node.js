@@ -22,14 +22,13 @@
  * @flow
  */
 
-import type {NodeType} from "./specs/NodeSpec";
+import type {NodeType} from './specs/NodeSpec';
 import type {RequestParams} from './http/Request';
 import type Api from './Api';
 import type CrudSpec from './specs/CrudSpec';
 import type EdgeSpec from './specs/EdgeSpec';
 import type FieldSpec from './specs/FieldSpec';
 import type NodeSpec from './specs/NodeSpec';
-import type Response from './http/Response';
 
 export type EdgeExecutor = (params?: Map<string, any>) => Cursor | Node | bool;
 export type CrudExecutor = (params?: Map<string, any>) => Node;
@@ -43,10 +42,10 @@ const normalizeParams = function(params?: RequestParams): RequestParams {
 
 const getEdgeExecutor = function(node: Node, edge_spec: EdgeSpec): EdgeExecutor {
   return function(params?: RequestParams): Cursor | Node | bool {
-    let id = node.assertId();
-    let edge = edge_spec.getEdge();
-    let path = `/${id}${edge}`;
-    let response = node.getApi().call(path, edge_spec.getMethod(), normalizeParams(params));
+    const id = node.assertId();
+    const edge = edge_spec.getEdge();
+    const path = `/${id}${edge}`;
+    const response = node.getApi().call(path, edge_spec.getMethod(), normalizeParams(params));
     switch (edge_spec.getMethod()) {
       case 'GET':
         return new Cursor(edge_spec.getNodeSpec(), response);
@@ -60,9 +59,9 @@ const getEdgeExecutor = function(node: Node, edge_spec: EdgeSpec): EdgeExecutor 
 
 const getCrudExecutor = function(node: Node, crud_spec: CrudSpec): CrudExecutor {
   return function(params?: RequestParams): Node {
-    let id = node.assertId();
-    let path = `/${id}`;
-    let response = node.getApi().call(path, crud_spec.getMethod(), normalizeParams(params));
+    const id = node.assertId();
+    const path = `/${id}`;
+    const response = node.getApi().call(path, crud_spec.getMethod(), normalizeParams(params));
     node.setData(response.getContent());
     return node;
   };
@@ -105,7 +104,7 @@ class Node {
   spec: NodeSpec;
 
   static fromSpec(api: Api, node_spec: NodeSpec): Node {
-    let node = new Node(node_spec, api);
+    const node = new Node(node_spec, api);
     node_spec.getFieldSpecs().map(field_spec => assignField(node, field_spec));
     node_spec.getEdgeSpecs().map(edge_spec => assignEdgeExecutor(node, edge_spec));
     node_spec.getCrudSpecs().map(crud_spec => assignCrudExecutor(node, crud_spec));
@@ -128,9 +127,9 @@ class Node {
   }
 
   assertId(): number {
-    let id = this.getId();
+    const id = this.getId();
     if (id == null) {
-      throw 'Missing object ID';
+      throw new Error('Missing object ID');
     }
     return id;
   }

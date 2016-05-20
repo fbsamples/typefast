@@ -76,8 +76,8 @@ class EdgeSpec {
   // FIXME provide logic or pre-build names from spec
   getFunctionName(): string {
     if (this.functionName == null) {
-      let method = this.getMethod();
-      let type = this.getNodeSpec().getType();
+      const method = this.getMethod();
+      const type = this.getNodeSpec().getType();
       this.functionName = (`${method}${type}`).toLowerCase();
     }
 

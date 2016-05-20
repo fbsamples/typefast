@@ -18,13 +18,12 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 
 jest.unmock('../src/Api');
 jest.mock('../src/http/Request', () => {
-  let Map = require('immutable').Map;
-  let Request = jest.genMockFromModule('../src/http/Request');
+  const Map = require('immutable').Map;
+  const Request = jest.genMockFromModule('../src/http/Request');
   Request.prototype.getParams = jest.fn(() => new Map());
   return Request;
 });
@@ -33,7 +32,7 @@ const Api = require('../src/Api');
 const NodejsSynchronousAdapter = require('../src/http/adapters/NodejsSynchronousAdapter');
 const Request = require('../src/http/Request');
 const Response = require('../src/http/Response');
-const Session = require('../src/Session')
+const Session = require('../src/Session');
 const {Map} = require('immutable');
 
 describe('Api', () => {
@@ -41,7 +40,7 @@ describe('Api', () => {
   const graph_version = [2, 6];
 
   const makeHttpAdapter = () => {
-    let adapter = new NodejsSynchronousAdapter(/* mock */);
+    const adapter = new NodejsSynchronousAdapter(/* mock */);
     adapter.executeRequest.mockReturnValue(new Response(/* mock */));
     return adapter;
   };
@@ -59,16 +58,16 @@ describe('Api', () => {
   };
 
   it('can return the provided arguments', () => {
-    let http_adapter = makeHttpAdapter();
-    let session = makeSession();
-    let api = new Api(http_adapter, session, graph_version);
+    const http_adapter = makeHttpAdapter();
+    const session = makeSession();
+    const api = new Api(http_adapter, session, graph_version);
     expect(api.getHttpAdapter()).toBe(http_adapter);
     expect(api.getSession()).toBe(session);
     expect(api.getGraphVersion()).toBe(graph_version);
   });
 
   it('can execute requests', () => {
-    let api = makeApi();
+    const api = makeApi();
     expect(api.execRequest(makeRequest())).toEqual(jasmine.any(Response));
   });
 

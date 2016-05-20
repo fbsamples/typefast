@@ -110,12 +110,12 @@ class Request {
   }
 
   getUrl(): string {
-    let domain = this.getDomain();
-    let path = this.getPath().length === 0 || this.getPath().charAt(0) !== '/'
+    const domain = this.getDomain();
+    const path = this.getPath().length === 0 || this.getPath().charAt(0) !== '/'
       ? '/' + this.getPath()
       : this.getPath();
-    let version = this.getGraphVersion().join('.');
-    let query = this.willSendBody() || this.getParams().count() === 0
+    const version = this.getGraphVersion().join('.');
+    const query = this.willSendBody() || this.getParams().count() === 0
       ? ''
       : '?' + this.getParams().map((value, key) => key + '=' + String(value)).join('&');
 

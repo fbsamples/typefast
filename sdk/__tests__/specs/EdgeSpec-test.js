@@ -19,7 +19,6 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 
 jest.unmock('../../src/specs/EdgeSpec');
@@ -34,16 +33,16 @@ describe('EdgeSpec', () => {
   const endpoint = 'edge_endpoint';
   const method = 'GET';
   const return_type = 'NodeType';
-  const description = 'field_description'
+  const description = 'field_description';
 
   const MakeNodeSpec = (registry: SpecRegistry) => {
-    let spec = new NodeSpec(/* mock */);
+    const spec = new NodeSpec(/* mock */);
     spec.getType.mockReturnValue(return_type);
     return spec;
   };
 
   const makeSpecRegistry = () => {
-    let registry = new SpecRegistry(/* mock */);
+    const registry = new SpecRegistry(/* mock */);
     registry.get.mockReturnValue(MakeNodeSpec(registry));
     return registry;
   };
@@ -53,7 +52,7 @@ describe('EdgeSpec', () => {
   };
 
   it('can return the provided arguments', () => {
-    let spec = makeEdgeSpec();
+    const spec = makeEdgeSpec();
     expect(spec.getName()).toBe(name);
     expect(spec.getEdge()).toBe(endpoint);
     expect(spec.getMethod()).toBe(method);
@@ -63,8 +62,8 @@ describe('EdgeSpec', () => {
 
   it('can compute SDK function names with lazy-loading', () => {
     // FIXME need to improve the actual function
-    let spec = makeEdgeSpec();
-    let name = spec.getFunctionName();
+    const spec = makeEdgeSpec();
+    const name = spec.getFunctionName();
     expect(name.length > 0).toBeTruthy();
     // Access cached name
     expect(spec.getFunctionName()).toBe(name);

@@ -18,14 +18,12 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 
 jest.unmock('../../src/http/Response');
 
 const Request = require('../../src/http/Request');
 const Response = require('../../src/http/Response');
-const {Map} = require('immutable');
 
 describe('Response', () => {
 
@@ -37,21 +35,21 @@ describe('Response', () => {
   };
 
   const makeResponse = () => {
-    let request = makeRequest();
+    const request = makeRequest();
     return new Response(request, status, body);
   };
 
   it('can return the provided arguments', () => {
-    let request = makeRequest();
-    let response = new Response(request, status, body);
+    const request = makeRequest();
+    const response = new Response(request, status, body);
     expect(response.getRequest()).toBe(request);
     expect(response.getStatus()).toBe(status);
     expect(response.getBody()).toBe(body);
   });
 
   it('can deserialize bodies with lazy-loading', () => {
-    let response = makeResponse();
-    let content = response.getContent();
+    const response = makeResponse();
+    const content = response.getContent();
     expect(JSON.stringify(content)).toEqual(body);
     // Access cached content
     expect(response.getContent()).toBe(content);

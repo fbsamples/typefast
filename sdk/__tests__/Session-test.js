@@ -19,7 +19,6 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
  */
 
 jest.unmock('../src/Session');
@@ -37,15 +36,15 @@ describe('Session', () => {
   };
 
   it('can return the provided arguments', () => {
-    let session = new Session(application_id, application_secret, access_token);
+    const session = new Session(application_id, application_secret, access_token);
     expect(session.getApplicationId()).toBe(application_id);
     expect(session.getApplicationSecret()).toBe(application_secret);
     expect(session.getAccessToken()).toBe(access_token);
   });
 
   it('can calculate an HMAC digest as Application Secret Proof with lazy-loading', () => {
-    let session = makeSession();
-    let proof = session.getApplicationSecretProof();
+    const session = makeSession();
+    const proof = session.getApplicationSecretProof();
     expect(proof).toEqual('9a2ac1cee291d1de581976011134f95347861901592d31e1b32ec632980c7357');
     // Access cached proof
     expect(session.getApplicationSecretProof()).toBe(proof);

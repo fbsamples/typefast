@@ -22,7 +22,6 @@
  * @flow
  */
 
-import type Api from './../Api';
 import type Request from './Request';
 
 class Response {

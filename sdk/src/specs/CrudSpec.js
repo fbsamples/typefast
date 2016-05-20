@@ -28,7 +28,7 @@ export type CrudFunction = | 'READ' | 'UPDATE' | 'DELETE';
 
 const {Map} = require('immutable');
 
-const crud_function_to_method = new Map({
+const crud_function_to_method: Map<CrudFunction, RequestMethod> = new Map({
   DELETE: 'DELETE',
   READ: 'GET',
   UPDATE: 'POST',
