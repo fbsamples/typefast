@@ -42,10 +42,10 @@ class Application {
   webApplication: ExressApplication;
 
   constructor(config: Config): void {
+    this.webApplication = express();
     this.config = config;
     this.allowedRequestMethods = new Set(['get', 'post', 'delete']);
     this.router = new Router(this);
-    this.webApplication = express().use('/', this.getRouter().getWebRouter());
 
     //Middleware
     this.webApplication.use(require('body-parser').urlencoded({ extended: true }));
