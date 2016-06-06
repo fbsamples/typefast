@@ -9,7 +9,7 @@
     "transpile": "babel src/ -d build/",
     "start": "node index.js --transpile",
     "dev": "nodemon index.js --transpile",
-    "debug": "x node debug index.js --transpile"
+    "debug": "node debug index.js --transpile"
   },
   "repository": {
     "type": "git",
@@ -37,6 +37,7 @@
     "babel-register": "^6.9.0",
     "eslint": "^2.10.2",
     "eslint-plugin-flowtype": "^2.2.7",
-    "fbjs-scripts": "^0.7.0"
+    "fbjs-scripts": "^0.7.0",
+    "nodemon": "^1.9.2"
   }
 }
