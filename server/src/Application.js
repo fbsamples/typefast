@@ -28,6 +28,9 @@ import type {Application as ExressApplication, RequestMethod} from 'express';
 const express = require('express');
 const Filesystem = require('fs');
 const Https = require('https');
+const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const Router = require('./Router');
 const {Map, Set} = require('immutable');
 
@@ -43,6 +46,21 @@ class Application {
     this.allowedRequestMethods = new Set(['get', 'post', 'delete']);
     this.router = new Router(this);
     this.webApplication = express().use('/', this.getRouter().getWebRouter());
+
+    //Middleware
+    this.webApplication.use(require('body-parser').urlencoded({ extended: true }));
+    this.webApplication.use(session({
+        secret: this.config.getString('crypto.key'),
+        store: new MongoStore({ mongooseConnection: mongoose.connection }),
+        resave: false,
+        saveUninitialized: true
+    }));
+
+    //Routing
+    this.webApplication.use('/',
+      express.static('src/frontend'),
+      this.getRouter().getWebRouter()
+    );
   }
 
   getConfig(): Config {
