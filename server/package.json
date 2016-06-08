@@ -1,0 +1,40 @@
+{
+  "name": "fb-typefast-server",
+  "version": "1.0.0",
+  "description": "TypeFast Server application",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint src/",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "transpile": "babel src/ -d build/",
+    "start": "node index.js --transpile"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pruno/typefast.git"
+  },
+  "author": {
+    "name": "Luca Bruno",
+    "url": "https://github.com/pruno"
+  },
+  "bugs": {
+    "url": "https://github.com/pruno/typefast/issues"
+  },
+  "homepage": "https://github.com/pruno/typefast#readme",
+  "dependencies": {
+    "express": "^4.13.4",
+    "http-status-codes": "^1.0.6",
+    "immutable": "^3.8.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.8.0",
+    "babel-eslint": "^6.0.4",
+    "babel-plugin-syntax-flow": "^6.8.0",
+    "babel-plugin-transform-flow-strip-types": "^6.8.0",
+    "babel-polyfill": "^6.8.0",
+    "babel-register": "^6.9.0",
+    "eslint": "^2.10.2",
+    "eslint-plugin-flowtype": "^2.2.7",
+    "fbjs-scripts": "^0.7.0"
+  }
+}

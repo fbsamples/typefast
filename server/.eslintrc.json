@@ -1,0 +1,16 @@
+{
+    "parser": "babel-eslint",
+    "extends": "./node_modules/fbjs-scripts/eslint/.eslintrc.js",
+    "plugins": [
+      "flowtype"
+    ],
+    "rules": {
+        "flowtype/space-after-type-colon": [1, "always"],
+        "flowtype/space-before-type-colon": [0, "always"]
+    },
+    "settings": {
+        "flowtype": {
+            "onlyFilesWithFlowAnnotation": true
+        }
+    }
+}
