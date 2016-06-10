@@ -10,5 +10,8 @@
       "key": null,
       "cert": null
     }
+  },
+  "db": {
+    "url": null
   }
 }

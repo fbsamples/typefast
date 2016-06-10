@@ -25,7 +25,6 @@
 import type {Request, Response} from 'express';
 
 const AbstractRestController = require('./AbstractRestController');
-const db = require('../model/db');
 const Script = require('../model/script');
 
 // implement ../ControllerInterface
@@ -38,26 +37,26 @@ class ScriptRestController extends AbstractRestController {
   genList(request: Request, response: Response): void {
     // Need user level checkin
     Script.find(function (err, scripts) {
-      if (err) return returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR, err);
+      if (err) return returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
       response.send(scripts).end();
     });
   }
 
   genRead(request: Request, response: Response): void {
     // Need user level checking
-    var id = request.params.id;
+    const id = request.params.id;
     Script.findById(id, function (err, script){
-      if (err) return returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR, err);
+      if (err) return returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
       response.send(script).end();
     });
   }
 
   genCreate(request: Request, response: Response): void {
-    var body = request.body;
-    var title = body.title;
-    var code = body.code;
-    var optimisations = body.optimisations;
-    var newScript = Script({
+    const body = request.body;
+    const title = body.title;
+    const code = body.code;
+    const optimisations = body.optimisations;
+    const newScript = Script({
       title: title,
       optimisations: optimisations,
       code: code
@@ -65,17 +64,17 @@ class ScriptRestController extends AbstractRestController {
 
     // Need user level checking
     newScript.save(function(err, script) {
-      if (err) return returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR, err);
+      if (err) return returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
       response.send({success: true, id: script.id}).end();
     });
   }
 
   genUpdate(request: Request, response: Response): void {
-    var id = request.params.id;
-    var body = request.body;
-    var title = body.title;
-    var code = body.code;
-    var optimisations = body.optimisations;
+    const id = request.params.id;
+    const body = request.body;
+    const title = body.title;
+    const code = body.code;
+    const optimisations = body.optimisations;
 
     // Need user level checking
     Script.findByIdAndUpdate(
@@ -87,17 +86,17 @@ class ScriptRestController extends AbstractRestController {
       },
       {},
       function(err, script) {
-        if (err) return returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR, err);
+        if (err) return returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
         response.send({sucess: true}).end();
       }
     );
   }
 
   genDelete(request: Request, response: Response): void {
-    var id = request.params.id;
+    const id = request.params.id;
     // Need user level checking
     Script.findByIdAndRemove(id, function(err) {
-      if (err) return returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR, err);
+      if (err) return returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
       response.send({sucess: true}).end();
     })
   }

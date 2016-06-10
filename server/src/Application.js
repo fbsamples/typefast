@@ -29,6 +29,7 @@ const express = require('express');
 const Filesystem = require('fs');
 const Https = require('https');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const Router = require('./Router');
 const {Map, Set} = require('immutable');
 
@@ -38,15 +39,17 @@ class Application {
   config: Config;
   router: Router;
   webApplication: ExressApplication;
+  db;
 
   constructor(config: Config): void {
     this.webApplication = express();
     this.config = config;
     this.allowedRequestMethods = new Set(['get', 'post', 'delete']);
     this.router = new Router(this);
+    this.db = mongoose.connect(this.config.getString("db.url"));
 
     //Middleware
-    this.webApplication.use(require('body-parser').urlencoded({ extended: true }));
+    this.webApplication.use(bodyParser.urlencoded({ extended: true }));
 
     //Routing
     this.webApplication.use('/',
@@ -61,6 +64,10 @@ class Application {
 
   getAllowedRequestMethods(): Set<RequestMethod> {
     return this.allowedRequestMethods;
+  }
+
+  getDatabase() {
+    return this.db;
   }
 
   getRouter(): Router {
