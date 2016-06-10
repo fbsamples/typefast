@@ -33,6 +33,7 @@ const {List, Set} = require('immutable');
 
 // controllers
 const HttpErrorController = require('./controllers/HttpErrorController');
+const ScriptRestController = require('./controllers/ScriptRestController');
 
 const getHttpMethods = function(): Set<RequestMethod> {
   return new Set(methods);
@@ -40,6 +41,7 @@ const getHttpMethods = function(): Set<RequestMethod> {
 
 const getControllers = function(app: Application): List<ControllerInterface> {
   return new List([
+    new ScriptRestController(app),
     new HttpErrorController(app, app.getAllowedRequestMethods(), HttpStatus.NOT_FOUND),
     new HttpErrorController(app, getHttpMethods(), HttpStatus.METHOD_NOT_ALLOWED)
   ]);

@@ -7,7 +7,9 @@
     "lint": "eslint src/",
     "test": "echo \"Error: no test specified\" && exit 1",
     "transpile": "babel src/ -d build/",
-    "start": "node index.js --transpile"
+    "start": "node index.js --transpile",
+    "dev": "nodemon index.js --transpile",
+    "debug": "node debug index.js --transpile"
   },
   "repository": {
     "type": "git",
@@ -22,9 +24,11 @@
   },
   "homepage": "https://github.com/pruno/typefast#readme",
   "dependencies": {
+    "body-parser": "^1.15.1",
     "express": "^4.13.4",
     "http-status-codes": "^1.0.6",
-    "immutable": "^3.8.1"
+    "immutable": "^3.8.1",
+    "mongoose": "^4.4.20"
   },
   "devDependencies": {
     "babel-cli": "^6.8.0",
@@ -35,6 +39,7 @@
     "babel-register": "^6.9.0",
     "eslint": "^2.10.2",
     "eslint-plugin-flowtype": "^2.2.7",
-    "fbjs-scripts": "^0.7.0"
+    "fbjs-scripts": "^0.7.0",
+    "nodemon": "^1.9.2"
   }
 }

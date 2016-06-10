@@ -28,6 +28,8 @@ import type {Application as ExressApplication, RequestMethod} from 'express';
 const express = require('express');
 const Filesystem = require('fs');
 const Https = require('https');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const Router = require('./Router');
 const {Map, Set} = require('immutable');
 
@@ -37,12 +39,23 @@ class Application {
   config: Config;
   router: Router;
   webApplication: ExressApplication;
+  db: MongooseThenable;
 
   constructor(config: Config): void {
+    this.webApplication = express();
     this.config = config;
     this.allowedRequestMethods = new Set(['get', 'post', 'delete']);
     this.router = new Router(this);
-    this.webApplication = express().use('/', this.getRouter().getWebRouter());
+    this.db = mongoose.connect(this.config.getString("db.url"));
+
+    //Middleware
+    this.webApplication.use(bodyParser.urlencoded({ extended: true }));
+
+    //Routing
+    this.webApplication.use('/',
+      express.static('src/frontend'),
+      this.getRouter().getWebRouter()
+    );
   }
 
   getConfig(): Config {
@@ -51,6 +64,10 @@ class Application {
 
   getAllowedRequestMethods(): Set<RequestMethod> {
     return this.allowedRequestMethods;
+  }
+
+  getDatabase(): MongooseThenable {
+    return this.db;
   }
 
   getRouter(): Router {
