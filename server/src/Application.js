@@ -39,7 +39,7 @@ class Application {
   config: Config;
   router: Router;
   webApplication: ExressApplication;
-  db;
+  db: MongooseThenable;
 
   constructor(config: Config): void {
     this.webApplication = express();
@@ -66,7 +66,7 @@ class Application {
     return this.allowedRequestMethods;
   }
 
-  getDatabase() {
+  getDatabase(): MongooseThenable {
     return this.db;
   }
 
