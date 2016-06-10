@@ -20,32 +20,20 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-const parseArgv = require('minimist');
-const {List, Map} = require('immutable');
+import type {WriteStream} from 'stream';
 
-const TRANSPILE_KEY = 'transpile';
-const MODE_KEY = 'mode';
-const DEFAULT_MODE = 'server';
+declare module console {
 
-const passthrou_exclude = new List([
-  TRANSPILE_KEY,
-  MODE_KEY
-]);
-
-const main = function(argv /* :List */) {
-  const opts = new Map(parseArgv(argv.takeLast(argv.size - 2).toArray()))
-    .rest()
-    .map(value => value instanceof Array ? value.pop() : value);
-
-  if (opts.get(TRANSPILE_KEY, false)) {
-    require('babel-register');
-    require('babel-polyfill');
+  declare class Console {
+    (stdout: WriteStream, stderr: WriteStream): void;
+    assert(value: any, message?: string, ...placeholders?: any): void;
+    dir(obj: any, options?: Object): void;
+    error(data: any, ...placeholders?: any): void;
+    info(data: any, ...placeholders?: any): void;
+    log(data: any, ...placeholders?: any): void;
+    time(label: string): void;
+    timeEnd(label: string): void;
+    trace(data: any, ...placeholders?: any): void;
+    warn(data: any, ...placeholders?: any): void;
   }
-  const mode = opts.get(MODE_KEY, DEFAULT_MODE);
-
-  argv = opts.filterNot((value, key) => passthrou_exclude.keyOf(key) != null);
-  const bootstrap = require(`./src/bootstraps/${mode}`);
-  bootstrap(argv);
-};
-
-main(new List(process.argv));
+}

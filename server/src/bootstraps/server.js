@@ -22,18 +22,19 @@
  * @flow
  */
 
-import type {ControllerInterface} from './ControllerInterface';
+import type {ControllerInterface} from '../ControllerInterface';
 import type {RequestMethod} from 'express';
 
-const Application = require('./Application');
-const Config = require('./Config');
+const Application = require('../Application');
+const Config = require('../Config');
 const HttpStatus = require('http-status-codes');
 const methods = require('methods');
-const {List, Set} = require('immutable');
+const {List, Map, Set} = require('immutable');
 
 // controllers
-const HttpErrorController = require('./controllers/HttpErrorController');
-const ScriptRestController = require('./controllers/ScriptRestController');
+const HttpErrorController = require('../controllers/HttpErrorController');
+const ScriptRestController = require('../controllers/ScriptRestController');
+const ScriptExecController = require('../controllers/ScriptExecController');
 
 const getHttpMethods = function(): Set<RequestMethod> {
   return new Set(methods);
@@ -42,12 +43,13 @@ const getHttpMethods = function(): Set<RequestMethod> {
 const getControllers = function(app: Application): List<ControllerInterface> {
   return new List([
     new ScriptRestController(app),
+    new ScriptExecController(app),
     new HttpErrorController(app, app.getAllowedRequestMethods(), HttpStatus.NOT_FOUND),
     new HttpErrorController(app, getHttpMethods(), HttpStatus.METHOD_NOT_ALLOWED)
   ]);
 };
 
-const bootstrap = function(argv: List): Application {
+const bootstrap = function(argv: Map): Application {
   const app = new Application(Config.fromArgv(argv));
   getControllers(app).forEach(controller => app.getRouter().mountCountroller(controller));
   app.listen(() => {

@@ -51,6 +51,7 @@ declare module mongoose {
 
   declare var exports: {
     connect(url: string, options?: Object, callback?: Function): MongooseThenable;
+    disconnect(): void;
     Schema(schema: Object): Schema;
     model(name: string, schema: Schema, collection?: string, skipInit?: bool): (doc: Object) => Model;
   }

@@ -18,34 +18,28 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
+ *
+ * @flow
  */
 
-const parseArgv = require('minimist');
-const {List, Map} = require('immutable');
+import type Config from '../Config';
 
-const TRANSPILE_KEY = 'transpile';
-const MODE_KEY = 'mode';
-const DEFAULT_MODE = 'server';
+const Adapter = require('../../../sdk/src/http/adapters/NodejsSynchronousAdapter');
+const Api = require('../../../sdk/src/Api');
+const Request = require('../../../sdk/src/Http/Request');
+const Session = require('../../../sdk/src/Session');
+const {Map} = require('immutable');
 
-const passthrou_exclude = new List([
-  TRANSPILE_KEY,
-  MODE_KEY
-]);
+module.exports = function(config: Config): Object {
+  const app_id = config.getInteger('graph.application_id');
+  const app_secret = config.getString('graph.application_secret');
+  const access_token = config.getString('graph.access_token');
+  const session = new Session(app_id, app_secret, access_token);
+  const api = new Api(new Adapter(), session, [2, 6]);
 
-const main = function(argv /* :List */) {
-  const opts = new Map(parseArgv(argv.takeLast(argv.size - 2).toArray()))
-    .rest()
-    .map(value => value instanceof Array ? value.pop() : value);
-
-  if (opts.get(TRANSPILE_KEY, false)) {
-    require('babel-register');
-    require('babel-polyfill');
-  }
-  const mode = opts.get(MODE_KEY, DEFAULT_MODE);
-
-  argv = opts.filterNot((value, key) => passthrou_exclude.keyOf(key) != null);
-  const bootstrap = require(`./src/bootstraps/${mode}`);
-  bootstrap(argv);
+  return {
+    api: api,
+    Map: Map,
+    Request: Request
+  };
 };
-
-main(new List(process.argv));

@@ -1,4 +1,10 @@
 {
+  "graph": {
+    "version": [2, 6],
+    "application_id": 0,
+    "application_secret": "APPLICATION_SECRET",
+    "access_token": "ACCESS_TOKEN"
+  },
   "https": {
     "ssl": {
       "key": "ssl/key",
