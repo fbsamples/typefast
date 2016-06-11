@@ -6,6 +6,10 @@
       "port": 8080,
       "max_connections": 100
     },
+    "client": {
+      "enable_delivery": true,
+      "root": "../client/src"
+    },
     "ssl": {
       "key": null,
       "cert": null

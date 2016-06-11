@@ -48,14 +48,16 @@ class Application {
     this.router = new Router(this);
     this.db = mongoose.connect(this.config.getString("db.url"));
 
-    //Middleware
+    // Middleware
     this.webApplication.use(bodyParser.urlencoded({ extended: true }));
+    if (this.getConfig().getBoolean('https.client.enable_delivery')) {
+      this.webApplication.use('/', express.static(
+        this.getConfig().getString('https.client.root')
+      ));
+    }
 
-    //Routing
-    this.webApplication.use('/',
-      express.static('src/frontend'),
-      this.getRouter().getWebRouter()
-    );
+    // API Routing
+    this.webApplication.use('/', this.getRouter().getWebRouter());
   }
 
   getConfig(): Config {
