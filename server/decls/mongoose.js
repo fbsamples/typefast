@@ -20,36 +20,38 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+type documentCallback = (err: string, doc: Document) => void;
+type documentsCallback = (err: string, docs: Array<Document>) => void;
+
 declare module mongoose {
 
-  declare type Mongoose = {
-    connect(url: string, options: Object, callback: Function): MongooseThenable;
-    Schema(schema: Object): Schema;
-    model(name: string, schema: Schema, collection?: string, skipInit?: bool): (doc: Object) => Model;
+  declare type MongooseThenable = {
   }
-
-  declare type MongooseThenable = {}
 
   declare type Schema = {
     pre(name: string, callback: Function): void;
   }
 
   declare type Model = {
-    find(conditions: Object, projection?: Object, options?: Object, callback: (err: string, docs: Array<Document>) => void): Query;
-    findById(id: Object | string | number, projection?: Object, options?: Object, callback: (error: string, doc: Document) => void): Query;
-    findByIdAndUpdate(id: Object | string | number, update: Object, options: Object, callback: (error: string, doc: Document) => void): Query;
+    find(conditions: Object, projection?: Object, options?: Object, callback: documentsCallback): Query;
+    findById(id: Object | string | number, projection?: Object, options?: Object, callback: documentCallback): Query;
+    findByIdAndUpdate(id: Object | string | number, update: Object, options: Object, callback: documentCallback): Query;
     findByIdAndRemove(id: Object | string | number, options: Object, callback: (error: string) => void): Query;
+    save(callback: documentCallback): Promise;
   }
 
   declare type Document = {
-    save(callback: (error: string, doc: Document) => void): Promise;
   }
 
-  declare type Promise = {}
+  declare type Promise = {
+  }
 
-  declare type Query = {}
+  declare type Query = {
+  }
 
   declare var exports: {
-    (): Mongoose
+    connect(url: string, options?: Object, callback?: Function): MongooseThenable;
+    Schema(schema: Object): Schema;
+    model(name: string, schema: Schema, collection?: string, skipInit?: bool): (doc: Object) => Model;
   }
 }

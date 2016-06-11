@@ -22,14 +22,15 @@
  * @flow
  */
 
-const mongoose = require('mongoose');
-const scriptSchema = new mongoose.Schema({
+const Mongoose = require('mongoose');
+const scriptSchema = new Mongoose.Schema({
   title: String,
   code: String,
   optimisations: Object,
   createdTime: Date,
   updatedTime: Date
 });
+
 // on every save, add the date
 scriptSchema.pre('save', function(next) {
   const currentDate = new Date();
@@ -41,4 +42,4 @@ scriptSchema.pre('save', function(next) {
   next();
 });
 
-module.exports = mongoose.model('Script', scriptSchema);
+module.exports = Mongoose.model('Script', scriptSchema);

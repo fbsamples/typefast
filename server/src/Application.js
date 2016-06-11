@@ -24,11 +24,12 @@
 
 import type Config from './Config';
 import type {Application as ExressApplication, RequestMethod} from 'express';
+import type {MongooseThenable} from 'mongoose';
 
 const express = require('express');
 const Filesystem = require('fs');
 const Https = require('https');
-const mongoose = require('mongoose');
+const Mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const Router = require('./Router');
 const {Map, Set} = require('immutable');
@@ -46,10 +47,10 @@ class Application {
     this.config = config;
     this.allowedRequestMethods = new Set(['get', 'post', 'delete']);
     this.router = new Router(this);
-    this.db = mongoose.connect(this.config.getString("db.url"));
+    this.db = Mongoose.connect(this.config.getString('db.url'));
 
     // Middleware
-    this.webApplication.use(bodyParser.urlencoded({ extended: true }));
+    this.webApplication.use(bodyParser.urlencoded({extended: true}));
     if (this.getConfig().getBoolean('https.client.enable_delivery')) {
       this.webApplication.use('/', express.static(
         this.getConfig().getString('https.client.root')
