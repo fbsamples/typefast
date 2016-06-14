@@ -181,6 +181,7 @@ declare module express {
 
   declare var exports: {
     (): Application,
+    static: (root: string, options?: Object) => HandleCallback;
     Route: () => Route,
     Router: () => Router,
   }

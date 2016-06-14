@@ -81,6 +81,12 @@ class Config {
     return this.resolveSubtree(subtree);
   }
 
+  getBoolean(subtree: string): bool {
+    const leaf = this.resolveSubtree(subtree);
+    assert(typeof leaf === 'boolean');
+    return leaf;
+  }
+
   getNumber(subtree: string): number {
     const leaf = this.resolveSubtree(subtree);
     assert(Number.isFinite(leaf));

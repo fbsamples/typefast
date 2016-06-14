@@ -25,6 +25,7 @@
 import type {Request, Response} from 'express';
 
 const AbstractRestController = require('./AbstractRestController');
+const HttpStatus = require('http-status-codes');
 const Script = require('../model/script');
 
 // implement ../ControllerInterface
@@ -36,8 +37,11 @@ class ScriptRestController extends AbstractRestController {
 
   genList(request: Request, response: Response): void {
     // Need user level checkin
-    Script.find(function (err, scripts) {
-      if (err) return returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
+    Script.find((err, scripts) => {
+      if (err) {
+        this.returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return;
+      }
       response.send(scripts).end();
     });
   }
@@ -45,8 +49,11 @@ class ScriptRestController extends AbstractRestController {
   genRead(request: Request, response: Response): void {
     // Need user level checking
     const id = request.params.id;
-    Script.findById(id, function (err, script){
-      if (err) return returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
+    Script.findById(id, (err: string, script: Script) => {
+      if (err) {
+        this.returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return;
+      }
       response.send(script).end();
     });
   }
@@ -63,8 +70,11 @@ class ScriptRestController extends AbstractRestController {
     });
 
     // Need user level checking
-    newScript.save(function(err, script) {
-      if (err) return returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
+    newScript.save((err: string, script: Script) => {
+      if (err) {
+        this.returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return;
+      }
       response.send({success: true, id: script.id}).end();
     });
   }
@@ -85,8 +95,11 @@ class ScriptRestController extends AbstractRestController {
         code: code
       },
       {},
-      function(err, script) {
-        if (err) return returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
+      (err: string, script: Script) => {
+        if (err) {
+          this.returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
+          return;
+        }
         response.send({sucess: true}).end();
       }
     );
@@ -95,10 +108,13 @@ class ScriptRestController extends AbstractRestController {
   genDelete(request: Request, response: Response): void {
     const id = request.params.id;
     // Need user level checking
-    Script.findByIdAndRemove(id, function(err) {
-      if (err) return returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
+    Script.findByIdAndRemove(id, (err: string) => {
+      if (err) {
+        this.returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return;
+      }
       response.send({sucess: true}).end();
-    })
+    });
   }
 }
 

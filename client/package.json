@@ -1,0 +1,14 @@
+{
+  "name": "fb-typefast-client",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {},
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "codemirror": "^5.15.2",
+    "jquery": "^2.0.0",
+    "jshint": "^2.9.2",
+    "tern": "^0.18.0"
+  },
+  "devDependencies": {}
+}
