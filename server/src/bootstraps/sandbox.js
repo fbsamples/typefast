@@ -51,7 +51,7 @@ const bootstrap = function(argv: Map): Sandbox {
   stdout.on('data', (chunk: string) => process.stdout.write(console_debug('STDOUT', chunk)));
   stderr.on('data', (chunk: string) => process.stderr.write(console_debug('STDERR', chunk)));
 
-  // Will hang the process. process.exit must be explicitly called
+  // Will hang the process. process.exit or Mongoose.disconnect must be explicitly called
   Mongoose.connect(config.getString('db.url'));
 
   Script.findById(script_id).exec((err: Error, script: Script) => {
