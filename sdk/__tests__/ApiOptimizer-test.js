@@ -1,4 +1,5 @@
 /**
+/**
  * Copyright (c) 2016-present, Facebook, Inc. All rights reserved.
  *
  * You are hereby granted a non-exclusive, worldwide, royalty-free license to
@@ -18,35 +19,33 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
- *
- * @flow
  */
 
-export type FieldName = string;
+jest.unmock('../src/ApiOptimizer');
 
-class FieldSpec {
+const ApiOptimizer = require('../src/ApiOptimizer');
+const FieldSpec = require('../src/specs/FieldSpec');
 
-  description: string;
-  name: FieldName;
-  type: string;
+describe('ApiOptimizer', () => {
 
-  constructor(name: FieldName, type: string, description: string): void {
-    this.name = name;
-    this.type = type;
-    this.description = description;
-  }
+  const node_type = 'NODE_TYPE';
+  const field_name = 'FIELD_NAME';
 
-  getName(): FieldName {
-    return this.name;
-  }
+  const makeOptimizer = () => {
+    return new ApiOptimizer();
+  };
 
-  getType(): string {
-    return this.type;
-  }
+  const makeFieldSpec = (name) => {
+    const spec = new FieldSpec(/* mock */);
+    spec.getName.mockReturnValue(name);
+    return spec;
+  };
 
-  getDescription(): string {
-    return this.description;
-  }
-}
-
-module.exports = FieldSpec;
+  it('can store field predictions', () => {
+    const optimizer = makeOptimizer();
+    expect(optimizer.getFieldPredictions(node_type).size).toEqual(0);
+    optimizer.setFieldPrediction(node_type, makeFieldSpec(field_name));
+    expect(optimizer.getFieldPredictions(node_type).size).toEqual(1);
+    expect(optimizer.getFieldPredictions(node_type).first().getName()).toBe(field_name);
+  });
+});

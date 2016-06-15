@@ -45,7 +45,7 @@ const getEdgeExecutor = function(node: Node, edge_spec: EdgeSpec): EdgeExecutor 
     const id = node.assertId();
     const edge = edge_spec.getEdge();
     const path = `/${id}${edge}`;
-    const response = node.getApi().call(path, edge_spec.getMethod(), normalizeParams(params));
+    const response = node.getApi().call(path, edge_spec.getMethod(), normalizeParams(params), edge_spec.getNodeSpec());
     switch (edge_spec.getMethod()) {
       case 'GET':
         return new Cursor(edge_spec.getNodeSpec(), response);
@@ -61,7 +61,7 @@ const getCrudExecutor = function(node: Node, crud_spec: CrudSpec): CrudExecutor 
   return function(params?: RequestParams): Node {
     const id = node.assertId();
     const path = `/${id}`;
-    const response = node.getApi().call(path, crud_spec.getMethod(), normalizeParams(params));
+    const response = node.getApi().call(path, crud_spec.getMethod(), normalizeParams(params), node.getSpec());
     node.setData(response.getContent());
     return node;
   };
