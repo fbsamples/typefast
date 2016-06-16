@@ -22,29 +22,28 @@
  * @flow
  */
 
-import type FieldSpec from './specs/FieldSpec';
 import type {FieldName} from './specs/FieldSpec';
 import type {NodeType} from './specs/NodeSpec';
 
-const {Map} = require('immutable');
+const {List, Map} = require('immutable');
 
 class ApiOptimizer {
 
-  fieldPredictions: Map<NodeType, Map<FieldName, FieldSpec>>;
+  fieldPredictions: Map<NodeType, List<FieldName>>;
 
   constructor(): void {
     this.fieldPredictions = new Map();
   }
 
-  getFieldPredictions(node: NodeType): Map<FieldName, FieldSpec> {
+  getFieldPredictions(node: NodeType): List<FieldName> {
     return this.fieldPredictions.has(node)
       ? this.fieldPredictions.get(node)
-      : new Map();
+      : new List();
   }
 
-  setFieldPrediction(node: NodeType, field_spec: FieldSpec): this {
+  setFieldPrediction(node: NodeType, field: FieldName): this {
     let predictions = this.getFieldPredictions(node);
-    predictions = predictions.set(field_spec.getName(), field_spec);
+    predictions = predictions.push(field);
     this.fieldPredictions = this.fieldPredictions.set(node, predictions);
     return this;
   }
