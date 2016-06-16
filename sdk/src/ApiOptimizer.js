@@ -22,31 +22,31 @@
  * @flow
  */
 
-export type FieldName = string;
+import type {FieldName} from './specs/FieldSpec';
+import type {NodeType} from './specs/NodeSpec';
 
-class FieldSpec {
+const {List, Map} = require('immutable');
 
-  description: string;
-  name: FieldName;
-  type: string;
+class ApiOptimizer {
 
-  constructor(name: FieldName, type: string, description: string): void {
-    this.name = name;
-    this.type = type;
-    this.description = description;
+  fieldPredictions: Map<NodeType, List<FieldName>>;
+
+  constructor(): void {
+    this.fieldPredictions = new Map();
   }
 
-  getName(): FieldName {
-    return this.name;
+  getFieldPredictions(node: NodeType): List<FieldName> {
+    return this.fieldPredictions.has(node)
+      ? this.fieldPredictions.get(node)
+      : new List();
   }
 
-  getType(): string {
-    return this.type;
-  }
-
-  getDescription(): string {
-    return this.description;
+  setFieldPrediction(node: NodeType, field: FieldName): this {
+    let predictions = this.getFieldPredictions(node);
+    predictions = predictions.push(field);
+    this.fieldPredictions = this.fieldPredictions.set(node, predictions);
+    return this;
   }
 }
 
-module.exports = FieldSpec;
+module.exports = ApiOptimizer;

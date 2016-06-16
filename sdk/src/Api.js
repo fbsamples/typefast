@@ -22,6 +22,8 @@
  * @flow
  */
 
+import type ApiOptimizer from './ApiOptimizer';
+import type NodeSpec from './specs/NodeSpec';
 import type Session from './Session';
 import type {HttpAdapterInterface} from './http/HttpAdapterInterface';
 import type {GraphVersion, RequestMethod, RequestParams} from './http/Request';
@@ -33,10 +35,17 @@ class Api {
 
   graphVersion: GraphVersion;
   httpAdapter: HttpAdapterInterface;
+  optimizer: ApiOptimizer;
   session: Session;
 
-  constructor(http_adapter: HttpAdapterInterface, session: Session, graph_version: GraphVersion): void {
+  constructor(
+    http_adapter: HttpAdapterInterface,
+    optimizer: ApiOptimizer,
+    session: Session,
+    graph_version: GraphVersion
+  ): void {
     this.httpAdapter = http_adapter;
+    this.optimizer = optimizer;
     this.session = session;
     this.graphVersion = graph_version;
   }
@@ -53,17 +62,29 @@ class Api {
     return this.graphVersion;
   }
 
-  execRequest(request: Request): Response {
-    request.setParams(
-      request.getParams()
-        .set('access_token', this.getSession().getAccessToken())
-        .set('appsecret_proof', this.getSession().getApplicationSecretProof())
-    );
+  getOptimizer(): ApiOptimizer {
+    return this.optimizer;
+  }
+
+  execRequest(request: Request, optimize_for_spec?: NodeSpec): Response {
+    let params = request.getParams()
+      .set('access_token', this.getSession().getAccessToken())
+      .set('appsecret_proof', this.getSession().getApplicationSecretProof());
+    if (optimize_for_spec != null) {
+      const field_predictions = this.getOptimizer().getFieldPredictions(optimize_for_spec.getType());
+      params = params.set('fields', field_predictions.join());
+    }
+    request.setParams(params);
     return this.getHttpAdapter().executeRequest(request);
   }
 
-  call(path: string, method: RequestMethod, params: RequestParams): Response {
-    return this.execRequest(new Request(this, path, method, params));
+  call(
+    path: string,
+    method: RequestMethod,
+    params: RequestParams,
+    optimize_for_spec?: NodeSpec
+  ): Response {
+    return this.execRequest(new Request(this, path, method, params), optimize_for_spec);
   }
 }
 

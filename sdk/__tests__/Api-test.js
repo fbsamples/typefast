@@ -24,11 +24,21 @@ jest.unmock('../src/Api');
 jest.mock('../src/http/Request', () => {
   const Map = require('immutable').Map;
   const Request = jest.genMockFromModule('../src/http/Request');
-  Request.prototype.getParams = jest.fn(() => new Map());
+  let params = new Map();
+  Request.prototype.getParams = jest.fn(() => params);
+  Request.prototype.setParams = jest.fn(_params => params = _params);
   return Request;
+});
+jest.mock('../src/http/Response', () => {
+  const Request = require('../src/http/Request');
+  const Response = jest.genMockFromModule('../src/http/Response');
+  Response.prototype.getRequest = jest.fn(() => new Request(/* mock */));
+  return Response;
 });
 
 const Api = require('../src/Api');
+const ApiOptimizer = require('../src/ApiOptimizer');
+const FieldSpec = require('../src/specs/FieldSpec');
 const NodejsSynchronousAdapter = require('../src/http/adapters/NodejsSynchronousAdapter');
 const Request = require('../src/http/Request');
 const Response = require('../src/http/Response');
@@ -38,6 +48,7 @@ const {Map} = require('immutable');
 describe('Api', () => {
 
   const graph_version = [2, 6];
+  const optimized_field = 'field_name';
 
   const makeHttpAdapter = () => {
     const adapter = new NodejsSynchronousAdapter(/* mock */);
@@ -45,12 +56,16 @@ describe('Api', () => {
     return adapter;
   };
 
+  const makeOptimizer = () => {
+    return new ApiOptimizer(/* mock */);
+  };
+
   const makeSession = () => {
     return new Session(/* mock */);
   };
 
   const makeApi = () => {
-    return new Api(makeHttpAdapter(), makeSession(), graph_version);
+    return new Api(makeHttpAdapter(), makeOptimizer(), makeSession(), graph_version);
   };
 
   const makeRequest = () => {
@@ -60,8 +75,10 @@ describe('Api', () => {
   it('can return the provided arguments', () => {
     const http_adapter = makeHttpAdapter();
     const session = makeSession();
-    const api = new Api(http_adapter, session, graph_version);
+    const optimizer = makeOptimizer();
+    const api = new Api(http_adapter, optimizer, session, graph_version);
     expect(api.getHttpAdapter()).toBe(http_adapter);
+    expect(api.getOptimizer()).toBe(optimizer);
     expect(api.getSession()).toBe(session);
     expect(api.getGraphVersion()).toBe(graph_version);
   });
@@ -73,5 +90,18 @@ describe('Api', () => {
 
   it('can construct and execute requests', () => {
     expect(makeApi().call('/node', 'GET', new Map())).toEqual(jasmine.any(Response));
+  });
+
+  it('can augment requests with field predictions', () => {
+    const optimizer = makeOptimizer();
+    const field_spec = new FieldSpec(/* mock */);
+    field_spec.getName.mockReturnValue(optimized_field);
+    optimizer.getFieldPredictions.mockReturnValue(new Map().set(optimized_field, field_spec.getName()));
+    const api = new Api(makeHttpAdapter(), optimizer, makeSession(), graph_version);
+    const response = api.call('/node', 'GET', new Map(), field_spec);
+    const params = response.getRequest().getParams();
+
+    expect(params.has('fields')).toBeTruthy();
+    expect(params.get('fields')).toEqual(optimized_field);
   });
 });
