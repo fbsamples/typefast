@@ -23,15 +23,17 @@
  */
 
 import type {NodeType} from './specs/NodeSpec';
-import type NodeSpec from './specs/NodeSpec';
 
+const NodeSpec = require('./specs/NodeSpec');
 const {Map} = require('immutable');
 
 class SpecRegistry {
 
+  mockUnregistredTypes: bool;
   nodes: Map<NodeType, NodeSpec>;
 
-  constructor(): void {
+  constructor(mock_unregistred_types?: bool): void {
+    this.mockUnregistredTypes = mock_unregistred_types || false;
     this.nodes = new Map();
   }
 
@@ -44,9 +46,16 @@ class SpecRegistry {
     return this.nodes.has(key);
   }
 
+  getMockSpec(type: NodeType): NodeSpec {
+    return new NodeSpec(type, new Map(), new Map(), null, null, null);
+  }
+
   get(key: NodeType): NodeSpec {
     const node = this.nodes.get(key, undefined);
     if (node === undefined) {
+      if (this.mockUnregistredTypes) {
+        return this.getMockSpec(key);
+      }
       throw new Error(`Unregistred node type ${key}`);
     }
 

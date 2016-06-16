@@ -31,7 +31,7 @@ describe('SpecRegistry', () => {
   const type = 'NodeType';
 
   const makeSpecRegistry = () => {
-    return new SpecRegistry();
+    return new SpecRegistry(false);
   };
 
   const makeSpec = () => {
@@ -53,5 +53,12 @@ describe('SpecRegistry', () => {
 
   it('throws when trying to access missing keys', () => {
     expect(() => makeSpecRegistry().get(type)).toThrow();
+  });
+
+  it('can generate mock specs', () => {
+    const unregistred_type = 'UnregisteredType';
+    expect(new SpecRegistry(true).get(unregistred_type)).toEqual(jasmine.any(NodeSpec));
+    expect(() => new SpecRegistry(false).get(unregistred_type)).toThrow();
+    expect(() => new SpecRegistry().get(unregistred_type)).toThrow();
   });
 });
