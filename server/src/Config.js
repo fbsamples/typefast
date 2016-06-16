@@ -36,7 +36,7 @@ class Config {
   sources: List<string>;
   data: Map<string, any>;
 
-  static fromArgv(argv: List): Config {
+  static fromArgv(argv: Map): Config {
     // FIXME actually get the list from argv
     return new Config(new List([
       __dirname + '/../config/default.json',

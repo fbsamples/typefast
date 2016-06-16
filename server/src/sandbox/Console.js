@@ -18,34 +18,32 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
+ *
+ * @flow
  */
 
-const parseArgv = require('minimist');
-const {List, Map} = require('immutable');
+import type {Transform} from 'stream';
 
-const TRANSPILE_KEY = 'transpile';
-const MODE_KEY = 'mode';
-const DEFAULT_MODE = 'server';
+const {Console} = require('console');
 
-const passthrou_exclude = new List([
-  TRANSPILE_KEY,
-  MODE_KEY
-]);
+class SandboxConsole extends Console {
 
-const main = function(argv /* :List */) {
-  const opts = new Map(parseArgv(argv.takeLast(argv.size - 2).toArray()))
-    .rest()
-    .map(value => value instanceof Array ? value.pop() : value);
+  stdout: Transform;
+  stderr: Transform;
 
-  if (opts.get(TRANSPILE_KEY, false)) {
-    require('babel-register');
-    require('babel-polyfill');
+  constructor(stdout: Transform, stderr: Transform): void {
+    super(stdout, stderr);
+    this.stdout = stdout;
+    this.stderr = stderr;
   }
-  const mode = opts.get(MODE_KEY, DEFAULT_MODE);
 
-  argv = opts.filterNot((value, key) => passthrou_exclude.keyOf(key) != null);
-  const bootstrap = require(`./src/bootstraps/${mode}`);
-  bootstrap(argv);
-};
+  getStdout(): Transform {
+    return this.stdout;
+  }
 
-main(new List(process.argv));
+  getStderr(): Transform {
+    return this.stderr;
+  }
+}
+
+module.exports = SandboxConsole;

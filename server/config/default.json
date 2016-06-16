@@ -1,5 +1,11 @@
 {
   "debug": false,
+  "graph": {
+    "version": [0, 0],
+    "application_id": 0,
+    "application_secret": "APPLICATION_SECRET",
+    "access_token": "ACCESS_TOKEN"
+  },
   "https": {
     "bind": {
       "addr": "127.0.0.1",
@@ -17,5 +23,8 @@
   },
   "db": {
     "url": null
+  },
+  "sandbox": {
+    "timeout": 86400000
   }
 }
