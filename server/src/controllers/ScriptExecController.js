@@ -38,7 +38,7 @@ class ScriptExecController extends AbstractController {
   }
 
   getRouteMethods(): Set<RequestMethod> {
-    return new Set(['post']);
+    return new Set(['get']);
   }
 
   genResponse(request: Request, response: Response): void {

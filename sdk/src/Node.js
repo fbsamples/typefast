@@ -32,6 +32,7 @@ import type NodeSpec from './specs/NodeSpec';
 
 export type EdgeExecutor = (params?: Map<string, any>) => Cursor | Node | bool;
 export type CrudExecutor = (params?: Map<string, any>) => Node;
+export type NodeId = number | string;
 
 const Cursor = require('./Cursor');
 const {Map} = require('immutable');
@@ -44,7 +45,7 @@ const getEdgeExecutor = function(node: Node, edge_spec: EdgeSpec): EdgeExecutor 
   return function(params?: RequestParams): Cursor | Node | bool {
     const id = node.assertId();
     const edge = edge_spec.getEdge();
-    const path = `/${id}${edge}`;
+    const path = `/${id}/${edge}`;
     const response = node.getApi().call(path, edge_spec.getMethod(), normalizeParams(params), edge_spec.getNodeSpec());
     switch (edge_spec.getMethod()) {
       case 'GET':
@@ -121,12 +122,12 @@ class Node {
     this.parent_id = null;
   }
 
-  getId(): ?number {
+  getId(): ?NodeId {
     // FLOW_UNSAFE
-    return this['id'] != null ? parseInt(this['id'], 10) : null;
+    return this['id'] != null ? this['id'] : null;
   }
 
-  assertId(): number {
+  assertId(): NodeId {
     const id = this.getId();
     if (id == null) {
       throw new Error('Missing object ID');

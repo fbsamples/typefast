@@ -16,5 +16,6 @@
   },
   "db": {
     "url": "mongodb://localhost/typefast"
-  }
+  },
+  "DEPRECATED__cxt_id": null
 }

@@ -41,6 +41,9 @@ class NodejsSynchronousAdapter {
     });
 
     // FIXME handle proxy errors
+    if (out.statusCode !== 200) {
+      throw new Error(out.body.toString());
+    }
     return new Response(request, out.statusCode, out.body.toString());
   }
 }
