@@ -47,7 +47,7 @@ module.exports = function(config: Config, script: Script): Object {
   const graph_versions = [config.getInteger('graph.version.0'), config.getInteger('graph.version.1')];
 
   // Init dynamic structures
-  const registry = new SpecRegistry();
+  const registry = new SpecRegistry(true);
   const optimizer = new ApiOptimizer();
   new Map(getObject(schema_bundle)).forEach(
     spec => registry.register(NodeSpec.fromJson(registry, JSON.stringify(spec)))
@@ -64,6 +64,8 @@ module.exports = function(config: Config, script: Script): Object {
 
   // Init context
   const ctx = Node.fromSpec(api, registry.get('AdAccount'));
+  // FLOW_UNSAFE
+  ctx.id = config.getString('DEPRECATED__cxt_id');
 
   return {
     api: api, // FIXME should this be directly exposed ?

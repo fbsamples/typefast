@@ -23,10 +23,10 @@
  */
 
 import type Api from './Api';
+import type Node from './Node';
 import type NodeSpec from './specs/NodeSpec';
 import type Response from './http/Response';
 
-const Node = require('./Node');
 const {List} = require('immutable');
 
 type CursorMapper = (node: Node, index: number, cursor?: Cursor) => any;
@@ -48,6 +48,8 @@ class Cursor {
   }
 
   makeNode(node_content: Object): Node {
+    // Inline require to avoid static cyclic dependecy issues
+    const Node = require('./Node');
     return Node.fromData(this.getLastResponse().getRequest().getApi(), this.getNodeSpec(), node_content);
   }
 
