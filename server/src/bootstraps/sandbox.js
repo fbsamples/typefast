@@ -37,12 +37,8 @@ const console_debug = function(stream_name: string, chunk: string): string {
   return Util.format('SANDBOX::%s: %s', stream_name, chunk);
 };
 
-const bootstrap = function(argv: Map): Sandbox {
-  console.assert(argv.has(SCRIPT_ID_KEY), `Missing reqired parameter --${SCRIPT_ID_KEY}`);
-
-  const script_id = argv.get(SCRIPT_ID_KEY);
-  const config = Config.fromArgv(argv);
-  const sandbox = new Sandbox(sandbox_template(config));
+const onScript = function(config: Config, script: Script) {
+  const sandbox = new Sandbox(sandbox_template(config, script));
   sandbox.setTimeout(config.getInteger('sandbox.timeout'));
   const stdout = sandbox.getConsole().getStdout();
   const stderr = sandbox.getConsole().getStderr();
@@ -51,16 +47,23 @@ const bootstrap = function(argv: Map): Sandbox {
   stdout.on('data', (chunk: string) => process.stdout.write(console_debug('STDOUT', chunk)));
   stderr.on('data', (chunk: string) => process.stderr.write(console_debug('STDERR', chunk)));
 
+  sandbox.run(script.code);
+  Mongoose.disconnect();
+};
+
+const bootstrap = function(argv: Map): void {
+  console.assert(argv.has(SCRIPT_ID_KEY), `Missing reqired parameter --${SCRIPT_ID_KEY}`);
+
+  const script_id = argv.get(SCRIPT_ID_KEY);
+  const config = Config.fromArgv(argv);
+
   // Will hang the process. process.exit or Mongoose.disconnect must be explicitly called
   Mongoose.connect(config.getString('db.url'));
 
   Script.findById(script_id).exec((err: Error, script: Script) => {
     console.assert(err == null, err);
-    sandbox.run(script.code);
-    Mongoose.disconnect();
+    onScript(config, script);
   });
-
-  return sandbox;
 };
 
 module.exports = bootstrap;

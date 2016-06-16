@@ -4,7 +4,10 @@
     "version": [0, 0],
     "application_id": 0,
     "application_secret": "APPLICATION_SECRET",
-    "access_token": "ACCESS_TOKEN"
+    "access_token": "ACCESS_TOKEN",
+    "schema": {
+      "bundle": null
+    }
   },
   "https": {
     "bind": {
