@@ -96,7 +96,7 @@ describe('Api', () => {
     const optimizer = makeOptimizer();
     const field_spec = new FieldSpec(/* mock */);
     field_spec.getName.mockReturnValue(optimized_field);
-    optimizer.getFieldPredictions.mockReturnValue(new Map().set(optimized_field, field_spec));
+    optimizer.getFieldPredictions.mockReturnValue(new Map().set(optimized_field, field_spec.getName()));
     const api = new Api(makeHttpAdapter(), optimizer, makeSession(), graph_version);
     const response = api.call('/node', 'GET', new Map(), field_spec);
     const params = response.getRequest().getParams();

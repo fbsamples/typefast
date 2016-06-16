@@ -72,7 +72,7 @@ class Api {
       .set('appsecret_proof', this.getSession().getApplicationSecretProof());
     if (optimize_for_spec != null) {
       const field_predictions = this.getOptimizer().getFieldPredictions(optimize_for_spec.getType());
-      params = params.set('fields', field_predictions.map(spec => spec.getName()).join());
+      params = params.set('fields', field_predictions.join());
     }
     request.setParams(params);
     return this.getHttpAdapter().executeRequest(request);
