@@ -23,6 +23,7 @@
  */
 
 import type {Request, Response} from 'express';
+import type {Document} from 'mongoose';
 
 const AbstractRestController = require('./AbstractRestController');
 const HttpStatus = require('http-status-codes');
@@ -49,7 +50,7 @@ class ScriptRestController extends AbstractRestController {
   genRead(request: Request, response: Response): void {
     // Need user level checking
     const id = request.params.id;
-    Script.findById(id, (err: string, script: Script) => {
+    Script.findById(id, (err: Error, script: Document) => {
       if (err) {
         this.returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
         return;
@@ -70,12 +71,12 @@ class ScriptRestController extends AbstractRestController {
     });
 
     // Need user level checking
-    newScript.save((err: string, script: Script) => {
+    newScript.save((err: Error, script: Document) => {
       if (err) {
         this.returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
         return;
       }
-      response.send({success: true, id: script.id}).end();
+      response.send({success: true, id: script.get('id')}).end();
     });
   }
 
@@ -95,7 +96,7 @@ class ScriptRestController extends AbstractRestController {
         code: code
       },
       {},
-      (err: string, script: Script) => {
+      (err: Error, script: Document) => {
         if (err) {
           this.returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
           return;

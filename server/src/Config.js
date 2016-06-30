@@ -26,6 +26,8 @@ const assert = require('assert');
 const fs = require('fs');
 const {List, Map} = require('immutable');
 
+export type Argv = Map<string, string | number | bool>;
+
 const READ_FILE_OPTS = {
   encoding: 'UTF-8',
   flag: 'r'
@@ -36,7 +38,7 @@ class Config {
   sources: List<string>;
   data: Map<string, any>;
 
-  static fromArgv(argv: Map): Config {
+  static fromArgv(argv: Argv): Config {
     // FIXME actually get the list from argv
     return new Config(new List([
       __dirname + '/../config/default.json',

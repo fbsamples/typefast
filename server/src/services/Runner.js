@@ -23,6 +23,7 @@
  */
 
 import type Config from '../Config';
+import type {Document} from 'mongoose';
 
 const AbstractService = require('./AbstractService');
 const Sandbox = require('../sandbox/Sandbox');
@@ -53,14 +54,14 @@ class Runner extends AbstractService {
 
   init(): void {
     const script_id = this.getScriptId();
-    Script.findById(script_id).exec((err: Error, script: Script) => {
+    Script.findById(script_id).exec((err: Error, script: Document) => {
       console.assert(err == null, err);
       console.assert(script != null, `Unknown script ${script_id}`);
       this.getSandbox().setSharedObject(sandbox_template(this.getConfig(), script));
       this.emit(Runner.events.INIT);
       // Prioritize service listeners as sanxbox execute syncronously
       process.nextTick(() => {
-        this.getSandbox().run(script.code);
+        this.getSandbox().run(script.get('code'));
         this.emit(Runner.events.END);
       });
     });

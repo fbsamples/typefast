@@ -23,6 +23,7 @@
  */
 
 import type Config from '../Config';
+import type {Document} from 'mongoose';
 import type {FieldName} from '../../../sdk/src/specs/FieldSpec';
 import type {NodeType} from '../../../sdk/src/specs/NodeSpec';
 
@@ -32,13 +33,12 @@ const ApiOptimizer = require('../../../sdk/src/ApiOptimizer');
 const Node = require('../../../sdk/src/Node');
 const NodeSpec = require('../../../sdk/src/specs/NodeSpec');
 const Session = require('../../../sdk/src/Session');
-const Script = require('../model/Script');
 const SpecRegistry = require('../../../sdk/src/SpecRegistry');
 const {Map} = require('immutable');
 
 const {getObject} = require('../GraphSchemaLoader');
 
-module.exports = function(config: Config, script: Script): Object {
+module.exports = function(config: Config, script: Document): Object {
   // Load configs
   const app_id = config.getInteger('graph.application_id');
   const app_secret = config.getString('graph.application_secret');
@@ -52,7 +52,7 @@ module.exports = function(config: Config, script: Script): Object {
   new Map(getObject(schema_bundle)).forEach(
     spec => registry.register(NodeSpec.fromJson(registry, JSON.stringify(spec)))
   );
-  new Map(script.optimisations).forEach(
+  new Map(script.get('optimisations')).forEach(
     (fields: Array<FieldName>, node: NodeType) => fields.map(
       field => optimizer.setFieldPrediction(node, field)
     )

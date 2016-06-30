@@ -20,45 +20,58 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-type documentCallback = (err: string, doc: Document) => void;
-type documentsCallback = (err: string, docs: Array<Document>) => void;
+type DocumentId = Object | string | number;
+type OperationCallback<T> = (err: Error, res: T) => void;
 
 declare module mongoose {
 
-  declare type Connection = {
+  declare class Connection {
   }
 
-  declare type MongooseThenable = {
+  declare class MongooseThenable {
     connection: Connection;
     connections: Array<Connection>;
+
     disconnect(): MongooseThenable;
   }
 
-  declare type Schema = {
-    pre(name: string, callback: Function): void;
+  declare class Schema {
+    (schema: Object): Schema;
+    index(fields: Object, options?: Object): Schema;
+    pre(name: string, callback: Function): Schema;
   }
 
-  declare type Model = {
-    find(conditions: Object, projection?: Object, options?: Object, callback: documentsCallback): Query;
-    findById(id: Object | string | number, projection?: Object, options?: Object, callback: documentCallback): Query;
-    findByIdAndUpdate(id: Object | string | number, update: Object, options: Object, callback: documentCallback): Query;
-    findByIdAndRemove(id: Object | string | number, options: Object, callback: (error: string) => void): Query;
-    save(callback: documentCallback): Promise;
+  declare class Model {
+    static find(conditions: Object, projection?: Object, options?: Object, callback?: OperationCallback<Array<Document>>): Query<Array<Document>>;
+    static findById(id: DocumentId, projection?: Object, options?: Object, callback?: OperationCallback<Document>): Query<Document>;
+    static findByIdAndUpdate(id: DocumentId, update: Object, options: Object, callback?: OperationCallback<Document>): Query<Document>;
+    static findByIdAndRemove(id: DocumentId, options: Object, callback?: (error: string) => void): Query<void>;
+
+    static (doc: Object): Model;
+    save(callback: OperationCallback<Document>): Promise<Document>;
   }
 
-  declare type Document = {
+  declare class Document {
+    get(path: string): any;
   }
 
-  declare type Promise = {
+  declare class Promise<T> {
   }
 
-  declare type Query = {
+  declare class Query<T> {
+    exec(callback: OperationCallback<T>): Promise<T>;
   }
 
   declare var exports: {
     connect(url: string, options?: Object, callback?: Function): MongooseThenable;
+    Connection: typeof Connection;
     disconnect(): void;
-    Schema(schema: Object): Schema;
-    model(name: string, schema: Schema, collection?: string, skipInit?: bool): (doc: Object) => Model;
+    Document: typeof Document;
+    MongooseThenable: typeof MongooseThenable;
+    Promise: typeof Promise;
+    Query: typeof Query;
+    Schema: typeof Schema;
+    model(name: string, schema: Schema, collection?: string, skipInit?: bool): typeof Model;
+    Model: typeof Model;
   }
 }

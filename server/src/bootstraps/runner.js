@@ -22,10 +22,11 @@
  * @flow
  */
 
+import type {Argv} from '../Config';
+
 const Config = require('../Config');
 const Runner = require('../services/Runner');
 const Util = require('util');
-const {Map} = require('immutable');
 
 const SCRIPT_ID_KEY = 'script-id';
 
@@ -42,12 +43,12 @@ const on_init = function(runner: Runner) {
     .on('data', (chunk: string) => process.stderr.write(console_debug('STDERR', chunk)));
 };
 
-const bootstrap = function(argv: Map): Runner {
+const bootstrap = function(argv: Argv): Runner {
   console.assert(argv.has(SCRIPT_ID_KEY), `Missing reqired parameter --${SCRIPT_ID_KEY}`);
 
   const script_id = argv.get(SCRIPT_ID_KEY);
   const config = Config.fromArgv(argv);
-  const runner = new Runner(config, script_id);
+  const runner = new Runner(config, script_id.toString());
   runner.on(Runner.events.INIT, () => on_init(runner));
 
   return runner;

@@ -22,6 +22,7 @@
  * @flow
  */
 
+import type {Argv} from '../Config';
 import type {ControllerInterface} from '../controllers/ControllerInterface';
 import type {RequestMethod} from 'express';
 
@@ -29,7 +30,7 @@ const Application = require('../services/Application');
 const Config = require('../Config');
 const HttpStatus = require('http-status-codes');
 const methods = require('methods');
-const {List, Map, Set} = require('immutable');
+const {List, Set} = require('immutable');
 
 // controllers
 const HttpErrorController = require('../controllers/HttpErrorController');
@@ -49,7 +50,7 @@ const getControllers = function(app: Application): List<ControllerInterface> {
   ]);
 };
 
-const bootstrap = function(argv: Map): Application {
+const bootstrap = function(argv: Argv): Application {
   const app = new Application(Config.fromArgv(argv));
   getControllers(app).forEach(controller => app.getRouter().mountCountroller(controller));
   app.on(Application.events.INIT, () => {
