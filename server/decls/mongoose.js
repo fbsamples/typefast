@@ -25,7 +25,13 @@ type documentsCallback = (err: string, docs: Array<Document>) => void;
 
 declare module mongoose {
 
+  declare type Connection = {
+  }
+
   declare type MongooseThenable = {
+    connection: Connection;
+    connections: Array<Connection>;
+    disconnect(): MongooseThenable;
   }
 
   declare type Schema = {
