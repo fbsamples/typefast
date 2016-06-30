@@ -54,14 +54,18 @@ class Runner extends AbstractService {
 
   init(): void {
     const script_id = this.getScriptId();
-    Script.findById(script_id).exec((err: Error, script: Document) => {
-      console.assert(err == null, err);
-      console.assert(script != null, `Unknown script ${script_id}`);
+    Script.findById(script_id).exec((err: Error, script: ?Document) => {
+      if (err != null) {
+        throw err;
+      }
+      if (script == null) {
+        throw new Error(`Unknown script ${script_id}`);
+      }
       this.getSandbox().setSharedObject(sandbox_template(this.getConfig(), script));
       this.emit(Runner.events.INIT);
       // Prioritize service listeners as sanxbox execute syncronously
       process.nextTick(() => {
-        this.getSandbox().run(script.get('code'));
+        script && this.getSandbox().run(script.get('code'));
         this.emit(Runner.events.END);
       });
     });

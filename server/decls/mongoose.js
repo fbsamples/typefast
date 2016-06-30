@@ -42,17 +42,22 @@ declare module mongoose {
   }
 
   declare class Model {
-    static find(conditions: Object, projection?: Object, options?: Object, callback?: OperationCallback<Array<Document>>): Query<Array<Document>>;
-    static findById(id: DocumentId, projection?: Object, options?: Object, callback?: OperationCallback<Document>): Query<Document>;
-    static findByIdAndUpdate(id: DocumentId, update: Object, options: Object, callback?: OperationCallback<Document>): Query<Document>;
-    static findByIdAndRemove(id: DocumentId, options: Object, callback?: (error: string) => void): Query<void>;
-
     static (doc: Object): Model;
+    static count(conditions: Object, callback?: OperationCallback<number>): Query<number>;
+    static find(conditions: Object, projection?: Object, options?: Object, callback?: OperationCallback<Array<Document>>): Query<Array<Document>>;
+    static findById(id: DocumentId, projection?: Object, options?: Object, callback?: OperationCallback<?Document>): Query<?Document>;
+    static findByIdAndUpdate(id: DocumentId, update: Object, options: Object, callback?: OperationCallback<?Document>): Query<?Document>;
+    static findByIdAndRemove(id: DocumentId, options: Object, callback?: (error: string) => void): Query<void>;
+    static findOne(conditions: Object, projection?: Object, options?: Object, callback?: OperationCallback<?Document>): Query<?Document>;
+    static findOneAndUpdate(conditions: Object, doc: Object, options?: Object, callback?: OperationCallback<?Document>): Query<?Document>;
+
     save(callback: OperationCallback<Document>): Promise<Document>;
   }
 
   declare class Document {
     get(path: string): any;
+    set(patt: string, value: any): Document;
+    update(doc: Object, options?: Object, callback?: OperationCallback<Document>): Query<Document>;
   }
 
   declare class Promise<T> {
@@ -63,15 +68,16 @@ declare module mongoose {
   }
 
   declare var exports: {
-    connect(url: string, options?: Object, callback?: Function): MongooseThenable;
     Connection: typeof Connection;
-    disconnect(): void;
     Document: typeof Document;
     MongooseThenable: typeof MongooseThenable;
     Promise: typeof Promise;
     Query: typeof Query;
     Schema: typeof Schema;
-    model(name: string, schema: Schema, collection?: string, skipInit?: bool): typeof Model;
     Model: typeof Model;
+
+    connect(url: string, options?: Object, callback?: Function): MongooseThenable;
+    disconnect(): void;
+    model(name: string, schema: Schema, collection?: string, skipInit?: bool): typeof Model;
   }
 }

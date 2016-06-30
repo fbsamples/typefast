@@ -30,8 +30,17 @@
   "sandbox": {
     "timeout": 86400000
   },
+  "scheduler": {
+    "main_queue": {
+      "collection_name": "scheduler_queue",
+      "polling_interval": 60000
+    },
+    "preview_queue": {
+      "collection_name": "scheduler_queue_high_pri",
+      "polling_interval": 1000
+    }
+  },
   "worker": {
-    "processes": 1,
-    "polling_interval": 5000
+    "processes": 1
   }
 }

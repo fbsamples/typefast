@@ -32,7 +32,8 @@
     "http-status-codes": "~1.0.6",
     "immutable": "~3.8.1",
     "minimist": "~1.2.0",
-    "mongoose": "~4.4.20"
+    "mongoose": "~4.4.20",
+    "phosphor-queue": "~1.0.5"
   },
   "devDependencies": {
     "babel-cli": "~6.8.0",
