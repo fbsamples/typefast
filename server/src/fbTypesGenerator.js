@@ -20,23 +20,27 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+require('babel-register');
+require('babel-polyfill');
 const fs = require('fs');
 const Config = require('./Config');
-const config = Config.fromArgv();
 const {Map} = require('immutable');
+const NodeSpec = require('../../sdk/src/specs/NodeSpec');
+const SpecRegistry = require('../../sdk/src/SpecRegistry');
 const {getObject} = require('./GraphSchemaLoader');
+const config = Config.fromArgv();
 const schema_bundle = config.getString('graph.schema.bundle');
 const outputFilename = '../client/src/defs/fb_defs.js';
 
-function normalizeDescription(description: string): string {
+function normalizeDescription(description) {
   return description.replace(/\r|\n/, '').replace(/\s+/, ' ');
 }
 
-function isObjectType(type: string): bool {
+function isObjectType(type) {
   return type.indexOf(/^(map|Object|object)/) != -1;
 }
 
-function typeTransformer(type: string) {
+function typeTransformer(type) {
   if(!type) { return null };
   var matches = null;
   switch(type) {
@@ -69,9 +73,12 @@ function typeTransformer(type: string) {
 }
 
 var schema = getObject(schema_bundle);
+const registry = new SpecRegistry(true);
+
 var enums = schema.enums;
 delete schema.enums;
-var map = {
+
+var ternDefinitions = {
   '!name': '!Facebook Scripting Definitions',
   '!define':  {
     "cursor_prototype": {
@@ -81,90 +88,88 @@ var map = {
   'adaccount': 'AdAccount',
 };
 
-Map(schema).forEach(function(spec, type) {
+new Map(schema).forEach(function(spec, type) {
   var defs = {};
-  spec.apis.forEach(function(api){
-    const name = api['name'];
-    const returntype = typeTransformer(api['return']);
-    const description = api['description'];
-    const method = api['method'];
+  const nodeSpec = NodeSpec.fromJson(registry, JSON.stringify(spec));
+
+  const readSpec = nodeSpec.getReadSpec();
+  if (readSpec) {
+    const name = readSpec.getFunctionName();
+    defs[name] = {};
+    defs[name]['!type'] = 'fn(params: Object) -> +' + type;
+    defs[name]['!doc'] = 'Read fields from the ' + type;
+  }
+
+  const updateSpec = nodeSpec.getUpdateSpec();
+  if (updateSpec) {
+    const name = updateSpec.getFunctionName();
+    defs[name] = {};
+    defs[name]['!type'] = 'fn(params: Object) -> +' + type;
+    defs[name]['!doc'] = 'Update fields on the ' + type;
+  }
+
+  const deleteSpec = nodeSpec.getDeleteSpec();
+  if (deleteSpec) {
+    const name = deleteSpec.getFunctionName();
+    defs[name] = {};
+    defs[name]['!type'] = 'fn(params: Object) -> bool';
+    defs[name]['!doc'] = 'Delete the ' + type;
+  }
+
+  nodeSpec.getEdgeSpecs().forEach(function(edge) {
+    const name = edge.getName();
+    const returntype = typeTransformer(edge.getReturnType());
+    const description = edge.getDescription();
     defs[name] = {};
 
-    if (method === 'GET') {
-      map['!define'][returntype + '_cursor'] = {
-        "!proto": "cursor_prototype",
-        "forEach": {
-          "!type": "fn(f: fn(el: +"
-          + returntype + ", i: number, array: +Array), context?: ?)",
-        },
-        "valid": {
-          "!type": "fn() -> bool",
-          "!doc": "Wether the cursor is valid",
-        },
-        "key": {
-          "!type": "fn() -> number",
-          "!doc": "The current index of the cursor",
-        },
-        "rewind": {
-          "!type": "fn() -> !this",
-        },
-        "next": {
-          "!type": "fn() -> +" + returntype ,
-          "!doc": "Return the next " + returntype + " item from the cursor.",
-          "!url": "https://facebook.com",
-        },
-        "current": {
-          "!type": "fn() -> +" + returntype ,
-          "!doc": "Gets the current " + returntype + " of the cursor",
-        },
-      }
-
-      defs[name]['!type'] = 'fn() -> +' + returntype + '_cursor';
-      defs[name]['!doc'] = description;
-    }
-    else if (method === 'POST') {
-      if (api['endpoint']) {
-        // this is an edge
-        defs[name]['!type'] = 'fn(params: Object) -> +' + api['return'];
-        defs[name]['!doc'] = description;
-      } else {
-        // this operation is on the current object
-        const name = api.name.slice(1);
-        defs[name] = {};
-        defs[name]['!type'] = 'fn(params: Object) -> +' + type;
-        defs[name]['!doc'] = 'Update the ' + type;
-      }
+    ternDefinitions['!define'][returntype + '_cursor'] = {
+      "!proto": "cursor_prototype",
+      "forEach": {
+        "!type": "fn(f: fn(el: +"
+        + returntype + ", i: number, array: +Array), context?: ?)",
+      },
+      "valid": {
+        "!type": "fn() -> bool",
+        "!doc": "Wether the cursor is valid",
+      },
+      "key": {
+        "!type": "fn() -> number",
+        "!doc": "The current index of the cursor",
+      },
+      "rewind": {
+        "!type": "fn() -> !this",
+      },
+      "next": {
+        "!type": "fn() -> +" + returntype ,
+        "!doc": "Return the next " + returntype + " item from the cursor.",
+        "!url": "https://facebook.com",
+      },
+      "current": {
+        "!type": "fn() -> +" + returntype ,
+        "!doc": "Gets the current " + returntype + " of the cursor",
+      },
     }
 
-    else if (method === 'DELETE') {
-      if (api['endpoint']) {
-        // this is an edge
-        defs[name]['!type'] = 'fn(params: Object) -> +' + api['return'];
-        defs[name]['!doc'] = description;
-      } else {
-        // this operation is on the current object
-        const name = api.name.slice(1);
-        defs[name] = {};
-        defs[name]['!type'] = 'fn(params: Object) -> bool';
-        defs[name]['!doc'] = 'Delete the ' + type;
-      }
+    defs[name]['!type'] = 'fn() -> +' + returntype + '_cursor';
+    defs[name]['!doc'] = description;
+  });
+
+  nodeSpec.getFieldSpecs().forEach(function(fieldSpec){
+    const name = fieldSpec.getName();
+    const fieldType = fieldSpec.getType();
+    if (!defs[name]){
+      defs[name] = {};
+    }
+    if(!isObjectType(fieldType)) {
+      defs[name]["!type"] = typeTransformer(fieldType);
+      defs[name]["!doc"] = fieldSpec.getDescription();
     }
   });
 
-  spec.fields.forEach(function(field) {
-    if (!defs[field['name']]){
-      defs[field['name']] = {};
-    }
-    if(!isObjectType(field['type'])) {
-      defs[field['name']]["!type"] = typeTransformer(field['type']);
-      defs[field['name']]["!doc"] = field['description'];
-    }
-  });
-
-  map['!define'][type] = defs;
+  ternDefinitions['!define'][type] = defs;
 });
 
-fs.writeFile(outputFilename, 'var fb_defs = ' + JSON.stringify(map, null, 4), function(err) {
+fs.writeFile(outputFilename, 'var fb_defs = ' + JSON.stringify(ternDefinitions, null, 4), function(err) {
     if(err) {
       console.log(err);
     } else {

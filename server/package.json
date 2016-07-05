@@ -9,7 +9,7 @@
     "transpile": "babel src/ -d build/",
     "start": "node index.js --transpile --mode=server",
     "dev": "nodemon index.js --transpile",
-    "definition-generation": "babel-node src/fbTypesGenerator.js"
+    "definition-generation": "node src/fbTypesGenerator.js"
   },
   "repository": {
     "type": "git",
@@ -37,8 +37,8 @@
   "devDependencies": {
     "babel-cli": "~6.8.0",
     "babel-eslint": "~6.0.4",
-    "babel-plugin-syntax-flow": "~6.8.0",
-    "babel-plugin-transform-flow-strip-types": "~6.8.0",
+    "babel-plugin-syntax-flow": "^6.8.0",
+    "babel-plugin-transform-flow-strip-types": "^6.8.0",
     "babel-polyfill": "~6.8.0",
     "babel-register": "~6.9.0",
     "eslint": "~2.10.2",
