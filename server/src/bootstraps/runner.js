@@ -23,13 +23,9 @@
  */
 
 const Config = require('../Config');
-const Mongoose = require('mongoose');
-const Sandbox = require('../Sandbox');
-const Script = require('../model/Script');
+const Runner = require('../services/Runner');
 const Util = require('util');
 const {Map} = require('immutable');
-
-const sandbox_template = require('../sandbox/template');
 
 const SCRIPT_ID_KEY = 'script-id';
 
@@ -37,33 +33,24 @@ const console_debug = function(stream_name: string, chunk: string): string {
   return Util.format('SANDBOX::%s: %s', stream_name, chunk);
 };
 
-const onScript = function(config: Config, script: Script) {
-  const sandbox = new Sandbox(sandbox_template(config, script));
-  sandbox.setTimeout(config.getInteger('sandbox.timeout'));
-  const stdout = sandbox.getConsole().getStdout();
-  const stderr = sandbox.getConsole().getStderr();
-
+const on_init = function(runner: Runner) {
   // FIXME should store to db instead of piping from server process
-  stdout.on('data', (chunk: string) => process.stdout.write(console_debug('STDOUT', chunk)));
-  stderr.on('data', (chunk: string) => process.stderr.write(console_debug('STDERR', chunk)));
-
-  sandbox.run(script.code);
-  Mongoose.disconnect();
+  // console.log(`Executing script ${script_id}`);
+  runner.getSandbox().getConsole().getStdout()
+    .on('data', (chunk: string) => process.stdout.write(console_debug('STDOUT', chunk)));
+  runner.getSandbox().getConsole().getStderr()
+    .on('data', (chunk: string) => process.stderr.write(console_debug('STDERR', chunk)));
 };
 
-const bootstrap = function(argv: Map): void {
+const bootstrap = function(argv: Map): Runner {
   console.assert(argv.has(SCRIPT_ID_KEY), `Missing reqired parameter --${SCRIPT_ID_KEY}`);
 
   const script_id = argv.get(SCRIPT_ID_KEY);
   const config = Config.fromArgv(argv);
+  const runner = new Runner(config, script_id);
+  runner.on(Runner.events.INIT, () => on_init(runner));
 
-  // Will hang the process. process.exit or Mongoose.disconnect must be explicitly called
-  Mongoose.connect(config.getString('db.url'));
-
-  Script.findById(script_id).exec((err: Error, script: Script) => {
-    console.assert(err == null, err);
-    onScript(config, script);
-  });
+  return runner;
 };
 
 module.exports = bootstrap;

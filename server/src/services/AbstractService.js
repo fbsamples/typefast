@@ -22,13 +22,51 @@
  * @flow
  */
 
-import type {Map} from 'immutable';
+import type Config from '../Config';
+import type {MongooseThenable} from 'mongoose';
 
-const Config = require('../Config');
-const Worker = require('../services/Worker');
+const {EventEmitter} = require('events');
+const Mongoose = require('mongoose');
+const Scheduler = require('../Scheduler');
 
-const bootstrap = function(argv: Map): Worker {
-  return new Worker(Config.fromArgv(argv));
+class AbstractService extends EventEmitter {
+
+  static events: {[key: string]: string};
+
+  config: Config;
+  db: MongooseThenable;
+  scheduler: Scheduler;
+
+  constructor(config: Config): void {
+    super();
+    this.config = config;
+    this.db = Mongoose.connect(this.config.getString('db.url'));
+    this.scheduler = new Scheduler();
+    // Will otherwise hang the process
+    this.on(AbstractService.events.END, () => process.nextTick(() => this.getDatabase().disconnect()));
+  }
+
+  getConfig(): Config {
+    return this.config;
+  }
+
+  getDatabase(): MongooseThenable {
+    return this.db;
+  }
+
+  getScheduler(): Scheduler {
+    return this.scheduler;
+  }
+
+  init(): void {
+    this.emit(AbstractService.events.INIT);
+    process.nextTick(() => this.emit(AbstractService.events.END));
+  }
+}
+
+AbstractService.events = {
+  END: 'end',
+  INIT: 'init',
 };
 
-module.exports = bootstrap;
+module.exports = AbstractService;

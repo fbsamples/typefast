@@ -22,16 +22,8 @@
  * @flow
  */
 
-import type Application from './Application';
-import type {Request, RequestMethod, Response} from 'express';
+class Scheduler {
 
-// eslint-disable-next-line no-undef
-export interface ControllerInterface {
-  constructor(application: Application): void;
-  getName(): string;
-  getApplication(): Application;
-  getRoute(): string;
-  getRouteMethods(): Set<RequestMethod>;
-  onDispatch(request: Request, response: Response): void;
-  genResponse(request: Request, response: Response): void;
 }
+
+module.exports = Scheduler;

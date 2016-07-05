@@ -22,32 +22,28 @@
  * @flow
  */
 
-import type Config from './Config';
+import type Config from '../Config';
 import type {Application as ExressApplication, RequestMethod} from 'express';
-import type {MongooseThenable} from 'mongoose';
 
+const AbstractService = require('./AbstractService');
 const express = require('express');
 const Filesystem = require('fs');
 const Https = require('https');
-const Mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const Router = require('./Router');
+const Router = require('../Router');
 const {Map, Set} = require('immutable');
 
-class Application {
+class Application extends AbstractService {
 
   allowedRequestMethods: Set<RequestMethod>;
-  config: Config;
   router: Router;
   webApplication: ExressApplication;
-  db: MongooseThenable;
 
   constructor(config: Config): void {
+    super(config);
     this.webApplication = express();
-    this.config = config;
     this.allowedRequestMethods = new Set(['get', 'post', 'delete']);
     this.router = new Router(this);
-    this.db = Mongoose.connect(this.config.getString('db.url'));
 
     // Middleware
     this.webApplication.use(bodyParser.urlencoded({extended: true}));
@@ -62,16 +58,8 @@ class Application {
     this.webApplication.use('/', this.getRouter().getWebRouter());
   }
 
-  getConfig(): Config {
-    return this.config;
-  }
-
   getAllowedRequestMethods(): Set<RequestMethod> {
     return this.allowedRequestMethods;
-  }
-
-  getDatabase(): MongooseThenable {
-    return this.db;
   }
 
   getRouter(): Router {
@@ -82,7 +70,7 @@ class Application {
     return this.webApplication;
   }
 
-  listen(callback?: Function): void {
+  init(): void {
     const options = new Map({key: 'https.ssl.key', cert: 'https.ssl.cert'}).map(
       (conf: string) => Filesystem.readFileSync(this.getConfig().getString(conf), 'utf8')
     ).toObject();
@@ -91,7 +79,7 @@ class Application {
       this.getConfig().getInteger('https.bind.port'),
       this.getConfig().getString('https.bind.addr'),
       this.getConfig().getInteger('https.bind.max_connections'),
-      callback || (() => undefined)
+      () => this.emit(Application.events.INIT)
     );
   }
 }

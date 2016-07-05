@@ -29,5 +29,9 @@
   },
   "sandbox": {
     "timeout": 86400000
+  },
+  "worker": {
+    "processes": 1,
+    "polling_interval": 5000
   }
 }

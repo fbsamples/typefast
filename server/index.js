@@ -45,7 +45,9 @@ const main = function(argv /* :List */) {
 
   argv = opts.filterNot((value, key) => passthrou_exclude.keyOf(key) != null);
   const bootstrap = require(`./src/bootstraps/${mode}`);
-  bootstrap(argv);
+  const service = bootstrap(argv);
+
+  service.init();
 };
 
 main(new List(process.argv));

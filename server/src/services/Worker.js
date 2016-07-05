@@ -22,56 +22,14 @@
  * @flow
  */
 
-const Vm = require('vm');
-const Console = require('./sandbox/Console');
-const {PassThrough} = require('stream');
+const AbstractService = require('./AbstractService');
 
-class Sandbox {
+// implement ServiceInterface
+class Worker extends AbstractService {
 
-  console: ?Console;
-  context: ?Object;
-  sharedObject: Object;
-  timeout: ?number;
-
-  constructor(shared_object?: Object): void {
-    this.sharedObject = shared_object || {};
-    this.timeout = null;
-  }
-
-  getConsole(): Console {
-    if (this.console == null) {
-      this.console = new Console(new PassThrough(), new PassThrough());
-    }
-
-    return this.console;
-  }
-
-  getContext(): Object {
-    if (this.context == null) {
-      const shared_object = this.sharedObject;
-      shared_object.console = this.getConsole();
-      this.context = Vm.createContext(shared_object);
-    }
-    return this.context;
-  }
-
-  setTimeout(timout: number): this {
-    this.timeout = timout;
-    return this;
-  }
-
-  getTimeout(): ?number {
-    return this.timeout;
-  }
-
-  run(code: string): void {
-    const options = {};
-    const timeout = this.getTimeout();
-    if (timeout !== null) {
-      options.timeout = timeout;
-    }
-    Vm.runInContext(code, this.getContext(), options);
+  init(): void {
+    this.emit(AbstractService.events.END);
   }
 }
 
-module.exports = Sandbox;
+module.exports = Worker;
