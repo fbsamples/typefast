@@ -2,12 +2,12 @@ var Application = (function(){
   var editor, server;
   return {
     init: function() {
-      editor = CodeMirror($('#editor')[0], {
+      editor = CodeMirror($('#sandbox')[0], {
         mode: 'javascript',
         value: $('#default-code').text(),
         lineNumbers: true,
         gutters: ["CodeMirror-lint-markers"],
-        lint: true
+        lint: true,
       });
 
       tern.registerPlugin("fb_optimise", function(server, options) {
