@@ -22,10 +22,10 @@
  * @flow
  */
 
-import type {ControllerInterface} from '../ControllerInterface';
+import type {ControllerInterface} from '../controllers/ControllerInterface';
 import type {RequestMethod} from 'express';
 
-const Application = require('../Application');
+const Application = require('../services/Application');
 const Config = require('../Config');
 const HttpStatus = require('http-status-codes');
 const methods = require('methods');
@@ -52,7 +52,7 @@ const getControllers = function(app: Application): List<ControllerInterface> {
 const bootstrap = function(argv: Map): Application {
   const app = new Application(Config.fromArgv(argv));
   getControllers(app).forEach(controller => app.getRouter().mountCountroller(controller));
-  app.listen(() => {
+  app.on(Application.events.INIT, () => {
     const addr = app.getConfig().getString('https.bind.addr');
     const port = app.getConfig().getInteger('https.bind.port');
     console.log(`Server listening on https://${addr}:${port}/`);

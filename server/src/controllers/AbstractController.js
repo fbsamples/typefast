@@ -22,7 +22,7 @@
  * @flow
  */
 
-import type Application from '../Application';
+import type Application from '../services/Application';
 import type {Request, Response} from 'express';
 
 const HttpStatus = require('http-status-codes');
