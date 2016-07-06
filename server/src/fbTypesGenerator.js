@@ -134,16 +134,32 @@ new Map(schema).forEach(function(spec, type) {
         "!type": "fn(f: fn(el: +"
         + returntype + ", i: number, array: +Array), context?: ?)",
       },
+      "map": {
+        "!type": "fn(f: fn(el: +"
+        + returntype + ", value: number, key: ?, array: +Array), context?: ?)",
+      },
+      "has": {
+        "!type": "fn(key: number) -> bool",
+        "!doc": "Whether the cursor contains the given key",
+      },
+      "key": {
+        "!type": "fn() -> number",
+        "!doc": "The current index",
+      },
+      "count": {
+        "!type": "fn() -> number",
+        "!doc": "The number of items in the cursor",
+      },
       "valid": {
         "!type": "fn() -> bool",
-        "!doc": "Wether the cursor is valid",
+        "!doc": "Whether the cursor is valid",
       },
       "key": {
         "!type": "fn() -> number",
         "!doc": "The current index of the cursor",
       },
       "rewind": {
-        "!type": "fn() -> !this",
+        "!type": "fn() -> null",
       },
       "next": {
         "!type": "fn() -> +" + returntype ,
@@ -154,6 +170,10 @@ new Map(schema).forEach(function(spec, type) {
         "!type": "fn() -> +" + returntype ,
         "!doc": "Gets the current " + returntype + " of the cursor",
       },
+      "toArray": {
+        "!type": "fn() -> [" + returntype + "]",
+        "!doc": "Gets the current " + returntype + " of the cursor",
+      }
     }
 
     defs[name]['!type'] = 'fn() -> +' + returntype + '_cursor';

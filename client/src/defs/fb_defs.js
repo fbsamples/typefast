@@ -81,16 +81,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +SystemUser, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +SystemUser, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +SystemUser",
@@ -100,6 +111,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +SystemUser",
                 "!doc": "Gets the current SystemUser of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [SystemUser]",
+                "!doc": "Gets the current SystemUser of the cursor"
             }
         },
         "ReachFrequencyPrediction_cursor": {
@@ -107,16 +122,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +ReachFrequencyPrediction, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +ReachFrequencyPrediction, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +ReachFrequencyPrediction",
@@ -126,6 +152,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +ReachFrequencyPrediction",
                 "!doc": "Gets the current ReachFrequencyPrediction of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [ReachFrequencyPrediction]",
+                "!doc": "Gets the current ReachFrequencyPrediction of the cursor"
             }
         },
         "AdsPixel_cursor": {
@@ -133,16 +163,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AdsPixel, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AdsPixel, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AdsPixel",
@@ -152,6 +193,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +AdsPixel",
                 "!doc": "Gets the current AdsPixel of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AdsPixel]",
+                "!doc": "Gets the current AdsPixel of the cursor"
             }
         },
         "null_cursor": {
@@ -159,16 +204,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +null, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +null, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +null",
@@ -178,6 +234,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +null",
                 "!doc": "Gets the current null of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [null]",
+                "!doc": "Gets the current null of the cursor"
             }
         },
         "BusinessPageRequest_cursor": {
@@ -185,16 +245,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +BusinessPageRequest, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +BusinessPageRequest, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +BusinessPageRequest",
@@ -204,6 +275,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +BusinessPageRequest",
                 "!doc": "Gets the current BusinessPageRequest of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [BusinessPageRequest]",
+                "!doc": "Gets the current BusinessPageRequest of the cursor"
             }
         },
         "AudiencePermission_cursor": {
@@ -211,16 +286,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AudiencePermission, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AudiencePermission, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AudiencePermission",
@@ -230,6 +316,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +AudiencePermission",
                 "!doc": "Gets the current AudiencePermission of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AudiencePermission]",
+                "!doc": "Gets the current AudiencePermission of the cursor"
             }
         },
         "InstagramUser_cursor": {
@@ -237,16 +327,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +InstagramUser, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +InstagramUser, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +InstagramUser",
@@ -256,6 +357,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +InstagramUser",
                 "!doc": "Gets the current InstagramUser of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [InstagramUser]",
+                "!doc": "Gets the current InstagramUser of the cursor"
             }
         },
         "ProductCatalog_cursor": {
@@ -263,16 +368,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +ProductCatalog, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +ProductCatalog, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +ProductCatalog",
@@ -282,6 +398,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +ProductCatalog",
                 "!doc": "Gets the current ProductCatalog of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [ProductCatalog]",
+                "!doc": "Gets the current ProductCatalog of the cursor"
             }
         },
         "ProfilePictureSource_cursor": {
@@ -289,16 +409,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +ProfilePictureSource, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +ProfilePictureSource, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +ProfilePictureSource",
@@ -308,6 +439,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +ProfilePictureSource",
                 "!doc": "Gets the current ProfilePictureSource of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [ProfilePictureSource]",
+                "!doc": "Gets the current ProfilePictureSource of the cursor"
             }
         },
         "Page_cursor": {
@@ -315,16 +450,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +Page, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +Page, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +Page",
@@ -334,6 +480,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +Page",
                 "!doc": "Gets the current Page of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [Page]",
+                "!doc": "Gets the current Page of the cursor"
             }
         },
         "BusinessAdAccountRequest_cursor": {
@@ -341,16 +491,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +BusinessAdAccountRequest, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +BusinessAdAccountRequest, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +BusinessAdAccountRequest",
@@ -360,6 +521,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +BusinessAdAccountRequest",
                 "!doc": "Gets the current BusinessAdAccountRequest of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [BusinessAdAccountRequest]",
+                "!doc": "Gets the current BusinessAdAccountRequest of the cursor"
             }
         },
         "MeasurementReport_cursor": {
@@ -367,16 +532,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +MeasurementReport, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +MeasurementReport, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +MeasurementReport",
@@ -386,6 +562,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +MeasurementReport",
                 "!doc": "Gets the current MeasurementReport of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [MeasurementReport]",
+                "!doc": "Gets the current MeasurementReport of the cursor"
             }
         },
         "AdAccount_cursor": {
@@ -393,16 +573,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AdAccount, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AdAccount, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AdAccount",
@@ -411,6 +602,10 @@ var fb_defs = {
             },
             "current": {
                 "!type": "fn() -> +AdAccount",
+                "!doc": "Gets the current AdAccount of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AdAccount]",
                 "!doc": "Gets the current AdAccount of the cursor"
             }
         },
@@ -577,16 +772,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +ProductSet, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +ProductSet, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +ProductSet",
@@ -595,6 +801,10 @@ var fb_defs = {
             },
             "current": {
                 "!type": "fn() -> +ProductSet",
+                "!doc": "Gets the current ProductSet of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [ProductSet]",
                 "!doc": "Gets the current ProductSet of the cursor"
             }
         },
@@ -1191,16 +1401,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AdsPixelStatsResult, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AdsPixelStatsResult, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AdsPixelStatsResult",
@@ -1209,6 +1430,10 @@ var fb_defs = {
             },
             "current": {
                 "!type": "fn() -> +AdsPixelStatsResult",
+                "!doc": "Gets the current AdsPixelStatsResult of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AdsPixelStatsResult]",
                 "!doc": "Gets the current AdsPixelStatsResult of the cursor"
             }
         },
@@ -1389,16 +1614,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +ProductFeed, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +ProductFeed, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +ProductFeed",
@@ -1408,6 +1644,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +ProductFeed",
                 "!doc": "Gets the current ProductFeed of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [ProductFeed]",
+                "!doc": "Gets the current ProductFeed of the cursor"
             }
         },
         "ExternalEventSource_cursor": {
@@ -1415,16 +1655,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +ExternalEventSource, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +ExternalEventSource, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +ExternalEventSource",
@@ -1434,6 +1685,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +ExternalEventSource",
                 "!doc": "Gets the current ExternalEventSource of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [ExternalEventSource]",
+                "!doc": "Gets the current ExternalEventSource of the cursor"
             }
         },
         "ProductGroup_cursor": {
@@ -1441,16 +1696,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +ProductGroup, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +ProductGroup, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +ProductGroup",
@@ -1460,6 +1726,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +ProductGroup",
                 "!doc": "Gets the current ProductGroup of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [ProductGroup]",
+                "!doc": "Gets the current ProductGroup of the cursor"
             }
         },
         "ProductItem_cursor": {
@@ -1467,16 +1737,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +ProductItem, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +ProductItem, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +ProductItem",
@@ -1486,6 +1767,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +ProductItem",
                 "!doc": "Gets the current ProductItem of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [ProductItem]",
+                "!doc": "Gets the current ProductItem of the cursor"
             }
         },
         "Business_cursor": {
@@ -1493,16 +1778,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +Business, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +Business, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +Business",
@@ -1511,6 +1807,10 @@ var fb_defs = {
             },
             "current": {
                 "!type": "fn() -> +Business",
+                "!doc": "Gets the current Business of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [Business]",
                 "!doc": "Gets the current Business of the cursor"
             }
         },
@@ -1601,16 +1901,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +TargetingSentenceLine, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +TargetingSentenceLine, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +TargetingSentenceLine",
@@ -1620,6 +1931,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +TargetingSentenceLine",
                 "!doc": "Gets the current TargetingSentenceLine of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [TargetingSentenceLine]",
+                "!doc": "Gets the current TargetingSentenceLine of the cursor"
             }
         },
         "CustomAudience_cursor": {
@@ -1627,16 +1942,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +CustomAudience, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +CustomAudience, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +CustomAudience",
@@ -1646,6 +1972,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +CustomAudience",
                 "!doc": "Gets the current CustomAudience of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [CustomAudience]",
+                "!doc": "Gets the current CustomAudience of the cursor"
             }
         },
         "CustomAudiencesTOS_cursor": {
@@ -1653,16 +1983,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +CustomAudiencesTOS, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +CustomAudiencesTOS, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +CustomAudiencesTOS",
@@ -1672,6 +2013,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +CustomAudiencesTOS",
                 "!doc": "Gets the current CustomAudiencesTOS of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [CustomAudiencesTOS]",
+                "!doc": "Gets the current CustomAudiencesTOS of the cursor"
             }
         },
         "PartnerCategory_cursor": {
@@ -1679,16 +2024,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +PartnerCategory, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +PartnerCategory, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +PartnerCategory",
@@ -1698,6 +2054,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +PartnerCategory",
                 "!doc": "Gets the current PartnerCategory of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [PartnerCategory]",
+                "!doc": "Gets the current PartnerCategory of the cursor"
             }
         },
         "AdCampaignGroup_cursor": {
@@ -1705,16 +2065,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AdCampaignGroup, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AdCampaignGroup, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AdCampaignGroup",
@@ -1724,6 +2095,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +AdCampaignGroup",
                 "!doc": "Gets the current AdCampaignGroup of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AdCampaignGroup]",
+                "!doc": "Gets the current AdCampaignGroup of the cursor"
             }
         },
         "AdAsyncRequestSet_cursor": {
@@ -1731,16 +2106,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AdAsyncRequestSet, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AdAsyncRequestSet, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AdAsyncRequestSet",
@@ -1750,6 +2136,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +AdAsyncRequestSet",
                 "!doc": "Gets the current AdAsyncRequestSet of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AdAsyncRequestSet]",
+                "!doc": "Gets the current AdAsyncRequestSet of the cursor"
             }
         },
         "AdsInsights_cursor": {
@@ -1757,16 +2147,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AdsInsights, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AdsInsights, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AdsInsights",
@@ -1776,6 +2177,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +AdsInsights",
                 "!doc": "Gets the current AdsInsights of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AdsInsights]",
+                "!doc": "Gets the current AdsInsights of the cursor"
             }
         },
         "AdCampaign_cursor": {
@@ -1783,16 +2188,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AdCampaign, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AdCampaign, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AdCampaign",
@@ -1802,6 +2218,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +AdCampaign",
                 "!doc": "Gets the current AdCampaign of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AdCampaign]",
+                "!doc": "Gets the current AdCampaign of the cursor"
             }
         },
         "AdPreview_cursor": {
@@ -1809,16 +2229,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AdPreview, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AdPreview, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AdPreview",
@@ -1828,6 +2259,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +AdPreview",
                 "!doc": "Gets the current AdPreview of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AdPreview]",
+                "!doc": "Gets the current AdPreview of the cursor"
             }
         },
         "AdCreative_cursor": {
@@ -1835,16 +2270,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AdCreative, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AdCreative, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AdCreative",
@@ -1854,6 +2300,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +AdCreative",
                 "!doc": "Gets the current AdCreative of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AdCreative]",
+                "!doc": "Gets the current AdCreative of the cursor"
             }
         },
         "AdImage_cursor": {
@@ -1861,16 +2311,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AdImage, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AdImage, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AdImage",
@@ -1880,6 +2341,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +AdImage",
                 "!doc": "Gets the current AdImage of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AdImage]",
+                "!doc": "Gets the current AdImage of the cursor"
             }
         },
         "OffsitePixel_cursor": {
@@ -1887,16 +2352,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +OffsitePixel, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +OffsitePixel, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +OffsitePixel",
@@ -1906,6 +2382,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +OffsitePixel",
                 "!doc": "Gets the current OffsitePixel of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [OffsitePixel]",
+                "!doc": "Gets the current OffsitePixel of the cursor"
             }
         },
         "AdPlacePageSet_cursor": {
@@ -1913,16 +2393,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AdPlacePageSet, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AdPlacePageSet, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AdPlacePageSet",
@@ -1932,6 +2423,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +AdPlacePageSet",
                 "!doc": "Gets the current AdPlacePageSet of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AdPlacePageSet]",
+                "!doc": "Gets the current AdPlacePageSet of the cursor"
             }
         },
         "AdActivity_cursor": {
@@ -1939,16 +2434,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AdActivity, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AdActivity, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AdActivity",
@@ -1958,6 +2464,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +AdActivity",
                 "!doc": "Gets the current AdActivity of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AdActivity]",
+                "!doc": "Gets the current AdActivity of the cursor"
             }
         },
         "LeadGenData_cursor": {
@@ -1965,16 +2475,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +LeadGenData, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +LeadGenData, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +LeadGenData",
@@ -1984,6 +2505,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +LeadGenData",
                 "!doc": "Gets the current LeadGenData of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [LeadGenData]",
+                "!doc": "Gets the current LeadGenData of the cursor"
             }
         },
         "Transaction_cursor": {
@@ -1991,16 +2516,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +Transaction, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +Transaction, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +Transaction",
@@ -2010,6 +2546,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +Transaction",
                 "!doc": "Gets the current Transaction of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [Transaction]",
+                "!doc": "Gets the current Transaction of the cursor"
             }
         },
         "Adgroup_cursor": {
@@ -2017,16 +2557,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +Adgroup, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +Adgroup, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +Adgroup",
@@ -2036,6 +2587,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +Adgroup",
                 "!doc": "Gets the current Adgroup of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [Adgroup]",
+                "!doc": "Gets the current Adgroup of the cursor"
             }
         },
         "OffsiteConversion_cursor": {
@@ -2043,16 +2598,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +OffsiteConversion, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +OffsiteConversion, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +OffsiteConversion",
@@ -2062,6 +2628,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +OffsiteConversion",
                 "!doc": "Gets the current OffsiteConversion of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [OffsiteConversion]",
+                "!doc": "Gets the current OffsiteConversion of the cursor"
             }
         },
         "RateCard_cursor": {
@@ -2069,16 +2639,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +RateCard, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +RateCard, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +RateCard",
@@ -2088,6 +2669,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +RateCard",
                 "!doc": "Gets the current RateCard of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [RateCard]",
+                "!doc": "Gets the current RateCard of the cursor"
             }
         },
         "ReachEstimate_cursor": {
@@ -2095,16 +2680,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +ReachEstimate, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +ReachEstimate, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +ReachEstimate",
@@ -2114,6 +2710,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +ReachEstimate",
                 "!doc": "Gets the current ReachEstimate of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [ReachEstimate]",
+                "!doc": "Gets the current ReachEstimate of the cursor"
             }
         },
         "Video_cursor": {
@@ -2121,16 +2721,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +Video, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +Video, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +Video",
@@ -2140,6 +2751,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +Video",
                 "!doc": "Gets the current Video of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [Video]",
+                "!doc": "Gets the current Video of the cursor"
             }
         },
         "AdsDataPartner_cursor": {
@@ -2147,16 +2762,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AdsDataPartner, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AdsDataPartner, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AdsDataPartner",
@@ -2166,6 +2792,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +AdsDataPartner",
                 "!doc": "Gets the current AdsDataPartner of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AdsDataPartner]",
+                "!doc": "Gets the current AdsDataPartner of the cursor"
             }
         },
         "AdReportSchedule_cursor": {
@@ -2173,16 +2803,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AdReportSchedule, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AdReportSchedule, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AdReportSchedule",
@@ -2192,6 +2833,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +AdReportSchedule",
                 "!doc": "Gets the current AdReportSchedule of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AdReportSchedule]",
+                "!doc": "Gets the current AdReportSchedule of the cursor"
             }
         },
         "AdAccountRoas_cursor": {
@@ -2199,16 +2844,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AdAccountRoas, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AdAccountRoas, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AdAccountRoas",
@@ -2218,6 +2874,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +AdAccountRoas",
                 "!doc": "Gets the current AdAccountRoas of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AdAccountRoas]",
+                "!doc": "Gets the current AdAccountRoas of the cursor"
             }
         },
         "BroadTargetingCategories_cursor": {
@@ -2225,16 +2885,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +BroadTargetingCategories, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +BroadTargetingCategories, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +BroadTargetingCategories",
@@ -2244,6 +2915,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +BroadTargetingCategories",
                 "!doc": "Gets the current BroadTargetingCategories of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [BroadTargetingCategories]",
+                "!doc": "Gets the current BroadTargetingCategories of the cursor"
             }
         },
         "AdAccountUser_cursor": {
@@ -2251,16 +2926,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AdAccountUser, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AdAccountUser, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AdAccountUser",
@@ -2270,6 +2956,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +AdAccountUser",
                 "!doc": "Gets the current AdAccountUser of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AdAccountUser]",
+                "!doc": "Gets the current AdAccountUser of the cursor"
             }
         },
         "AdReportRun_cursor": {
@@ -2277,16 +2967,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AdReportRun, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AdReportRun, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AdReportRun",
@@ -2296,6 +2997,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +AdReportRun",
                 "!doc": "Gets the current AdReportRun of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AdReportRun]",
+                "!doc": "Gets the current AdReportRun of the cursor"
             }
         },
         "MinimumBudget_cursor": {
@@ -2303,16 +3008,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +MinimumBudget, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +MinimumBudget, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +MinimumBudget",
@@ -2322,6 +3038,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +MinimumBudget",
                 "!doc": "Gets the current MinimumBudget of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [MinimumBudget]",
+                "!doc": "Gets the current MinimumBudget of the cursor"
             }
         },
         "AdAccountRoasCohorts_cursor": {
@@ -2329,16 +3049,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AdAccountRoasCohorts, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AdAccountRoasCohorts, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AdAccountRoasCohorts",
@@ -2348,6 +3079,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +AdAccountRoasCohorts",
                 "!doc": "Gets the current AdAccountRoasCohorts of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AdAccountRoasCohorts]",
+                "!doc": "Gets the current AdAccountRoasCohorts of the cursor"
             }
         },
         "AdLabel_cursor": {
@@ -2355,16 +3090,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AdLabel, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AdLabel, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AdLabel",
@@ -2374,6 +3120,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +AdLabel",
                 "!doc": "Gets the current AdLabel of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AdLabel]",
+                "!doc": "Gets the current AdLabel of the cursor"
             }
         },
         "Application_cursor": {
@@ -2381,16 +3131,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +Application, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +Application, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +Application",
@@ -2400,6 +3161,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +Application",
                 "!doc": "Gets the current Application of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [Application]",
+                "!doc": "Gets the current Application of the cursor"
             }
         },
         "AdAccountTargetingInsights_cursor": {
@@ -2407,16 +3172,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AdAccountTargetingInsights, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AdAccountTargetingInsights, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AdAccountTargetingInsights",
@@ -2425,6 +3201,10 @@ var fb_defs = {
             },
             "current": {
                 "!type": "fn() -> +AdAccountTargetingInsights",
+                "!doc": "Gets the current AdAccountTargetingInsights of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AdAccountTargetingInsights]",
                 "!doc": "Gets the current AdAccountTargetingInsights of the cursor"
             }
         },
@@ -3403,16 +4183,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AdAsyncRequest, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AdAsyncRequest, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AdAsyncRequest",
@@ -3421,6 +4212,10 @@ var fb_defs = {
             },
             "current": {
                 "!type": "fn() -> +AdAsyncRequest",
+                "!doc": "Gets the current AdAsyncRequest of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AdAsyncRequest]",
                 "!doc": "Gets the current AdAsyncRequest of the cursor"
             }
         },
@@ -3655,16 +4450,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +ProductFeedUpload, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +ProductFeedUpload, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +ProductFeedUpload",
@@ -3673,6 +4479,10 @@ var fb_defs = {
             },
             "current": {
                 "!type": "fn() -> +ProductFeedUpload",
+                "!doc": "Gets the current ProductFeedUpload of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [ProductFeedUpload]",
                 "!doc": "Gets the current ProductFeedUpload of the cursor"
             }
         },
@@ -3797,16 +4607,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +ProductFeedUploadError, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +ProductFeedUploadError, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +ProductFeedUploadError",
@@ -3815,6 +4636,10 @@ var fb_defs = {
             },
             "current": {
                 "!type": "fn() -> +ProductFeedUploadError",
+                "!doc": "Gets the current ProductFeedUploadError of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [ProductFeedUploadError]",
                 "!doc": "Gets the current ProductFeedUploadError of the cursor"
             }
         },
@@ -5103,16 +5928,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AdAccountGroupAdAccounts, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AdAccountGroupAdAccounts, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AdAccountGroupAdAccounts",
@@ -5121,6 +5957,10 @@ var fb_defs = {
             },
             "current": {
                 "!type": "fn() -> +AdAccountGroupAdAccounts",
+                "!doc": "Gets the current AdAccountGroupAdAccounts of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AdAccountGroupAdAccounts]",
                 "!doc": "Gets the current AdAccountGroupAdAccounts of the cursor"
             }
         },
@@ -5187,16 +6027,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +CustomAudienceAdAccount, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +CustomAudienceAdAccount, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +CustomAudienceAdAccount",
@@ -5206,6 +6057,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +CustomAudienceAdAccount",
                 "!doc": "Gets the current CustomAudienceAdAccount of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [CustomAudienceAdAccount]",
+                "!doc": "Gets the current CustomAudienceAdAccount of the cursor"
             }
         },
         "CustomAudiencePrefillState_cursor": {
@@ -5213,16 +6068,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +CustomAudiencePrefillState, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +CustomAudiencePrefillState, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +CustomAudiencePrefillState",
@@ -5232,6 +6098,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +CustomAudiencePrefillState",
                 "!doc": "Gets the current CustomAudiencePrefillState of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [CustomAudiencePrefillState]",
+                "!doc": "Gets the current CustomAudiencePrefillState of the cursor"
             }
         },
         "CustomAudienceSession_cursor": {
@@ -5239,16 +6109,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +CustomAudienceSession, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +CustomAudienceSession, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +CustomAudienceSession",
@@ -5257,6 +6138,10 @@ var fb_defs = {
             },
             "current": {
                 "!type": "fn() -> +CustomAudienceSession",
+                "!doc": "Gets the current CustomAudienceSession of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [CustomAudienceSession]",
                 "!doc": "Gets the current CustomAudienceSession of the cursor"
             }
         },
@@ -6355,16 +7240,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +ProductFeedUploadErrorSample, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +ProductFeedUploadErrorSample, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +ProductFeedUploadErrorSample",
@@ -6373,6 +7269,10 @@ var fb_defs = {
             },
             "current": {
                 "!type": "fn() -> +ProductFeedUploadErrorSample",
+                "!doc": "Gets the current ProductFeedUploadErrorSample of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [ProductFeedUploadErrorSample]",
                 "!doc": "Gets the current ProductFeedUploadErrorSample of the cursor"
             }
         },
@@ -6481,16 +7381,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +AdKeywordStats, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +AdKeywordStats, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +AdKeywordStats",
@@ -6500,6 +7411,10 @@ var fb_defs = {
             "current": {
                 "!type": "fn() -> +AdKeywordStats",
                 "!doc": "Gets the current AdKeywordStats of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [AdKeywordStats]",
+                "!doc": "Gets the current AdKeywordStats of the cursor"
             }
         },
         "UserLeadGenInfo_cursor": {
@@ -6507,16 +7422,27 @@ var fb_defs = {
             "forEach": {
                 "!type": "fn(f: fn(el: +UserLeadGenInfo, i: number, array: +Array), context?: ?)"
             },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
+            "map": {
+                "!type": "fn(f: fn(el: +UserLeadGenInfo, value: number, key: ?, array: +Array), context?: ?)"
+            },
+            "has": {
+                "!type": "fn(key: number) -> bool",
+                "!doc": "Whether the cursor contains the given key"
             },
             "key": {
                 "!type": "fn() -> number",
                 "!doc": "The current index of the cursor"
             },
+            "count": {
+                "!type": "fn() -> number",
+                "!doc": "The number of items in the cursor"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Whether the cursor is valid"
+            },
             "rewind": {
-                "!type": "fn() -> !this"
+                "!type": "fn() -> null"
             },
             "next": {
                 "!type": "fn() -> +UserLeadGenInfo",
@@ -6525,6 +7451,10 @@ var fb_defs = {
             },
             "current": {
                 "!type": "fn() -> +UserLeadGenInfo",
+                "!doc": "Gets the current UserLeadGenInfo of the cursor"
+            },
+            "toArray": {
+                "!type": "fn() -> [UserLeadGenInfo]",
                 "!doc": "Gets the current UserLeadGenInfo of the cursor"
             }
         },
