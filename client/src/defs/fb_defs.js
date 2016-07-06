@@ -415,6 +415,10 @@ var fb_defs = {
             }
         },
         "Business": {
+            "get": {
+                "!type": "fn(params: Object) -> +Business",
+                "!doc": "Read fields from the Business"
+            },
             "getSystemUsers": {
                 "!type": "fn() -> +SystemUser_cursor",
                 "!doc": "The business's system users"
@@ -454,9 +458,6 @@ var fb_defs = {
             "getPages": {
                 "!type": "fn() -> +Page_cursor",
                 "!doc": "The pages that the business owns"
-            },
-            "#get": {
-                "!type": "fn() -> +null_cursor"
             },
             "getProductCatalogs": {
                 "!type": "fn() -> +ProductCatalog_cursor",
@@ -598,6 +599,10 @@ var fb_defs = {
             }
         },
         "ProductItem": {
+            "get": {
+                "!type": "fn(params: Object) -> +ProductItem",
+                "!doc": "Read fields from the ProductItem"
+            },
             "update": {
                 "!type": "fn(params: Object) -> +ProductItem",
                 "!doc": "Update fields on the ProductItem"
@@ -609,9 +614,6 @@ var fb_defs = {
             "getProductSets": {
                 "!type": "fn() -> +ProductSet_cursor",
                 "!doc": "Product sets that this item belongs to"
-            },
-            "#get": {
-                "!type": "fn() -> +null_cursor"
             },
             "additional_image_urls": {
                 "!type": "list<string>",
@@ -853,8 +855,9 @@ var fb_defs = {
             }
         },
         "ProductFeedUploadErrorSample": {
-            "#get": {
-                "!type": "fn() -> +null_cursor"
+            "get": {
+                "!type": "fn(params: Object) -> +ProductFeedUploadErrorSample",
+                "!doc": "Read fields from the ProductFeedUploadErrorSample"
             },
             "id": {
                 "!type": "string",
@@ -1210,6 +1213,10 @@ var fb_defs = {
             }
         },
         "CustomConversion": {
+            "get": {
+                "!type": "fn(params: Object) -> +CustomConversion",
+                "!doc": "Read fields from the CustomConversion"
+            },
             "update": {
                 "!type": "fn(params: Object) -> +CustomConversion",
                 "!doc": "Update fields on the CustomConversion"
@@ -1217,9 +1224,6 @@ var fb_defs = {
             "getAdsPixelStatsResults": {
                 "!type": "fn() -> +AdsPixelStatsResult_cursor",
                 "!doc": "Stats data for this conversion"
-            },
-            "#get": {
-                "!type": "fn() -> +null_cursor"
             },
             "pixel": {
                 "!type": "AdsPixel",
@@ -1511,6 +1515,10 @@ var fb_defs = {
             }
         },
         "ProductCatalog": {
+            "get": {
+                "!type": "fn(params: Object) -> +ProductCatalog",
+                "!doc": "Read fields from the ProductCatalog"
+            },
             "update": {
                 "!type": "fn(params: Object) -> +ProductCatalog",
                 "!doc": "Update fields on the ProductCatalog"
@@ -1550,9 +1558,6 @@ var fb_defs = {
             "getProductGroups": {
                 "!type": "fn() -> +ProductGroup_cursor",
                 "!doc": "Product groups that this product catalog contains"
-            },
-            "#get": {
-                "!type": "fn() -> +null_cursor"
             },
             "deleteExternalEventSources": {
                 "!type": "fn() -> +ExternalEventSource_cursor",
@@ -2033,10 +2038,10 @@ var fb_defs = {
                 "!doc": "Gets the current Adgroup of the cursor"
             }
         },
-        "Returns the number of object received._cursor": {
+        "OffsiteConversion_cursor": {
             "!proto": "cursor_prototype",
             "forEach": {
-                "!type": "fn(f: fn(el: +Returns the number of object received., i: number, array: +Array), context?: ?)"
+                "!type": "fn(f: fn(el: +OffsiteConversion, i: number, array: +Array), context?: ?)"
             },
             "valid": {
                 "!type": "fn() -> bool",
@@ -2050,13 +2055,13 @@ var fb_defs = {
                 "!type": "fn() -> !this"
             },
             "next": {
-                "!type": "fn() -> +Returns the number of object received.",
-                "!doc": "Return the next Returns the number of object received. item from the cursor.",
+                "!type": "fn() -> +OffsiteConversion",
+                "!doc": "Return the next OffsiteConversion item from the cursor.",
                 "!url": "https://facebook.com"
             },
             "current": {
-                "!type": "fn() -> +Returns the number of object received.",
-                "!doc": "Gets the current Returns the number of object received. of the cursor"
+                "!type": "fn() -> +OffsiteConversion",
+                "!doc": "Gets the current OffsiteConversion of the cursor"
             }
         },
         "RateCard_cursor": {
@@ -2424,6 +2429,10 @@ var fb_defs = {
             }
         },
         "AdAccount": {
+            "get": {
+                "!type": "fn(params: Object) -> +AdAccount",
+                "!doc": "Read fields from the AdAccount"
+            },
             "update": {
                 "!type": "fn(params: Object) -> +AdAccount",
                 "!doc": "Update fields on the AdAccount"
@@ -2525,7 +2534,7 @@ var fb_defs = {
                 "!doc": "Search ads associated with given labels within this ad account"
             },
             "createReturns the number of object received.s": {
-                "!type": "fn() -> +Returns the number of object received._cursor",
+                "!type": "fn() -> +OffsiteConversion_cursor",
                 "!doc": "Offline conversions for an ad account"
             },
             "getRateCards": {
@@ -2571,9 +2580,6 @@ var fb_defs = {
             "getBroadTargetingCategoriess": {
                 "!type": "fn() -> +BroadTargetingCategories_cursor",
                 "!doc": "Broad targeting categories (BCTs) can be used for targeting "
-            },
-            "#get": {
-                "!type": "fn() -> +null_cursor"
             },
             "createAdgroups": {
                 "!type": "fn() -> +Adgroup_cursor",
@@ -2893,8 +2899,9 @@ var fb_defs = {
             }
         },
         "ExternalEventSource": {
-            "#get": {
-                "!type": "fn() -> +null_cursor"
+            "get": {
+                "!type": "fn(params: Object) -> +ExternalEventSource",
+                "!doc": "Read fields from the ExternalEventSource"
             },
             "id": {
                 "!type": "string",
@@ -3418,12 +3425,13 @@ var fb_defs = {
             }
         },
         "AdAsyncRequestSet": {
+            "get": {
+                "!type": "fn(params: Object) -> +AdAsyncRequestSet",
+                "!doc": "Read fields from the AdAsyncRequestSet"
+            },
             "getAdAsyncRequests": {
                 "!type": "fn() -> +AdAsyncRequest_cursor",
                 "!doc": "Requests that belongs to this set"
-            },
-            "#get": {
-                "!type": "fn() -> +null_cursor"
             },
             "created_time": {
                 "!type": "string",
@@ -3541,6 +3549,10 @@ var fb_defs = {
             }
         },
         "AdCampaignGroup": {
+            "get": {
+                "!type": "fn(params: Object) -> +AdCampaignGroup",
+                "!doc": "Read fields from the AdCampaignGroup"
+            },
             "update": {
                 "!type": "fn(params: Object) -> +AdCampaignGroup",
                 "!doc": "Update fields on the AdCampaignGroup"
@@ -3572,9 +3584,6 @@ var fb_defs = {
             "createAdsInsightss": {
                 "!type": "fn() -> +AdsInsights_cursor",
                 "!doc": "Edge to create an async job for fetching ad insights for campaigns"
-            },
-            "#get": {
-                "!type": "fn() -> +null_cursor"
             },
             "adlabels": {
                 "!type": "list<AdLabel>",
@@ -3668,6 +3677,10 @@ var fb_defs = {
             }
         },
         "ProductFeed": {
+            "get": {
+                "!type": "fn(params: Object) -> +ProductFeed",
+                "!doc": "Read fields from the ProductFeed"
+            },
             "update": {
                 "!type": "fn(params: Object) -> +ProductFeed",
                 "!doc": "Update fields on the ProductFeed"
@@ -3687,9 +3700,6 @@ var fb_defs = {
             "createProductFeedUploads": {
                 "!type": "fn() -> +ProductFeedUpload_cursor",
                 "!doc": "SELF_EXPLANATORY"
-            },
-            "#get": {
-                "!type": "fn() -> +null_cursor"
             },
             "created_time": {
                 "!type": "string",
@@ -3765,8 +3775,9 @@ var fb_defs = {
             }
         },
         "AdsDataPartner": {
-            "#get": {
-                "!type": "fn() -> +null_cursor"
+            "get": {
+                "!type": "fn(params: Object) -> +AdsDataPartner",
+                "!doc": "Read fields from the AdsDataPartner"
             },
             "id": {
                 "!type": "string",
@@ -3808,12 +3819,13 @@ var fb_defs = {
             }
         },
         "ProductFeedUpload": {
+            "get": {
+                "!type": "fn(params: Object) -> +ProductFeedUpload",
+                "!doc": "Read fields from the ProductFeedUpload"
+            },
             "getProductFeedUploadErrors": {
                 "!type": "fn() -> +ProductFeedUploadError_cursor",
                 "!doc": "List of errors during the product feed upload"
-            },
-            "#get": {
-                "!type": "fn() -> +null_cursor"
             },
             "end_time": {
                 "!type": "string",
@@ -3837,12 +3849,13 @@ var fb_defs = {
             }
         },
         "AdPlacePageSet": {
+            "get": {
+                "!type": "fn(params: Object) -> +AdPlacePageSet",
+                "!doc": "Read fields from the AdPlacePageSet"
+            },
             "update": {
                 "!type": "fn(params: Object) -> +AdPlacePageSet",
                 "!doc": "Update fields on the AdPlacePageSet"
-            },
-            "#get": {
-                "!type": "fn() -> +null_cursor"
             },
             "account_id": {
                 "!type": "string",
@@ -3926,6 +3939,10 @@ var fb_defs = {
             }
         },
         "ProductGroup": {
+            "get": {
+                "!type": "fn(params: Object) -> +ProductGroup",
+                "!doc": "Read fields from the ProductGroup"
+            },
             "update": {
                 "!type": "fn(params: Object) -> +ProductGroup",
                 "!doc": "Update fields on the ProductGroup"
@@ -3942,9 +3959,6 @@ var fb_defs = {
                 "!type": "fn() -> +ProductItem_cursor",
                 "!doc": "Create a product"
             },
-            "#get": {
-                "!type": "fn() -> +null_cursor"
-            },
             "id": {
                 "!type": "string",
                 "!doc": "ID of the product group"
@@ -3959,6 +3973,10 @@ var fb_defs = {
             }
         },
         "OffsitePixel": {
+            "get": {
+                "!type": "fn(params: Object) -> +OffsitePixel",
+                "!doc": "Read fields from the OffsitePixel"
+            },
             "update": {
                 "!type": "fn(params: Object) -> +OffsitePixel",
                 "!doc": "Update fields on the OffsitePixel"
@@ -3978,9 +3996,6 @@ var fb_defs = {
             "createAdAccounts": {
                 "!type": "fn() -> +AdAccount_cursor",
                 "!doc": "SELF_EXPLANATORY"
-            },
-            "#get": {
-                "!type": "fn() -> +null_cursor"
             },
             "creator": {
                 "!type": "string",
@@ -4042,6 +4057,10 @@ var fb_defs = {
             }
         },
         "AdLabel": {
+            "get": {
+                "!type": "fn(params: Object) -> +AdLabel",
+                "!doc": "Read fields from the AdLabel"
+            },
             "update": {
                 "!type": "fn(params: Object) -> +AdLabel",
                 "!doc": "Update fields on the AdLabel"
@@ -4065,9 +4084,6 @@ var fb_defs = {
             "getAdCampaignGroups": {
                 "!type": "fn() -> +AdCampaignGroup_cursor",
                 "!doc": "Campaigns associated with this label"
-            },
-            "#get": {
-                "!type": "fn() -> +null_cursor"
             },
             "account": {
                 "!type": "AdAccount",
@@ -4461,6 +4477,10 @@ var fb_defs = {
             }
         },
         "AdCreative": {
+            "get": {
+                "!type": "fn(params: Object) -> +AdCreative",
+                "!doc": "Read fields from the AdCreative"
+            },
             "update": {
                 "!type": "fn(params: Object) -> +AdCreative",
                 "!doc": "Update fields on the AdCreative"
@@ -4480,9 +4500,6 @@ var fb_defs = {
             "getAdPreviews": {
                 "!type": "fn() -> +AdPreview_cursor",
                 "!doc": "The HTML Snippets for previewing this creative"
-            },
-            "#get": {
-                "!type": "fn() -> +null_cursor"
             },
             "call_to_action_type": {
                 "!type": "AdCreative_call_to_action_type",
@@ -4666,6 +4683,10 @@ var fb_defs = {
             }
         },
         "ProductSet": {
+            "get": {
+                "!type": "fn(params: Object) -> +ProductSet",
+                "!doc": "Read fields from the ProductSet"
+            },
             "update": {
                 "!type": "fn(params: Object) -> +ProductSet",
                 "!doc": "Update fields on the ProductSet"
@@ -4681,9 +4702,6 @@ var fb_defs = {
             "getProductItems": {
                 "!type": "fn() -> +ProductItem_cursor",
                 "!doc": "Product items that belong to this product set"
-            },
-            "#get": {
-                "!type": "fn() -> +null_cursor"
             },
             "filter": {
                 "!type": "string",
@@ -4737,6 +4755,10 @@ var fb_defs = {
             }
         },
         "AdCampaign": {
+            "get": {
+                "!type": "fn(params: Object) -> +AdCampaign",
+                "!doc": "Read fields from the AdCampaign"
+            },
             "update": {
                 "!type": "fn(params: Object) -> +AdCampaign",
                 "!doc": "Update fields on the AdCampaign"
@@ -4772,9 +4794,6 @@ var fb_defs = {
             "getAdgroups": {
                 "!type": "fn() -> +Adgroup_cursor",
                 "!doc": "The ads under this ad set"
-            },
-            "#get": {
-                "!type": "fn() -> +null_cursor"
             },
             "creates": {
                 "!type": "fn() -> +null_cursor",
@@ -5018,12 +5037,13 @@ var fb_defs = {
             }
         },
         "AdReportRun": {
+            "get": {
+                "!type": "fn(params: Object) -> +AdReportRun",
+                "!doc": "Read fields from the AdReportRun"
+            },
             "getAdsInsightss": {
                 "!type": "fn() -> +AdsInsights_cursor",
                 "!doc": "Insights results of this Ad Report Run"
-            },
-            "#get": {
-                "!type": "fn() -> +null_cursor"
             },
             "time_ref": {
                 "!type": "number",
@@ -5105,6 +5125,10 @@ var fb_defs = {
             }
         },
         "AdAccountGroup": {
+            "get": {
+                "!type": "fn(params: Object) -> +AdAccountGroup",
+                "!doc": "Read fields from the AdAccountGroup"
+            },
             "update": {
                 "!type": "fn(params: Object) -> +AdAccountGroup",
                 "!doc": "Update fields on the AdAccountGroup"
@@ -5133,9 +5157,6 @@ var fb_defs = {
                 "!type": "fn() -> +null_cursor",
                 "!doc": "User that owns the ad account group"
             },
-            "#get": {
-                "!type": "fn() -> +null_cursor"
-            },
             "account_group_id": {
                 "!type": "string",
                 "!doc": "ID of this ad account group"
@@ -5159,32 +5180,6 @@ var fb_defs = {
             "users": {
                 "!type": "list<Object>",
                 "!doc": "The users who own the ad account group"
-            }
-        },
-        "CustomAudienceSession_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +CustomAudienceSession, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +CustomAudienceSession",
-                "!doc": "Return the next CustomAudienceSession item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +CustomAudienceSession",
-                "!doc": "Gets the current CustomAudienceSession of the cursor"
             }
         },
         "CustomAudienceAdAccount_cursor": {
@@ -5239,7 +5234,37 @@ var fb_defs = {
                 "!doc": "Gets the current CustomAudiencePrefillState of the cursor"
             }
         },
+        "CustomAudienceSession_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +CustomAudienceSession, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +CustomAudienceSession",
+                "!doc": "Return the next CustomAudienceSession item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +CustomAudienceSession",
+                "!doc": "Gets the current CustomAudienceSession of the cursor"
+            }
+        },
         "CustomAudience": {
+            "get": {
+                "!type": "fn(params: Object) -> +CustomAudience",
+                "!doc": "Read fields from the CustomAudience"
+            },
             "update": {
                 "!type": "fn(params: Object) -> +CustomAudience",
                 "!doc": "Update fields on the CustomAudience"
@@ -5248,40 +5273,37 @@ var fb_defs = {
                 "!type": "fn(params: Object) -> bool",
                 "!doc": "Delete the CustomAudience"
             },
-            "deletes": {
-                "!type": "fn() -> +null_cursor",
-                "!doc": "Remove users from custom audience with custumer list"
-            },
-            "getCustomAudienceSessions": {
-                "!type": "fn() -> +CustomAudienceSession_cursor",
-                "!doc": "Data upload sessions of this custom audience"
-            },
             "deleteCustomAudienceAdAccounts": {
                 "!type": "fn() -> +CustomAudienceAdAccount_cursor",
                 "!doc": "Remove an ad account from access to the custom audience"
-            },
-            "getAdgroups": {
-                "!type": "fn() -> +Adgroup_cursor",
-                "!doc": "Ads that are using this custom audience"
-            },
-            "#get": {
-                "!type": "fn() -> +null_cursor"
             },
             "getCustomAudienceAdAccounts": {
                 "!type": "fn() -> +CustomAudienceAdAccount_cursor",
                 "!doc": "The ad account ids associated with this custom audience"
             },
-            "creates": {
-                "!type": "fn() -> +null_cursor",
-                "!doc": "Add users to custom audience with custumer list"
-            },
             "createCustomAudienceAdAccounts": {
                 "!type": "fn() -> +CustomAudienceAdAccount_cursor",
                 "!doc": "Allow ad accounts to have access to this custom audience"
             },
+            "getAdgroups": {
+                "!type": "fn() -> +Adgroup_cursor",
+                "!doc": "Ads that are using this custom audience"
+            },
             "getCustomAudiencePrefillStates": {
                 "!type": "fn() -> +CustomAudiencePrefillState_cursor",
                 "!doc": "Status of the prefill jobs if they exist"
+            },
+            "getCustomAudienceSessions": {
+                "!type": "fn() -> +CustomAudienceSession_cursor",
+                "!doc": "Data upload sessions of this custom audience"
+            },
+            "deletes": {
+                "!type": "fn() -> +null_cursor",
+                "!doc": "Remove users from custom audience with custumer list"
+            },
+            "creates": {
+                "!type": "fn() -> +null_cursor",
+                "!doc": "Add users to custom audience with custumer list"
             },
             "lookalike_spec": {
                 "!type": "LookalikeSpec",
@@ -5453,8 +5475,9 @@ var fb_defs = {
             }
         },
         "AdAsyncRequest": {
-            "#get": {
-                "!type": "fn() -> +null_cursor"
+            "get": {
+                "!type": "fn(params: Object) -> +AdAsyncRequest",
+                "!doc": "Read fields from the AdAsyncRequest"
             },
             "async_request_set": {
                 "!type": "AdAsyncRequestSet",
@@ -5582,6 +5605,10 @@ var fb_defs = {
             }
         },
         "AdsPixel": {
+            "get": {
+                "!type": "fn(params: Object) -> +AdsPixel",
+                "!doc": "Read fields from the AdsPixel"
+            },
             "update": {
                 "!type": "fn(params: Object) -> +AdsPixel",
                 "!doc": "Update fields on the AdsPixel"
@@ -5601,9 +5628,6 @@ var fb_defs = {
             "getAdsPixelStatsResults": {
                 "!type": "fn() -> +AdsPixelStatsResult_cursor",
                 "!doc": "Stats data for this pixel"
-            },
-            "#get": {
-                "!type": "fn() -> +null_cursor"
             },
             "code": {
                 "!type": "string",
@@ -5635,8 +5659,9 @@ var fb_defs = {
             }
         },
         "UserLeadGenInfo": {
-            "#get": {
-                "!type": "fn() -> +null_cursor"
+            "get": {
+                "!type": "fn(params: Object) -> +UserLeadGenInfo",
+                "!doc": "Read fields from the UserLeadGenInfo"
             },
             "post": {
                 "!type": "Object",
@@ -5720,8 +5745,9 @@ var fb_defs = {
             }
         },
         "AppLinks": {
-            "#get": {
-                "!type": "fn() -> +null_cursor"
+            "get": {
+                "!type": "fn(params: Object) -> +AppLinks",
+                "!doc": "Read fields from the AppLinks"
             },
             "windows": {
                 "!type": "list<WindowsAppLink>",
@@ -5771,8 +5797,9 @@ var fb_defs = {
             }
         },
         "ReachFrequencyPrediction": {
-            "#get": {
-                "!type": "fn() -> +null_cursor"
+            "get": {
+                "!type": "fn(params: Object) -> +ReachFrequencyPrediction",
+                "!doc": "Read fields from the ReachFrequencyPrediction"
             },
             "external_maximum_reach": {
                 "!type": "number",
@@ -5908,8 +5935,9 @@ var fb_defs = {
             }
         },
         "AdImage": {
-            "#get": {
-                "!type": "fn() -> +null_cursor"
+            "get": {
+                "!type": "fn(params: Object) -> +AdImage",
+                "!doc": "Read fields from the AdImage"
             },
             "created_time": {
                 "!type": "string",
@@ -6349,12 +6377,13 @@ var fb_defs = {
             }
         },
         "ProductFeedUploadError": {
+            "get": {
+                "!type": "fn(params: Object) -> +ProductFeedUploadError",
+                "!doc": "Read fields from the ProductFeedUploadError"
+            },
             "getProductFeedUploadErrorSamples": {
                 "!type": "fn() -> +ProductFeedUploadErrorSample_cursor",
                 "!doc": "Samples (concrete instances) of the error"
-            },
-            "#get": {
-                "!type": "fn() -> +null_cursor"
             },
             "description": {
                 "!type": "string",
@@ -6500,6 +6529,10 @@ var fb_defs = {
             }
         },
         "Adgroup": {
+            "get": {
+                "!type": "fn(params: Object) -> +Adgroup",
+                "!doc": "Read fields from the Adgroup"
+            },
             "update": {
                 "!type": "fn(params: Object) -> +Adgroup",
                 "!doc": "Update fields on the Adgroup"
@@ -6539,9 +6572,6 @@ var fb_defs = {
             "getUserLeadGenInfos": {
                 "!type": "fn() -> +UserLeadGenInfo_cursor",
                 "!doc": "Leads submitted for this ad"
-            },
-            "#get": {
-                "!type": "fn() -> +null_cursor"
             },
             "creates": {
                 "!type": "fn() -> +null_cursor",
@@ -6969,12 +6999,13 @@ var fb_defs = {
             }
         },
         "LeadGenData": {
+            "get": {
+                "!type": "fn(params: Object) -> +LeadGenData",
+                "!doc": "Read fields from the LeadGenData"
+            },
             "getUserLeadGenInfos": {
                 "!type": "fn() -> +UserLeadGenInfo_cursor",
                 "!doc": "The leads that were submitted to this lead gen data."
-            },
-            "#get": {
-                "!type": "fn() -> +null_cursor"
             },
             "follow_up_action_text": {
                 "!type": "string",

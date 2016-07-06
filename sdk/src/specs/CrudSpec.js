@@ -30,7 +30,7 @@ const {Map} = require('immutable');
 
 const crud_function_to_method: Map<CrudFunction, RequestMethod> = new Map({
   DELETE: 'DELETE',
-  READ: 'GET',
+  GET: 'GET',
   UPDATE: 'POST',
 });
 

@@ -66,6 +66,11 @@ function typeTransformer(type) {
     case 'list':
       return '[?]';
     break;
+    // this fudge is for the offline conversions spec that is borked and we
+    // need to look at how to fix
+    case 'Returns the number of object received.':
+      return 'OffsiteConversion'
+    break;
     default:
       return type;
     break;
@@ -90,30 +95,31 @@ var ternDefinitions = {
 
 new Map(schema).forEach(function(spec, type) {
   var defs = {};
+  const transformedType = typeTransformer(type);
   const nodeSpec = NodeSpec.fromJson(registry, JSON.stringify(spec));
 
   const readSpec = nodeSpec.getReadSpec();
   if (readSpec) {
-    const name = readSpec.getFunctionName();
+    const name = typeTransformer(readSpec.getFunctionName());
     defs[name] = {};
-    defs[name]['!type'] = 'fn(params: Object) -> +' + type;
-    defs[name]['!doc'] = 'Read fields from the ' + type;
+    defs[name]['!type'] = 'fn(params: Object) -> +' + transformedType;
+    defs[name]['!doc'] = 'Read fields from the ' + transformedType;
   }
 
   const updateSpec = nodeSpec.getUpdateSpec();
   if (updateSpec) {
-    const name = updateSpec.getFunctionName();
+    const name = typeTransformer(updateSpec.getFunctionName());
     defs[name] = {};
-    defs[name]['!type'] = 'fn(params: Object) -> +' + type;
-    defs[name]['!doc'] = 'Update fields on the ' + type;
+    defs[name]['!type'] = 'fn(params: Object) -> +' + transformedType;
+    defs[name]['!doc'] = 'Update fields on the ' + transformedType;
   }
 
   const deleteSpec = nodeSpec.getDeleteSpec();
   if (deleteSpec) {
-    const name = deleteSpec.getFunctionName();
+    const name = typeTransformer(deleteSpec.getFunctionName());
     defs[name] = {};
     defs[name]['!type'] = 'fn(params: Object) -> bool';
-    defs[name]['!doc'] = 'Delete the ' + type;
+    defs[name]['!doc'] = 'Delete the ' + transformedType;
   }
 
   nodeSpec.getEdgeSpecs().forEach(function(edge) {
@@ -166,7 +172,7 @@ new Map(schema).forEach(function(spec, type) {
     }
   });
 
-  ternDefinitions['!define'][type] = defs;
+  ternDefinitions['!define'][transformedType] = defs;
 });
 
 fs.writeFile(outputFilename, 'var fb_defs = ' + JSON.stringify(ternDefinitions, null, 4), function(err) {
