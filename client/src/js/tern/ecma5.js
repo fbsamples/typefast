@@ -1,4 +1,4 @@
-var ecma5 = {
+module.exports = {
   "!name": "ecma5",
   "!define": {"Error.prototype": "Error.prototype"},
   "Infinity": {

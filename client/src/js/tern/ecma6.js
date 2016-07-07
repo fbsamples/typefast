@@ -1,4 +1,4 @@
-var ecma6 = {
+ module.exports = {
   "!name": "ecma6",
   "!define": {
     "Promise.prototype": {

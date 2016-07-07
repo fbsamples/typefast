@@ -30,7 +30,7 @@ const SpecRegistry = require('../../sdk/src/SpecRegistry');
 const {getObject} = require('./GraphSchemaLoader');
 const config = Config.fromArgv();
 const schema_bundle = config.getString('graph.schema.bundle');
-const outputFilename = '../client/src/defs/fb_defs.js';
+const outputFilename = '../client/src/js/tern/fb_defs.js';
 
 function normalizeDescription(description) {
   return description.replace(/\r|\n/, '').replace(/\s+/, ' ');
@@ -66,6 +66,11 @@ function typeTransformer(type) {
     case 'list':
       return '[?]';
     break;
+    // this fudge is for the offline conversions spec that is borked and we
+    // need to look at how to fix
+    case 'Returns the number of object received.':
+      return 'OffsiteConversion'
+    break;
     default:
       return type;
     break;
@@ -88,37 +93,33 @@ var ternDefinitions = {
   'adaccount': 'AdAccount',
 };
 
-new Map(schema).map((schema, type) => {
-  const spec = NodeSpec.fromJson(registry, JSON.stringify(schema));
-  registry.register(spec);
-  return  {spec: spec, type: type} ;
-}).forEach(function(data) {
-  const nodeSpec = data.spec;
-  const type = data.type;
+new Map(schema).forEach(function(spec, type) {
   var defs = {};
+  const transformedType = typeTransformer(type);
+  const nodeSpec = NodeSpec.fromJson(registry, JSON.stringify(spec));
 
   const readSpec = nodeSpec.getReadSpec();
   if (readSpec) {
-    const name = readSpec.getFunctionName();
+    const name = typeTransformer(readSpec.getFunctionName());
     defs[name] = {};
-    defs[name]['!type'] = 'fn(params: Object) -> +' + type;
-    defs[name]['!doc'] = 'Read fields from the ' + type;
+    defs[name]['!type'] = 'fn(params: Object) -> +' + transformedType;
+    defs[name]['!doc'] = 'Read fields from the ' + transformedType;
   }
 
   const updateSpec = nodeSpec.getUpdateSpec();
   if (updateSpec) {
-    const name = updateSpec.getFunctionName();
+    const name = typeTransformer(updateSpec.getFunctionName());
     defs[name] = {};
-    defs[name]['!type'] = 'fn(params: Object) -> +' + type;
-    defs[name]['!doc'] = 'Update fields on the ' + type;
+    defs[name]['!type'] = 'fn(params: Object) -> +' + transformedType;
+    defs[name]['!doc'] = 'Update fields on the ' + transformedType;
   }
 
   const deleteSpec = nodeSpec.getDeleteSpec();
   if (deleteSpec) {
-    const name = deleteSpec.getFunctionName();
+    const name = typeTransformer(deleteSpec.getFunctionName());
     defs[name] = {};
     defs[name]['!type'] = 'fn(params: Object) -> bool';
-    defs[name]['!doc'] = 'Delete the ' + type;
+    defs[name]['!doc'] = 'Delete the ' + transformedType;
   }
 
   nodeSpec.getEdgeSpecs().forEach(function(edge) {
@@ -133,32 +134,16 @@ new Map(schema).map((schema, type) => {
         "!type": "fn(f: fn(el: +"
         + returntype + ", i: number, array: +Array), context?: ?)",
       },
-      "map": {
-        "!type": "fn(f: fn(el: +"
-        + returntype + ", value: number, key: ?, array: +Array), context?: ?)",
-      },
-      "has": {
-        "!type": "fn(key: number) -> bool",
-        "!doc": "Whether the cursor contains the given key",
-      },
-      "key": {
-        "!type": "fn() -> number",
-        "!doc": "The current index",
-      },
-      "count": {
-        "!type": "fn() -> number",
-        "!doc": "The number of items in the cursor",
-      },
       "valid": {
         "!type": "fn() -> bool",
-        "!doc": "Whether the cursor is valid",
+        "!doc": "Wether the cursor is valid",
       },
       "key": {
         "!type": "fn() -> number",
         "!doc": "The current index of the cursor",
       },
       "rewind": {
-        "!type": "fn() -> null",
+        "!type": "fn() -> !this",
       },
       "next": {
         "!type": "fn() -> +" + returntype ,
@@ -169,10 +154,6 @@ new Map(schema).map((schema, type) => {
         "!type": "fn() -> +" + returntype ,
         "!doc": "Gets the current " + returntype + " of the cursor",
       },
-      "toArray": {
-        "!type": "fn() -> [" + returntype + "]",
-        "!doc": "Gets the current " + returntype + " of the cursor",
-      }
     }
 
     defs[name]['!type'] = 'fn() -> +' + returntype + '_cursor';
@@ -191,10 +172,10 @@ new Map(schema).map((schema, type) => {
     }
   });
 
-  ternDefinitions['!define'][type] = defs;
+  ternDefinitions['!define'][transformedType] = defs;
 });
 
-fs.writeFile(outputFilename, 'var fb_defs = ' + JSON.stringify(ternDefinitions, null, 4), function(err) {
+fs.writeFile(outputFilename, 'module.exports = ' + JSON.stringify(ternDefinitions, null, 4), function(err) {
     if(err) {
       console.log(err);
     } else {

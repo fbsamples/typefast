@@ -1,7 +1,9 @@
 // Parses comments above variable declarations, function declarations,
 // and object properties as docstrings and JSDoc-style type
 // annotations.
-var FBOptimise = (function(infer, walk) {
+const walk = require("acorn/dist/walk");
+
+module.exports = function(infer) {
   var fieldsAccessed = {};
 
   function isEdge(node) {
@@ -17,8 +19,18 @@ var FBOptimise = (function(infer, walk) {
       && node.types[0].proto.name.indexOf('cursor') > -1;
   }
 
+  function getURLSafeFieldsAccessed() {
+    var obj = {};
+    for(var key in fieldsAccessed) {
+      if(fieldsAccessed.hasOwnProperty(key)) {
+        obj[key] = Array.from(fieldsAccessed[key]);
+      }
+    }
+    return obj;
+  }
+
   return {
-    postInfer: function(ast, scope) {
+    postInfer: function(ast, scope, onOptimisationComplete) {
       fieldsAccessed = {};
       walk.simple(ast, {
         MemberExpression: function(node, scope) {
@@ -72,19 +84,13 @@ var FBOptimise = (function(infer, walk) {
           node.property.parent_object = node.object
         }
       }, infer.searchVisitor, scope);
-      console.log(fieldsAccessed);
+      onOptimisationComplete(getURLSafeFieldsAccessed());
     },
     getFieldsAccessed: function() {
       return fieldsAccessed;
     },
     getURLSafeFieldsAccessed: function() {
-      var obj = {};
-      for(var key in fieldsAccessed) {
-        if(fieldsAccessed.hasOwnProperty(key)) {
-          obj[key] = Array.from(fieldsAccessed[key]);
-        }
-      }
-      return obj;
+      return getURLSafeFieldsAccessed();
     }
   }
-})(tern, acorn.walk)
+}

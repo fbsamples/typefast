@@ -1,1 +1,0 @@
-../../../../node_modules/jshint/dist/jshint.js
