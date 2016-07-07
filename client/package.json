@@ -2,13 +2,23 @@
   "name": "fb-typefast-client",
   "version": "1.0.0",
   "description": "",
-  "scripts": {},
+  "scripts": {
+    "build": "browserify -t [ babelify --presets [ react ] ] src/js/index.js -o src/build/app.js",
+    "watch": "watchify -t [ babelify --presets [ react ] ] src/js/index.js -o src/build/app.js"
+  },
   "dependencies": {
+    "babel-preset-react": "^6.11.1",
+    "babelify": "^7.3.0",
     "bootstrap": "~3.3.6",
+    "browserify": "^13.0.1",
     "codemirror": "~5.15.2",
-    "jquery": "~2.0.0",
+    "flux": "^2.1.1",
+    "jquery": "~2.2.4",
     "jshint": "~2.9.2",
-    "tern": "~0.18.0"
+    "react": "^15.2.0",
+    "react-dom": "^15.2.0",
+    "tern": "~0.18.0",
+    "watchify": "^3.7.0"
   },
   "devDependencies": {}
 }
