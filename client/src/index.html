@@ -109,10 +109,10 @@
           </li>
         </ul>
         <div class="navbar-right">
-          <button type="button" class="btn btn-default btn-green navbar-btn">
+          <button id='preview-button' type="button" class="btn btn-default btn-green navbar-btn">
             <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Preview
           </button>
-          <button type="button" class="btn btn-default btn-green navbar-btn">
+          <button id='save-button' type="button" class="btn btn-default btn-green navbar-btn">
             <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save
           </button>
         </div>
@@ -149,12 +149,14 @@
     <script src="/tern/fb_optimise.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/application.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="/js/index.js"></script>
     <script type="text/javascript">
       const sample_code =
 `// adaccount is the global varaiable for scripting with.
 
-adaccount.getCustomaudiences({limit: 3}).forEach(
+// See the following example of how this works
+
+adaccount.getCustomAudiences().forEach(
   ca => console.log(ca.id + ': ' + ca.name)
 );`;
       const cheatsheet =
