@@ -88,9 +88,14 @@ var ternDefinitions = {
   'adaccount': 'AdAccount',
 };
 
-new Map(schema).forEach(function(spec, type) {
+new Map(schema).map((schema, type) => {
+  const spec = NodeSpec.fromJson(registry, JSON.stringify(schema));
+  registry.register(spec);
+  return  {spec: spec, type: type} ;
+}).forEach(function(data) {
+  const nodeSpec = data.spec;
+  const type = data.type;
   var defs = {};
-  const nodeSpec = NodeSpec.fromJson(registry, JSON.stringify(spec));
 
   const readSpec = nodeSpec.getReadSpec();
   if (readSpec) {
