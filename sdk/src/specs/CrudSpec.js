@@ -26,24 +26,18 @@ import type {RequestMethod} from './../http/Request';
 
 export type CrudFunction = | 'READ' | 'UPDATE' | 'DELETE';
 
-const {Map} = require('immutable');
-
-const crud_function_to_method: Map<CrudFunction, RequestMethod> = new Map({
-  DELETE: 'DELETE',
-  GET: 'GET',
-  UPDATE: 'POST',
-});
-
 class CrudSpec {
 
   crudFunction: CrudFunction;
+  method: RequestMethod;
 
   static fromSchema(schema: Object): CrudSpec {
-    return new CrudSpec(schema.name.substr(1).toUpperCase());
+    return new CrudSpec(schema.name.substr(1).toUpperCase(), schema.method);
   }
 
-  constructor(crud_function: CrudFunction): void {
+  constructor(crud_function: CrudFunction, method: RequestMethod): void {
     this.crudFunction = crud_function;
+    this.method = method;
   }
 
   getCrudFunction(): CrudFunction {
@@ -51,7 +45,7 @@ class CrudSpec {
   }
 
   getMethod(): RequestMethod {
-    return crud_function_to_method.get(this.getCrudFunction());
+    return this.method;
   }
 
   getFunctionName(): string {

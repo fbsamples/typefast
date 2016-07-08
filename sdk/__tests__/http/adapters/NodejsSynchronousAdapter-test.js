@@ -50,7 +50,13 @@ describe('NodejsSynchronousAdapter', () => {
     expect(makeAdapter().executeRequest(makeRequest('POST'))).toEqual(jasmine.any(Response));
   });
 
-  it('can execute DEconstE requests', () => {
-    expect(makeAdapter().executeRequest(makeRequest('DEconstE'))).toEqual(jasmine.any(Response));
+  it('can execute DELETE requests', () => {
+    expect(makeAdapter().executeRequest(makeRequest('DELETE'))).toEqual(jasmine.any(Response));
+  });
+
+  it('throws on HTTP error status codes', () => {
+    const request = makeRequest();
+    request.getMethod.mockReturnValue('TRIGGER_DRIVER_ERROR');
+    expect(() => makeAdapter().executeRequest(request)).toThrow();
   });
 });
