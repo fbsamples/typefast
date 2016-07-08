@@ -1,14 +1,41 @@
 var Application = (function(){
-  var editor, server;
+  var editor, server, currentScriptId;
+
+  function getLastScript(cb) {
+    $.ajax({
+      url: "scripts",
+      type: "GET",
+      dataType: 'json',
+      success: function(response) {
+        cb(response);
+      },
+
+      error: function() {
+        //called when there is an error
+      },
+    });
+  }
+
   return {
     init: function() {
+
       editor = CodeMirror($('#sandbox')[0], {
         mode: 'javascript',
-        value: $('#default-code').text(),
+        value: '//loading your scripts...',
         lineNumbers: true,
         gutters: ["CodeMirror-lint-markers"],
         lint: true,
       });
+
+      getLastScript(function(response){
+        if (response.length === 0) {
+          editor.setValue($('#default-code').text())
+        } else {
+          var script = response[0];
+          currentScriptId = script._id
+          editor.setValue(script.code);
+        }
+      })
 
       tern.registerPlugin("fb_optimise", function(server, options) {
         server.on("postInfer", FBOptimise.postInfer)
@@ -52,6 +79,12 @@ var Application = (function(){
     },
     runAnalysis: function() {
       server.runAnalysis(editor);
+    },
+    getCurrentScriptID: function() {
+      return currentScriptId;
+    },
+    setCurrentScriptID: function(id) {
+      currentScriptId = id;
     }
   }
 })()

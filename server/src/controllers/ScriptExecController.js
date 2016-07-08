@@ -54,7 +54,7 @@ class ScriptExecController extends AbstractController {
       }
 
       // FIXME no transpile by default
-      const argv = ['index.js', '--transpile', '--mode', 'sandbox', '--script-id', script_id];
+      const argv = ['index.js', '--transpile', '--mode', 'runner', '--script-id', script_id];
       const child = ChildProcess.execFile('node', argv);
       const log = [];
       const start_time = new Date();
