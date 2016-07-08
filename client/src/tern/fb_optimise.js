@@ -19,10 +19,9 @@ var FBOptimise = (function(infer, walk) {
 
   return {
     postInfer: function(ast, scope) {
+      fieldsAccessed = {};
       walk.simple(ast, {
         MemberExpression: function(node, scope) {
-          fieldsAccessed = {};
-
           if (node.object.fbType === undefined){
             node.object.fbType = infer.expressionType({
               node: node.object,
