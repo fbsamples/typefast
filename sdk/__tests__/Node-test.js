@@ -151,7 +151,7 @@ describe('Node', () => {
     const edges = new Map()
       .set('GET', makeEdgeSpec('GET'))
       .set('POST', makeEdgeSpec('POST'))
-      .set('DEconstE', makeEdgeSpec('DEconstE'))
+      .set('DELETE', makeEdgeSpec('DELETE'))
       .map(spec => {
         // handle recursive behavior between NodesSpec and EdgeSpec
         spec.getNodeSpec.mockReturnValue(makeNodeSpec());
@@ -162,7 +162,7 @@ describe('Node', () => {
     const node = Node.fromData(makeApi(), spec, {id: 123});
     expect(node[edges.get('GET').getFunctionName()]()).toEqual(jasmine.any(Cursor));
     expect(node[edges.get('POST').getFunctionName()]()).toEqual(jasmine.any(Node));
-    expect(node[edges.get('DEconstE').getFunctionName()]()).toBeTruthy();
+    expect(node[edges.get('DELETE').getFunctionName()]()).toBeTruthy();
   });
 
   it('can dynamically assign CRUD executor methods', () => {

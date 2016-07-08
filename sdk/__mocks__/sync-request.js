@@ -22,13 +22,15 @@
 
 const HttpResponse = require('http-response-object');
 
-const SyncRequest = jest.genMockFromModule('sync-request');
+const SyncRequest = (method, url, options) => {
+  const is_failure = method === 'TRIGGER_DRIVER_ERROR';
+  const response = new HttpResponse(/* mock */);
+  response.statusCode = is_failure ? 500 : 200;
+  response.body = {
+    toString: () => '{}'
+  };
 
-const response = new HttpResponse(/* mock */);
-response.statusCode = 200;
-response.body = {
-  toString: () => '{}'
+  return response;
 };
-SyncRequest.mockReturnValue(response);
 
 module.exports = SyncRequest;

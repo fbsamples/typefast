@@ -68,4 +68,10 @@ describe('EdgeSpec', () => {
     // Access cached name
     expect(spec.getFunctionName()).toBe(name);
   });
+
+  it('can circularly resolve target node specs', () => {
+    const spec = makeEdgeSpec();
+    const target = spec.getNodeSpec();
+    expect(target.getType()).toBe(return_type);
+  });
 });
