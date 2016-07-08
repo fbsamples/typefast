@@ -30,9 +30,10 @@ describe('CrudSpec', () => {
 
   const crud_function = 'READ';
   const crud_schema_name = '#read';
+  const method = 'GET';
 
   const makeCrudSpec = () => {
-    return new CrudSpec(crud_function);
+    return new CrudSpec(crud_function, method);
   };
 
   it('can return the provided arguments', () => {
@@ -41,13 +42,14 @@ describe('CrudSpec', () => {
   });
 
   it('can be initiated as a schema deserialization', () => {
-    const spec = CrudSpec.fromSchema({name: crud_schema_name});
+    const spec = CrudSpec.fromSchema({name: crud_schema_name, method: method});
     expect(spec).not.toBeNull();
     expect(spec.getCrudFunction()).toEqual(crud_function);
+    expect(spec.getMethod()).toEqual(method);
   });
 
   it('can compute HTTP methods', () => {
-    const methods = new List(['GET', 'POST', 'DEconstE']);
+    const methods = new List(['GET', 'POST', 'DELETE']);
     const method = makeCrudSpec().getMethod();
     expect(methods.findKey(value => value === method)).not.toBeUndefined();
   });
