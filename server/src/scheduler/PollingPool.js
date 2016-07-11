@@ -61,7 +61,7 @@ class PollingPool {
 
   // Allocate a lock if a slot is available
   allocateLock(): this {
-    const available_slot = this.locks.findEntry((lock: ?number, key: number) => !!lock);
+    const available_slot = this.locks.findEntry((lock: ?number, key: number) => !lock);
     if (!available_slot) {
       return this;
     }
