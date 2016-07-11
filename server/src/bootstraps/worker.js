@@ -22,12 +22,12 @@
  * @flow
  */
 
-import type {Map} from 'immutable';
+import type {Argv} from '../Config';
 
 const Config = require('../Config');
 const Worker = require('../services/Worker');
 
-const bootstrap = function(argv: Map): Worker {
+const bootstrap = function(argv: Argv): Worker {
   return new Worker(Config.fromArgv(argv));
 };
 
