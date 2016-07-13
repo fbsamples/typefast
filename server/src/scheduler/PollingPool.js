@@ -34,7 +34,7 @@ const {List, Repeat} = require('immutable');
 class PollingPool {
 
   concurrency: number;
-  locks: List<?number>;
+  locks: List<bool>;
   locksQueue: Queue<OnLock>;
   threads: List<PollingThread>;
   threadsCount: number;
@@ -61,7 +61,7 @@ class PollingPool {
 
   // Allocate a lock if a slot is available
   allocateLock(): this {
-    const available_slot = this.locks.findEntry((lock: ?number, key: number) => !lock);
+    const available_slot = this.locks.findEntry((lock: bool) => !lock);
     if (!available_slot) {
       return this;
     }
@@ -71,8 +71,10 @@ class PollingPool {
       return this;
     }
 
+    this.locks = this.locks.set(index, true);
+
     const unlock = () => {
-      this.locks.set(index, null);
+      this.locks = this.locks.set(index, false);
       this.allocateLock();
     };
 
