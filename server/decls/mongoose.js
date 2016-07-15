@@ -56,7 +56,7 @@ declare module mongoose {
 
   declare class Document {
     get(path: string): any;
-    set(patt: string, value: any): Document;
+    set(path: string, value: any): Document;
     update(doc: Object, options?: Object, callback?: OperationCallback<Document>): Query<Document>;
   }
 

@@ -54,7 +54,7 @@ class Queue {
     return this.model;
   }
 
-  getLenght(callback?: OnLenghtCallback): this {
+  getLength(callback?: OnLenghtCallback): this {
     const conditions = {
       is_completed: false,
     };
