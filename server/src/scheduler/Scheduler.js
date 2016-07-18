@@ -39,6 +39,7 @@ export type OnPollingRoutine = (
 const PollingThread = require('./PollingThread');
 const Queue = require('./Queue');
 const RoutineSchema = require('./RoutineSchema');
+const {List} = require('immutable');
 
 class Scheduler {
 
@@ -65,6 +66,10 @@ class Scheduler {
     return this.highPriQueue;
   }
 
+  getQueues(): List<Queue> {
+    return new List([this.getHighPriQueue(), this.getQueue()]);
+  }
+
   enqueue(queue: Queue, script_id: string, date: Date, callback?: OnScheduleCallback): this {
     queue.createRoutine(script_id, date, callback);
 
@@ -80,16 +85,23 @@ class Scheduler {
     return this.enqueue(this.getHighPriQueue(), script_id, new Date(), callback);
   }
 
-  getRoutine(callback: OnRoutineContextualizedCallback): this {
-    this.getHighPriQueue().getRoutineWithLock((routine: ?Document) => {
-      if (routine != null) {
-        callback(routine, this.getHighPriQueue());
-      } else {
-        this.getQueue().getRoutineWithLock((routine: ?Document) => {
-          callback(routine, this.getQueue());
-        });
-      }
-    });
+  getRoutine(id: string, callback: OnRoutineContextualizedCallback): this {
+    let routine = null;
+    let results = 0;
+    let queues = this.getQueues();
+
+    queues.forEach(
+      (queue: Queue) => queue.getModel().findById(
+        id,
+        (err: Error, doc: ?Document) => {
+          ++results;
+          if ((doc != null && routine === null) || results === queues.size) {
+            routine = doc;
+            process.nextTick(() => callback(routine, queue));
+          }
+        }
+      )
+    );
 
     return this;
   }
