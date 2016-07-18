@@ -26,21 +26,16 @@ import type {Argv} from '../Config';
 
 const Config = require('../Config');
 const Runner = require('../services/Runner');
-const Util = require('util');
 
 const SCRIPT_ID_KEY = 'script-id';
-
-const console_debug = function(stream_name: string, chunk: string): string {
-  return Util.format('SANDBOX::%s: %s', stream_name, chunk);
-};
 
 const on_init = function(runner: Runner) {
   // FIXME should store to db instead of piping from server process
   // console.log(`Executing script ${script_id}`);
   runner.getSandbox().getConsole().getStdout()
-    .on('data', (chunk: string) => process.stdout.write(console_debug('STDOUT', chunk)));
+    .on('data', (chunk: string) => process.stdout.write(chunk));
   runner.getSandbox().getConsole().getStderr()
-    .on('data', (chunk: string) => process.stderr.write(console_debug('STDERR', chunk)));
+    .on('data', (chunk: string) => process.stderr.write(chunk));
 };
 
 const bootstrap = function(argv: Argv): Runner {

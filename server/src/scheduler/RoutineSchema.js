@@ -22,6 +22,13 @@
  * @flow
  */
 
+ // eslint-disable-next-line no-undef
+export interface LogEntry {
+  chunk: string;
+  stream: string;
+  time: Date;
+}
+
 const Mongoose = require('mongoose');
 const schema = new Mongoose.Schema({
   creation_time: { type: Date },
@@ -30,7 +37,7 @@ const schema = new Mongoose.Schema({
   lock_id: { type: Mongoose.Schema.ObjectId, default: null },
   runner_end_time: { type: Date, default: null },
   runner_exit_code: { type: Number, default: 0 },
-  runner_log: { type: Array, value: { stream: { type: Number }, buffer: { type: String } } },
+  runner_log: { type: Array, value: { type: { time: Date, stream: String, chunk: String } } },
   runner_start_time: { type: Date, default: null },
   script_id: { type: Mongoose.Schema.ObjectId, required: true },
   visible_from: { type: Date, require: true },

@@ -21,7 +21,7 @@
  */
 
 type DocumentId = Object | string | number;
-type OperationCallback<T> = (err: Error, res: T) => void;
+type OperationCallback<T> = (err?: Error, res?: T) => void;
 
 declare module mongoose {
 
@@ -58,6 +58,7 @@ declare module mongoose {
 
   declare class Document {
     get(path: string): any;
+    save(options?: Object, safe?: Object, validate_before_save?: bool, callback?: OperationCallback<Document>): Promise<Document>;
     set(path: string, value: any): Document;
     toObject(options?: Object): Object;
     update(doc: Object, options?: Object, callback?: OperationCallback<Document>): Query<Document>;
@@ -67,7 +68,7 @@ declare module mongoose {
   }
 
   declare class Query<T> {
-    exec(callback: OperationCallback<T>): Promise<T>;
+    exec(callback?: OperationCallback<T>): Promise<T>;
   }
 
   declare var exports: {

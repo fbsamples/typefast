@@ -28,7 +28,8 @@
     "url": null
   },
   "sandbox": {
-    "timeout": 86400000
+    "timeout": 86400000,
+    "routine_sync_interval": 3000
   },
   "scheduler": {
     "main_queue": {
