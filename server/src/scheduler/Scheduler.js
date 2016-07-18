@@ -95,7 +95,7 @@ class Scheduler {
         id,
         (err: Error, doc: ?Document) => {
           ++results;
-          if ((doc != null && routine === null) || results === queues.size) {
+          if ((doc != null && routine === null) || (results === queues.size && routine === null)) {
             routine = doc;
             process.nextTick(() => callback(routine, queue));
           }
