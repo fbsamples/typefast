@@ -59,6 +59,7 @@ declare module mongoose {
   declare class Document {
     get(path: string): any;
     set(path: string, value: any): Document;
+    toObject(options?: Object): Object;
     update(doc: Object, options?: Object, callback?: OperationCallback<Document>): Query<Document>;
   }
 

@@ -22,27 +22,35 @@
  * @flow
  */
 
-import type {Request, RequestMethod, Response} from 'express';
+import type Queue from '../scheduler/Queue';
+import type {Request, Response} from 'express';
 import type {Document} from 'mongoose';
 
-const AbstractController = require('./AbstractController');
+const AbstractRestController = require('./AbstractRestController');
 const HttpStatus = require('http-status-codes');
-const Script = require('../model/Script');
-const {Set} = require('immutable');
+const Script = require('../model/script');
 
 // implement ../ControllerInterface
-class ScriptExecController extends AbstractController {
+class RoutineRestController extends AbstractRestController {
 
-  getRoute(): string {
-    return '/exec/:id([0-9a-fA-F]{24})';
+  getBaseRoute() : string {
+    return '/routines';
   }
 
-  getRouteMethods(): Set<RequestMethod> {
-    return new Set(['post', 'get']);
+  genRead(request: Request, response: Response): void {
+    // Need user level checking
+    const id = request.params.id;
+    this.getApplication().getScheduler().getRoutine(id, (routine: ?Document, queue: Queue) => {
+      if (routine != null) {
+        response.send(routine.toObject({versionKey: false})).end();
+        return;
+      }
+      this.returnError(request, response, HttpStatus.NOT_FOUND);
+    });
   }
 
-  genResponse(request: Request, response: Response): void {
-    const script_id = request.params.id;
+  genCreate(request: Request, response: Response): void {
+    const script_id = request.body.script_id; // FIXME validate
     Script.findById(script_id).exec((err: Error, script: ?Document) => {
       if (err != null) {
         this.returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -58,28 +66,12 @@ class ScriptExecController extends AbstractController {
           id: routine_id,
         }).end();
       });
-      /*
-      // FIXME no transpile by default
-      const argv = ['index.js', '--transpile', '--mode', 'runner', '--script-id', script_id];
-      const child = ChildProcess.execFile('node', argv);
-      const log = [];
-      const start_time = new Date();
-      child.stdout.on('data', (chunk: string) => log.push({stream: 'STDOUT', message: chunk.substring(17)}));
-      child.stderr.on('data', (chunk: string) => log.push({stream: 'STDERR', message: chunk.substring(17)}));
-      child.on('exit', (code) => {
-        const end_time = new Date();
-        return response.send({
-          success: code === 0,
-          time: {
-            start: Math.floor(start_time.getTime() / 1000),
-            end: Math.floor(end_time.getTime() / 1000)
-          },
-          log: log
-        }).end();
-      });
-      */
     });
+  }
+
+  genDelete(request: Request, response: Response): void {
+    this.returnError(request, response, HttpStatus.NOT_IMPLEMENTED);
   }
 }
 
-module.exports = ScriptExecController;
+module.exports = RoutineRestController;
