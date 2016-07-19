@@ -67,7 +67,6 @@ class Queue {
 
   createRoutine(script_id: string, date: Date, callback?: OnScheduleCallback): this {
     const document = this.getModel()({
-      is_completed: false,
       script_id: script_id,
       visible_from: date,
     });
@@ -78,13 +77,13 @@ class Queue {
 
   getRoutineWithLock(callback?: OnRoutineCallback): this {
     const conditions = {
-      is_completed: {$ne: true},
+      is_completed: false,
       lock_id: null,
       visible_from: { $lte: new Date() },
     };
     const doc = {
       lock_creation_time: new Date(),
-      lock_id: Math.random(), // FIXME define a globally unique lock identification logic
+      lock_id: new Mongoose.Types.ObjectId(),
     };
     this.getModel().findOneAndUpdate(
       conditions,
@@ -98,10 +97,8 @@ class Queue {
 
   unlockRoutine(routine: Document, callback?: OnRoutineCallback): this {
     const doc = {
-      $unset: {
-        lock_id: 1,
-        lock_creation_time: 1,
-      },
+      lock_id: null,
+      lock_creation_time: null,
     };
     routine.update(
       doc,

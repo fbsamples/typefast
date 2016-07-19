@@ -24,22 +24,17 @@
 
 const Mongoose = require('mongoose');
 const scriptSchema = new Mongoose.Schema({
-  title: String,
-  code: String,
-  optimisations: Object,
-  createdTime: Date,
-  updatedTime: Date
+  title: { type: String, required: true },
+  code: { type: String, required: true },
+  optimisations: { type: Object, default: [] },
+  createdTime: { type: Date },
+  updatedTime: { type: Date },
 });
 
-// on every save, add the date
 scriptSchema.pre('save', function(next) {
-  const currentDate = new Date();
-  this.updatedTime = currentDate;
-
-  if (!this.createdTime) {
-    this.createdTime = currentDate;
-  }
+  this.updatedTime = new Date();
+  this.createdTime = this.createdTime || this.updatedTime;
   next();
 });
 
-module.exports = Mongoose.model('Script', scriptSchema);
+module.exports = Mongoose.model('script', scriptSchema);

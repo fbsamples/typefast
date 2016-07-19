@@ -36,6 +36,8 @@ declare module mongoose {
   }
 
   declare class Schema {
+    static ObjectId: (key: string, options: Object) => void;
+
     (schema: Object): Schema;
     index(fields: Object, options?: Object): Schema;
     pre(name: string, callback: Function): Schema;
@@ -70,11 +72,14 @@ declare module mongoose {
   declare var exports: {
     Connection: typeof Connection;
     Document: typeof Document;
+    Model: typeof Model;
     MongooseThenable: typeof MongooseThenable;
     Promise: typeof Promise;
     Query: typeof Query;
     Schema: typeof Schema;
-    Model: typeof Model;
+    Types: {
+      ObjectId: Function;
+    };
 
     connect(url: string, options?: Object, callback?: Function): MongooseThenable;
     disconnect(): void;

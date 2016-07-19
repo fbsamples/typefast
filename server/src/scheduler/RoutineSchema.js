@@ -24,12 +24,16 @@
 
 const Mongoose = require('mongoose');
 const schema = new Mongoose.Schema({
-  creation_time: Date,
-  is_completed: Boolean,
-  lock_creation_time: Date,
-  lock_id: String,
-  script_id: String,
-  visible_from: Date,
+  creation_time: { type: Date },
+  is_completed: { type: Boolean, default: false },
+  lock_creation_time: { type: Date, default: null },
+  lock_id: { type: Mongoose.Schema.ObjectId, default: null },
+  runner_end_time: { type: Date, default: null },
+  runner_exit_code: { type: Number, default: 0 },
+  runner_log: { type: Array, value: { stream: { type: Number }, buffer: { type: String } } },
+  runner_start_time: { type: Date, default: null },
+  script_id: { type: Mongoose.Schema.ObjectId, required: true },
+  visible_from: { type: Date, require: true },
 });
 
 schema.index({
@@ -38,17 +42,8 @@ schema.index({
   visible_from: 1,
 });
 
-schema.pre('save', next => {
-  if (this.creation_time == null) {
-    // FLOW_UNSAFE editing global object
-    this.creation_time = new Date();
-  }
-
-  // FLOW_UNSAFE editing global object
-  if (this.is_completed !== true) {
-    // FLOW_UNSAFE editing global object
-    this.is_completed = false;
-  }
+schema.pre('save', function(next) {
+  this.createdTime = this.createdTime || new Date();
   next();
 });
 
