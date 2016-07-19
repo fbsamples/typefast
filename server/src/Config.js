@@ -28,6 +28,8 @@ const {List, Map} = require('immutable');
 
 export type Argv = Map<string, string | number | bool>;
 
+const INLINE_CONFIG_KEY = 'inline-config';
+
 const READ_FILE_OPTS = {
   encoding: 'UTF-8',
   flag: 'r'
@@ -39,20 +41,23 @@ class Config {
   data: Map<string, any>;
 
   static fromArgv(argv: Argv): Config {
-    // FIXME actually get the list from argv
-    return new Config(new List([
+    const config = new Config(new List([
       __dirname + '/../config/default.json',
       __dirname + '/../config/local.json',
     ]));
+
+    const argv_tree = JSON.parse(argv.get(INLINE_CONFIG_KEY, '{}').toString());
+    config.mergeDeep(argv_tree);
+
+    return config;
   }
 
   constructor(sources: List<string>): void {
     this.sources = sources;
-    let data = new Map();
+    this.data = new Map();
     sources.filter(this.fileExists.bind(this))
       .map(this.readJson.bind(this))
-      .forEach(part => data = data.mergeDeep(part));
-    this.data = data;
+      .forEach(this.mergeDeep.bind(this));
   }
 
   fileExists(filepath: string): bool {
@@ -65,6 +70,12 @@ class Config {
 
   readJson(filepath: string): Object {
     return JSON.parse(fs.readFileSync(filepath, READ_FILE_OPTS));
+  }
+
+  mergeDeep(tree: Object): this {
+    this.data = this.data.mergeDeep(tree);
+
+    return this;
   }
 
   getSources(): List<string> {
