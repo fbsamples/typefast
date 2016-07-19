@@ -30,12 +30,8 @@ const Runner = require('../services/Runner');
 const SCRIPT_ID_KEY = 'script-id';
 
 const on_init = function(runner: Runner) {
-  // FIXME should store to db instead of piping from server process
-  // console.log(`Executing script ${script_id}`);
-  runner.getSandbox().getConsole().getStdout()
-    .on('data', (chunk: string) => process.stdout.write(chunk));
-  runner.getSandbox().getConsole().getStderr()
-    .on('data', (chunk: string) => process.stderr.write(chunk));
+  runner.getSandbox().getConsole().getStdout().pipe(process.stdout);
+  runner.getSandbox().getConsole().getStderr().pipe(process.stderr);
 };
 
 const bootstrap = function(argv: Argv): Runner {
