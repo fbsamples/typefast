@@ -24,16 +24,17 @@
 
 const Mongoose = require('mongoose');
 const scriptSchema = new Mongoose.Schema({
-  title: { type: String, required: true },
   code: { type: String, required: true },
+  context_type: { type: String, required: true },
+  created_time: { type: Date },
   optimisations: { type: Object, default: [] },
-  createdTime: { type: Date },
-  updatedTime: { type: Date },
+  title: { type: String, required: true },
+  updated_time: { type: Date },
 });
 
 scriptSchema.pre('save', function(next) {
-  this.updatedTime = new Date();
-  this.createdTime = this.createdTime || this.updatedTime;
+  this.updated_time = new Date();
+  this.created_time = this.created_time || this.updated_time;
   next();
 });
 

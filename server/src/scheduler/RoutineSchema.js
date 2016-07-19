@@ -31,6 +31,7 @@ export interface LogEntry {
 
 const Mongoose = require('mongoose');
 const schema = new Mongoose.Schema({
+  context_id: { type: String, required: true },
   creation_time: { type: Date },
   is_completed: { type: Boolean, default: false },
   lock_creation_time: { type: Date, default: null },

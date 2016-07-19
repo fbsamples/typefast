@@ -38,7 +38,7 @@ const {Map} = require('immutable');
 
 const {getObject} = require('./GraphSchemaLoader');
 
-module.exports = function(config: Config, script: Document): Object {
+module.exports = function(config: Config, script: Document, ctx_id: string): Object {
   // Load configs
   const app_id = config.getInteger('graph.application_id');
   const app_secret = config.getString('graph.application_secret');
@@ -63,9 +63,9 @@ module.exports = function(config: Config, script: Document): Object {
   const api = new Api(new Adapter(), optimizer, session, graph_versions);
 
   // Init context
-  const ctx = Node.fromSpec(api, registry.get('AdAccount'));
+  const ctx = Node.fromSpec(api, registry.get(script.get('context_type')));
   // FLOW_UNSAFE
-  ctx.id = config.getString('DEPRECATED__cxt_id');
+  ctx.id = ctx_id;
 
   return {
     api: api, // FIXME should this be directly exposed ?

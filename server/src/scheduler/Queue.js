@@ -65,8 +65,9 @@ class Queue {
     return this;
   }
 
-  createRoutine(script_id: string, date: Date, callback?: OnScheduleCallback): this {
+  createRoutine(script_id: string, ctx_id: string, date: Date, callback?: OnScheduleCallback): this {
     const document = this.getModel()({
+      context_id: ctx_id,
       script_id: script_id,
       visible_from: date,
     });
