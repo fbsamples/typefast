@@ -22,8 +22,34 @@
  * @flow
  */
 
-class Scheduler {
+const Mongoose = require('mongoose');
+const schema = new Mongoose.Schema({
+  creation_time: Date,
+  is_completed: Boolean,
+  lock_creation_time: Date,
+  lock_id: String,
+  script_id: String,
+  visible_from: Date,
+});
 
-}
+schema.index({
+  is_completed: 1,
+  lock_id: 1,
+  visible_from: 1,
+});
 
-module.exports = Scheduler;
+schema.pre('save', next => {
+  if (this.creation_time == null) {
+    // FLOW_UNSAFE editing global object
+    this.creation_time = new Date();
+  }
+
+  // FLOW_UNSAFE editing global object
+  if (this.is_completed !== true) {
+    // FLOW_UNSAFE editing global object
+    this.is_completed = false;
+  }
+  next();
+});
+
+module.exports = schema;

@@ -26,7 +26,6 @@ import type {Request, RequestMethod, Response} from 'express';
 import type {Document} from 'mongoose';
 
 const AbstractController = require('./AbstractController');
-const ChildProcess = require('child_process');
 const HttpStatus = require('http-status-codes');
 const Script = require('../model/Script');
 const {Set} = require('immutable');
@@ -39,12 +38,12 @@ class ScriptExecController extends AbstractController {
   }
 
   getRouteMethods(): Set<RequestMethod> {
-    return new Set(['post']);
+    return new Set(['post', 'get']);
   }
 
   genResponse(request: Request, response: Response): void {
     const script_id = request.params.id;
-    Script.findById(script_id).exec((err: Error, script: Document) => {
+    Script.findById(script_id).exec((err: Error, script: ?Document) => {
       if (err != null) {
         this.returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
         return;
@@ -54,6 +53,12 @@ class ScriptExecController extends AbstractController {
         return;
       }
 
+      this.getApplication().getScheduler().exec(script_id, (routine_id: string) => {
+        response.send({
+          id: routine_id,
+        }).end();
+      });
+      /*
       // FIXME no transpile by default
       const argv = ['index.js', '--transpile', '--mode', 'runner', '--script-id', script_id];
       const child = ChildProcess.execFile('node', argv);
@@ -72,6 +77,7 @@ class ScriptExecController extends AbstractController {
           log: log
         }).end();
       });
+      */
     });
   }
 }

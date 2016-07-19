@@ -27,7 +27,7 @@ import type {MongooseThenable} from 'mongoose';
 
 const {EventEmitter} = require('events');
 const Mongoose = require('mongoose');
-const Scheduler = require('../Scheduler');
+const Scheduler = require('../scheduler/Scheduler');
 
 class AbstractService extends EventEmitter {
 
@@ -41,7 +41,7 @@ class AbstractService extends EventEmitter {
     super();
     this.config = config;
     this.db = Mongoose.connect(this.config.getString('db.url'));
-    this.scheduler = new Scheduler();
+    this.scheduler = Scheduler.fromConfig(config);
     // Will otherwise hang the process
     this.on(AbstractService.events.END, () => process.nextTick(() => this.getDatabase().disconnect()));
   }

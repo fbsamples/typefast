@@ -50,9 +50,13 @@ class ScriptRestController extends AbstractRestController {
   genRead(request: Request, response: Response): void {
     // Need user level checking
     const id = request.params.id;
-    Script.findById(id, (err: Error, script: Document) => {
+    Script.findById(id, (err: Error, script: ?Document) => {
       if (err) {
         this.returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return;
+      }
+      if (script == null) {
+        this.returnError(request, response, HttpStatus.NOT_FOUND);
         return;
       }
       response.send(script).end();
@@ -96,9 +100,13 @@ class ScriptRestController extends AbstractRestController {
         code: code
       },
       {},
-      (err: Error, script: Document) => {
+      (err: Error, script: ?Document) => {
         if (err) {
           this.returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
+          return;
+        }
+        if (script == null) {
+          this.returnError(request, response, HttpStatus.NOT_FOUND);
           return;
         }
         response.send({sucess: true}).end();
