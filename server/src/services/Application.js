@@ -23,7 +23,7 @@
  */
 
 import type Config from '../Config';
-import type {Application as ExressApplication, RequestMethod} from 'express';
+import type {Application as ExpressApplication, RequestMethod} from 'express';
 
 const AbstractService = require('./AbstractService');
 const express = require('express');
@@ -37,7 +37,7 @@ class Application extends AbstractService {
 
   allowedRequestMethods: Set<RequestMethod>;
   router: Router;
-  webApplication: ExressApplication;
+  webApplication: ExpressApplication;
 
   constructor(config: Config): void {
     super(config);
@@ -66,7 +66,7 @@ class Application extends AbstractService {
     return this.router;
   }
 
-  getWebApplication(): ExressApplication {
+  getWebApplication(): ExpressApplication {
     return this.webApplication;
   }
 
