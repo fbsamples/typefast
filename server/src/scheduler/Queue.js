@@ -25,7 +25,7 @@
 import type {Document, Schema} from 'mongoose';
 
 export type OnScheduleCallback = (routine_id: string) => void;
-export type OnLenghtCallback = (count: number) => void;
+export type OnLengthCallback = (count: number) => void;
 export type OnRoutineCallback = (routine: ?Document) => void;
 export type RoutineEndingOperation = (routine: Document, callback?: OnRoutineCallback) => Queue;
 
@@ -54,7 +54,7 @@ class Queue {
     return this.model;
   }
 
-  getLength(callback?: OnLenghtCallback): this {
+  getLength(callback?: OnLengthCallback): this {
     const conditions = {
       is_completed: false,
     };
