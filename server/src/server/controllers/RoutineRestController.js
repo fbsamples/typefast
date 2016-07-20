@@ -22,13 +22,13 @@
  * @flow
  */
 
-import type Queue from '../scheduler/Queue';
+import type Queue from '../../scheduler/Queue';
 import type {Request, Response} from 'express';
 import type {Document} from 'mongoose';
 
 const AbstractRestController = require('./AbstractRestController');
 const HttpStatus = require('http-status-codes');
-const Script = require('../model/script');
+const Script = require('../../model/script');
 
 // implement ../ControllerInterface
 class RoutineRestController extends AbstractRestController {
@@ -51,7 +51,7 @@ class RoutineRestController extends AbstractRestController {
 
   genCreate(request: Request, response: Response): void {
     const script_id = request.body.script_id; // FIXME validate
-    Script.findById(script_id).exec((err: Error, script: ?Document) => {
+    Script.findById(script_id).exec((err: ?Error, script: ?Document) => {
       if (err != null) {
         this.returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
         return;

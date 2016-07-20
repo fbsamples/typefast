@@ -9,7 +9,7 @@
     "transpile": "babel src/ -d build/",
     "start": "node index.js --transpile --mode=server",
     "dev": "nodemon index.js --transpile",
-    "definition-generation": "node src/fbTypesGenerator.js"
+    "definition-generation": "node bin/fbTypesGenerator.js"
   },
   "repository": {
     "type": "git",

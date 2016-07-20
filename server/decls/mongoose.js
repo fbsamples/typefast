@@ -21,7 +21,7 @@
  */
 
 type DocumentId = Object | string | number;
-type OperationCallback<T> = (err?: Error, res?: T) => void;
+type OperationCallback<T> = (err?: Error, res: T) => void;
 
 declare module mongoose {
 

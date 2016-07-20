@@ -36,7 +36,7 @@ const Session = require('../../../sdk/src/Session');
 const SpecRegistry = require('../../../sdk/src/SpecRegistry');
 const {Map} = require('immutable');
 
-const {getObject} = require('../GraphSchemaLoader');
+const {getObject} = require('./GraphSchemaLoader');
 
 module.exports = function(config: Config, script: Document): Object {
   // Load configs

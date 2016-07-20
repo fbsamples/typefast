@@ -58,7 +58,7 @@ class Queue {
     const conditions = {
       is_completed: false,
     };
-    this.getModel().count(conditions, (err: Error, count: number) => {
+    this.getModel().count(conditions, (err: ?Error, count: number) => {
       callback && callback(count);
     });
 
@@ -70,7 +70,7 @@ class Queue {
       script_id: script_id,
       visible_from: date,
     });
-    document.save((err: Error, res: Document) => callback && callback(res.get('id')));
+    document.save((err: ?Error, res: Document) => res && callback && callback(res.get('id')));
 
     return this;
   }
@@ -89,7 +89,7 @@ class Queue {
       conditions,
       doc,
       {},
-      (err: Error, routine: ?Document) => { callback && callback(routine); }
+      (err: ?Error, routine: ?Document) => { callback && callback(routine); }
     );
 
     return this;
@@ -103,7 +103,7 @@ class Queue {
     routine.update(
       doc,
       {},
-      (err: Error, routine: ?Document) => { callback && callback(routine); }
+      (err: ?Error, routine: ?Document) => { callback && callback(routine); }
     );
 
     return this;
@@ -116,7 +116,7 @@ class Queue {
     routine.update(
       doc,
       {},
-      (err: Error, routine: ?Document) => { callback && callback(routine); }
+      (err: ?Error, routine: ?Document) => { callback && callback(routine); }
     );
 
     return this;
