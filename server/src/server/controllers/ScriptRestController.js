@@ -27,7 +27,7 @@ import type {Document} from 'mongoose';
 
 const AbstractRestController = require('./AbstractRestController');
 const HttpStatus = require('http-status-codes');
-const Script = require('../model/script');
+const Script = require('../../model/script');
 
 // implement ../ControllerInterface
 class ScriptRestController extends AbstractRestController {
@@ -75,7 +75,7 @@ class ScriptRestController extends AbstractRestController {
     });
 
     // Need user level checking
-    newScript.save((err: Error, script: Document) => {
+    newScript.save((err: ?Error, script: Document) => {
       if (err) {
         this.returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
         return;
@@ -100,7 +100,7 @@ class ScriptRestController extends AbstractRestController {
         code: code
       },
       {},
-      (err: Error, script: ?Document) => {
+      (err: ?Error, script: ?Document) => {
         if (err) {
           this.returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
           return;

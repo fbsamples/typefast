@@ -23,7 +23,7 @@
  */
 
 import type {Argv} from '../Config';
-import type {ControllerInterface} from '../controllers/ControllerInterface';
+import type {ControllerInterface} from '../server/controllers/ControllerInterface';
 import type {RequestMethod} from 'express';
 
 const Application = require('../services/Application');
@@ -33,9 +33,9 @@ const methods = require('methods');
 const {List, Set} = require('immutable');
 
 // controllers
-const HttpErrorController = require('../controllers/HttpErrorController');
-const RoutineRestController = require('../controllers/RoutineRestController');
-const ScriptRestController = require('../controllers/ScriptRestController');
+const HttpErrorController = require('../server/controllers/HttpErrorController');
+const RoutineRestController = require('../server/controllers/RoutineRestController');
+const ScriptRestController = require('../server/controllers/ScriptRestController');
 
 const getHttpMethods = function(): Set<RequestMethod> {
   return new Set(methods);

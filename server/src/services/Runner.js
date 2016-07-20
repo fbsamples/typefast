@@ -54,7 +54,7 @@ class Runner extends AbstractService {
 
   init(): void {
     const script_id = this.getScriptId();
-    Script.findById(script_id).exec((err: Error, script: ?Document) => {
+    Script.findById(script_id).exec((err: ?Error, script: ?Document) => {
       if (err != null) {
         throw err;
       }

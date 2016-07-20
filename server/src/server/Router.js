@@ -22,7 +22,7 @@
  * @flow
  */
 
-import type Application from './services/Application';
+import type Application from '../services/Application';
 import type {ControllerInterface} from './controllers/ControllerInterface';
 import type {HandleCallback, Request, Response, Router as ExpressRouter} from 'express';
 

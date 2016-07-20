@@ -30,7 +30,7 @@ const express = require('express');
 const Filesystem = require('fs');
 const Https = require('https');
 const bodyParser = require('body-parser');
-const Router = require('../Router');
+const Router = require('../server/Router');
 const {Map, Set} = require('immutable');
 
 class Application extends AbstractService {
