@@ -23,32 +23,10 @@
  */
 
 import type {Argv} from '../Config';
-import type {ControllerInterface} from '../server/controllers/ControllerInterface';
-import type {RequestMethod} from 'express';
 
 const Application = require('../services/Application');
 const Config = require('../Config');
-const HttpStatus = require('http-status-codes');
-const methods = require('methods');
-const {List, Set} = require('immutable');
-
-// controllers
-const HttpErrorController = require('../server/controllers/HttpErrorController');
-const RoutineRestController = require('../server/controllers/RoutineRestController');
-const ScriptRestController = require('../server/controllers/ScriptRestController');
-
-const getHttpMethods = function(): Set<RequestMethod> {
-  return new Set(methods);
-};
-
-const getControllers = function(app: Application): List<ControllerInterface> {
-  return new List([
-    new ScriptRestController(app),
-    new RoutineRestController(app),
-    new HttpErrorController(app, app.getAllowedRequestMethods(), HttpStatus.NOT_FOUND),
-    new HttpErrorController(app, getHttpMethods(), HttpStatus.METHOD_NOT_ALLOWED)
-  ]);
-};
+const getControllers = require('../server/controllersFactory');
 
 const bootstrap = function(argv: Argv): Application {
   const app = new Application(Config.fromArgv(argv));

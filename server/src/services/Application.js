@@ -48,6 +48,7 @@ class Application extends AbstractService {
     // Middleware
     this.webApplication.use(bodyParser.urlencoded({extended: true}));
     this.webApplication.disable('etag');
+    this.webApplication.disable('x-powered-by');
     if (this.getConfig().getBoolean('https.client.enable_delivery')) {
       this.webApplication.use('/', express.static(
         this.getConfig().getString('https.client.root')

@@ -26,6 +26,7 @@ import type Application from '../services/Application';
 import type {ControllerInterface} from './controllers/ControllerInterface';
 import type {HandleCallback, Request, Response, Router as ExpressRouter} from 'express';
 
+const Context = require('./RequestContext');
 const express = require('express');
 const Layer = require('express/lib/router/layer');
 
@@ -47,18 +48,15 @@ class Router {
     return this.webRouter;
   }
 
+  buildContext(request: Request, response: Response): Context {
+    return new Context(this.getApplication(), request, response);
+  }
+
   getRequestCallback(controller: ControllerInterface): HandleCallback {
+    // This handler will be called by express internals, with an undefined context
+    const self = this;
     return function(request: Request, response: Response, next: Function): void {
-      console.log(
-        '>',
-        controller.getName(),
-        controller.getRouteMethods(),
-        controller.getRoute(),
-        '-->',
-        request.method,
-        request.path
-      );
-      controller.onDispatch.bind(controller)(request, response);
+      controller.dispatch.bind(controller)(self.buildContext(request, response));
     };
   }
 

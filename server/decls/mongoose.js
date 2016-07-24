@@ -48,12 +48,12 @@ declare module mongoose {
     static count(conditions: Object, callback?: OperationCallback<number>): Query<number>;
     static find(conditions: Object, projection?: Object, options?: Object, callback?: OperationCallback<Array<Document>>): Query<Array<Document>>;
     static findById(id: DocumentId, projection?: Object, options?: Object, callback?: OperationCallback<?Document>): Query<?Document>;
-    static findByIdAndUpdate(id: DocumentId, update: Object, options: Object, callback?: OperationCallback<?Document>): Query<?Document>;
+    static findByIdAndUpdate(id: DocumentId, update: Object, options?: Object, callback?: OperationCallback<?Document>): Query<?Document>;
     static findByIdAndRemove(id: DocumentId, options: Object, callback?: (error: string) => void): Query<void>;
     static findOne(conditions: Object, projection?: Object, options?: Object, callback?: OperationCallback<?Document>): Query<?Document>;
     static findOneAndUpdate(conditions: Object, doc: Object, options?: Object, callback?: OperationCallback<?Document>): Query<?Document>;
 
-    save(callback: OperationCallback<Document>): Promise<Document>;
+    save(callback?: OperationCallback<Document>): Promise<Document>;
   }
 
   declare class Document {
@@ -62,9 +62,6 @@ declare module mongoose {
     set(path: string, value: any): Document;
     toObject(options?: Object): Object;
     update(doc: Object, options?: Object, callback?: OperationCallback<Document>): Query<Document>;
-  }
-
-  declare class Promise<T> {
   }
 
   declare class Query<T> {

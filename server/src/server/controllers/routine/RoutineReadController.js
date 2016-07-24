@@ -22,44 +22,34 @@
  * @flow
  */
 
-import type Application from '../../services/Application';
-import type Context from '../RequestContext';
+import type Context from '../../RequestContext';
+import type {Document} from 'mongoose';
 import type {RequestMethod} from 'express';
-import type {Set} from 'immutable';
 
-const AbstractController = require('./AbstractController');
+const AbstractController = require('../AbstractController');
+const HttpStatus = require('http-status-codes');
+const {Set} = require('immutable');
 
-// implement ../ControllerInterface
-class HttpErrorController extends AbstractController {
-
-  code: number;
-  methods: Set<RequestMethod>;
-
-  constructor(application: Application, methods: Set<RequestMethod>, code: number): void {
-    super(application);
-    this.methods = methods;
-    this.code = code;
-  }
-
-  getName(): string {
-    return super.getName() + '-' + this.getCode();
-  }
+class RoutineReadController extends AbstractController {
 
   getRoute(): string {
-    return '*';
+    return '/routines/:id([0-9a-fA-F]{24})';
   }
 
   getRouteMethods(): Set<RequestMethod> {
-    return this.methods;
-  }
-
-  getCode(): number {
-    return this.code;
+    return new Set(['get']);
   }
 
   genResponse(context: Context): void {
-    context.disposeWithError(this.getCode());
+    const target_id = context.getRequest().params.id;
+    this.getApplication().getScheduler().getRoutine(target_id, (routine: ?Document) => {
+      if (routine == null) {
+        context.disposeWithError(HttpStatus.NOT_FOUND, `The entity backed by the id '${target_id}' can't be found`);
+      } else {
+        context.sendDocument(routine);
+      }
+    });
   }
 }
 
-module.exports = HttpErrorController;
+module.exports = RoutineReadController;

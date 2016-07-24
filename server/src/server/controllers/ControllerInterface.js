@@ -23,7 +23,9 @@
  */
 
 import type Application from '../../services/Application';
-import type {Request, RequestMethod, Response} from 'express';
+import type Context from '../RequestContext';
+import type {RequestMethod} from 'express';
+import type {Set} from 'immutable';
 
 // eslint-disable-next-line no-undef
 export interface ControllerInterface {
@@ -32,6 +34,6 @@ export interface ControllerInterface {
   getApplication(): Application;
   getRoute(): string;
   getRouteMethods(): Set<RequestMethod>;
-  onDispatch(request: Request, response: Response): void;
-  genResponse(request: Request, response: Response): void;
+  genResponse(context: Context): void;
+  dispatch(context: Context): Promise<void>;
 }

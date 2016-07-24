@@ -22,44 +22,45 @@
  * @flow
  */
 
-import type Application from '../../services/Application';
-import type Context from '../RequestContext';
-import type {RequestMethod} from 'express';
 import type {Set} from 'immutable';
+import type {RequestMethod} from 'express';
+
+export type CrudFunction = 'CREATE' | 'DELETE' | 'LIST' | 'READ' | 'UPDATE';
+
+// Flow typeof won't work with import type
+const {Model} = require('mongoose');
 
 const AbstractController = require('./AbstractController');
 
-// implement ../ControllerInterface
-class HttpErrorController extends AbstractController {
+class AbstractDocumentController extends AbstractController {
 
-  code: number;
-  methods: Set<RequestMethod>;
-
-  constructor(application: Application, methods: Set<RequestMethod>, code: number): void {
-    super(application);
-    this.methods = methods;
-    this.code = code;
+  // This method should be overriden
+  getModel(): typeof Model {
+    const class_name = this.constructor.name;
+    throw new Error(`${class_name} must implement abstract method getModel`);
   }
 
-  getName(): string {
-    return super.getName() + '-' + this.getCode();
+  // This method should be overriden
+  getBaseRoute(): string {
+    const class_name = this.constructor.name;
+    throw new Error(`${class_name} must implement abstract method getBaseRoute`);
   }
 
   getRoute(): string {
-    return '*';
+    return this.getBaseRoute();
   }
 
+  // This method should be overriden
+  getCrudFunction(): CrudFunction {
+    const class_name = this.constructor.name;
+    throw new Error(`${class_name} must implement abstract method getCrudFunction`);
+  }
+
+  // This method should be overriden
   getRouteMethods(): Set<RequestMethod> {
-    return this.methods;
-  }
-
-  getCode(): number {
-    return this.code;
-  }
-
-  genResponse(context: Context): void {
-    context.disposeWithError(this.getCode());
+    const class_name = this.constructor.name;
+    throw new Error(`${class_name} must implement abstract method getRouteMethods`);
   }
 }
 
-module.exports = HttpErrorController;
+module.exports = AbstractDocumentController;

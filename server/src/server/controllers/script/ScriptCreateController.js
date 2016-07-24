@@ -22,44 +22,37 @@
  * @flow
  */
 
-import type Application from '../../services/Application';
-import type Context from '../RequestContext';
-import type {RequestMethod} from 'express';
-import type {Set} from 'immutable';
+import type Context from '../../RequestContext';
+import type {Document} from 'mongoose';
 
-const AbstractController = require('./AbstractController');
+// Flow typeof won't work with import type
+const {Model} = require('mongoose');
 
-// implement ../ControllerInterface
-class HttpErrorController extends AbstractController {
+const AbstractDocumentCreateController = require('../AbstractDocumentCreateController');
+const Script = require('../../../model/script');
 
-  code: number;
-  methods: Set<RequestMethod>;
+class ScriptCreateController extends AbstractDocumentCreateController {
 
-  constructor(application: Application, methods: Set<RequestMethod>, code: number): void {
-    super(application);
-    this.methods = methods;
-    this.code = code;
+  getBaseRoute(): string {
+    return '/scripts';
   }
 
-  getName(): string {
-    return super.getName() + '-' + this.getCode();
-  }
-
-  getRoute(): string {
-    return '*';
-  }
-
-  getRouteMethods(): Set<RequestMethod> {
-    return this.methods;
-  }
-
-  getCode(): number {
-    return this.code;
+  getModel(): typeof Model {
+    return Script;
   }
 
   genResponse(context: Context): void {
-    context.disposeWithError(this.getCode());
+    const body = context.getRequest().body;
+    const script = Script({
+      title: body.title,
+      optimisations: body.optimisations,
+      code: body.code,
+    });
+
+    context.execPromise(script.save()).then((script: Document) => {
+      context.sendDocument(script);
+    });
   }
 }
 
-module.exports = HttpErrorController;
+module.exports = ScriptCreateController;
