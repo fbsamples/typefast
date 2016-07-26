@@ -22,44 +22,37 @@
  * @flow
  */
 
-import type Application from '../../services/Application';
 import type Context from '../RequestContext';
-import type {RequestMethod} from 'express';
-import type {Set} from 'immutable';
+import type {Document} from 'mongoose';
 
-const AbstractController = require('./AbstractController');
+const AbstractDocumentController = require('./AbstractDocumentController');
+const HttpStatus = require('http-status-codes');
 
-// implement ../ControllerInterface
-class HttpErrorController extends AbstractController {
-
-  code: number;
-  methods: Set<RequestMethod>;
-
-  constructor(application: Application, methods: Set<RequestMethod>, code: number): void {
-    super(application);
-    this.methods = methods;
-    this.code = code;
-  }
-
-  getName(): string {
-    return super.getName() + '-' + this.getCode();
-  }
+class AbstractTargetAwareController extends AbstractDocumentController {
 
   getRoute(): string {
-    return '*';
+    return this.getBaseRoute() + '/:id([0-9a-fA-F]{24})';
   }
 
-  getRouteMethods(): Set<RequestMethod> {
-    return this.methods;
+  willLoadTarget(context: Context): Promise<Context> {
+    const target_id = context.getRequest().params.id;
+    return context.execPromise(this.getModel().findById(target_id).exec())
+      .then((doc: ?Document) => {
+        if (doc) {
+          return context.setTarget(doc);
+        }
+
+        return context.willDisposeWithError(
+          HttpStatus.NOT_FOUND,
+          `The entity backed by the id '${target_id}' can't be found`
+        );
+      });
   }
 
-  getCode(): number {
-    return this.code;
-  }
-
-  genResponse(context: Context): void {
-    context.disposeWithError(this.getCode());
+  willPrepareResponse(context: Context): Promise<Context> {
+    return super.willPrepareResponse(context)
+      .then((context: Context) => this.willLoadTarget(context));
   }
 }
 
-module.exports = HttpErrorController;
+module.exports = AbstractTargetAwareController;

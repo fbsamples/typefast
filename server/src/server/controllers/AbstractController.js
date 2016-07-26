@@ -23,9 +23,12 @@
  */
 
 import type Application from '../../services/Application';
-import type {Request, Response} from 'express';
+
+export type Resolve<T> = (result: Promise<T> | T) => void;
+export type Reject = (error: any) => void;
 
 const HttpStatus = require('http-status-codes');
+const Context = require('../RequestContext');
 
 class AbstractController {
 
@@ -43,36 +46,44 @@ class AbstractController {
     return this.application;
   }
 
-  getErrorBody(http_status: number, user_message?: string): Object {
-    const http_message = HttpStatus.getStatusText(http_status);
-    return {
-      error: {
-        code: http_status,
-        message: http_message,
-        user_message: user_message || http_message
-      }
-    };
-  }
-
-  returnError(
-    request: Request,
-    response: Response,
-    http_status: number,
-    user_message?: string
-  ): void {
-    response.status(http_status);
-    response.send(this.getErrorBody(http_status, user_message)).end();
-  }
-
   // This method should be overriden
-  genResponse(request: Request, response: Response): void {
-    this.returnError(request, response, HttpStatus.INTERNAL_SERVER_ERROR);
+  genResponse(context: Context): void {
+    const class_name = this.constructor.name;
+    context.disposeWithInternalError(
+      new Error(`${class_name} must implement abstract method genResponse`)
+    );
   }
 
-  onDispatch(request: Request, response: Response): void {
-    response.status(HttpStatus.OK);
-    response.set('Content-Type', 'application/json');
-    this.genResponse(request, response);
+  willPrepareResponse(context: Context): Promise<Context> {
+    return new Promise((resolve: Resolve<Context>, reject: Reject) => {
+      context.getResponse().status(HttpStatus.OK);
+      context.getResponse().set('Content-Type', 'application/json');
+      resolve(context);
+    });
+  }
+
+  willAuthorize(context: Context): Promise<Context> {
+    return new Promise((resolve: Resolve<Context>, reject: Reject) => resolve(context));
+  }
+
+  willValidate(context: Context): Promise<Context> {
+    return new Promise((resolve: Resolve<Context>, reject: Reject) => resolve(context));
+  }
+
+  willRespond(context: Context): Promise<Context> {
+    return new Promise((resolve: Resolve<Context>, reject: Reject) => {
+      context.once(Context.events.DISPOSE, () => resolve(context));
+      this.genResponse(context);
+    });
+  }
+
+  dispatch(context: Context): Promise<void> {
+    return this.willPrepareResponse(context)
+      .then((context: Context) => this.willAuthorize(context))
+      .then((context: Context) => this.willValidate(context))
+      .then((context: Context) => this.willRespond(context))
+      .then((context: Context) => context.dispose())
+      .catch((err: Error) => context.disposeWithInternalError(err));
   }
 }
 

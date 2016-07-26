@@ -22,44 +22,21 @@
  * @flow
  */
 
-import type Application from '../../services/Application';
-import type Context from '../RequestContext';
+import type {CrudFunction} from './AbstractDocumentController';
 import type {RequestMethod} from 'express';
-import type {Set} from 'immutable';
 
-const AbstractController = require('./AbstractController');
+const AbstractTargetAwareController = require('./AbstractTargetAwareController');
+const {Set} = require('immutable');
 
-// implement ../ControllerInterface
-class HttpErrorController extends AbstractController {
+class AbstractDocumentUpdateController extends AbstractTargetAwareController {
 
-  code: number;
-  methods: Set<RequestMethod>;
-
-  constructor(application: Application, methods: Set<RequestMethod>, code: number): void {
-    super(application);
-    this.methods = methods;
-    this.code = code;
-  }
-
-  getName(): string {
-    return super.getName() + '-' + this.getCode();
-  }
-
-  getRoute(): string {
-    return '*';
+  getCrudFunction(): CrudFunction {
+    return 'UPDATE';
   }
 
   getRouteMethods(): Set<RequestMethod> {
-    return this.methods;
-  }
-
-  getCode(): number {
-    return this.code;
-  }
-
-  genResponse(context: Context): void {
-    context.disposeWithError(this.getCode());
+    return new Set(['post']);
   }
 }
 
-module.exports = HttpErrorController;
+module.exports = AbstractDocumentUpdateController;

@@ -22,44 +22,40 @@
  * @flow
  */
 
-import type Application from '../../services/Application';
-import type Context from '../RequestContext';
+import type Context from '../../RequestContext';
+import type {Document} from 'mongoose';
 import type {RequestMethod} from 'express';
-import type {Set} from 'immutable';
 
-const AbstractController = require('./AbstractController');
+const AbstractController = require('../AbstractController');
+const HttpStatus = require('http-status-codes');
+const Script = require('../../../model/script');
+const {Set} = require('immutable');
 
-// implement ../ControllerInterface
-class HttpErrorController extends AbstractController {
-
-  code: number;
-  methods: Set<RequestMethod>;
-
-  constructor(application: Application, methods: Set<RequestMethod>, code: number): void {
-    super(application);
-    this.methods = methods;
-    this.code = code;
-  }
-
-  getName(): string {
-    return super.getName() + '-' + this.getCode();
-  }
+class RoutineCreateController extends AbstractController {
 
   getRoute(): string {
-    return '*';
+    return '/routines';
   }
 
   getRouteMethods(): Set<RequestMethod> {
-    return this.methods;
-  }
-
-  getCode(): number {
-    return this.code;
+    return new Set(['post']);
   }
 
   genResponse(context: Context): void {
-    context.disposeWithError(this.getCode());
+    const script_id = context.getRequest().body.script_id.toString();
+
+    context.execPromise(Script.findById(script_id).exec())
+      .then((script: ?Document) => {
+        if (script == null) {
+          context.disposeWithError(HttpStatus.BAD_REQUEST, `Unknown script with id '${script_id}'`);
+        } else {
+          this.getApplication().getScheduler().exec(
+            script_id,
+            (routine: Document) => { context.sendDocument(routine); }
+          );
+        }
+      });
   }
 }
 
-module.exports = HttpErrorController;
+module.exports = RoutineCreateController;

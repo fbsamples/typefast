@@ -24,7 +24,7 @@
 
 import type {Document, Schema} from 'mongoose';
 
-export type OnScheduleCallback = (routine_id: string) => void;
+export type OnScheduleCallback = (routine: Document) => void;
 export type OnLengthCallback = (count: number) => void;
 export type OnRoutineCallback = (routine: ?Document) => void;
 export type RoutineEndingOperation = (routine: Document, callback?: OnRoutineCallback) => Queue;
@@ -70,7 +70,7 @@ class Queue {
       script_id: script_id,
       visible_from: date,
     });
-    document.save((err: ?Error, res: Document) => res && callback && callback(res.get('id')));
+    document.save((err: ?Error, res: Document) => res && callback && callback(res));
 
     return this;
   }

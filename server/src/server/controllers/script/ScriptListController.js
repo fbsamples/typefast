@@ -22,44 +22,22 @@
  * @flow
  */
 
-import type Application from '../../services/Application';
-import type Context from '../RequestContext';
-import type {RequestMethod} from 'express';
-import type {Set} from 'immutable';
+// Flow typeof won't work with import type
+const {Model} = require('mongoose');
 
-const AbstractController = require('./AbstractController');
+const AbstractDocumentListController = require('../AbstractDocumentListController');
+const Script = require('../../../model/script');
 
 // implement ../ControllerInterface
-class HttpErrorController extends AbstractController {
+class ScriptListController extends AbstractDocumentListController {
 
-  code: number;
-  methods: Set<RequestMethod>;
-
-  constructor(application: Application, methods: Set<RequestMethod>, code: number): void {
-    super(application);
-    this.methods = methods;
-    this.code = code;
+  getBaseRoute(): string {
+    return '/scripts';
   }
 
-  getName(): string {
-    return super.getName() + '-' + this.getCode();
-  }
-
-  getRoute(): string {
-    return '*';
-  }
-
-  getRouteMethods(): Set<RequestMethod> {
-    return this.methods;
-  }
-
-  getCode(): number {
-    return this.code;
-  }
-
-  genResponse(context: Context): void {
-    context.disposeWithError(this.getCode());
+  getModel(): typeof Model {
+    return Script;
   }
 }
 
-module.exports = HttpErrorController;
+module.exports = ScriptListController;

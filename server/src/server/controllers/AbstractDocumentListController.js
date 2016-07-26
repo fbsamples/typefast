@@ -22,44 +22,33 @@
  * @flow
  */
 
-import type Application from '../../services/Application';
 import type Context from '../RequestContext';
+import type {CrudFunction} from './AbstractDocumentController';
+import type {Document} from 'mongoose';
 import type {RequestMethod} from 'express';
-import type {Set} from 'immutable';
 
-const AbstractController = require('./AbstractController');
+const AbstractDocumentController = require('./AbstractDocumentController');
+const {List, Set} = require('immutable');
 
-// implement ../ControllerInterface
-class HttpErrorController extends AbstractController {
+class AbstractDocumentListController extends AbstractDocumentController {
 
-  code: number;
-  methods: Set<RequestMethod>;
-
-  constructor(application: Application, methods: Set<RequestMethod>, code: number): void {
-    super(application);
-    this.methods = methods;
-    this.code = code;
-  }
-
-  getName(): string {
-    return super.getName() + '-' + this.getCode();
-  }
-
-  getRoute(): string {
-    return '*';
+  getCrudFunction(): CrudFunction {
+    return 'READ';
   }
 
   getRouteMethods(): Set<RequestMethod> {
-    return this.methods;
-  }
-
-  getCode(): number {
-    return this.code;
+    return new Set(['get']);
   }
 
   genResponse(context: Context): void {
-    context.disposeWithError(this.getCode());
+    context.execPromise(this.getModel().find({}).exec()).then(
+      (docs: Array<Document>) => {
+        context.getResponse().send({
+          data: new List(docs).map(context.exportDocument)
+        });
+      }
+    );
   }
 }
 
-module.exports = HttpErrorController;
+module.exports = AbstractDocumentListController;

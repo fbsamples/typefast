@@ -20,6 +20,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+//import type {EventEmitter} from 'events';
+
 declare module express {
 
   declare type StringKeyMap<T> = { [key: string]: T };
@@ -157,6 +159,8 @@ declare module express {
     jsonp(body?: StringKeyMap<string>): Response;
     links(links: StringKeyMap<string>): Response;
     location(path: string): Response;
+    on(event: string, callback: Function): void;
+    once(event: string, callback: Function): void;
     redirect(status?: number, path: string): Response;
     render(view: string, locals?: StringKeyMap<string>, callback?: (err: Error, html: string) => void): Response;
     send(body: Buffer | StringKeyMap<any> | string | Array<string>): Response;
