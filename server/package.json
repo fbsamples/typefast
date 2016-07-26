@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "transpile": "babel src/ -d build/",
     "start": "node index.js --transpile --mode=server",
-    "dev": "nodemon index.js --transpile",
+    "dev": "nodemon index.js --transpile --inline-config='{\"debug\": true}'",
     "definition-generation": "node bin/fbTypesGenerator.js"
   },
   "repository": {
