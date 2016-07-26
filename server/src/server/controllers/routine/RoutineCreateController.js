@@ -43,6 +43,8 @@ class RoutineCreateController extends AbstractController {
 
   genResponse(context: Context): void {
     const script_id = context.getRequest().body.script_id.toString();
+    // FIXME provide context from client
+    const ctx_id = this.getApplication().getConfig().getString('DEPRECATED__cxt_id');
 
     context.execPromise(Script.findById(script_id).exec())
       .then((script: ?Document) => {
@@ -51,6 +53,7 @@ class RoutineCreateController extends AbstractController {
         } else {
           this.getApplication().getScheduler().exec(
             script_id,
+            ctx_id,
             (routine: Document) => { context.sendDocument(routine); }
           );
         }

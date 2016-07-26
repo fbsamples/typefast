@@ -47,6 +47,8 @@ class ScriptCreateController extends AbstractDocumentCreateController {
       title: body.title,
       optimisations: body.optimisations,
       code: body.code,
+      // FIXME provide context type from client
+      context_type: 'AdAccount',
     });
 
     context.execPromise(script.save()).then((script: Document) => {

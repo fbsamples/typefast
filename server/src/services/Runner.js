@@ -34,18 +34,24 @@ const sandbox_template = require('../sandbox/template');
 // implement ServiceInterface
 class Runner extends AbstractService {
 
+  contextId: string;
   sandbox: Sandbox;
   scriptId: string;
 
-  constructor(config: Config, script_id: string): void {
+  constructor(config: Config, script_id: string, ctx_id: string): void {
     super(config);
     this.sandbox = new Sandbox();
     this.sandbox.setTimeout(config.getInteger('sandbox.timeout'));
+    this.contextId = ctx_id;
     this.scriptId = script_id;
   }
 
   getSandbox(): Sandbox {
     return this.sandbox;
+  }
+
+  getContextId(): string {
+    return this.contextId;
   }
 
   getScriptId(): string {
@@ -61,7 +67,7 @@ class Runner extends AbstractService {
       if (script == null) {
         throw new Error(`Unknown script ${script_id}`);
       }
-      this.getSandbox().setSharedObject(sandbox_template(this.getConfig(), script));
+      this.getSandbox().setSharedObject(sandbox_template(this.getConfig(), script, this.getContextId()));
       this.emit(Runner.events.INIT);
       // Prioritize service listeners as sanxbox execute syncronously
       process.nextTick(() => {

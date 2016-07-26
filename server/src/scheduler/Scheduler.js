@@ -70,19 +70,19 @@ class Scheduler {
     return new List([this.getHighPriQueue(), this.getQueue()]);
   }
 
-  enqueue(queue: Queue, script_id: string, date: Date, callback?: OnScheduleCallback): this {
-    queue.createRoutine(script_id, date, callback);
+  enqueue(queue: Queue, script_id: string, ctx_id: string, date: Date, callback?: OnScheduleCallback): this {
+    queue.createRoutine(script_id, ctx_id, date, callback);
 
     return this;
   }
 
-  schedule(script_id: string, date: Date, callback?: OnScheduleCallback): this {
-    return this.enqueue(this.getQueue(), script_id, date, callback);
+  schedule(script_id: string, ctx_id: string, date: Date, callback?: OnScheduleCallback): this {
+    return this.enqueue(this.getQueue(), script_id, ctx_id, date, callback);
   }
 
   // Will schedule on the hi-pri queue
-  exec(script_id: string, callback?: OnScheduleCallback): this {
-    return this.enqueue(this.getHighPriQueue(), script_id, new Date(), callback);
+  exec(script_id: string, ctx_id: string, callback?: OnScheduleCallback): this {
+    return this.enqueue(this.getHighPriQueue(), script_id, ctx_id, new Date(), callback);
   }
 
   getRoutine(id: string, callback: OnRoutineContextualizedCallback): this {

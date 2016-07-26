@@ -72,9 +72,10 @@ class Worker extends AbstractService {
   ): void {
     const id = routine.get('id');
     const script_id = routine.get('script_id');
+    const ctx_id = routine.get('context_id');
 
     // FIXME no transpile by default
-    const argv = ['index.js', '--transpile', '--mode', 'runner', '--script-id', script_id];
+    const argv = ['index.js', '--transpile', '--mode', 'runner', '--script-id', script_id, '--ctx-id', ctx_id];
     const child = execFile('node', argv);
 
     this.log(`Routine ${id} Started`);
