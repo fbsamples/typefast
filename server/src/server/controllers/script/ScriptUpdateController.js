@@ -45,12 +45,12 @@ class ScriptUpdateController extends AbstractDocumentUpdateController {
   genResponse(context: Context): void {
     const body = context.getRequest().body;
     const data = {
-      title: body.title,
-      optimisations: body.optimisations || [],
-      code: body.code,
+      title: body.title || context.getTarget().get('title'),
+      optimisations: body.optimisations || context.getTarget().get('optimisations'),
+      code: body.code || context.getTarget().get('code'),
     };
 
-    context.execPromise(context.getTarget().update(data, { new: true }).exec())
+    context.execPromise(context.getTarget().set(data).save({ new: true }))
       .then((doc: Document) => context.sendDocument(doc));
   }
 }

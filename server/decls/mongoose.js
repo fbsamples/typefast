@@ -59,7 +59,7 @@ declare module mongoose {
   declare class Document {
     get(path: string): any;
     save(options?: Object, safe?: Object, validate_before_save?: bool, callback?: OperationCallback<Document>): Promise<Document>;
-    set(path: string, value: any): Document;
+    set(path: string | Object, value?: any): Document;
     toObject(options?: Object): Object;
     update(doc: Object, options?: Object, callback?: OperationCallback<Document>): Query<Document>;
   }
