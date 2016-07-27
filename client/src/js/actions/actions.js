@@ -60,7 +60,7 @@ export function saveScript() {
     const optimisations = getState().optimisations;
     let id = '';
 
-    if(currentScript) { id = currentScript._id }
+    if(currentScript) { id = currentScript.id }
 
     return fetch('/scripts/' + id, {
       method: 'POST',
@@ -82,10 +82,10 @@ export function saveScript() {
       dispatch({
         type: SAVE_SCRIPT_SUCCESS,
         payload: {
-          script: response.script
+          script: response
         }
       })
-      console.log('save', response.script);
+      console.log('save', response);
     })
   }
 }
@@ -99,7 +99,7 @@ export const PREVIEW_SCRIPT_FAILURE = 'PREVIEW_SCRIPT_FAILURE';
 export function previewScript() {
   return function(dispatch, getState) {
     dispatch({type: PREVIEW_SCRIPT_REQUEST});
-    return fetch("/exec/" + getState().currentScript._id, {
+    return fetch("/exec/" + getState().currentScript.id, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -130,19 +130,19 @@ export function fetchScripts() {
   return function(dispatch) {
     dispatch({type: FETCHING_SCRIPTS_REQUEST});
     return fetch('/scripts')
-    .then(handleErrors)
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(json) {
-      console.log(json);
-      dispatch({
-        type: FETCHING_SCRIPTS_SUCCESS,
-        payload: {
-          scripts: json
-        }
+      .then(handleErrors)
+      .then(function(response) {
+        return response.json();
       })
-    })
+      .then(function(json) {
+        console.log(json);
+        dispatch({
+          type: FETCHING_SCRIPTS_SUCCESS,
+          payload: {
+            scripts: json
+          }
+        })
+      })
     //.catch((error) => console.log(error))
   }
 }

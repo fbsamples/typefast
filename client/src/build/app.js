@@ -76879,7 +76879,7 @@ function saveScript() {
     var id = '';
 
     if (currentScript) {
-      id = currentScript._id;
+      id = currentScript.id;
     }
 
     return (0, _isomorphicFetch2.default)('/scripts/' + id, {
@@ -76899,10 +76899,10 @@ function saveScript() {
       dispatch({
         type: SAVE_SCRIPT_SUCCESS,
         payload: {
-          script: response.script
+          script: response
         }
       });
-      console.log('save', response.script);
+      console.log('save', response);
     });
   };
 }
@@ -76916,7 +76916,7 @@ var PREVIEW_SCRIPT_FAILURE = exports.PREVIEW_SCRIPT_FAILURE = 'PREVIEW_SCRIPT_FA
 function previewScript() {
   return function (dispatch, getState) {
     dispatch({ type: PREVIEW_SCRIPT_REQUEST });
-    return (0, _isomorphicFetch2.default)("/exec/" + getState().currentScript._id, {
+    return (0, _isomorphicFetch2.default)("/exec/" + getState().currentScript.id, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -77510,7 +77510,8 @@ function typefastApp() {
       });
     case _actions.SAVE_SCRIPT_SUCCESS:
       var script = {};
-      script[action.payload.script._id] = action.payload.script;
+
+      script[action.payload.script.id] = action.payload.script;
       var updatedScripts = Object.assign({}, state.scripts, script);
       return Object.assign({}, state, {
         isSaving: false,
@@ -77526,9 +77527,9 @@ function typefastApp() {
     case _actions.FETCHING_SCRIPTS_SUCCESS:
       var firstScript = void 0;
       if (!state.currentScript) {
-        firstScript = action.payload.scripts[0];
+        firstScript = action.payload.scripts.data[0];
       }
-      var scripts = action.payload.scripts.reduce(function (o, v, i) {
+      var scripts = action.payload.scripts.data.reduce(function (o, v, i) {
         o[v._id] = v;return o;
       }, {});
       return Object.assign({}, state, {

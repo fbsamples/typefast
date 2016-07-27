@@ -54,7 +54,8 @@ function typefastApp(state = {
       })
     case SAVE_SCRIPT_SUCCESS:
       let script = {};
-      script[action.payload.script._id] = action.payload.script;
+
+      script[action.payload.script.id] = action.payload.script;
       const updatedScripts = Object.assign({}, state.scripts, script);
       return Object.assign({}, state, {
         isSaving: false,
@@ -72,9 +73,9 @@ function typefastApp(state = {
     case FETCHING_SCRIPTS_SUCCESS:
       let firstScript;
       if (!state.currentScript) {
-        firstScript = action.payload.scripts[0]
+        firstScript = action.payload.scripts.data[0]
       }
-      const scripts = action.payload.scripts.reduce(
+      const scripts = action.payload.scripts.data.reduce(
         (o, v, i) => { o[v._id] = v; return o; },
         {}
       );
