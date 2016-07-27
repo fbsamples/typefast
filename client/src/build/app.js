@@ -76877,7 +76877,7 @@ function saveScript() {
     var code = getState().editorValue;
     var optimisations = getState().optimisations;
     var id = '';
-
+    debugger;
     if (currentScript) {
       id = currentScript.id;
     }

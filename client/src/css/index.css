@@ -65,6 +65,13 @@ body {
   padding-top: 0;
 }
 
+.code-panel {
+  width: 400px;
+  display: inline-block;
+  margin: 10px;
+  min-height: 400px;
+  margin: 10px;
+}
 
 /*
 @media (min-width: 768px) {

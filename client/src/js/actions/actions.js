@@ -59,7 +59,7 @@ export function saveScript() {
     const code = getState().editorValue
     const optimisations = getState().optimisations;
     let id = '';
-
+    debugger
     if(currentScript) { id = currentScript.id }
 
     return fetch('/scripts/' + id, {
