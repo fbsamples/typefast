@@ -41,7 +41,7 @@ class AbstractDocumentListController extends AbstractDocumentController {
   }
 
   genResponse(context: Context): void {
-    context.execPromise(this.getModel().find({}).exec()).then(
+    context.execPromise(this.getModel().find({}).sort({updated_time: '-1'}).exec()).then(
       (docs: Array<Document>) => {
         context.getResponse().send({
           data: new List(docs).map(context.exportDocument)
