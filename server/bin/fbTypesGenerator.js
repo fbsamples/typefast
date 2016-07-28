@@ -23,12 +23,12 @@
 require('babel-register');
 require('babel-polyfill');
 const fs = require('fs');
-const Config = require('./Config');
+const Config = require('../src/Config');
 const {Map} = require('immutable');
 const NodeSpec = require('../../sdk/src/specs/NodeSpec');
 const SpecRegistry = require('../../sdk/src/SpecRegistry');
-const {getObject} = require('./GraphSchemaLoader');
-const config = Config.fromArgv();
+const {getObject} = require('../src/sandbox/GraphSchemaLoader');
+const config = Config.fromArgv(new Map());
 const schema_bundle = config.getString('graph.schema.bundle');
 const outputFilename = '../client/src/js/tern/fb_defs.js';
 

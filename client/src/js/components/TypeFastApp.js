@@ -1,18 +1,18 @@
-const React = require('react');
-const Radium = require('radium');
-import { connect } from 'react-redux'
-import { fetchScripts } from '../actions/actions.js'
+import  React  from 'react';
+import  Radium from 'radium';
+import { connect } from 'react-redux';
+import { fetchScripts } from '../actions/actions.js';
 import TypeFastNavigationContainer from '../containers/TypeFastNavigationContainer';
 import TypeFastEditorContainer from '../containers/TypeFastEditorContainer';
 import TypeFastListingContainer from '../containers/TypeFastListingContainer';
 
 
-const TypeFastApp = React.createClass({
-  componentDidMount: function() {
+class TypeFastApp extends React.Component {
+  componentDidMount() {
     this.props.dispatch(fetchScripts());
-  },
+  }
 
-  render: function() {
+  render() {
     return (
       <div style={[styles.container]}>
         <TypeFastNavigationContainer />
@@ -21,7 +21,7 @@ const TypeFastApp = React.createClass({
       </div>
     )
   }
-})
+}
 
 const styles = {
   container: {

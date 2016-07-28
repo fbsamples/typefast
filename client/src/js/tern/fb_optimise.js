@@ -1,7 +1,7 @@
 // Parses comments above variable declarations, function declarations,
 // and object properties as docstrings and JSDoc-style type
 // annotations.
-const walk = require("acorn/dist/walk");
+import walk from "acorn/dist/walk";
 
 module.exports = function(infer) {
   var fieldsAccessed = {};

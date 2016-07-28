@@ -1,12 +1,11 @@
-const React = require('react');
-const TypeFastLogWindow = require('../components/TypeFastLogWindow')
-const TypeFastEditor = require('../components/TypeFastEditor')
-import { codeChanged, optimisationComplete } from '../actions/actions'
+import React from 'react';
+import TypeFastLogWindow from '../components/TypeFastLogWindow';
+import TypeFastEditor from '../components/TypeFastEditor';
+import { codeChanged, optimisationComplete } from '../actions/actions';
 import { connect } from 'react-redux';
 
-const TypeFastEditorContainer = React.createClass({
-
-  render: function() {
+class TypeFastEditorContainer extends React.Component {
+  render() {
     const hidden = this.props.currentPane !== 'editor' ? 'hidden' : '';
     return (
       <div className={`container-fluid content ${hidden}`}>
@@ -21,7 +20,7 @@ const TypeFastEditorContainer = React.createClass({
       </div>
     )
   }
-})
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -39,8 +38,7 @@ const mapStateToProps = (state) => {
     script: state.currentScript,
     isFetching: state.isFetching,
     log: state.log,
-    currentPane: state.currentPane,
-  //  editorValue: state.editorValue,
+    currentPane: state.currentPane
   }
 }
 

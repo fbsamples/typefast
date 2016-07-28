@@ -36,7 +36,6 @@ class AbstractTargetAwareController extends AbstractDocumentController {
 
   willLoadTarget(context: Context): Promise<Context> {
     const target_id = context.getRequest().params.id;
-    debugger
     return context.execPromise(this.getModel().findById(target_id).exec())
       .then((doc: ?Document) => {
         if (doc) {

@@ -76,188 +76,6 @@ module.exports = {
                 "!doc": "Region ID"
             }
         },
-        "SystemUser_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +SystemUser, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +SystemUser",
-                "!doc": "Return the next SystemUser item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +SystemUser",
-                "!doc": "Gets the current SystemUser of the cursor"
-            }
-        },
-        "ReachFrequencyPrediction_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +ReachFrequencyPrediction, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +ReachFrequencyPrediction",
-                "!doc": "Return the next ReachFrequencyPrediction item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +ReachFrequencyPrediction",
-                "!doc": "Gets the current ReachFrequencyPrediction of the cursor"
-            }
-        },
-        "AdsPixel_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +AdsPixel, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +AdsPixel",
-                "!doc": "Return the next AdsPixel item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +AdsPixel",
-                "!doc": "Gets the current AdsPixel of the cursor"
-            }
-        },
-        "null_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +null, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +null",
-                "!doc": "Return the next null item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +null",
-                "!doc": "Gets the current null of the cursor"
-            }
-        },
-        "BusinessPageRequest_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +BusinessPageRequest, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +BusinessPageRequest",
-                "!doc": "Return the next BusinessPageRequest item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +BusinessPageRequest",
-                "!doc": "Gets the current BusinessPageRequest of the cursor"
-            }
-        },
-        "AudiencePermission_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +AudiencePermission, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +AudiencePermission",
-                "!doc": "Return the next AudiencePermission item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +AudiencePermission",
-                "!doc": "Gets the current AudiencePermission of the cursor"
-            }
-        },
-        "InstagramUser_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +InstagramUser, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +InstagramUser",
-                "!doc": "Return the next InstagramUser item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +InstagramUser",
-                "!doc": "Gets the current InstagramUser of the cursor"
-            }
-        },
         "ProductCatalog_cursor": {
             "!proto": "cursor_prototype",
             "forEach": {
@@ -282,84 +100,6 @@ module.exports = {
             "current": {
                 "!type": "fn() -> +ProductCatalog",
                 "!doc": "Gets the current ProductCatalog of the cursor"
-            }
-        },
-        "ProfilePictureSource_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +ProfilePictureSource, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +ProfilePictureSource",
-                "!doc": "Return the next ProfilePictureSource item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +ProfilePictureSource",
-                "!doc": "Gets the current ProfilePictureSource of the cursor"
-            }
-        },
-        "Page_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +Page, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +Page",
-                "!doc": "Return the next Page item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +Page",
-                "!doc": "Gets the current Page of the cursor"
-            }
-        },
-        "BusinessAdAccountRequest_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +BusinessAdAccountRequest, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +BusinessAdAccountRequest",
-                "!doc": "Return the next BusinessAdAccountRequest item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +BusinessAdAccountRequest",
-                "!doc": "Gets the current BusinessAdAccountRequest of the cursor"
             }
         },
         "MeasurementReport_cursor": {
@@ -388,6 +128,110 @@ module.exports = {
                 "!doc": "Gets the current MeasurementReport of the cursor"
             }
         },
+        "AdStudy_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +AdStudy, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +AdStudy",
+                "!doc": "Return the next AdStudy item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +AdStudy",
+                "!doc": "Gets the current AdStudy of the cursor"
+            }
+        },
+        "BusinessAdAccountRequest_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +BusinessAdAccountRequest, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +BusinessAdAccountRequest",
+                "!doc": "Return the next BusinessAdAccountRequest item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +BusinessAdAccountRequest",
+                "!doc": "Gets the current BusinessAdAccountRequest of the cursor"
+            }
+        },
+        "InstagramUser_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +InstagramUser, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +InstagramUser",
+                "!doc": "Return the next InstagramUser item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +InstagramUser",
+                "!doc": "Gets the current InstagramUser of the cursor"
+            }
+        },
+        "BusinessPageRequest_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +BusinessPageRequest, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +BusinessPageRequest",
+                "!doc": "Return the next BusinessPageRequest item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +BusinessPageRequest",
+                "!doc": "Gets the current BusinessPageRequest of the cursor"
+            }
+        },
         "AdAccount_cursor": {
             "!proto": "cursor_prototype",
             "forEach": {
@@ -414,73 +258,341 @@ module.exports = {
                 "!doc": "Gets the current AdAccount of the cursor"
             }
         },
+        "null_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +null, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +null",
+                "!doc": "Return the next null item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +null",
+                "!doc": "Gets the current null of the cursor"
+            }
+        },
+        "Page_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +Page, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +Page",
+                "!doc": "Return the next Page item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +Page",
+                "!doc": "Gets the current Page of the cursor"
+            }
+        },
+        "AdsPixel_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +AdsPixel, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +AdsPixel",
+                "!doc": "Return the next AdsPixel item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +AdsPixel",
+                "!doc": "Gets the current AdsPixel of the cursor"
+            }
+        },
+        "ProfilePictureSource_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +ProfilePictureSource, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +ProfilePictureSource",
+                "!doc": "Return the next ProfilePictureSource item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +ProfilePictureSource",
+                "!doc": "Gets the current ProfilePictureSource of the cursor"
+            }
+        },
+        "AudiencePermission_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +AudiencePermission, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +AudiencePermission",
+                "!doc": "Return the next AudiencePermission item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +AudiencePermission",
+                "!doc": "Gets the current AudiencePermission of the cursor"
+            }
+        },
+        "SystemUser_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +SystemUser, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +SystemUser",
+                "!doc": "Return the next SystemUser item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +SystemUser",
+                "!doc": "Gets the current SystemUser of the cursor"
+            }
+        },
+        "OfflineConversionDataSet_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +OfflineConversionDataSet, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +OfflineConversionDataSet",
+                "!doc": "Return the next OfflineConversionDataSet item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +OfflineConversionDataSet",
+                "!doc": "Gets the current OfflineConversionDataSet of the cursor"
+            }
+        },
+        "ReachFrequencyPrediction_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +ReachFrequencyPrediction, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +ReachFrequencyPrediction",
+                "!doc": "Return the next ReachFrequencyPrediction item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +ReachFrequencyPrediction",
+                "!doc": "Gets the current ReachFrequencyPrediction of the cursor"
+            }
+        },
         "Business": {
-            "getSystemUsers": {
-                "!type": "fn() -> +SystemUser_cursor",
-                "!doc": "The business's system users"
+            "getproduct_catalogs": {
+                "!type": "fn() -> +ProductCatalog_cursor",
+                "!doc": "The product catalogs that belong to this business"
             },
-            "getReachFrequencyPredictions": {
-                "!type": "fn() -> +ReachFrequencyPrediction_cursor",
-                "!doc": "The GRP Plans that business owns"
+            "createmeasurement_reports": {
+                "!type": "fn() -> +MeasurementReport_cursor",
+                "!doc": "Creates a multi-channel report for this business"
             },
-            "getAdsPixels": {
-                "!type": "fn() -> +AdsPixel_cursor",
-                "!doc": "The pixels owned by this business"
+            "getad_studies": {
+                "!type": "fn() -> +AdStudy_cursor",
+                "!doc": "The studies that this business owns"
             },
-            "deletes": {
-                "!type": "fn() -> +null_cursor",
-                "!doc": "SELF_EXPLANATORY"
+            "getowned_ad_account_requests": {
+                "!type": "fn() -> +BusinessAdAccountRequest_cursor",
+                "!doc": "The ad accounts that the business has requested ownership of"
             },
-            "getBusinessPageRequests": {
-                "!type": "fn() -> +BusinessPageRequest_cursor",
-                "!doc": "The pages that the business has requested ownership of"
-            },
-            "getAudiencePermissions": {
-                "!type": "fn() -> +AudiencePermission_cursor",
-                "!doc": "The shared audience permissions of audiences owned by this business"
-            },
-            "getInstagramUsers": {
+            "getowned_instagram_accounts": {
                 "!type": "fn() -> +InstagramUser_cursor",
                 "!doc": "The Instagram accounts this business owns"
             },
-            "createProductCatalogs": {
+            "getowned_page_requests": {
+                "!type": "fn() -> +BusinessPageRequest_cursor",
+                "!doc": "The pages that the business has requested ownership of"
+            },
+            "getclient_ad_accounts": {
+                "!type": "fn() -> +AdAccount_cursor",
+                "!doc": "The ad accounts that the business has access to"
+            },
+            "getassigned_product_catalogs": {
+                "!type": "fn() -> +ProductCatalog_cursor",
+                "!doc": "The product catalogs assigned to a specific user from this business"
+            },
+            "createadaccounts": {
+                "!type": "fn() -> +null_cursor",
+                "!doc": "SELF_EXPLANATORY"
+            },
+            "getclient_pages": {
+                "!type": "fn() -> +Page_cursor",
+                "!doc": "The pages that the business has access to"
+            },
+            "getmeasurement_reports": {
+                "!type": "fn() -> +MeasurementReport_cursor",
+                "!doc": "The measurement reports that the business owns"
+            },
+            "createproduct_catalogs": {
                 "!type": "fn() -> +ProductCatalog_cursor",
                 "!doc": "SELF_EXPLANATORY"
             },
-            "getProfilePictureSources": {
+            "getadspixels": {
+                "!type": "fn() -> +AdsPixel_cursor",
+                "!doc": "The pixels this business has access to"
+            },
+            "createad_studies": {
+                "!type": "fn() -> +AdStudy_cursor",
+                "!doc": "Creates an Ad Study for a business."
+            },
+            "getassigned_ad_accounts": {
+                "!type": "fn() -> +AdAccount_cursor",
+                "!doc": "The ad accounts assigned to a specific user from this business"
+            },
+            "getassigned_pages": {
+                "!type": "fn() -> +Page_cursor",
+                "!doc": "The pages assigned to a specific user from this business"
+            },
+            "getinstagram_accounts": {
+                "!type": "fn() -> +InstagramUser_cursor",
+                "!doc": "The Instagram accounts this business has access to"
+            },
+            "getpictures": {
                 "!type": "fn() -> +ProfilePictureSource_cursor",
                 "!doc": "The picture of this business"
             },
-            "getPages": {
-                "!type": "fn() -> +Page_cursor",
-                "!doc": "The pages that the business owns"
+            "getshared_audience_permissions": {
+                "!type": "fn() -> +AudiencePermission_cursor",
+                "!doc": "The shared audience permissions of audiences owned by this business"
+            },
+            "getsystem_users": {
+                "!type": "fn() -> +SystemUser_cursor",
+                "!doc": "The business's system users"
+            },
+            "getoffline_conversion_data_sets": {
+                "!type": "fn() -> +OfflineConversionDataSet_cursor",
+                "!doc": "The offline conversion datasets associated with the buiness"
+            },
+            "getreceived_audience_permissions": {
+                "!type": "fn() -> +AudiencePermission_cursor",
+                "!doc": "The shared audiences permissions from other business to this business"
+            },
+            "getowned_ad_accounts": {
+                "!type": "fn() -> +AdAccount_cursor",
+                "!doc": "The ad accounts that the business owns"
             },
             "#get": {
                 "!type": "fn() -> +null_cursor"
             },
-            "getProductCatalogs": {
-                "!type": "fn() -> +ProductCatalog_cursor",
-                "!doc": "The product catalogs that belong to this business"
+            "getowned_pages": {
+                "!type": "fn() -> +Page_cursor",
+                "!doc": "The pages that the business owns"
             },
-            "creates": {
+            "getclient_ad_account_requests": {
+                "!type": "fn() -> +BusinessAdAccountRequest_cursor",
+                "!doc": "The ad accounts that the business has requested access to"
+            },
+            "createoffline_conversion_data_sets": {
+                "!type": "fn() -> +OfflineConversionDataSet_cursor",
+                "!doc": "Create an offline conversion data set owned by the business"
+            },
+            "getclient_page_requests": {
+                "!type": "fn() -> +BusinessPageRequest_cursor",
+                "!doc": "The pages that the business has requested access to"
+            },
+            "getgrp_plans": {
+                "!type": "fn() -> +ReachFrequencyPrediction_cursor",
+                "!doc": "The GRP Plans that business owns"
+            },
+            "deleteapps": {
                 "!type": "fn() -> +null_cursor",
                 "!doc": "SELF_EXPLANATORY"
             },
-            "getBusinessAdAccountRequests": {
-                "!type": "fn() -> +BusinessAdAccountRequest_cursor",
-                "!doc": "The ad accounts that the business has requested ownership of"
+            "createuserpermissions": {
+                "!type": "fn() -> +null_cursor",
+                "!doc": "SELF_EXPLANATORY"
             },
-            "getMeasurementReports": {
-                "!type": "fn() -> +MeasurementReport_cursor",
-                "!doc": "The measurement reports that the business owns"
-            },
-            "createMeasurementReports": {
-                "!type": "fn() -> +MeasurementReport_cursor",
-                "!doc": "Creates a multi-channel report for this business"
-            },
-            "getAdAccounts": {
-                "!type": "fn() -> +AdAccount_cursor",
-                "!doc": "The ad accounts that the business owns"
+            "getowned_pixels": {
+                "!type": "fn() -> +AdsPixel_cursor",
+                "!doc": "The pixels owned by this business"
             },
             "id": {
                 "!type": "string",
@@ -606,7 +718,7 @@ module.exports = {
                 "!type": "fn(params: Object) -> bool",
                 "!doc": "Delete the ProductItem"
             },
-            "getProductSets": {
+            "getproduct_sets": {
                 "!type": "fn() -> +ProductSet_cursor",
                 "!doc": "Product sets that this item belongs to"
             },
@@ -806,19 +918,19 @@ module.exports = {
                 "!doc": "List of supported targeting countries"
             },
             "max_campaign_duration": {
-                "!type": "string",
+                "!type": "Object",
                 "!doc": "Individual account reach and frequency maximum campaign duration."
             },
             "max_days_to_finish": {
-                "!type": "string",
+                "!type": "Object",
                 "!doc": "Individual account reach and frequency maximum days to finish."
             },
             "min_campaign_duration": {
-                "!type": "string",
+                "!type": "Object",
                 "!doc": "Individual account reach and frequency minimum campaign duration."
             },
             "min_reach_limits": {
-                "!type": "string",
+                "!type": "Object",
                 "!doc": "Individual reach and frequency configurations name"
             }
         },
@@ -852,6 +964,23 @@ module.exports = {
                 "!doc": "The username that is needed to access the url"
             }
         },
+        "Domain": {
+            "#get": {
+                "!type": "fn() -> +null_cursor"
+            },
+            "id": {
+                "!type": "string",
+                "!doc": "The ID of the Domain"
+            },
+            "name": {
+                "!type": "string",
+                "!doc": "The name of the Domain"
+            },
+            "url": {
+                "!type": "string",
+                "!doc": "The URL of Domain"
+            }
+        },
         "ProductFeedUploadErrorSample": {
             "#get": {
                 "!type": "fn() -> +null_cursor"
@@ -883,24 +1012,6 @@ module.exports = {
             "value": {
                 "!type": "Object",
                 "!doc": "JSON containing the call to action data."
-            }
-        },
-        "AdAccountRoasCohorts": {
-            "adgroup_id": {
-                "!type": "string",
-                "!doc": "Ad group ID for the cohorts"
-            },
-            "campaign_group_id": {
-                "!type": "string",
-                "!doc": "Campaign group ID for the cohorts"
-            },
-            "campaign_id": {
-                "!type": "string",
-                "!doc": "Campaign ID for the cohorts"
-            },
-            "cohorts_data": {
-                "!type": "list<RoasCohortsData>",
-                "!doc": "Cohorts data for the specified time range"
             }
         },
         "BusinessAdAccountRequest": {
@@ -1131,6 +1242,124 @@ module.exports = {
                 "!doc": "Name"
             }
         },
+        "AdStudyCell_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +AdStudyCell, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +AdStudyCell",
+                "!doc": "Return the next AdStudyCell item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +AdStudyCell",
+                "!doc": "Gets the current AdStudyCell of the cursor"
+            }
+        },
+        "User_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +User, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +User",
+                "!doc": "Return the next User item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +User",
+                "!doc": "Gets the current User of the cursor"
+            }
+        },
+        "AdStudy": {
+            "update": {
+                "!type": "fn(params: Object) -> +AdStudy",
+                "!doc": "Update fields on the AdStudy"
+            },
+            "getcells": {
+                "!type": "fn() -> +AdStudyCell_cursor",
+                "!doc": "The cells which are part of the objective"
+            },
+            "getviewers": {
+                "!type": "fn() -> +User_cursor",
+                "!doc": "The people who have been added to this studyas a viewer"
+            },
+            "#get": {
+                "!type": "fn() -> +AdStudy_cursor",
+                "!doc": "A lift study object"
+            },
+            "business": {
+                "!type": "Business",
+                "!doc": "The business that owns this study if it exists."
+            },
+            "created_time": {
+                "!type": "string",
+                "!doc": "When was the Lift study created"
+            },
+            "start_time": {
+                "!type": "string",
+                "!doc": "Start time"
+            },
+            "name": {
+                "!type": "string",
+                "!doc": "Name of the Lift study"
+            },
+            "created_by": {
+                "!type": "Object",
+                "!doc": "Who Lift study was created by"
+            },
+            "end_time": {
+                "!type": "string",
+                "!doc": "End time"
+            },
+            "updated_time": {
+                "!type": "string",
+                "!doc": "Updated time"
+            },
+            "canceled_time": {
+                "!type": "string",
+                "!doc": "Time stamp when study was canceled"
+            },
+            "type": {
+                "!type": "string",
+                "!doc": "The type of study, either audience segmentation or lift."
+            },
+            "id": {
+                "!type": "string",
+                "!doc": "ID of the Lift study"
+            },
+            "updated_by": {
+                "!type": "Object",
+                "!doc": "Updated by"
+            },
+            "description": {
+                "!type": "string",
+                "!doc": "Description"
+            }
+        },
         "AdsPixelStatsResult": {
             "aggregation": {
                 "!type": "AdsPixelStatsResult_aggregation",
@@ -1214,7 +1443,11 @@ module.exports = {
                 "!type": "fn(params: Object) -> +CustomConversion",
                 "!doc": "Update fields on the CustomConversion"
             },
-            "getAdsPixelStatsResults": {
+            "delete": {
+                "!type": "fn(params: Object) -> bool",
+                "!doc": "Delete the CustomConversion"
+            },
+            "getstats": {
                 "!type": "fn() -> +AdsPixelStatsResult_cursor",
                 "!doc": "Stats data for this conversion"
             },
@@ -1227,7 +1460,7 @@ module.exports = {
             },
             "default_conversion_value": {
                 "!type": "number",
-                "!doc": "When conversion is URL based, the conversion value associated to each conversion"
+                "!doc": "When conversion is URL based, the default conversion value associated to each conversion"
             },
             "last_fired_time": {
                 "!type": "string",
@@ -1294,6 +1527,96 @@ module.exports = {
                 "!doc": "Plain language description of the target spec"
             }
         },
+        "AdCampaign_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +AdCampaign, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +AdCampaign",
+                "!doc": "Return the next AdCampaign item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +AdCampaign",
+                "!doc": "Gets the current AdCampaign of the cursor"
+            }
+        },
+        "AdCampaignGroup_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +AdCampaignGroup, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +AdCampaignGroup",
+                "!doc": "Return the next AdCampaignGroup item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +AdCampaignGroup",
+                "!doc": "Gets the current AdCampaignGroup of the cursor"
+            }
+        },
+        "AdStudyCell": {
+            "update": {
+                "!type": "fn(params: Object) -> +AdStudyCell",
+                "!doc": "Update fields on the AdStudyCell"
+            },
+            "getadaccounts": {
+                "!type": "fn() -> +AdAccount_cursor",
+                "!doc": "Ad accounts"
+            },
+            "getadsets": {
+                "!type": "fn() -> +AdCampaign_cursor",
+                "!doc": "Adsets"
+            },
+            "getcampaigns": {
+                "!type": "fn() -> +AdCampaignGroup_cursor",
+                "!doc": "Campaigns"
+            },
+            "#get": {
+                "!type": "fn() -> +AdStudyCell_cursor",
+                "!doc": "A lift study cell object"
+            },
+            "ad_entities_count": {
+                "!type": "number",
+                "!doc": "The sum of the number of ad accounts, ad campaigns and ad sets in this cell"
+            },
+            "id": {
+                "!type": "string",
+                "!doc": "ID of the Lift study cell"
+            },
+            "name": {
+                "!type": "string",
+                "!doc": "Name of the Lift study cell"
+            },
+            "treatment_percentage": {
+                "!type": "number",
+                "!doc": "The percentage of the total population who will see ads"
+            }
+        },
         "TargetingGeoLocationRegion": {
             "country": {
                 "!type": "string",
@@ -1325,6 +1648,10 @@ module.exports = {
             }
         },
         "AdCreativeLinkDataChildAttachment": {
+            "static_card": {
+                "!type": "bool",
+                "!doc": "Whether to force the card to render statically, even in a dynamic ad."
+            },
             "place_data": {
                 "!type": "Object",
                 "!doc": "Additional description to help navigate people to your business\n         location"
@@ -1365,7 +1692,7 @@ module.exports = {
         "AdCreativePhotoData": {
             "branded_content_sponsor_page_id": {
                 "!type": "string",
-                "!doc": "The branded content sponsor page id."
+                "!doc": "The branded content sponsor page ID. If your ad promotes branded content, you must use this to indicate the sponsor page. See [policy](https://www.facebook.com/policies/ads/#restricted_content). Your sponsor will be notified and can create an ad using your post. Your sponsor can also see metrics about your ad, including total spend and CPM metrics"
             },
             "caption": {
                 "!type": "string",
@@ -1378,6 +1705,58 @@ module.exports = {
             "url": {
                 "!type": "string",
                 "!doc": "URL of an image to use in the ad. Specify this field or `image_hash`\n         but not both. The image specified at the URL will be saved into the\n         ad accounts [image library](/docs/marketing-api/reference/ad-image)"
+            }
+        },
+        "ProductItem_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +ProductItem, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +ProductItem",
+                "!doc": "Return the next ProductItem item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +ProductItem",
+                "!doc": "Gets the current ProductItem of the cursor"
+            }
+        },
+        "ProductGroup_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +ProductGroup, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +ProductGroup",
+                "!doc": "Return the next ProductGroup item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +ProductGroup",
+                "!doc": "Gets the current ProductGroup of the cursor"
             }
         },
         "ProductFeed_cursor": {
@@ -1432,58 +1811,6 @@ module.exports = {
                 "!doc": "Gets the current ExternalEventSource of the cursor"
             }
         },
-        "ProductGroup_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +ProductGroup, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +ProductGroup",
-                "!doc": "Return the next ProductGroup item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +ProductGroup",
-                "!doc": "Gets the current ProductGroup of the cursor"
-            }
-        },
-        "ProductItem_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +ProductItem, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +ProductItem",
-                "!doc": "Return the next ProductItem item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +ProductItem",
-                "!doc": "Gets the current ProductItem of the cursor"
-            }
-        },
         "Business_cursor": {
             "!proto": "cursor_prototype",
             "forEach": {
@@ -1519,56 +1846,56 @@ module.exports = {
                 "!type": "fn(params: Object) -> bool",
                 "!doc": "Delete the ProductCatalog"
             },
-            "createProductFeeds": {
-                "!type": "fn() -> +ProductFeed_cursor",
-                "!doc": "A Product Feed"
-            },
-            "createProductSets": {
-                "!type": "fn() -> +ProductSet_cursor",
-                "!doc": "SELF_EXPLANATORY"
-            },
-            "createExternalEventSources": {
-                "!type": "fn() -> +ExternalEventSource_cursor",
-                "!doc": "SELF_EXPLANATORY"
-            },
-            "createProductGroups": {
-                "!type": "fn() -> +ProductGroup_cursor",
-                "!doc": "SELF_EXPLANATORY"
-            },
-            "getProductItems": {
-                "!type": "fn() -> +ProductItem_cursor",
-                "!doc": "Products that this product catalog contains"
-            },
-            "getProductSets": {
-                "!type": "fn() -> +ProductSet_cursor",
-                "!doc": "Product sets belonging to this catalog"
-            },
-            "createProductItems": {
+            "createproducts": {
                 "!type": "fn() -> +ProductItem_cursor",
                 "!doc": "Create a product"
             },
-            "getProductGroups": {
+            "createproduct_groups": {
                 "!type": "fn() -> +ProductGroup_cursor",
-                "!doc": "Product groups that this product catalog contains"
+                "!doc": "SELF_EXPLANATORY"
+            },
+            "createproduct_feeds": {
+                "!type": "fn() -> +ProductFeed_cursor",
+                "!doc": "A Product Feed"
+            },
+            "deleteexternal_event_sources": {
+                "!type": "fn() -> +ExternalEventSource_cursor",
+                "!doc": "SELF_EXPLANATORY"
+            },
+            "getproduct_feeds": {
+                "!type": "fn() -> +ProductFeed_cursor",
+                "!doc": "Product feeds belonging to this catalog"
             },
             "#get": {
                 "!type": "fn() -> +null_cursor"
             },
-            "deleteExternalEventSources": {
+            "getexternal_event_sources": {
                 "!type": "fn() -> +ExternalEventSource_cursor",
-                "!doc": "SELF_EXPLANATORY"
+                "!doc": "External Event Sources (including pixels) for catalog events like ViewContent"
             },
-            "getProductFeeds": {
-                "!type": "fn() -> +ProductFeed_cursor",
-                "!doc": "Product feeds belonging to this catalog"
+            "getproduct_sets": {
+                "!type": "fn() -> +ProductSet_cursor",
+                "!doc": "Product sets belonging to this catalog"
             },
-            "getBusinesss": {
+            "getagencies": {
                 "!type": "fn() -> +Business_cursor",
                 "!doc": "Agencies that have access to the product catalog"
             },
-            "getExternalEventSources": {
+            "getproducts": {
+                "!type": "fn() -> +ProductItem_cursor",
+                "!doc": "Products that this product catalog contains"
+            },
+            "getproduct_groups": {
+                "!type": "fn() -> +ProductGroup_cursor",
+                "!doc": "Product groups that this product catalog contains"
+            },
+            "createexternal_event_sources": {
                 "!type": "fn() -> +ExternalEventSource_cursor",
-                "!doc": "External Event Sources (including pixels) for catalog events like ViewContent"
+                "!doc": "SELF_EXPLANATORY"
+            },
+            "createproduct_sets": {
+                "!type": "fn() -> +ProductSet_cursor",
+                "!doc": "SELF_EXPLANATORY"
             },
             "business": {
                 "!type": "Business",
@@ -1617,214 +1944,6 @@ module.exports = {
                 "!doc": "Gets the current TargetingSentenceLine of the cursor"
             }
         },
-        "CustomAudience_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +CustomAudience, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +CustomAudience",
-                "!doc": "Return the next CustomAudience item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +CustomAudience",
-                "!doc": "Gets the current CustomAudience of the cursor"
-            }
-        },
-        "CustomAudiencesTOS_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +CustomAudiencesTOS, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +CustomAudiencesTOS",
-                "!doc": "Return the next CustomAudiencesTOS item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +CustomAudiencesTOS",
-                "!doc": "Gets the current CustomAudiencesTOS of the cursor"
-            }
-        },
-        "PartnerCategory_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +PartnerCategory, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +PartnerCategory",
-                "!doc": "Return the next PartnerCategory item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +PartnerCategory",
-                "!doc": "Gets the current PartnerCategory of the cursor"
-            }
-        },
-        "AdCampaignGroup_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +AdCampaignGroup, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +AdCampaignGroup",
-                "!doc": "Return the next AdCampaignGroup item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +AdCampaignGroup",
-                "!doc": "Gets the current AdCampaignGroup of the cursor"
-            }
-        },
-        "AdAsyncRequestSet_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +AdAsyncRequestSet, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +AdAsyncRequestSet",
-                "!doc": "Return the next AdAsyncRequestSet item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +AdAsyncRequestSet",
-                "!doc": "Gets the current AdAsyncRequestSet of the cursor"
-            }
-        },
-        "AdsInsights_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +AdsInsights, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +AdsInsights",
-                "!doc": "Return the next AdsInsights item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +AdsInsights",
-                "!doc": "Gets the current AdsInsights of the cursor"
-            }
-        },
-        "AdCampaign_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +AdCampaign, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +AdCampaign",
-                "!doc": "Return the next AdCampaign item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +AdCampaign",
-                "!doc": "Gets the current AdCampaign of the cursor"
-            }
-        },
-        "AdPreview_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +AdPreview, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +AdPreview",
-                "!doc": "Return the next AdPreview item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +AdPreview",
-                "!doc": "Gets the current AdPreview of the cursor"
-            }
-        },
         "AdCreative_cursor": {
             "!proto": "cursor_prototype",
             "forEach": {
@@ -1851,10 +1970,10 @@ module.exports = {
                 "!doc": "Gets the current AdCreative of the cursor"
             }
         },
-        "AdImage_cursor": {
+        "BroadTargetingCategories_cursor": {
             "!proto": "cursor_prototype",
             "forEach": {
-                "!type": "fn(f: fn(el: +AdImage, i: number, array: +Array), context?: ?)"
+                "!type": "fn(f: fn(el: +BroadTargetingCategories, i: number, array: +Array), context?: ?)"
             },
             "valid": {
                 "!type": "fn() -> bool",
@@ -1868,19 +1987,19 @@ module.exports = {
                 "!type": "fn() -> !this"
             },
             "next": {
-                "!type": "fn() -> +AdImage",
-                "!doc": "Return the next AdImage item from the cursor.",
+                "!type": "fn() -> +BroadTargetingCategories",
+                "!doc": "Return the next BroadTargetingCategories item from the cursor.",
                 "!url": "https://facebook.com"
             },
             "current": {
-                "!type": "fn() -> +AdImage",
-                "!doc": "Gets the current AdImage of the cursor"
+                "!type": "fn() -> +BroadTargetingCategories",
+                "!doc": "Gets the current BroadTargetingCategories of the cursor"
             }
         },
-        "OffsitePixel_cursor": {
+        "AdsDataPartner_cursor": {
             "!proto": "cursor_prototype",
             "forEach": {
-                "!type": "fn(f: fn(el: +OffsitePixel, i: number, array: +Array), context?: ?)"
+                "!type": "fn(f: fn(el: +AdsDataPartner, i: number, array: +Array), context?: ?)"
             },
             "valid": {
                 "!type": "fn() -> bool",
@@ -1894,13 +2013,39 @@ module.exports = {
                 "!type": "fn() -> !this"
             },
             "next": {
-                "!type": "fn() -> +OffsitePixel",
-                "!doc": "Return the next OffsitePixel item from the cursor.",
+                "!type": "fn() -> +AdsDataPartner",
+                "!doc": "Return the next AdsDataPartner item from the cursor.",
                 "!url": "https://facebook.com"
             },
             "current": {
-                "!type": "fn() -> +OffsitePixel",
-                "!doc": "Gets the current OffsitePixel of the cursor"
+                "!type": "fn() -> +AdsDataPartner",
+                "!doc": "Gets the current AdsDataPartner of the cursor"
+            }
+        },
+        "CustomAudience_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +CustomAudience, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +CustomAudience",
+                "!doc": "Return the next CustomAudience item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +CustomAudience",
+                "!doc": "Gets the current CustomAudience of the cursor"
             }
         },
         "AdPlacePageSet_cursor": {
@@ -1955,10 +2100,10 @@ module.exports = {
                 "!doc": "Gets the current AdActivity of the cursor"
             }
         },
-        "LeadGenData_cursor": {
+        "PublisherBlockList_cursor": {
             "!proto": "cursor_prototype",
             "forEach": {
-                "!type": "fn(f: fn(el: +LeadGenData, i: number, array: +Array), context?: ?)"
+                "!type": "fn(f: fn(el: +PublisherBlockList, i: number, array: +Array), context?: ?)"
             },
             "valid": {
                 "!type": "fn() -> bool",
@@ -1972,221 +2117,13 @@ module.exports = {
                 "!type": "fn() -> !this"
             },
             "next": {
-                "!type": "fn() -> +LeadGenData",
-                "!doc": "Return the next LeadGenData item from the cursor.",
+                "!type": "fn() -> +PublisherBlockList",
+                "!doc": "Return the next PublisherBlockList item from the cursor.",
                 "!url": "https://facebook.com"
             },
             "current": {
-                "!type": "fn() -> +LeadGenData",
-                "!doc": "Gets the current LeadGenData of the cursor"
-            }
-        },
-        "Transaction_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +Transaction, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +Transaction",
-                "!doc": "Return the next Transaction item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +Transaction",
-                "!doc": "Gets the current Transaction of the cursor"
-            }
-        },
-        "Adgroup_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +Adgroup, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +Adgroup",
-                "!doc": "Return the next Adgroup item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +Adgroup",
-                "!doc": "Gets the current Adgroup of the cursor"
-            }
-        },
-        "OffsiteConversion_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +OffsiteConversion, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +OffsiteConversion",
-                "!doc": "Return the next OffsiteConversion item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +OffsiteConversion",
-                "!doc": "Gets the current OffsiteConversion of the cursor"
-            }
-        },
-        "RateCard_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +RateCard, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +RateCard",
-                "!doc": "Return the next RateCard item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +RateCard",
-                "!doc": "Gets the current RateCard of the cursor"
-            }
-        },
-        "ReachEstimate_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +ReachEstimate, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +ReachEstimate",
-                "!doc": "Return the next ReachEstimate item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +ReachEstimate",
-                "!doc": "Gets the current ReachEstimate of the cursor"
-            }
-        },
-        "Video_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +Video, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +Video",
-                "!doc": "Return the next Video item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +Video",
-                "!doc": "Gets the current Video of the cursor"
-            }
-        },
-        "AdsDataPartner_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +AdsDataPartner, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +AdsDataPartner",
-                "!doc": "Return the next AdsDataPartner item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +AdsDataPartner",
-                "!doc": "Gets the current AdsDataPartner of the cursor"
-            }
-        },
-        "AdReportSchedule_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +AdReportSchedule, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +AdReportSchedule",
-                "!doc": "Return the next AdReportSchedule item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +AdReportSchedule",
-                "!doc": "Gets the current AdReportSchedule of the cursor"
+                "!type": "fn() -> +PublisherBlockList",
+                "!doc": "Gets the current PublisherBlockList of the cursor"
             }
         },
         "AdAccountRoas_cursor": {
@@ -2215,10 +2152,10 @@ module.exports = {
                 "!doc": "Gets the current AdAccountRoas of the cursor"
             }
         },
-        "BroadTargetingCategories_cursor": {
+        "AdImage_cursor": {
             "!proto": "cursor_prototype",
             "forEach": {
-                "!type": "fn(f: fn(el: +BroadTargetingCategories, i: number, array: +Array), context?: ?)"
+                "!type": "fn(f: fn(el: +AdImage, i: number, array: +Array), context?: ?)"
             },
             "valid": {
                 "!type": "fn() -> bool",
@@ -2232,65 +2169,13 @@ module.exports = {
                 "!type": "fn() -> !this"
             },
             "next": {
-                "!type": "fn() -> +BroadTargetingCategories",
-                "!doc": "Return the next BroadTargetingCategories item from the cursor.",
+                "!type": "fn() -> +AdImage",
+                "!doc": "Return the next AdImage item from the cursor.",
                 "!url": "https://facebook.com"
             },
             "current": {
-                "!type": "fn() -> +BroadTargetingCategories",
-                "!doc": "Gets the current BroadTargetingCategories of the cursor"
-            }
-        },
-        "AdAccountUser_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +AdAccountUser, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +AdAccountUser",
-                "!doc": "Return the next AdAccountUser item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +AdAccountUser",
-                "!doc": "Gets the current AdAccountUser of the cursor"
-            }
-        },
-        "AdReportRun_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +AdReportRun, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +AdReportRun",
-                "!doc": "Return the next AdReportRun item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +AdReportRun",
-                "!doc": "Gets the current AdReportRun of the cursor"
+                "!type": "fn() -> +AdImage",
+                "!doc": "Gets the current AdImage of the cursor"
             }
         },
         "MinimumBudget_cursor": {
@@ -2319,10 +2204,10 @@ module.exports = {
                 "!doc": "Gets the current MinimumBudget of the cursor"
             }
         },
-        "AdAccountRoasCohorts_cursor": {
+        "OffsitePixel_cursor": {
             "!proto": "cursor_prototype",
             "forEach": {
-                "!type": "fn(f: fn(el: +AdAccountRoasCohorts, i: number, array: +Array), context?: ?)"
+                "!type": "fn(f: fn(el: +OffsitePixel, i: number, array: +Array), context?: ?)"
             },
             "valid": {
                 "!type": "fn() -> bool",
@@ -2336,19 +2221,19 @@ module.exports = {
                 "!type": "fn() -> !this"
             },
             "next": {
-                "!type": "fn() -> +AdAccountRoasCohorts",
-                "!doc": "Return the next AdAccountRoasCohorts item from the cursor.",
+                "!type": "fn() -> +OffsitePixel",
+                "!doc": "Return the next OffsitePixel item from the cursor.",
                 "!url": "https://facebook.com"
             },
             "current": {
-                "!type": "fn() -> +AdAccountRoasCohorts",
-                "!doc": "Gets the current AdAccountRoasCohorts of the cursor"
+                "!type": "fn() -> +OffsitePixel",
+                "!doc": "Gets the current OffsitePixel of the cursor"
             }
         },
-        "AdLabel_cursor": {
+        "Transaction_cursor": {
             "!proto": "cursor_prototype",
             "forEach": {
-                "!type": "fn(f: fn(el: +AdLabel, i: number, array: +Array), context?: ?)"
+                "!type": "fn(f: fn(el: +Transaction, i: number, array: +Array), context?: ?)"
             },
             "valid": {
                 "!type": "fn() -> bool",
@@ -2362,13 +2247,273 @@ module.exports = {
                 "!type": "fn() -> !this"
             },
             "next": {
-                "!type": "fn() -> +AdLabel",
-                "!doc": "Return the next AdLabel item from the cursor.",
+                "!type": "fn() -> +Transaction",
+                "!doc": "Return the next Transaction item from the cursor.",
                 "!url": "https://facebook.com"
             },
             "current": {
-                "!type": "fn() -> +AdLabel",
-                "!doc": "Gets the current AdLabel of the cursor"
+                "!type": "fn() -> +Transaction",
+                "!doc": "Gets the current Transaction of the cursor"
+            }
+        },
+        "RateCard_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +RateCard, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +RateCard",
+                "!doc": "Return the next RateCard item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +RateCard",
+                "!doc": "Gets the current RateCard of the cursor"
+            }
+        },
+        "PartnerCategory_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +PartnerCategory, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +PartnerCategory",
+                "!doc": "Return the next PartnerCategory item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +PartnerCategory",
+                "!doc": "Gets the current PartnerCategory of the cursor"
+            }
+        },
+        "ReachEstimate_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +ReachEstimate, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +ReachEstimate",
+                "!doc": "Return the next ReachEstimate item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +ReachEstimate",
+                "!doc": "Gets the current ReachEstimate of the cursor"
+            }
+        },
+        "LeadGenData_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +LeadGenData, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +LeadGenData",
+                "!doc": "Return the next LeadGenData item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +LeadGenData",
+                "!doc": "Gets the current LeadGenData of the cursor"
+            }
+        },
+        "AdReportSchedule_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +AdReportSchedule, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +AdReportSchedule",
+                "!doc": "Return the next AdReportSchedule item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +AdReportSchedule",
+                "!doc": "Gets the current AdReportSchedule of the cursor"
+            }
+        },
+        "Adgroup_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +Adgroup, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +Adgroup",
+                "!doc": "Return the next Adgroup item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +Adgroup",
+                "!doc": "Gets the current Adgroup of the cursor"
+            }
+        },
+        "CustomAudiencesTOS_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +CustomAudiencesTOS, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +CustomAudiencesTOS",
+                "!doc": "Return the next CustomAudiencesTOS item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +CustomAudiencesTOS",
+                "!doc": "Gets the current CustomAudiencesTOS of the cursor"
+            }
+        },
+        "AdsInsights_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +AdsInsights, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +AdsInsights",
+                "!doc": "Return the next AdsInsights item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +AdsInsights",
+                "!doc": "Gets the current AdsInsights of the cursor"
+            }
+        },
+        "Video_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +Video, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +Video",
+                "!doc": "Return the next Video item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +Video",
+                "!doc": "Gets the current Video of the cursor"
+            }
+        },
+        "AdAccountUser_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +AdAccountUser, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +AdAccountUser",
+                "!doc": "Return the next AdAccountUser item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +AdAccountUser",
+                "!doc": "Gets the current AdAccountUser of the cursor"
             }
         },
         "Application_cursor": {
@@ -2397,6 +2542,84 @@ module.exports = {
                 "!doc": "Gets the current Application of the cursor"
             }
         },
+        "AdReportRun_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +AdReportRun, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +AdReportRun",
+                "!doc": "Return the next AdReportRun item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +AdReportRun",
+                "!doc": "Gets the current AdReportRun of the cursor"
+            }
+        },
+        "AdPreview_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +AdPreview, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +AdPreview",
+                "!doc": "Return the next AdPreview item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +AdPreview",
+                "!doc": "Gets the current AdPreview of the cursor"
+            }
+        },
+        "OffsiteConversion_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +OffsiteConversion, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +OffsiteConversion",
+                "!doc": "Return the next OffsiteConversion item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +OffsiteConversion",
+                "!doc": "Gets the current OffsiteConversion of the cursor"
+            }
+        },
         "AdAccountTargetingInsights_cursor": {
             "!proto": "cursor_prototype",
             "forEach": {
@@ -2423,219 +2646,303 @@ module.exports = {
                 "!doc": "Gets the current AdAccountTargetingInsights of the cursor"
             }
         },
+        "AdAsyncRequestSet_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +AdAsyncRequestSet, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +AdAsyncRequestSet",
+                "!doc": "Return the next AdAsyncRequestSet item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +AdAsyncRequestSet",
+                "!doc": "Gets the current AdAsyncRequestSet of the cursor"
+            }
+        },
+        "AdLabel_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +AdLabel, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +AdLabel",
+                "!doc": "Return the next AdLabel item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +AdLabel",
+                "!doc": "Gets the current AdLabel of the cursor"
+            }
+        },
         "AdAccount": {
             "update": {
                 "!type": "fn(params: Object) -> +AdAccount",
                 "!doc": "Update fields on the AdAccount"
             },
-            "getTargetingSentenceLines": {
-                "!type": "fn() -> +TargetingSentenceLine_cursor",
-                "!doc": "The targeting description sentence for a given target spec"
-            },
-            "createAdsPixels": {
-                "!type": "fn() -> +AdsPixel_cursor",
-                "!doc": "Edge to create an adspixel"
-            },
-            "createCustomAudiences": {
-                "!type": "fn() -> +CustomAudience_cursor",
-                "!doc": "Edge to create custom audiences"
-            },
-            "getCustomAudiencesTOSs": {
-                "!type": "fn() -> +CustomAudiencesTOS_cursor",
-                "!doc": "The custom audiences term of services signed by the ad account"
-            },
-            "getPartnerCategorys": {
-                "!type": "fn() -> +PartnerCategory_cursor",
-                "!doc": "Partner categories can be used for targeting"
-            },
-            "createAdCampaignGroups": {
-                "!type": "fn() -> +AdCampaignGroup_cursor",
-                "!doc": "A campaign"
-            },
-            "createAdAsyncRequestSets": {
-                "!type": "fn() -> +AdAsyncRequestSet_cursor",
-                "!doc": "To create an async ad request set"
-            },
-            "createAdsInsightss": {
-                "!type": "fn() -> +AdsInsights_cursor",
-                "!doc": "Edge to create an async job for fetching ad insights for the\n      ad account node"
-            },
-            "createAdCampaigns": {
-                "!type": "fn() -> +AdCampaign_cursor",
-                "!doc": "An ad set"
-            },
-            "getAdPreviews": {
-                "!type": "fn() -> +AdPreview_cursor",
-                "!doc": "Generate previews for a creative specification"
-            },
-            "getReachFrequencyPredictions": {
-                "!type": "fn() -> +ReachFrequencyPrediction_cursor",
-                "!doc": "The reach and frequency predictions of this ad account"
-            },
-            "createAdCreatives": {
-                "!type": "fn() -> +AdCreative_cursor",
-                "!doc": "SELF_EXPLANATORY"
-            },
-            "deleteAdImages": {
-                "!type": "fn() -> +AdImage_cursor",
-                "!doc": "To remove an ad image from your library"
-            },
-            "getAdsPixels": {
-                "!type": "fn() -> +AdsPixel_cursor",
-                "!doc": "The associated tracking pixels for this ad account"
-            },
-            "createOffsitePixels": {
-                "!type": "fn() -> +OffsitePixel_cursor",
-                "!doc": "SELF_EXPLANATORY"
-            },
-            "getCustomAudiences": {
-                "!type": "fn() -> +CustomAudience_cursor",
-                "!doc": "The custom audiences owned by/shared with this ad account"
-            },
-            "createAdPlacePageSets": {
-                "!type": "fn() -> +AdPlacePageSet_cursor",
-                "!doc": "Ad place page set for an ad account."
-            },
-            "getAdCampaigns": {
+            "getadsetsbylabels": {
                 "!type": "fn() -> +AdCampaign_cursor",
                 "!doc": "Search ad sets associated with given labels within this ad account"
             },
-            "getAdCreatives": {
+            "gettargetingsentencelines": {
+                "!type": "fn() -> +TargetingSentenceLine_cursor",
+                "!doc": "The targeting description sentence for a given target spec"
+            },
+            "getadcreativesbylabels": {
                 "!type": "fn() -> +AdCreative_cursor",
                 "!doc": "Search creatives associated with given labels within this ad account"
             },
-            "getAdActivitys": {
-                "!type": "fn() -> +AdActivity_cursor",
-                "!doc": "The activities of this ad account"
+            "getbroadtargetingcategories": {
+                "!type": "fn() -> +BroadTargetingCategories_cursor",
+                "!doc": "Broad targeting categories (BCTs) can be used for targeting "
             },
-            "getLeadGenDatas": {
-                "!type": "fn() -> +LeadGenData_cursor",
-                "!doc": "A list of lead generation forms created for this Ad Account."
+            "createadspixels": {
+                "!type": "fn() -> +AdsPixel_cursor",
+                "!doc": "Edge to create an adspixel"
             },
-            "getTransactions": {
-                "!type": "fn() -> +Transaction_cursor",
-                "!doc": "The transactions of this ad account"
-            },
-            "getInstagramUsers": {
-                "!type": "fn() -> +InstagramUser_cursor",
-                "!doc": "Instagram accounts connected to the ad accounts"
-            },
-            "getAdgroups": {
-                "!type": "fn() -> +Adgroup_cursor",
-                "!doc": "Search ads associated with given labels within this ad account"
-            },
-            "createReturns the number of object received.s": {
-                "!type": "fn() -> +OffsiteConversion_cursor",
-                "!doc": "Offline conversions for an ad account"
-            },
-            "getRateCards": {
-                "!type": "fn() -> +RateCard_cursor",
-                "!doc": "Rate card of an ad account"
-            },
-            "getOffsitePixels": {
-                "!type": "fn() -> +OffsitePixel_cursor",
-                "!doc": "Offsite pixels for this ad account"
-            },
-            "getAdPlacePageSets": {
-                "!type": "fn() -> +AdPlacePageSet_cursor",
-                "!doc": "The associated ad place page sets for this ad account"
-            },
-            "getReachEstimates": {
-                "!type": "fn() -> +ReachEstimate_cursor",
-                "!doc": "The reach estimate of a given\n        [targeting spec](/docs/marketing-api/targeting-specs) for this ad\n        account"
-            },
-            "getVideos": {
-                "!type": "fn() -> +Video_cursor",
-                "!doc": "The videos associated with this account"
-            },
-            "getAdsDataPartners": {
+            "getpartners": {
                 "!type": "fn() -> +AdsDataPartner_cursor",
                 "!doc": "The ad partners of this ad account"
             },
-            "getAdReportSchedules": {
-                "!type": "fn() -> +AdReportSchedule_cursor",
-                "!doc": "All scheduled reports of this ad account"
+            "createcustomaudiences": {
+                "!type": "fn() -> +CustomAudience_cursor",
+                "!doc": "Edge to create custom audiences"
             },
-            "getAdAccountRoass": {
+            "getad_place_page_sets": {
+                "!type": "fn() -> +AdPlacePageSet_cursor",
+                "!doc": "The associated ad place page sets for this ad account"
+            },
+            "getcampaignsbylabels": {
+                "!type": "fn() -> +AdCampaignGroup_cursor",
+                "!doc": "Search campaigns associated with given labels within this ad account"
+            },
+            "createproduct_audiences": {
+                "!type": "fn() -> +null_cursor",
+                "!doc": "SELF_EXPLANATORY"
+            },
+            "getactivities": {
+                "!type": "fn() -> +AdActivity_cursor",
+                "!doc": "The activities of this ad account"
+            },
+            "createpublisher_block_lists": {
+                "!type": "fn() -> +PublisherBlockList_cursor",
+                "!doc": "Creates a publisher block list for the ad account"
+            },
+            "getreachfrequencypredictions": {
+                "!type": "fn() -> +ReachFrequencyPrediction_cursor",
+                "!doc": "The reach and frequency predictions of this ad account"
+            },
+            "createadcreatives": {
+                "!type": "fn() -> +AdCreative_cursor",
+                "!doc": "SELF_EXPLANATORY"
+            },
+            "getroas": {
                 "!type": "fn() -> +AdAccountRoas_cursor",
                 "!doc": "The return on ad spend"
             },
-            "getAdImages": {
+            "deleteadimages": {
+                "!type": "fn() -> +AdImage_cursor",
+                "!doc": "To remove an ad image from your library"
+            },
+            "getminimum_budgets": {
+                "!type": "fn() -> +MinimumBudget_cursor",
+                "!doc": "Returns minimum daily budget values by currency."
+            },
+            "getadspixels": {
+                "!type": "fn() -> +AdsPixel_cursor",
+                "!doc": "The associated tracking pixels for this ad account"
+            },
+            "createoffsitepixels": {
+                "!type": "fn() -> +OffsitePixel_cursor",
+                "!doc": "SELF_EXPLANATORY"
+            },
+            "createcampaigns": {
+                "!type": "fn() -> +AdCampaignGroup_cursor",
+                "!doc": "A campaign"
+            },
+            "getcustomaudiences": {
+                "!type": "fn() -> +CustomAudience_cursor",
+                "!doc": "The custom audiences owned by/shared with this ad account"
+            },
+            "createad_place_page_sets": {
+                "!type": "fn() -> +AdPlacePageSet_cursor",
+                "!doc": "Ad place page set for an ad account."
+            },
+            "getinstagram_accounts": {
+                "!type": "fn() -> +InstagramUser_cursor",
+                "!doc": "Instagram accounts connected to the ad accounts"
+            },
+            "getadsets": {
+                "!type": "fn() -> +AdCampaign_cursor",
+                "!doc": "The adsets of this ad account"
+            },
+            "getpublisher_block_lists": {
+                "!type": "fn() -> +PublisherBlockList_cursor",
+                "!doc": "Publisher block lists owned by this account. These list are used to\n        block publishers on Audience Network"
+            },
+            "getadcreatives": {
+                "!type": "fn() -> +AdCreative_cursor",
+                "!doc": "The ad creatives of this ad account"
+            },
+            "gettransactions": {
+                "!type": "fn() -> +Transaction_cursor",
+                "!doc": "The transactions of this ad account"
+            },
+            "getcampaigns": {
+                "!type": "fn() -> +AdCampaignGroup_cursor",
+                "!doc": "The ad campaigns of this ad account"
+            },
+            "getoffsitepixels": {
+                "!type": "fn() -> +OffsitePixel_cursor",
+                "!doc": "Offsite pixels for this ad account"
+            },
+            "getratecards": {
+                "!type": "fn() -> +RateCard_cursor",
+                "!doc": "Rate card of an ad account"
+            },
+            "getpartnercategories": {
+                "!type": "fn() -> +PartnerCategory_cursor",
+                "!doc": "Partner categories can be used for targeting"
+            },
+            "getreachestimates": {
+                "!type": "fn() -> +ReachEstimate_cursor",
+                "!doc": "The reach estimate of a given\n        [targeting spec](/docs/marketing-api/targeting-specs) for this ad\n        account"
+            },
+            "getleadgen_forms": {
+                "!type": "fn() -> +LeadGenData_cursor",
+                "!doc": "A list of lead generation forms created for this Ad Account."
+            },
+            "getadreportschedules": {
+                "!type": "fn() -> +AdReportSchedule_cursor",
+                "!doc": "All scheduled reports of this ad account"
+            },
+            "getoffline_conversion_data_sets": {
+                "!type": "fn() -> +OfflineConversionDataSet_cursor",
+                "!doc": "List of Offline Conversion Data Sets available for this Ad Account"
+            },
+            "createcustomconversions": {
+                "!type": "fn() -> +null_cursor",
+                "!doc": "SELF_EXPLANATORY"
+            },
+            "getadsbylabels": {
+                "!type": "fn() -> +Adgroup_cursor",
+                "!doc": "Search ads associated with given labels within this ad account"
+            },
+            "createadsets": {
+                "!type": "fn() -> +AdCampaign_cursor",
+                "!doc": "An ad set"
+            },
+            "getcustomaudiencestos": {
+                "!type": "fn() -> +CustomAudiencesTOS_cursor",
+                "!doc": "The custom audiences term of services signed by the ad account"
+            },
+            "getinsights": {
+                "!type": "fn() -> +AdsInsights_cursor",
+                "!doc": "Insights on advertising performance of this ad account"
+            },
+            "getadimages": {
                 "!type": "fn() -> +AdImage_cursor",
                 "!doc": "The images associated with this account"
             },
-            "deleteAdCampaignGroups": {
-                "!type": "fn() -> +AdCampaignGroup_cursor",
-                "!doc": "SELF_EXPLANATORY"
+            "getadvideos": {
+                "!type": "fn() -> +Video_cursor",
+                "!doc": "The videos associated with this account"
             },
-            "getBroadTargetingCategoriess": {
-                "!type": "fn() -> +BroadTargetingCategories_cursor",
-                "!doc": "Broad targeting categories (BCTs) can be used for targeting "
+            "getusers": {
+                "!type": "fn() -> +AdAccountUser_cursor",
+                "!doc": "Container for the user ID, permissions, and role"
             },
             "#get": {
                 "!type": "fn() -> +null_cursor"
             },
-            "createAdgroups": {
+            "getadvertisable_applications": {
+                "!type": "fn() -> +Application_cursor",
+                "!doc": "All advertisable apps associated with this account"
+            },
+            "createads": {
                 "!type": "fn() -> +Adgroup_cursor",
                 "!doc": "An ad"
             },
-            "getAdAccountUsers": {
-                "!type": "fn() -> +AdAccountUser_cursor",
-                "!doc": "Container for the user ID, permissions, and role"
-            },
-            "createVideos": {
-                "!type": "fn() -> +Video_cursor",
-                "!doc": "SELF_EXPLANATORY"
-            },
-            "getAdReportRuns": {
+            "getadreportruns": {
                 "!type": "fn() -> +AdReportRun_cursor",
                 "!doc": "All bookmarked async runs of this ad account"
             },
-            "getMinimumBudgets": {
-                "!type": "fn() -> +MinimumBudget_cursor",
-                "!doc": "Returns minimum daily budget values by currency."
+            "getgeneratepreviews": {
+                "!type": "fn() -> +AdPreview_cursor",
+                "!doc": "Generate previews for a creative specification"
             },
-            "createAdImages": {
-                "!type": "fn() -> +AdImage_cursor",
-                "!doc": "You can upload an image or zip file, get back a hash, and use the hash in an ad group or creative. You must include an extension with your filename, e.g. \"sample.jpg\" and not just \"sample\" or \"sample.tmp\", etc."
+            "createofflineconversions": {
+                "!type": "fn() -> +OffsiteConversion_cursor",
+                "!doc": "Offline conversions for an ad account"
             },
-            "creates": {
-                "!type": "fn() -> +null_cursor",
-                "!doc": "SELF_EXPLANATORY"
-            },
-            "getAdAccountRoasCohortss": {
-                "!type": "fn() -> +AdAccountRoasCohorts_cursor",
-                "!doc": "The return on ad spend for cohorts"
-            },
-            "getAdLabels": {
-                "!type": "fn() -> +AdLabel_cursor",
-                "!doc": "The labels associated with this ad account"
-            },
-            "getApplications": {
-                "!type": "fn() -> +Application_cursor",
-                "!doc": "Applications connected to the ad accounts"
-            },
-            "getAdAccountTargetingInsightss": {
+            "gettargetinginsights": {
                 "!type": "fn() -> +AdAccountTargetingInsights_cursor",
                 "!doc": "Targeting insights based on ad performacne analysis\n        from past and current campaigns"
             },
-            "getAdCampaignGroups": {
-                "!type": "fn() -> +AdCampaignGroup_cursor",
-                "!doc": "Search campaigns associated with given labels within this ad account"
-            },
-            "getAdAsyncRequestSets": {
+            "getasyncadrequestsets": {
                 "!type": "fn() -> +AdAsyncRequestSet_cursor",
                 "!doc": "The async ad request sets associated with this account"
             },
-            "createAdLabels": {
+            "createinsights": {
+                "!type": "fn() -> +AdsInsights_cursor",
+                "!doc": "Edge to create an async job for fetching ad insights for the\n      ad account node"
+            },
+            "createadimages": {
+                "!type": "fn() -> +AdImage_cursor",
+                "!doc": "You can upload an image or zip file, get back a hash, and use the hash in an ad group or creative. You must include an extension with your filename, e.g. \"sample.jpg\" and not just \"sample\" or \"sample.tmp\", etc."
+            },
+            "createadvideos": {
+                "!type": "fn() -> +Video_cursor",
+                "!doc": "SELF_EXPLANATORY"
+            },
+            "deletecampaigns": {
+                "!type": "fn() -> +AdCampaignGroup_cursor",
+                "!doc": "SELF_EXPLANATORY"
+            },
+            "getadlabels": {
+                "!type": "fn() -> +AdLabel_cursor",
+                "!doc": "The labels associated with this ad account"
+            },
+            "getapplications": {
+                "!type": "fn() -> +Application_cursor",
+                "!doc": "Applications connected to the ad accounts"
+            },
+            "getads": {
+                "!type": "fn() -> +Adgroup_cursor",
+                "!doc": "The ads of this ad account"
+            },
+            "createasyncadrequestsets": {
+                "!type": "fn() -> +AdAsyncRequestSet_cursor",
+                "!doc": "To create an async ad request set"
+            },
+            "createadlabels": {
                 "!type": "fn() -> +AdLabel_cursor",
                 "!doc": "AdLabel for an ad account."
             },
-            "getAdsInsightss": {
-                "!type": "fn() -> +AdsInsights_cursor",
-                "!doc": "Insights on advertising performance of this ad account"
-            },
-            "createReachFrequencyPredictions": {
+            "createreachfrequencypredictions": {
                 "!type": "fn() -> +ReachFrequencyPrediction_cursor",
                 "!doc": "SELF_EXPLANATORY"
             },
@@ -2678,10 +2985,6 @@ module.exports = {
             "business_zip": {
                 "!type": "string",
                 "!doc": "Zip code for business address"
-            },
-            "asset_score": {
-                "!type": "number",
-                "!doc": "relevance score of an asset"
             },
             "has_migrated_permissions": {
                 "!type": "bool",
@@ -2779,10 +3082,6 @@ module.exports = {
                 "!type": "string",
                 "!doc": "The maximum that can be spent by this account after which campaigns will be paused. A value of 0 signifies no spending-cap and setting a new spend cap only applies to spend AFTER the time at which you set it. Value specified in basic unit of the currency, e.g. cents for USD."
             },
-            "stored_balance_status": {
-                "!type": "AdAccount_stored_balance_status",
-                "!doc": "Stored balance status for the ad account.<br>prepay: advertisers pay in advance of ad delivery using a stored balance<br>postpay: advertisers pay after ad delivery and do not use a stored balance<br>new_user: account has no payment method added yet"
-            },
             "timezone_name": {
                 "!type": "string",
                 "!doc": "Name for the time zone"
@@ -2794,10 +3093,6 @@ module.exports = {
             "owner": {
                 "!type": "string",
                 "!doc": "The ID of the account owner"
-            },
-            "vertical_name": {
-                "!type": "string",
-                "!doc": "Vertical name"
             },
             "failed_delivery_checks": {
                 "!type": "list<DeliveryCheck>",
@@ -3196,7 +3491,7 @@ module.exports = {
             },
             "reach": {
                 "!type": "number",
-                "!doc": "The number of people your ad was served to."
+                "!doc": "The number of people your ad was served to. This is the same as `unique_impressions`."
             },
             "place_page_id": {
                 "!type": "string",
@@ -3280,7 +3575,7 @@ module.exports = {
             },
             "unique_impressions": {
                 "!type": "number",
-                "!doc": "The number of individuals the ad was served to on the site."
+                "!doc": "The number of individuals the ad was served to on the site. This is the same as `reach`."
             },
             "frequency": {
                 "!type": "number",
@@ -3391,6 +3686,333 @@ module.exports = {
                 "!doc": "Broad Targeting Category description"
             }
         },
+        "AdAccountGroup_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +AdAccountGroup, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +AdAccountGroup",
+                "!doc": "Return the next AdAccountGroup item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +AdAccountGroup",
+                "!doc": "Gets the current AdAccountGroup of the cursor"
+            }
+        },
+        "Event_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +Event, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +Event",
+                "!doc": "Return the next Event item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +Event",
+                "!doc": "Gets the current Event of the cursor"
+            }
+        },
+        "Domain_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +Domain, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +Domain",
+                "!doc": "Return the next Domain item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +Domain",
+                "!doc": "Gets the current Domain of the cursor"
+            }
+        },
+        "User": {
+            "createadaccountgroups": {
+                "!type": "fn() -> +AdAccountGroup_cursor",
+                "!doc": "Associate ad account group to a user."
+            },
+            "getpromotable_events": {
+                "!type": "fn() -> +Event_cursor",
+                "!doc": "All the events which user can promote."
+            },
+            "getpromotable_domains": {
+                "!type": "fn() -> +Domain_cursor",
+                "!doc": "All the domains user can promote"
+            },
+            "getadaccountgroups": {
+                "!type": "fn() -> +AdAccountGroup_cursor",
+                "!doc": "Ad account groups"
+            },
+            "createbusinesses": {
+                "!type": "fn() -> +null_cursor",
+                "!doc": "SELF_EXPLANATORY"
+            },
+            "getleadgen_forms": {
+                "!type": "fn() -> +LeadGenData_cursor",
+                "!doc": "A list of lead generation forms belonging to Pages that the user has advertiser permissions on"
+            },
+            "#get": {
+                "!type": "fn() -> +null_cursor"
+            },
+            "getaccounts": {
+                "!type": "fn() -> +Page_cursor",
+                "!doc": "Facebook Pages this person administers/is an admin for"
+            },
+            "getadaccounts": {
+                "!type": "fn() -> +AdAccount_cursor",
+                "!doc": "The advertising accounts to which this person has access"
+            },
+            "gender": {
+                "!type": "string",
+                "!doc": "The gender selected by this person, `male` or `female`. This value will be omitted if the gender is set to a custom value"
+            },
+            "security_settings": {
+                "!type": "Object",
+                "!doc": "Security settings"
+            },
+            "is_shared_login": {
+                "!type": "bool",
+                "!doc": "Is this a shared login (e.g. a gray user)"
+            },
+            "shared_login_upgrade_required_by": {
+                "!type": "string",
+                "!doc": "The time that the shared loginneeds to be upgraded to Business Manager by"
+            },
+            "significant_other": {
+                "!type": "User",
+                "!doc": "The person's significant other"
+            },
+            "meeting_for": {
+                "!type": "list<string>",
+                "!doc": "What the person is interested in meeting for"
+            },
+            "bio": {
+                "!type": "string",
+                "!doc": "The person's bio"
+            },
+            "verified": {
+                "!type": "bool",
+                "!doc": "Indicates whether the account has been verified. This is distinct from the `is_verified` field. Someone is considered verified if they take any of the following actions:\n\n* Register for mobile\n* Confirm their account via SMS\n* Enter a valid credit card\n"
+            },
+            "education": {
+                "!type": "list<Object>",
+                "!doc": "The person's education"
+            },
+            "public_key": {
+                "!type": "string",
+                "!doc": "The person's PGP public key"
+            },
+            "name_format": {
+                "!type": "string",
+                "!doc": "The person's name formatted to correctly handle Chinese, Japanese, or Korean ordering"
+            },
+            "viewer_can_send_gift": {
+                "!type": "bool",
+                "!doc": "Can the viewer send a gift to this person?"
+            },
+            "name": {
+                "!type": "string",
+                "!doc": "The person's full name"
+            },
+            "third_party_id": {
+                "!type": "string",
+                "!doc": "A string containing an anonymous, but unique identifier for the person. You can use this identifier with third parties"
+            },
+            "about": {
+                "!type": "string",
+                "!doc": "The About Me section of this person's profile"
+            },
+            "context": {
+                "!type": "Object",
+                "!doc": "Social context for this person"
+            },
+            "currency": {
+                "!type": "Object",
+                "!doc": "The person's local currency information"
+            },
+            "religion": {
+                "!type": "string",
+                "!doc": "The person's religion"
+            },
+            "admin_notes": {
+                "!type": "list<Object>",
+                "!doc": "Notes added by viewing page on this person"
+            },
+            "work": {
+                "!type": "list<Object>",
+                "!doc": "Details of a person`s work experience"
+            },
+            "updated_time": {
+                "!type": "string",
+                "!doc": "Updated time"
+            },
+            "hometown": {
+                "!type": "Object",
+                "!doc": "The person's hometown"
+            },
+            "test_group": {
+                "!type": "number",
+                "!doc": "Platform test group"
+            },
+            "video_upload_limits": {
+                "!type": "Object",
+                "!doc": "Video upload limits"
+            },
+            "favorite_teams": {
+                "!type": "list<Object>",
+                "!doc": "Sports teams the person likes"
+            },
+            "payment_pricepoints": {
+                "!type": "Object",
+                "!doc": "The person's payment pricepoints"
+            },
+            "last_name": {
+                "!type": "string",
+                "!doc": "The person's last name"
+            },
+            "middle_name": {
+                "!type": "string",
+                "!doc": "The person's middle name"
+            },
+            "location": {
+                "!type": "Object",
+                "!doc": "The person's current location as entered by them on their profile. This field is not related to check-ins"
+            },
+            "quotes": {
+                "!type": "string",
+                "!doc": "The person's favorite quotes"
+            },
+            "favorite_athletes": {
+                "!type": "list<Object>",
+                "!doc": "Athletes the person likes"
+            },
+            "cover": {
+                "!type": "Object",
+                "!doc": "The person's cover photo"
+            },
+            "inspirational_people": {
+                "!type": "list<Object>",
+                "!doc": "The person's inspirational people"
+            },
+            "relationship_status": {
+                "!type": "string",
+                "!doc": "The person's relationship status"
+            },
+            "timezone": {
+                "!type": "Object",
+                "!doc": "The person's current timezone offset from UTC"
+            },
+            "locale": {
+                "!type": "string",
+                "!doc": "The person's locale"
+            },
+            "first_name": {
+                "!type": "string",
+                "!doc": "The person's first name"
+            },
+            "installed": {
+                "!type": "bool",
+                "!doc": "Is the app making the request installed?"
+            },
+            "link": {
+                "!type": "string",
+                "!doc": "A link to the person's Timeline"
+            },
+            "languages": {
+                "!type": "list<Object>",
+                "!doc": "Facebook Pages representing the languages this person knows"
+            },
+            "website": {
+                "!type": "string",
+                "!doc": "The person's website"
+            },
+            "id": {
+                "!type": "string",
+                "!doc": "The id of this person's user account. This ID is unique to each app and cannot be used across different apps. [Our upgrade guide provides more information about app-specific IDs](/docs/apps/upgrading/#upgrading_v2_0_user_ids)"
+            },
+            "interested_in": {
+                "!type": "list<string>",
+                "!doc": "Genders the person is interested in"
+            },
+            "token_for_business": {
+                "!type": "string",
+                "!doc": "A token that is the same across a business's apps. Access to this token requires that the person be logged into your app. This token will change if the business owning the app changes"
+            },
+            "email": {
+                "!type": "string",
+                "!doc": "The person's primary email address listed on their profile. This field will not be returned if no valid email address is available"
+            },
+            "devices": {
+                "!type": "list<Object>",
+                "!doc": "The list of devices the person is using. This will return only iOS and Android devices"
+            },
+            "age_range": {
+                "!type": "Object",
+                "!doc": "The age segment for this person expressed as a minimum and maximum age. For example, more than 18, less than 21."
+            },
+            "is_verified": {
+                "!type": "bool",
+                "!doc": "People with large numbers of followers can have the authenticity of their identity [manually verified by Facebook](https://www.facebook.com/help/196050490547892). This field indicates whether the person's profile is verified in this way. This is distinct from the `verified` field"
+            },
+            "birthday": {
+                "!type": "string",
+                "!doc": "The person's birthday.  This is a fixed format string, like `MM/DD/YYYY`.  However, people can control who can see the year they were born separately from the month and day so this string can be only the year (YYYY) or the month + day (MM/DD)"
+            },
+            "political": {
+                "!type": "string",
+                "!doc": "The person's political views"
+            },
+            "install_type": {
+                "!type": "User_install_type",
+                "!doc": "Install type"
+            },
+            "sports": {
+                "!type": "list<Object>",
+                "!doc": "Sports played by the person"
+            },
+            "labels": {
+                "!type": "list<Object>",
+                "!doc": "Labels applied by viewing page on this person"
+            }
+        },
         "AdAsyncRequest_cursor": {
             "!proto": "cursor_prototype",
             "forEach": {
@@ -3418,7 +4040,7 @@ module.exports = {
             }
         },
         "AdAsyncRequestSet": {
-            "getAdAsyncRequests": {
+            "getrequests": {
                 "!type": "fn() -> +AdAsyncRequest_cursor",
                 "!doc": "Requests that belongs to this set"
             },
@@ -3549,27 +4171,27 @@ module.exports = {
                 "!type": "fn(params: Object) -> bool",
                 "!doc": "Delete the AdCampaignGroup"
             },
-            "deletes": {
+            "deleteadlabels": {
                 "!type": "fn() -> +null_cursor",
                 "!doc": "Disassociates a set of labels from a campaign"
             },
-            "creates": {
+            "createadlabels": {
                 "!type": "fn() -> +null_cursor",
                 "!doc": "Associates a set of labels with a campaign"
             },
-            "getAdgroups": {
+            "getads": {
                 "!type": "fn() -> +Adgroup_cursor",
                 "!doc": "Ads under this campaign"
             },
-            "getAdCampaigns": {
+            "getadsets": {
                 "!type": "fn() -> +AdCampaign_cursor",
                 "!doc": "The ad sets under this campaign"
             },
-            "getAdsInsightss": {
+            "getinsights": {
                 "!type": "fn() -> +AdsInsights_cursor",
                 "!doc": "Insights on advertising performance of this campaign"
             },
-            "createAdsInsightss": {
+            "createinsights": {
                 "!type": "fn() -> +AdsInsights_cursor",
                 "!doc": "Edge to create an async job for fetching ad insights for campaigns"
             },
@@ -3676,15 +4298,15 @@ module.exports = {
                 "!type": "fn(params: Object) -> bool",
                 "!doc": "Delete the ProductFeed"
             },
-            "getProductItems": {
+            "getproducts": {
                 "!type": "fn() -> +ProductItem_cursor",
                 "!doc": "Products in the product feed"
             },
-            "getProductFeedUploads": {
+            "getuploads": {
                 "!type": "fn() -> +ProductFeedUpload_cursor",
                 "!doc": "Concrete upload attempts"
             },
-            "createProductFeedUploads": {
+            "createuploads": {
                 "!type": "fn() -> +ProductFeedUpload_cursor",
                 "!doc": "SELF_EXPLANATORY"
             },
@@ -3706,6 +4328,10 @@ module.exports = {
             "file_name": {
                 "!type": "string",
                 "!doc": "File name of the product feed. Will be overridden by `name` if present"
+            },
+            "default_currency": {
+                "!type": "string",
+                "!doc": "Default currency for products. If no currency is specified for items in the feed file, this value would be used"
             },
             "deletion_enabled": {
                 "!type": "bool",
@@ -3808,7 +4434,7 @@ module.exports = {
             }
         },
         "ProductFeedUpload": {
-            "getProductFeedUploadErrors": {
+            "geterrors": {
                 "!type": "fn() -> +ProductFeedUploadError_cursor",
                 "!doc": "List of errors during the product feed upload"
             },
@@ -3930,15 +4556,15 @@ module.exports = {
                 "!type": "fn(params: Object) -> +ProductGroup",
                 "!doc": "Update fields on the ProductGroup"
             },
-            "getProductSets": {
+            "getproduct_sets": {
                 "!type": "fn() -> +ProductSet_cursor",
                 "!doc": "Product sets that this product group belongs to"
             },
-            "getProductItems": {
+            "getproducts": {
                 "!type": "fn() -> +ProductItem_cursor",
                 "!doc": "Products that belong to this product group"
             },
-            "createProductItems": {
+            "createproducts": {
                 "!type": "fn() -> +ProductItem_cursor",
                 "!doc": "Create a product"
             },
@@ -3967,15 +4593,15 @@ module.exports = {
                 "!type": "fn(params: Object) -> bool",
                 "!doc": "Delete the OffsitePixel"
             },
-            "deleteAdAccounts": {
+            "deleteadaccounts": {
                 "!type": "fn() -> +AdAccount_cursor",
                 "!doc": "SELF_EXPLANATORY"
             },
-            "getAdAccounts": {
+            "getadaccounts": {
                 "!type": "fn() -> +AdAccount_cursor",
                 "!doc": "Accounts associated with the pixel"
             },
-            "createAdAccounts": {
+            "createadaccounts": {
                 "!type": "fn() -> +AdAccount_cursor",
                 "!doc": "SELF_EXPLANATORY"
             },
@@ -4050,19 +4676,19 @@ module.exports = {
                 "!type": "fn(params: Object) -> bool",
                 "!doc": "Delete the AdLabel"
             },
-            "getAdCreatives": {
+            "getadcreatives": {
                 "!type": "fn() -> +AdCreative_cursor",
                 "!doc": "Creatives associated with this label"
             },
-            "getAdgroups": {
+            "getads": {
                 "!type": "fn() -> +Adgroup_cursor",
                 "!doc": "Ads associated with this label"
             },
-            "getAdCampaigns": {
+            "getadsets": {
                 "!type": "fn() -> +AdCampaign_cursor",
                 "!doc": "Ad sets associated with this label"
             },
-            "getAdCampaignGroups": {
+            "getcampaigns": {
                 "!type": "fn() -> +AdCampaignGroup_cursor",
                 "!doc": "Campaigns associated with this label"
             },
@@ -4091,6 +4717,10 @@ module.exports = {
             }
         },
         "Targeting": {
+            "platforms": {
+                "!type": "list<string>",
+                "!doc": "The user specified platforms on which the ad set will be delivered."
+            },
             "excluded_connections": {
                 "!type": "list<IDName>",
                 "!doc": "Connections to exclude targeting to"
@@ -4155,6 +4785,10 @@ module.exports = {
                 "!type": "list<IDName>",
                 "!doc": "Targeting cities"
             },
+            "effective_facebook_positions": {
+                "!type": "list<string>",
+                "!doc": "The actual Facebook positions that the adset will be delivered to"
+            },
             "household_composition": {
                 "!type": "list<IDName>",
                 "!doc": "Household compositions to target"
@@ -4207,6 +4841,10 @@ module.exports = {
                 "!type": "list<string>",
                 "!doc": "Excluded publisher list IDs on Audience Network"
             },
+            "effective_device_platforms": {
+                "!type": "list<item_of_effective_device_platforms>",
+                "!doc": "The actual device platforms on which the ad set will be delivered"
+            },
             "app_install_state": {
                 "!type": "string",
                 "!doc": "Targeting whether an app is installed or not on a device"
@@ -4227,6 +4865,10 @@ module.exports = {
                 "!type": "list<IDName>",
                 "!doc": "Home values to target"
             },
+            "facebook_positions": {
+                "!type": "list<string>",
+                "!doc": "The specified Facebook positions that the adset will be delivered to"
+            },
             "education_majors": {
                 "!type": "list<IDName>",
                 "!doc": "Majors during education"
@@ -4234,6 +4876,10 @@ module.exports = {
             "radius": {
                 "!type": "string",
                 "!doc": "Targeting user located within a radius of the location"
+            },
+            "excluded_dynamic_audience_ids": {
+                "!type": "list<string>",
+                "!doc": "Excluded dynamic audience IDs"
             },
             "zips": {
                 "!type": "list<string>",
@@ -4282,6 +4928,10 @@ module.exports = {
             "wireless_carrier": {
                 "!type": "list<string>",
                 "!doc": "The wireless carrier"
+            },
+            "device_platforms": {
+                "!type": "list<item_of_device_platforms>",
+                "!doc": "The user specified device platforms on which the ad set will be delivered"
             },
             "engagement_specs": {
                 "!type": "list<TargetingDynamicRule>",
@@ -4339,9 +4989,17 @@ module.exports = {
                 "!type": "list<string>",
                 "!doc": "Dynamic audience IDs"
             },
+            "country_groups": {
+                "!type": "list<string>",
+                "!doc": "Targeting groups of countries"
+            },
             "office_type": {
                 "!type": "list<IDName>",
                 "!doc": "Office types to target"
+            },
+            "audience_network_positions": {
+                "!type": "list<string>",
+                "!doc": "Audience Network positions eg: instream_video, rewarded_video"
             },
             "adgroup_id": {
                 "!type": "string",
@@ -4443,7 +5101,7 @@ module.exports = {
             },
             "event_type": {
                 "!type": "AdActivity_event_type",
-                "!doc": "Event types by category:<br>ACCOUNT<br>`ad_review_approved`: Ad approved<br>`ad_review_declined`: Ad not approved<br>`ad_account_set_business_information`: Account business information updated<br>`ad_account_update_status`: Account status updated<br>`ad_account_add_user_to_role`: Person added to account<br>`ad_account_remove_user_from_role`: Person removed from account<br><br>AD<br>`ad_review_approved`: Ad approved<br>`ad_review_declined`: Ad not approved<br>`add_images`: Image added to the library<br>`create_ad`: Ad created<br>`edit_images`: Image edited in library<br>`update_ad_creative`: Ad updated<br>`update_ad_friendly_name`: Ad name updated<br>`update_ad_run_status`: Ad status updated<br><br>AD_SET<br>`create_ad_set`: Ad set created<br>`update_ad_set_bidding`: Ad set bidding updated<br>`update_ad_set_budget`: Ad set budget updated<br>`update_ad_set_duration`: Ad set schedule updated<br>`update_ad_set_name`: Ad set name updated<br>`update_ad_set_run_status`: Ad set status updated<br>`update_ad_set_target_spec`: Ad set targeting updated<br><br>AUDIENCE<br>`create_audience`: Custom audience created<br>`update_audience`: Custom audience updated<br>`delete_audience`: Custom audience deleted<br><br>BID<br>`update_ad_bid_info`: Bid updated<br>`update_ad_bid_type`: Bidding type updated<br>`update_ad_set_bidding`: Ad set bidding updated<br><br>BUDGET<br>`ad_account_billing_charge`: Account billed<br>`ad_account_billing_chargeback`: Bank refund<br>`ad_account_billing_chargeback_reversal`: Paid (Bank refund cancelled)<br>`ad_account_billing_decline`: Account payment method declined<br>`ad_account_billing_refund`: Account refunded<br>`ad_account_remove_spend_limit`: Spending limit removed<br>`ad_account_reset_spend_limit`: Spending limit reset<br>`ad_account_update_spend_limit`: Spending limit updated<br>`add_funding_source`: Payment method added<br>`billing_event`: Billing Event<br>`funding_event_initiated`: Funding Event Initiated<br>`funding_event_successful`: Money added to balance<br>`remove_funding_source`: Payment method removed<br>`update_ad_set_budget`: Ad set budget updated<br>`update_campaign_budget`: Campaign budget updated<br>`update_campaign_group_spend_cap`: Campaign spending limit updated<br><br>CAMPAIGN<br>`create_campaign`: Campaign created<br>`create_campaign_legacy`: Campaign created<br>`create_campaign_group`: Campaign created<br>`update_campaign_duration`: Campaign schedule updated<br>`update_campaign_name`: Campaign name updated<br>`update_campaign_run_status`: Campaign status updated<br><br>DATE<br>`update_ad_set_duration`: Ad set schedule updated<br>`update_campaign_duration`: Campaign schedule updated<br><br>STATUS<br>`ad_account_update_status`: Account status updated<br>`update_ad_run_status`: Ad status updated<br>`update_ad_set_run_status`: Ad set status updated<br>`update_campaign_run_status`: Campaign status updated<br><br>TARGETING<br>`update_ad_set_target_spec`: Ad set targeting updated<br>`update_ad_targets_spec`: Ad targeting updated<br><br>"
+                "!doc": "Event types by category:<br>ACCOUNT<br>`ad_review_approved`: Ad approved<br>`ad_review_declined`: Ad not approved<br>`ad_account_set_business_information`: Account business information updated<br>`ad_account_update_status`: Account status updated<br>`ad_account_add_user_to_role`: Person added to account<br>`ad_account_remove_user_from_role`: Person removed from account<br><br>AD<br>`ad_review_approved`: Ad approved<br>`ad_review_declined`: Ad not approved<br>`add_images`: Image added to the library<br>`create_ad`: Ad created<br>`edit_images`: Image edited in library<br>`update_ad_creative`: Ad updated<br>`update_ad_friendly_name`: Ad name updated<br>`update_ad_run_status`: Ad status updated<br><br>AD_SET<br>`create_ad_set`: Ad set created<br>`update_ad_set_bidding`: Ad set bidding updated<br>`update_ad_set_budget`: Ad set budget updated<br>`update_ad_set_duration`: Ad set schedule updated<br>`update_ad_set_name`: Ad set name updated<br>`update_ad_set_run_status`: Ad set status updated<br>`update_ad_set_target_spec`: Ad set targeting updated<br><br>AUDIENCE<br>`create_audience`: Custom audience created<br>`update_audience`: Custom audience updated<br>`delete_audience`: Custom audience deleted<br>`share_audience`: Custom audience shared<br>`receive_audience`: Custom audience received<br>`unshare_audience`: Custom audience unshared<br>`remove_shared_audience`: Shared custom audience removed<br><br>BID<br>`update_ad_bid_info`: Bid updated<br>`update_ad_bid_type`: Bidding type updated<br>`update_ad_set_bidding`: Ad set bidding updated<br><br>BUDGET<br>`ad_account_billing_charge`: Account billed<br>`ad_account_billing_chargeback`: Bank refund<br>`ad_account_billing_chargeback_reversal`: Paid (Bank refund cancelled)<br>`ad_account_billing_decline`: Account payment method declined<br>`ad_account_billing_refund`: Account refunded<br>`ad_account_remove_spend_limit`: Spending limit removed<br>`ad_account_reset_spend_limit`: Spending limit reset<br>`ad_account_update_spend_limit`: Spending limit updated<br>`add_funding_source`: Payment method added<br>`billing_event`: Billing Event<br>`funding_event_initiated`: Funding Event Initiated<br>`funding_event_successful`: Money added to balance<br>`remove_funding_source`: Payment method removed<br>`update_ad_set_budget`: Ad set budget updated<br>`update_campaign_budget`: Deprecated. Use update_ad_set_budget instead<br>`update_campaign_group_spend_cap`: Campaign spending limit updated<br><br>CAMPAIGN<br>`create_campaign`: Campaign created<br>`create_campaign_legacy`: Campaign created<br>`create_campaign_group`: Campaign created<br>`update_campaign_duration`: Campaign schedule updated<br>`update_campaign_name`: Campaign name updated<br>`update_campaign_run_status`: Campaign status updated<br><br>DATE<br>`update_ad_set_duration`: Ad set schedule updated<br>`update_campaign_duration`: Campaign schedule updated<br><br>STATUS<br>`ad_account_update_status`: Account status updated<br>`update_ad_run_status`: Ad status updated<br>`update_ad_set_run_status`: Ad set status updated<br>`update_campaign_run_status`: Campaign status updated<br><br>TARGETING<br>`update_ad_set_target_spec`: Ad set targeting updated<br>`update_ad_targets_spec`: Ad targeting updated<br><br>"
             }
         },
         "AdAccountGroupResult": {
@@ -4469,15 +5127,15 @@ module.exports = {
                 "!type": "fn(params: Object) -> bool",
                 "!doc": "Delete the AdCreative"
             },
-            "deletes": {
+            "deleteadlabels": {
                 "!type": "fn() -> +null_cursor",
                 "!doc": "Disassociates a set of labels from a creative"
             },
-            "creates": {
+            "createadlabels": {
                 "!type": "fn() -> +null_cursor",
                 "!doc": "Associates a set of labels with a creative"
             },
-            "getAdPreviews": {
+            "getpreviews": {
                 "!type": "fn() -> +AdPreview_cursor",
                 "!doc": "The HTML Snippets for previewing this creative"
             },
@@ -4674,11 +5332,11 @@ module.exports = {
                 "!type": "fn(params: Object) -> bool",
                 "!doc": "Delete the ProductSet"
             },
-            "getProductGroups": {
+            "getproduct_groups": {
                 "!type": "fn() -> +ProductGroup_cursor",
                 "!doc": "Product groups that belong to this product set"
             },
-            "getProductItems": {
+            "getproducts": {
                 "!type": "fn() -> +ProductItem_cursor",
                 "!doc": "Product items that belong to this product set"
             },
@@ -4696,6 +5354,10 @@ module.exports = {
             "name": {
                 "!type": "string",
                 "!doc": "The name given by the owner of this product set"
+            },
+            "product_catalog": {
+                "!type": "ProductCatalog",
+                "!doc": "Product catalog for this product set"
             },
             "product_count": {
                 "!type": "number",
@@ -4745,44 +5407,44 @@ module.exports = {
                 "!type": "fn(params: Object) -> bool",
                 "!doc": "Delete the AdCampaign"
             },
-            "getTargetingSentenceLines": {
+            "gettargetingsentencelines": {
                 "!type": "fn() -> +TargetingSentenceLine_cursor",
                 "!doc": "The targeting description sentence for this ad set"
             },
-            "createAdsInsightss": {
-                "!type": "fn() -> +AdsInsights_cursor",
-                "!doc": "Edge to create an async job for fetching ad insights for ad sets"
-            },
-            "getAdAsyncRequests": {
-                "!type": "fn() -> +AdAsyncRequest_cursor",
-                "!doc": "Async ad requests for this ad set"
-            },
-            "deletes": {
-                "!type": "fn() -> +null_cursor",
-                "!doc": "Disassociates a set of labels from an ad set"
-            },
-            "getAdCreatives": {
-                "!type": "fn() -> +AdCreative_cursor",
-                "!doc": "The creatives of this ad set"
-            },
-            "getAdActivitys": {
+            "getactivities": {
                 "!type": "fn() -> +AdActivity_cursor",
                 "!doc": "The activities of this ad set"
             },
-            "getAdgroups": {
-                "!type": "fn() -> +Adgroup_cursor",
-                "!doc": "The ads under this ad set"
+            "getadcreatives": {
+                "!type": "fn() -> +AdCreative_cursor",
+                "!doc": "The creatives of this ad set"
+            },
+            "deleteadlabels": {
+                "!type": "fn() -> +null_cursor",
+                "!doc": "Disassociates a set of labels from an ad set"
+            },
+            "getasyncadrequests": {
+                "!type": "fn() -> +AdAsyncRequest_cursor",
+                "!doc": "Async ad requests for this ad set"
+            },
+            "getinsights": {
+                "!type": "fn() -> +AdsInsights_cursor",
+                "!doc": "Insights on advertising performance of this ad set"
             },
             "#get": {
                 "!type": "fn() -> +null_cursor"
             },
-            "creates": {
+            "createinsights": {
+                "!type": "fn() -> +AdsInsights_cursor",
+                "!doc": "Edge to create an async job for fetching ad insights for ad sets"
+            },
+            "getads": {
+                "!type": "fn() -> +Adgroup_cursor",
+                "!doc": "The ads under this ad set"
+            },
+            "createadlabels": {
                 "!type": "fn() -> +null_cursor",
                 "!doc": "Associates a set of labels with an ad set"
-            },
-            "getAdsInsightss": {
-                "!type": "fn() -> +AdsInsights_cursor",
-                "!doc": "Insights on advertising performance of this ad set"
             },
             "rf_prediction_id": {
                 "!type": "string",
@@ -4923,10 +5585,6 @@ module.exports = {
             "lifetime_imps": {
                 "!type": "number",
                 "!doc": "Lifetime impressions. Available only for campaigns with `buying_type=FIXED_CPM`"
-            },
-            "product_ad_behavior": {
-                "!type": "AdCampaign_product_ad_behavior",
-                "!doc": "Option to choose between prospecting and retargeting"
             }
         },
         "DeliveryCheck": {
@@ -5018,7 +5676,7 @@ module.exports = {
             }
         },
         "AdReportRun": {
-            "getAdsInsightss": {
+            "getinsights": {
                 "!type": "fn() -> +AdsInsights_cursor",
                 "!doc": "Insights results of this Ad Report Run"
             },
@@ -5113,23 +5771,23 @@ module.exports = {
                 "!type": "fn(params: Object) -> bool",
                 "!doc": "Delete the AdAccountGroup"
             },
-            "deleteAdAccountGroupAdAccountss": {
+            "deleteadaccounts": {
                 "!type": "fn() -> +AdAccountGroupAdAccounts_cursor",
                 "!doc": "Ad account in the ad account group"
             },
-            "getAdAccountGroupAdAccountss": {
+            "getadaccounts": {
                 "!type": "fn() -> +AdAccountGroupAdAccounts_cursor",
                 "!doc": "The ad accounts in the ad account group"
             },
-            "createAdAccountGroupAdAccountss": {
+            "createadaccounts": {
                 "!type": "fn() -> +AdAccountGroupAdAccounts_cursor",
                 "!doc": "Ad account in the ad account group"
             },
-            "deletes": {
+            "deleteusers": {
                 "!type": "fn() -> +null_cursor",
                 "!doc": "User that owns the ad account group"
             },
-            "creates": {
+            "createusers": {
                 "!type": "fn() -> +null_cursor",
                 "!doc": "User that owns the ad account group"
             },
@@ -5161,10 +5819,10 @@ module.exports = {
                 "!doc": "The users who own the ad account group"
             }
         },
-        "CustomAudienceSession_cursor": {
+        "CustomAudiencePrefillState_cursor": {
             "!proto": "cursor_prototype",
             "forEach": {
-                "!type": "fn(f: fn(el: +CustomAudienceSession, i: number, array: +Array), context?: ?)"
+                "!type": "fn(f: fn(el: +CustomAudiencePrefillState, i: number, array: +Array), context?: ?)"
             },
             "valid": {
                 "!type": "fn() -> bool",
@@ -5178,13 +5836,13 @@ module.exports = {
                 "!type": "fn() -> !this"
             },
             "next": {
-                "!type": "fn() -> +CustomAudienceSession",
-                "!doc": "Return the next CustomAudienceSession item from the cursor.",
+                "!type": "fn() -> +CustomAudiencePrefillState",
+                "!doc": "Return the next CustomAudiencePrefillState item from the cursor.",
                 "!url": "https://facebook.com"
             },
             "current": {
-                "!type": "fn() -> +CustomAudienceSession",
-                "!doc": "Gets the current CustomAudienceSession of the cursor"
+                "!type": "fn() -> +CustomAudiencePrefillState",
+                "!doc": "Gets the current CustomAudiencePrefillState of the cursor"
             }
         },
         "CustomAudienceAdAccount_cursor": {
@@ -5213,10 +5871,10 @@ module.exports = {
                 "!doc": "Gets the current CustomAudienceAdAccount of the cursor"
             }
         },
-        "CustomAudiencePrefillState_cursor": {
+        "CustomAudienceSession_cursor": {
             "!proto": "cursor_prototype",
             "forEach": {
-                "!type": "fn(f: fn(el: +CustomAudiencePrefillState, i: number, array: +Array), context?: ?)"
+                "!type": "fn(f: fn(el: +CustomAudienceSession, i: number, array: +Array), context?: ?)"
             },
             "valid": {
                 "!type": "fn() -> bool",
@@ -5230,13 +5888,13 @@ module.exports = {
                 "!type": "fn() -> !this"
             },
             "next": {
-                "!type": "fn() -> +CustomAudiencePrefillState",
-                "!doc": "Return the next CustomAudiencePrefillState item from the cursor.",
+                "!type": "fn() -> +CustomAudienceSession",
+                "!doc": "Return the next CustomAudienceSession item from the cursor.",
                 "!url": "https://facebook.com"
             },
             "current": {
-                "!type": "fn() -> +CustomAudiencePrefillState",
-                "!doc": "Gets the current CustomAudiencePrefillState of the cursor"
+                "!type": "fn() -> +CustomAudienceSession",
+                "!doc": "Gets the current CustomAudienceSession of the cursor"
             }
         },
         "CustomAudience": {
@@ -5248,40 +5906,40 @@ module.exports = {
                 "!type": "fn(params: Object) -> bool",
                 "!doc": "Delete the CustomAudience"
             },
-            "deletes": {
-                "!type": "fn() -> +null_cursor",
-                "!doc": "Remove users from custom audience with custumer list"
+            "getprefills": {
+                "!type": "fn() -> +CustomAudiencePrefillState_cursor",
+                "!doc": "Status of the prefill jobs if they exist"
             },
-            "getCustomAudienceSessions": {
-                "!type": "fn() -> +CustomAudienceSession_cursor",
-                "!doc": "Data upload sessions of this custom audience"
-            },
-            "deleteCustomAudienceAdAccounts": {
+            "createadaccounts": {
                 "!type": "fn() -> +CustomAudienceAdAccount_cursor",
-                "!doc": "Remove an ad account from access to the custom audience"
+                "!doc": "Allow ad accounts to have access to this custom audience"
             },
-            "getAdgroups": {
-                "!type": "fn() -> +Adgroup_cursor",
-                "!doc": "Ads that are using this custom audience"
+            "createusers": {
+                "!type": "fn() -> +null_cursor",
+                "!doc": "Add users to custom audience with custumer list"
             },
             "#get": {
                 "!type": "fn() -> +null_cursor"
             },
-            "getCustomAudienceAdAccounts": {
+            "getsessions": {
+                "!type": "fn() -> +CustomAudienceSession_cursor",
+                "!doc": "Data upload sessions of this custom audience"
+            },
+            "deleteadaccounts": {
+                "!type": "fn() -> +CustomAudienceAdAccount_cursor",
+                "!doc": "Remove an ad account from access to the custom audience"
+            },
+            "getads": {
+                "!type": "fn() -> +Adgroup_cursor",
+                "!doc": "Ads that are using this custom audience"
+            },
+            "deleteusers": {
+                "!type": "fn() -> +null_cursor",
+                "!doc": "Remove users from custom audience with custumer list"
+            },
+            "getadaccounts": {
                 "!type": "fn() -> +CustomAudienceAdAccount_cursor",
                 "!doc": "The ad account ids associated with this custom audience"
-            },
-            "creates": {
-                "!type": "fn() -> +null_cursor",
-                "!doc": "Add users to custom audience with custumer list"
-            },
-            "createCustomAudienceAdAccounts": {
-                "!type": "fn() -> +CustomAudienceAdAccount_cursor",
-                "!doc": "Allow ad accounts to have access to this custom audience"
-            },
-            "getCustomAudiencePrefillStates": {
-                "!type": "fn() -> +CustomAudiencePrefillState_cursor",
-                "!doc": "Status of the prefill jobs if they exist"
             },
             "lookalike_spec": {
                 "!type": "LookalikeSpec",
@@ -5303,6 +5961,10 @@ module.exports = {
                 "!type": "list<CustomAudience>",
                 "!doc": "Field that exist only on `COMBINATION` custom audiences. It's a\n        list of ids of every audience to be included in the combination"
             },
+            "last_used_time": {
+                "!type": "string",
+                "!doc": "last used time of this object by the current viewer"
+            },
             "time_updated": {
                 "!type": "number",
                 "!doc": "Last time this audience metadata was updated"
@@ -5314,6 +5976,10 @@ module.exports = {
             "name": {
                 "!type": "string",
                 "!doc": "Custom audience name"
+            },
+            "owner_business": {
+                "!type": "Business",
+                "!doc": "owner business of this object"
             },
             "account_id": {
                 "!type": "string",
@@ -5404,6 +6070,10 @@ module.exports = {
             "countries": {
                 "!type": "list<string>",
                 "!doc": "Targeting countries"
+            },
+            "country_groups": {
+                "!type": "list<string>",
+                "!doc": "Targeting country groups"
             },
             "regions": {
                 "!type": "list<TargetingGeoLocationRegion>",
@@ -5516,10 +6186,6 @@ module.exports = {
                 "!type": "AdCreativeLinkDataAppLinkSpec",
                 "!doc": "Native deeplinks attached to the post"
             },
-            "max_product_count": {
-                "!type": "number",
-                "!doc": "Maximum number of products to show for dynamic product ads. See\n        [dynamic creative\n        ](/docs/marketing-api/dynamic-product-ads/ads-management#adtemplate)"
-            },
             "caption": {
                 "!type": "string",
                 "!doc": "Link caption. Overwrites the caption under the title in the link\n        on Facebook. See [post](/docs/graph-api/reference/post) for\n        more info. This setting is not used on Instagram."
@@ -5572,6 +6238,10 @@ module.exports = {
                 "!type": "string",
                 "!doc": "Link description. Overwrites the description in the link on\n        Facebook. See [post](/docs/graph-api/reference/post) for more info.\n        This setting is not used on Instagram."
             },
+            "force_single_link": {
+                "!type": "bool",
+                "!doc": "Whether to force the post to render in a single link format"
+            },
             "picture": {
                 "!type": "string",
                 "!doc": "URL of a picture to use in the post. Specify this field or `image_hash`\n         but not both. See [post](/docs/graph-api/reference/post) for more info.\n         The image specified at the URL will be saved into the ad accounts\n         [image library](/docs/marketing-api/reference/ad-image)"
@@ -5586,19 +6256,19 @@ module.exports = {
                 "!type": "fn(params: Object) -> +AdsPixel",
                 "!doc": "Update fields on the AdsPixel"
             },
-            "getCustomAudiences": {
+            "getaudiences": {
                 "!type": "fn() -> +CustomAudience_cursor",
                 "!doc": "The [website custom\n        audiences](/docs/marketing-api/custom-audience-website/)\n        associated with this pixel"
             },
-            "getAdAccounts": {
+            "getshared_accounts": {
                 "!type": "fn() -> +AdAccount_cursor",
                 "!doc": "Ad Accounts in the same business that this pixel is shared"
             },
-            "getBusinesss": {
+            "getshared_agencies": {
                 "!type": "fn() -> +Business_cursor",
                 "!doc": "Agencies or other businesses this pixel\n        is shared with"
             },
-            "getAdsPixelStatsResults": {
+            "getstats": {
                 "!type": "fn() -> +AdsPixelStatsResult_cursor",
                 "!doc": "Stats data for this pixel"
             },
@@ -5685,6 +6355,10 @@ module.exports = {
             "adset_id": {
                 "!type": "string",
                 "!doc": "Ad Set ID for the Lead Ad"
+            },
+            "custom_disclaimer_responses": {
+                "!type": "list<Object>",
+                "!doc": "User responses to custom disclaimers"
             }
         },
         "ProductItemCommerceInsights": {
@@ -5815,7 +6489,7 @@ module.exports = {
                 "!doc": "Percent of users in holdout"
             },
             "external_minimum_budget": {
-                "!type": "string",
+                "!type": "number",
                 "!doc": "Minimum budget given the target, in cents"
             },
             "name": {
@@ -5827,7 +6501,7 @@ module.exports = {
                 "!doc": "The ID of the Page or the ID of the app which the ad promotes."
             },
             "account_id": {
-                "!type": "string",
+                "!type": "number",
                 "!doc": "The ID of the Ad Account this reach frequency prediction belongs to"
             },
             "external_minimum_reach": {
@@ -5863,11 +6537,11 @@ module.exports = {
                 "!doc": "The time when this reach frequency prediction was created"
             },
             "external_maximum_budget": {
-                "!type": "string",
+                "!type": "number",
                 "!doc": "Maximum budget given the target, in cents"
             },
             "external_budget": {
-                "!type": "string",
+                "!type": "number",
                 "!doc": "Predicted budget in cents for the ad set, relevant if prediction mode is <PREDICT BY BUDGET>"
             },
             "instagram_destination_id": {
@@ -6045,7 +6719,7 @@ module.exports = {
             },
             "reach": {
                 "!type": "number",
-                "!doc": "The number of people your ad was served to."
+                "!doc": "The number of people your ad was served to. This is the same as `unique_impressions`."
             },
             "cpc": {
                 "!type": "number",
@@ -6061,7 +6735,7 @@ module.exports = {
             },
             "unique_impressions": {
                 "!type": "number",
-                "!doc": "The number of people your ad was served to."
+                "!doc": "The number of people your ad was served to. This is the same as `unique_impressions`."
             },
             "frequency": {
                 "!type": "number",
@@ -6115,7 +6789,7 @@ module.exports = {
             },
             "action_type": {
                 "!type": "string",
-                "!doc": "The kind of actions taken on your ad, Page, app or event after your ad was served to someone, even if they didn't click on it. Action types include Page likes, app installs, conversions, event responses and more.<br>Actions prepended by `app_custom_event` come from mobile [app events](/docs/app-events) and actions prepended by `offsite_conversion` come from the [Facebook Pixel](/docs/marketing-api/audiences-api/pixel). <br>`app_custom_event.fb_mobile_achievement_unlocked`: Mobile App Feature Unlocks<br>`app_custom_event.fb_mobile_activate_app`: Mobile App Starts<br>`app_custom_event.fb_mobile_add_payment_info`: Mobile App Payment Details<br>`app_custom_event.fb_mobile_add_to_cart`: Mobile App Adds To Cart<br>`app_custom_event.fb_mobile_add_to_wishlist`: Mobile App Adds to Wishlist<br>`app_custom_event.fb_mobile_complete_registration`: Mobile App Registrations<br>`app_custom_event.fb_mobile_content_view`: Mobile App Content Views<br>`app_custom_event.fb_mobile_initiated_checkout`: Mobile App Checkouts<br>`app_custom_event.fb_mobile_level_achieved`: Mobile App Achievements<br>`app_custom_event.fb_mobile_purchase`: Mobile App Purchases<br>`app_custom_event.fb_mobile_rate`: Mobile App Ratings<br>`app_custom_event.fb_mobile_search`: Mobile App Searchs<br>`app_custom_event.fb_mobile_spent_credits`: Mobile App Credit Spends<br>`app_custom_event.fb_mobile_tutorial_completion`: Mobile App Tutorial Completions<br>`app_custom_event.other`: Other Mobile App Actions<br>`app_install`: App Installs<br>`app_use`: App Uses<br>`attention_event`: Attentive Impressions<br>`checkin`: Check-ins<br>`comment`: Post Comments<br>`commerce_event.add_to_cart`: Commerce Adds to Cart<br>`commerce_event.message_to_buy`: Commerce Messages to Buy<br>`commerce_event.purchase`: Commerce Purchases<br>`commerce_event.view_content`: Commerce Product Views<br>`credit_spent`: Credit Spends<br>`dwell`: Post Dwells<br>`follow`: Question Follows<br>`full_view`: Post Full Views<br>`games.plays`: Game Plays<br>`gift_sale`: Facebook Gifts Sale<br>`leadgen.other`: Leads (Form)<br>`like`: Page Likes<br>`link_click`: Website Clicks<br>`mention`: Page Mentions<br>`messenger.accept_messenger_request`: Messenge Requests Accepted<br>`messenger.block`: Message Blocks<br>`messenger.reply`: Message Replys<br>`mobile_app_install`: Mobile App Installs<br>`new_mobile`: Newly Purchased Mobile Devices<br>`offline_conversion.add_to_cart`: Add To Cart<br>`offline_conversion.lead`: Lead<br>`offline_conversion.purchase`: Purchase<br>`offsite_conversion.add_to_cart`: Adds to Cart<br>`offsite_conversion.checkout`: Checkouts<br>`offsite_conversion.key_page_view`: Key Page Views<br>`offsite_conversion.lead`: Leads<br>`offsite_conversion.other`: Other Website Conversions<br>`offsite_conversion.registration`: Registrations<br>`photo_view`: Page Photo Views<br>`post`: Post Shares<br>`post_like`: Post Likes<br>`receive_offer`: Offer Claims<br>`rsvp`: Event Responses<br>`tab_view`: Page Tab Views<br>`video_play`: Clicks to Play Video<br>`video_view`: Video Views<br>`vote`: Question Answers<br>"
+                "!doc": "The kind of actions taken on your ad, Page, app or event after your ad was served to someone, even if they didn't click on it. Action types include Page likes, app installs, conversions, event responses and more.<br>Actions prepended by `app_custom_event` come from mobile [app events](/docs/app-events) and actions prepended by `offsite_conversion` come from the [Facebook Pixel](/docs/marketing-api/audiences-api/pixel). <br>`app_custom_event.fb_mobile_achievement_unlocked`: Mobile App Feature Unlocks<br>`app_custom_event.fb_mobile_activate_app`: Mobile App Starts<br>`app_custom_event.fb_mobile_add_payment_info`: Mobile App Payment Details<br>`app_custom_event.fb_mobile_add_to_cart`: Mobile App Adds To Cart<br>`app_custom_event.fb_mobile_add_to_wishlist`: Mobile App Adds to Wishlist<br>`app_custom_event.fb_mobile_complete_registration`: Mobile App Registrations<br>`app_custom_event.fb_mobile_content_view`: Mobile App Content Views<br>`app_custom_event.fb_mobile_initiated_checkout`: Mobile App Checkouts<br>`app_custom_event.fb_mobile_level_achieved`: Mobile App Achievements<br>`app_custom_event.fb_mobile_purchase`: Mobile App Purchases<br>`app_custom_event.fb_mobile_rate`: Mobile App Ratings<br>`app_custom_event.fb_mobile_search`: Mobile App Searchs<br>`app_custom_event.fb_mobile_spent_credits`: Mobile App Credit Spends<br>`app_custom_event.fb_mobile_tutorial_completion`: Mobile App Tutorial Completions<br>`app_custom_event.other`: Other Mobile App Actions<br>`app_install`: App Installs<br>`app_use`: App Uses<br>`attention_event`: Attentive Impressions<br>`checkin`: Check-ins<br>`comment`: Post Comments<br>`commerce_event.add_to_cart`: Commerce Adds to Cart<br>`commerce_event.message_to_buy`: Commerce Messages to Buy<br>`commerce_event.purchase`: Commerce Purchases<br>`commerce_event.view_content`: Commerce Product Views<br>`credit_spent`: Credit Spends<br>`dwell`: Post Dwells<br>`follow`: Question Follows<br>`full_view`: Post Full Views<br>`games.plays`: Game Plays<br>`gift_sale`: Facebook Gifts Sale<br>`leadgen.other`: Leads (Form)<br>`like`: Page Likes<br>`link_click`: Website Clicks<br>`mention`: Page Mentions<br>`messenger.accept_messenger_request`: Messenge Requests Accepted<br>`messenger.block`: Message Blocks<br>`messenger.reply`: Message Replys<br>`mobile_app_install`: Mobile App Installs<br>`new_mobile`: Newly Purchased Mobile Devices<br>`offline_conversion.add_payment_info`: Add Payment Info<br>`offline_conversion.add_to_cart`: Add To Cart<br>`offline_conversion.add_to_wishlist`: Add To Wishlist<br>`offline_conversion.complete_registration`: Complete Registration<br>`offline_conversion.initiate_checkout`: Initiate Checkout<br>`offline_conversion.lead`: Lead<br>`offline_conversion.other`: Other<br>`offline_conversion.purchase`: Purchase<br>`offline_conversion.search`: Search<br>`offline_conversion.view_content`: View Content<br>`offsite_conversion.add_to_cart`: Adds to Cart<br>`offsite_conversion.checkout`: Checkouts<br>`offsite_conversion.key_page_view`: Key Page Views<br>`offsite_conversion.lead`: Leads<br>`offsite_conversion.other`: Other Website Conversions<br>`offsite_conversion.registration`: Registrations<br>`photo_view`: Page Photo Views<br>`post`: Post Shares<br>`post_like`: Post Likes<br>`receive_offer`: Offer Claims<br>`rsvp`: Event Responses<br>`tab_view`: Page Tab Views<br>`video_play`: Clicks to Play Video<br>`video_view`: Video Views<br>`vote`: Question Answers<br>"
             },
             "action_carousel_card_name": {
                 "!type": "string",
@@ -6308,6 +6982,103 @@ module.exports = {
                 "!doc": "Type of the term of services"
             }
         },
+        "Event": {
+            "#get": {
+                "!type": "fn() -> +null_cursor"
+            },
+            "place": {
+                "!type": "Object",
+                "!doc": "Event Place information"
+            },
+            "guest_list_enabled": {
+                "!type": "bool",
+                "!doc": "Can see guest list"
+            },
+            "start_time": {
+                "!type": "string",
+                "!doc": "Start time"
+            },
+            "parent_group": {
+                "!type": "Object",
+                "!doc": "The group the event belongs to"
+            },
+            "is_page_owned": {
+                "!type": "bool",
+                "!doc": "Whether the event is created by page or not"
+            },
+            "name": {
+                "!type": "string",
+                "!doc": "Event name"
+            },
+            "end_time": {
+                "!type": "string",
+                "!doc": "End time, if one has been set"
+            },
+            "updated_time": {
+                "!type": "string",
+                "!doc": "Last update time"
+            },
+            "owner": {
+                "!type": "Object",
+                "!doc": "The profile that created the event"
+            },
+            "cover": {
+                "!type": "Object",
+                "!doc": "Cover picture"
+            },
+            "is_viewer_admin": {
+                "!type": "bool",
+                "!doc": "Whether the viewer is admin or not"
+            },
+            "attending_count": {
+                "!type": "number",
+                "!doc": "Number of people attending the event"
+            },
+            "maybe_count": {
+                "!type": "number",
+                "!doc": "Number of people who maybe going to the event"
+            },
+            "ticket_uri": {
+                "!type": "string",
+                "!doc": "The link users can visit to buy a ticket to this event"
+            },
+            "interested_count": {
+                "!type": "number",
+                "!doc": "Number of people interested in the event"
+            },
+            "noreply_count": {
+                "!type": "number",
+                "!doc": "Number of people who did not reply to the event"
+            },
+            "timezone": {
+                "!type": "string",
+                "!doc": "Timezone"
+            },
+            "type": {
+                "!type": "Event_type",
+                "!doc": "The type of the event"
+            },
+            "id": {
+                "!type": "string",
+                "!doc": "The event ID"
+            },
+            "description": {
+                "!type": "string",
+                "!doc": "Long-form description"
+            },
+            "category": {
+                "!type": "Event_category",
+                "!doc": "The category of the event"
+            },
+            "declined_count": {
+                "!type": "number",
+                "!doc": "Number of people who declined the event"
+            },
+            "can_guests_invite": {
+                "!type": "bool",
+                "!doc": "Can guests invite friends"
+            }
+        },
         "CustomAudienceDataSource": {
             "creation_params": {
                 "!type": "string",
@@ -6349,7 +7120,7 @@ module.exports = {
             }
         },
         "ProductFeedUploadError": {
-            "getProductFeedUploadErrorSamples": {
+            "getsamples": {
                 "!type": "fn() -> +ProductFeedUploadErrorSample_cursor",
                 "!doc": "Samples (concrete instances) of the error"
             },
@@ -6447,32 +7218,6 @@ module.exports = {
                 "!doc": "Type of the Open Graph Property"
             }
         },
-        "AdKeywordStats_cursor": {
-            "!proto": "cursor_prototype",
-            "forEach": {
-                "!type": "fn(f: fn(el: +AdKeywordStats, i: number, array: +Array), context?: ?)"
-            },
-            "valid": {
-                "!type": "fn() -> bool",
-                "!doc": "Wether the cursor is valid"
-            },
-            "key": {
-                "!type": "fn() -> number",
-                "!doc": "The current index of the cursor"
-            },
-            "rewind": {
-                "!type": "fn() -> !this"
-            },
-            "next": {
-                "!type": "fn() -> +AdKeywordStats",
-                "!doc": "Return the next AdKeywordStats item from the cursor.",
-                "!url": "https://facebook.com"
-            },
-            "current": {
-                "!type": "fn() -> +AdKeywordStats",
-                "!doc": "Gets the current AdKeywordStats of the cursor"
-            }
-        },
         "UserLeadGenInfo_cursor": {
             "!proto": "cursor_prototype",
             "forEach": {
@@ -6499,6 +7244,32 @@ module.exports = {
                 "!doc": "Gets the current UserLeadGenInfo of the cursor"
             }
         },
+        "AdKeywordStats_cursor": {
+            "!proto": "cursor_prototype",
+            "forEach": {
+                "!type": "fn(f: fn(el: +AdKeywordStats, i: number, array: +Array), context?: ?)"
+            },
+            "valid": {
+                "!type": "fn() -> bool",
+                "!doc": "Wether the cursor is valid"
+            },
+            "key": {
+                "!type": "fn() -> number",
+                "!doc": "The current index of the cursor"
+            },
+            "rewind": {
+                "!type": "fn() -> !this"
+            },
+            "next": {
+                "!type": "fn() -> +AdKeywordStats",
+                "!doc": "Return the next AdKeywordStats item from the cursor.",
+                "!url": "https://facebook.com"
+            },
+            "current": {
+                "!type": "fn() -> +AdKeywordStats",
+                "!doc": "Gets the current AdKeywordStats of the cursor"
+            }
+        },
         "Adgroup": {
             "update": {
                 "!type": "fn(params: Object) -> +Adgroup",
@@ -6508,48 +7279,48 @@ module.exports = {
                 "!type": "fn(params: Object) -> bool",
                 "!doc": "Delete the Adgroup"
             },
-            "getTargetingSentenceLines": {
+            "gettargetingsentencelines": {
                 "!type": "fn() -> +TargetingSentenceLine_cursor",
                 "!doc": "The targeting description sentence for this ad"
             },
-            "createAdsInsightss": {
-                "!type": "fn() -> +AdsInsights_cursor",
-                "!doc": "Edge to create an async job for fetching ad insights for ads"
+            "getleads": {
+                "!type": "fn() -> +UserLeadGenInfo_cursor",
+                "!doc": "Leads submitted for this ad"
             },
-            "getAdKeywordStatss": {
-                "!type": "fn() -> +AdKeywordStats_cursor",
-                "!doc": "Stats of keywords of this ad"
-            },
-            "getAdPreviews": {
+            "getpreviews": {
                 "!type": "fn() -> +AdPreview_cursor",
                 "!doc": "Preview of the ad"
             },
-            "deletes": {
-                "!type": "fn() -> +null_cursor",
-                "!doc": "Disassociates a set of labels from an ad"
-            },
-            "getAdCreatives": {
+            "getadcreatives": {
                 "!type": "fn() -> +AdCreative_cursor",
                 "!doc": "Creative associated with this ad"
             },
-            "getReachEstimates": {
+            "getkeywordstats": {
+                "!type": "fn() -> +AdKeywordStats_cursor",
+                "!doc": "Stats of keywords of this ad"
+            },
+            "deleteadlabels": {
+                "!type": "fn() -> +null_cursor",
+                "!doc": "Disassociates a set of labels from an ad"
+            },
+            "getreachestimates": {
                 "!type": "fn() -> +ReachEstimate_cursor",
                 "!doc": "The reach estimate for this ad"
             },
-            "getUserLeadGenInfos": {
-                "!type": "fn() -> +UserLeadGenInfo_cursor",
-                "!doc": "Leads submitted for this ad"
+            "getinsights": {
+                "!type": "fn() -> +AdsInsights_cursor",
+                "!doc": "Insights on advertising performance of this ad"
             },
             "#get": {
                 "!type": "fn() -> +null_cursor"
             },
-            "creates": {
+            "createinsights": {
+                "!type": "fn() -> +AdsInsights_cursor",
+                "!doc": "Edge to create an async job for fetching ad insights for ads"
+            },
+            "createadlabels": {
                 "!type": "fn() -> +null_cursor",
                 "!doc": "Associates a set of labels with an ad"
-            },
-            "getAdsInsightss": {
-                "!type": "fn() -> +AdsInsights_cursor",
-                "!doc": "Insights on advertising performance of this ad"
             },
             "adlabels": {
                 "!type": "list<AdLabel>",
@@ -6686,15 +7457,15 @@ module.exports = {
                 "!doc": "Page"
             },
             "creative": {
-                "!type": "list<string>",
+                "!type": "list<Object>",
                 "!doc": "Creative"
             },
             "application": {
-                "!type": "list<string>",
+                "!type": "list<Object>",
                 "!doc": "Application"
             },
             "action.type": {
-                "!type": "list<string>",
+                "!type": "list<Object>",
                 "!doc": "Action type"
             },
             "object.domain": {
@@ -6969,7 +7740,7 @@ module.exports = {
             }
         },
         "LeadGenData": {
-            "getUserLeadGenInfos": {
+            "getleads": {
                 "!type": "fn() -> +UserLeadGenInfo_cursor",
                 "!doc": "The leads that were submitted to this lead gen data."
             },
@@ -7007,6 +7778,10 @@ module.exports = {
             "name": {
                 "!type": "string",
                 "!doc": "The name of LeadGen Ad Form name."
+            },
+            "expired_leads_count": {
+                "!type": "number",
+                "!doc": "Number of leads submitted for this form that have since expired."
             },
             "page": {
                 "!type": "Object",

@@ -2,4 +2,3 @@
 node_modules
 npm-debug.log
 *.grsb
-client/src/js/tern/fb_defs.js

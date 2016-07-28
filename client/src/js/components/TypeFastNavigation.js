@@ -1,15 +1,15 @@
-const React = require('react');
-const Badge = require('react-bootstrap/lib/Badge');
-const Button = require('react-bootstrap/lib/Button');
-const Glyphicon = require('react-bootstrap/lib/Glyphicon');
-const Nav = require('react-bootstrap/lib/Nav');
-const Navbar = require('react-bootstrap/lib/Navbar');
-const NavDropdown = require('react-bootstrap/lib/NavDropdown');
-const NavItem = require('react-bootstrap/lib/NavItem');
-const MenuItem = require('react-bootstrap/lib/MenuItem');
+import React from 'react';
+import Badge from 'react-bootstrap/lib/Badge';
+import Button from 'react-bootstrap/lib/Button';
+import Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import Nav from 'react-bootstrap/lib/Nav';
+import Navbar from 'react-bootstrap/lib/Navbar';
+import NavDropdown from 'react-bootstrap/lib/NavDropdown';
+import NavItem from 'react-bootstrap/lib/NavItem';
+import MenuItem from 'react-bootstrap/lib/MenuItem';
 
-const TypeFastNavigation = React.createClass({
-  render: function() {
+class TypeFastNavigation extends React.Component {
+  render() {
     const hideEditorButtons = this.props.currentPane !== 'editor' ? 'hidden' : '';
     return (
     <Navbar id="mainnav" fluid >
@@ -55,6 +55,6 @@ const TypeFastNavigation = React.createClass({
       </Nav>
     </Navbar>
   )}
-})
+}
 
 module.exports = TypeFastNavigation;

@@ -3,7 +3,8 @@ import {
   SAVE_SCRIPT_REQUEST, SAVE_SCRIPT_SUCCESS, SAVE_SCRIPT_FAILURE,
   SCRIPT_CODE_CHANGED,
   OPTIMISATIONS_COMPLETE,
-  PREVIEW_SCRIPT_REQUEST, PREVIEW_SCRIPT_SUCCESS, PREVIEW_SCRIPT_FAILURE,
+  PREVIEW_SCRIPT_REQUEST, PREVIEW_SCRIPT_CREATED, PREVIEW_SCRIPT_SUCCESS,
+  PREVIEW_SCRIPT_FAILURE,
   UI_CHANGE,
   LOAD_SCRIPT
 } from '../actions/actions.js'
@@ -23,11 +24,14 @@ function initalLog() {
 
 function typefastApp(state = {
   currentScriptId: null,
+  currentRoutineId: null,
   isSaving: false,
   isFetching: false,
   scripts: [],
   log: initalLog(),
   currentPane: 'editor',
+  showScheduleModal: false,
+  showSaveModal: false
 }, action) {
   switch (action.type) {
 
@@ -75,8 +79,9 @@ function typefastApp(state = {
       if (!state.currentScript) {
         firstScript = action.payload.scripts.data[0]
       }
+
       const scripts = action.payload.scripts.data.reduce(
-        (o, v, i) => { o[v._id] = v; return o; },
+        (o, v, i) => { o[v.id] = v; return o; },
         {}
       );
       return Object.assign({}, state, {
@@ -85,9 +90,6 @@ function typefastApp(state = {
         currentScript: firstScript,
         scriptCount: Object.keys(scripts).length
       })
-
-
-
 
     case PREVIEW_SCRIPT_SUCCESS:
       return Object.assign({}, state, {

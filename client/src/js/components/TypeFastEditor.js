@@ -1,16 +1,16 @@
-const React = require('react');
-const TypeFastEditorInit = require('../typefast-editor-init');
+import React from 'react';
+import TypeFastEditorInit from '../typefast-editor-init';
 
-const TypeFastEditor = React.createClass({
-  componentDidMount: function() {
+class TypeFastEditor extends React.Component {
+  componentDidMount() {
     this.editor = TypeFastEditorInit(
       this.refs.sandbox,
       this.props.onCodeChange,
       this.props.onOptimisationComplete
     );
-  },
+  }
 
-  render: function() {
+  render() {
     if(this.props.isFetching) {
       this.editor.setLoadingText();
     } else if(this.props.script) {
@@ -27,6 +27,6 @@ const TypeFastEditor = React.createClass({
       </div>
     )
   }
-})
+}
 
 module.exports = TypeFastEditor;

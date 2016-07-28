@@ -70,13 +70,5 @@ body {
   display: inline-block;
   margin: 10px;
   min-height: 400px;
-  margin: 10px;
+  vertical-align: top;
 }
-
-/*
-@media (min-width: 768px) {
-  .content {
-    padding-top: 56px;
-  }
-}
-*/

@@ -1,10 +1,12 @@
+//for codemirror to use JS Hint it needs there to be a global variable
+//JSHINT that it can use a reference
 window.JSHINT = require('jshint').JSHINT;
-const ecma5 = require("./tern/ecma5")
-const ecma6 = require("./tern/ecma6")
+const ecma5 = require("tern/defs/ecma5");
+const ecma6 = require("tern/defs/ecma6");
 const fbdefs = require("./tern/fb_defs");
 const tern = require("tern");
-const infer = require("tern/lib/infer")
-const CodeMirror = require('codemirror')
+const infer = require("tern/lib/infer");
+const CodeMirror = require("codemirror");
 const FBOptimise = require("./tern/fb_optimise")(infer)
 require('codemirror/mode/javascript/javascript');
 require("./tern/tern-codemirror")(CodeMirror, tern);

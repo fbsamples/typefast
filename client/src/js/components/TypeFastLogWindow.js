@@ -1,15 +1,15 @@
+import Radium from 'radium';
+import React from 'react';
 
-const Radium = require('radium');
-const React = require('react');
-
-const TypeFastLogWindow = React.createClass({
-  logGenerator: function() {
+class TypeFastLogWindow extends React.Component {
+  logGenerator() {
     let elements = this.props.log.map((el) => {
       return el.message.split("\n").map(i => { return <div>{i}</div>})
     })
     return [].concat.apply([], elements);
-  },
-  render: function() {
+  }
+
+  render() {
     return (
       <div
         className="col-lg-6 full-height visible-md visible-lg"
@@ -20,7 +20,7 @@ const TypeFastLogWindow = React.createClass({
       </div>
     )
   }
-})
+}
 
 const styles = {
   container: {

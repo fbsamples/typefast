@@ -29,7 +29,6 @@ export function changePane(pane) {
 
 export const OPTIMISATIONS_COMPLETE = 'OPTIMISATIONS_COMPLETE'
 export function optimisationComplete(optimisations) {
-  console.log('optimisations complete');
   return {
     type: OPTIMISATIONS_COMPLETE,
     payload: {
@@ -59,7 +58,6 @@ export function saveScript() {
     const code = getState().editorValue
     const optimisations = getState().optimisations;
     let id = '';
-    debugger
     if(currentScript) { id = currentScript.id }
 
     return fetch('/scripts/' + id, {
@@ -93,31 +91,55 @@ export function saveScript() {
 export const PREVIEW_SCRIPT_CLICKED = 'PREVIEW_SCRIPT';
 
 export const PREVIEW_SCRIPT_REQUEST = 'PREVIEW_SCRIPT_REQUEST';
+export const PREVIEW_SCRIPT_CREATED = 'PREVIEW_SCRIPT_SUCCESS';
 export const PREVIEW_SCRIPT_SUCCESS = 'PREVIEW_SCRIPT_SUCCESS';
 export const PREVIEW_SCRIPT_FAILURE = 'PREVIEW_SCRIPT_FAILURE';
+
+function pollRoutine(routineId, dispatch) {
+  fetch("/routines/" + routineId)
+  .then(handleErrors)
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(response) {
+    // this is hideous, fix it
+    if (response.is_completed) {
+      let message
+        = response.runner_log.map(function(a) { return a.chunk }).join("\n");
+      dispatch({
+        type: PREVIEW_SCRIPT_SUCCESS,
+          payload: {
+            log: [{message: message}]
+          }
+       });
+    } else {
+      setTimeout(function() {
+        pollRoutine(routineId, dispatch)
+      },1000);
+    }
+  })
+}
 
 export function previewScript() {
   return function(dispatch, getState) {
     dispatch({type: PREVIEW_SCRIPT_REQUEST});
-    return fetch("/exec/" + getState().currentScript.id, {
+
+    return fetch("/routines/", {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({
+        script_id: getState().currentScript.id,
+      })
     })
     .then(handleErrors)
     .then(function(response) {
       return response.json();
     })
     .then(function(response) {
-      console.log(response);
-      dispatch({
-        type: PREVIEW_SCRIPT_SUCCESS,
-        payload: {
-          log: response.log
-        }
-      })
+      pollRoutine(response.id, dispatch)
     })
   }
 }
@@ -135,7 +157,6 @@ export function fetchScripts() {
         return response.json();
       })
       .then(function(json) {
-        console.log(json);
         dispatch({
           type: FETCHING_SCRIPTS_SUCCESS,
           payload: {
@@ -143,6 +164,5 @@ export function fetchScripts() {
           }
         })
       })
-    //.catch((error) => console.log(error))
   }
 }
