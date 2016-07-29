@@ -11,14 +11,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    onSave: () => {
-      console.log('on save');
-      dispatch(saveScript())
-    },
-    onPreview: () => {
-      console.log('on preview')
-      dispatch(previewScript())
-    },
     onNavClick:(paneName) => {
       console.log('pane')
       dispatch(changePane(paneName))

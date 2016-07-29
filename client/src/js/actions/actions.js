@@ -37,6 +37,16 @@ export function optimisationComplete(optimisations) {
   }
 }
 
+export const SCRIPT_TITLE_CHANGED = 'SCRIPT_TITLE_CHANGED';
+export function scriptTitleChanged(title) {
+  return {
+    type: SCRIPT_TITLE_CHANGED,
+    payload: {
+      title: title
+    }
+  }
+}
+
 export const SCRIPT_CODE_CHANGED = 'SCRIPT_CODE_CHANGED';
 export function codeChanged(code) {
   return {
@@ -55,10 +65,7 @@ export function saveScript() {
   return function(dispatch, getState) {
     dispatch({type: SAVE_SCRIPT_REQUEST});
     const currentScript = getState().currentScript;
-    const code = getState().editorValue
-    const optimisations = getState().optimisations;
-    let id = '';
-    if(currentScript) { id = currentScript.id }
+    const id = currentScript ? currentScript.id : '';
 
     return fetch('/scripts/' + id, {
       method: 'POST',
@@ -67,9 +74,9 @@ export function saveScript() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        code: code,
-        optimisations: optimisations,
-        title: 'An Untitled Masterwork'
+        code: getState().editorValue,
+        optimisations: getState().optimisations,
+        title: currentScript.title
       })
     })
     .then(handleErrors)

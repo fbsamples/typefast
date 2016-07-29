@@ -1,7 +1,7 @@
 import {
   FETCHING_SCRIPTS_REQUEST, FETCHING_SCRIPTS_SUCCESS, FETCHING_SCRIPTS_FAILURE,
   SAVE_SCRIPT_REQUEST, SAVE_SCRIPT_SUCCESS, SAVE_SCRIPT_FAILURE,
-  SCRIPT_CODE_CHANGED,
+  SCRIPT_CODE_CHANGED, SCRIPT_TITLE_CHANGED,
   OPTIMISATIONS_COMPLETE,
   PREVIEW_SCRIPT_REQUEST, PREVIEW_SCRIPT_CREATED, PREVIEW_SCRIPT_SUCCESS,
   PREVIEW_SCRIPT_FAILURE,
@@ -68,8 +68,6 @@ function typefastApp(state = {
         scriptCount: Object.keys(updatedScripts).length
       })
 
-
-
     case FETCHING_SCRIPTS_REQUEST:
       return Object.assign({}, state, {
         isFetching: true,
@@ -102,12 +100,18 @@ function typefastApp(state = {
         }]
       })
 
-
+    case SCRIPT_TITLE_CHANGED:
+      let currentScript = state.currentScript
+      currentScript.title = action.payload.title
+      return Object.assign({}, state, {
+        currentScript: currentScript
+      })
 
     case SCRIPT_CODE_CHANGED:
       return Object.assign({}, state, {
         editorValue: action.payload.code
       })
+      
     case OPTIMISATIONS_COMPLETE: {
       return Object.assign({}, state, {
         optimisations: action.payload.optimisations
