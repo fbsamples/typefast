@@ -4,15 +4,17 @@ window.JSHINT = require('jshint').JSHINT;
 const ecma5 = require("tern/defs/ecma5");
 const ecma6 = require("tern/defs/ecma6");
 const fbdefs = require("./tern/fb_defs");
-const tern = require("tern");
+const tern = window.tern = require("tern");
 const infer = require("tern/lib/infer");
 const CodeMirror = require("codemirror");
-const FBOptimise = require("./tern/fb_optimise")(infer)
+const FBOptimise = require("./tern/fb_optimise")(infer);
+
+// Codemirror addons will autoload dependencies internally
 require('codemirror/mode/javascript/javascript');
-require("./tern/tern-codemirror")(CodeMirror, tern);
-require("./tern/show-hint")(CodeMirror);
-require("./codemirror/addons/lint")(CodeMirror);
-require("./codemirror/addons/javascript-lint")(CodeMirror);
+require("codemirror/addon/lint/lint");
+require("codemirror/addon/lint/javascript-lint");
+require("codemirror/addon/hint/show-hint");
+require("codemirror/addon/tern/tern");
 
 const loadingLastScript = 'Loading your last script...'
 
@@ -50,6 +52,14 @@ module.exports = function(element, onCodeChange, onOptimisationComplete) {
     }
   });
 
+  const runAnalysis = function() {
+    server.request(
+      editor,
+      {type: "completions", types: true, docs: true, urls: true},
+      function(error, data) {}
+    );
+  }
+
   editor.setOption("extraKeys", {
     "Ctrl-N": function(cm) { server.complete(cm); },
     "Ctrl-I": function(cm) { server.showType(cm); },
@@ -67,16 +77,16 @@ module.exports = function(element, onCodeChange, onOptimisationComplete) {
 
   editor.on("change", function(cm, event){
     onCodeChange(cm.getValue());
-    server.runAnalysis(editor);
+    runAnalysis();
   })
   editor.on("cursorActivity", function(cm) { server.updateArgHints(cm); });
   editor.getWrapperElement().addEventListener(
     "paste",
     function() {
-      server.runAnalysis(editor);
+      runAnalysis();
     }
   );
-  server.runAnalysis(editor);
+  runAnalysis();
 
   return {
     setText: function(code) {

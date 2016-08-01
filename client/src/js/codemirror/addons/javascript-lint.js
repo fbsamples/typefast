@@ -1,1 +1,0 @@
-../../../../node_modules/codemirror/addon/lint/javascript-lint.js
