@@ -33,16 +33,17 @@ import type NodeSpec from './specs/NodeSpec';
 export type EdgeExecutor = (params?: Map<string, any>) => Cursor | Node | bool;
 export type CrudExecutor = (params?: Map<string, any>) => Node;
 export type NodeId = number | string;
+export type LooseParams = { [key: string | number]: string | number | bool | Array<LooseParams> | LooseParams };
 
 const Cursor = require('./Cursor');
 const {Map} = require('immutable');
 
-const normalizeParams = function(params?: RequestParams): RequestParams {
-  return params == null || !params instanceof Map ? new Map() : params;
+const normalizeParams = function(params?: LooseParams): RequestParams {
+  return new Map(params);
 };
 
 const getEdgeExecutor = function(node: Node, edge_spec: EdgeSpec): EdgeExecutor {
-  return function(params?: RequestParams): Cursor | Node | bool {
+  return function(params?: LooseParams): Cursor | Node | bool {
     const id = node.assertId();
     const edge = edge_spec.getEdge();
     const path = `/${id}/${edge}`;
@@ -59,7 +60,7 @@ const getEdgeExecutor = function(node: Node, edge_spec: EdgeSpec): EdgeExecutor 
 };
 
 const getCrudExecutor = function(node: Node, crud_spec: CrudSpec): CrudExecutor {
-  return function(params?: RequestParams): Node {
+  return function(params?: LooseParams): Node {
     const id = node.assertId();
     const path = `/${id}`;
     const response = node.getApi().call(path, crud_spec.getMethod(), normalizeParams(params), node.getSpec());
