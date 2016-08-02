@@ -22,20 +22,55 @@
  * @flow
  */
 
-const Mongoose = require('mongoose');
-const scriptSchema = new Mongoose.Schema({
-  code: { type: String, required: true },
-  context_type: { type: String, required: true },
-  created_time: { type: Date },
-  optimisations: { type: Object, default: {} },
-  title: { type: String, required: true },
-  updated_time: { type: Date },
-});
+const AbstractParam = require('./AbstractParam');
 
-scriptSchema.pre('save', function(next) {
-  this.updated_time = new Date();
-  this.created_time = this.created_time || this.updated_time;
-  next();
-});
+class StringParam extends AbstractParam<string> {
 
-module.exports = Mongoose.model('script', scriptSchema);
+  minLength: number;
+  maxLength: number;
+
+  constructor() {
+    super();
+    this.minLength = 0;
+    this.maxLength = Number.MAX_SAFE_INTEGER;
+  }
+
+  setMinLength(length: number): this {
+    this.minLength = length;
+
+    return this;
+  }
+
+  getMinLength(): number {
+    return this.minLength;
+  }
+
+  setMaxLength(length: number): this {
+    this.maxLength = length;
+
+    return this;
+  }
+
+  getMaxLength(): number {
+    return this.maxLength;
+  }
+
+  willValidate(value: any): Promise<string> {
+    return super.willValidate(value).then(() => {
+      const min = this.getMinLength();
+      const max = this.getMaxLength();
+
+      if (value.length < min) {
+        return Promise.reject(new Error(`Can't be shorter than ${min} characters`));
+      }
+
+      if (value.length > max) {
+        return Promise.reject(new Error(`Can't be longer than ${min} characters`));
+      }
+
+      return value.toString();
+    });
+  }
+}
+
+module.exports = StringParam;

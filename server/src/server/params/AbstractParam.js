@@ -22,20 +22,45 @@
  * @flow
  */
 
-const Mongoose = require('mongoose');
-const scriptSchema = new Mongoose.Schema({
-  code: { type: String, required: true },
-  context_type: { type: String, required: true },
-  created_time: { type: Date },
-  optimisations: { type: Object, default: {} },
-  title: { type: String, required: true },
-  updated_time: { type: Date },
-});
+class AbstractParam<T> {
 
-scriptSchema.pre('save', function(next) {
-  this.updated_time = new Date();
-  this.created_time = this.created_time || this.updated_time;
-  next();
-});
+  required: bool;
+  default: typeof undefined | T;
 
-module.exports = Mongoose.model('script', scriptSchema);
+  constructor(): void {
+    this.required = true;
+    this.default = undefined;
+  }
+
+  isOptional(): bool {
+    return !this.required;
+  }
+
+  optional(): this {
+    this.required = false;
+
+    return this;
+  }
+
+  setDefaultValue(value: T): this {
+    this.default = value;
+
+    return this;
+  }
+
+  hasDefaultValue(): bool {
+    return this.default !== undefined;
+  }
+
+  getDefaultValue(): typeof undefined | T {
+    return this.default;
+  }
+
+  willValidate(value: any): Promise<T> {
+    // Override as `return super.willValidate(value).then(...);`
+    // to provide custom validation
+    return Promise.resolve(value);
+  }
+}
+
+module.exports = AbstractParam;

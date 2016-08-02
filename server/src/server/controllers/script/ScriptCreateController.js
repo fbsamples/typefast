@@ -22,14 +22,18 @@
  * @flow
  */
 
+import type AbstractParam from '../../params/AbstractParam';
 import type Context from '../../RequestContext';
 import type {Document} from 'mongoose';
+import type {Map} from 'immutable';
 
 // Flow typeof won't work with import type
 const {Model} = require('mongoose');
 
 const AbstractDocumentCreateController = require('../AbstractDocumentCreateController');
 const Script = require('../../../model/script');
+const ScriptOptimizationsParam = require('../../params/ScriptOptimizationsParam');
+const StringParam = require('../../params/StringParam');
 
 class ScriptCreateController extends AbstractDocumentCreateController {
 
@@ -41,14 +45,21 @@ class ScriptCreateController extends AbstractDocumentCreateController {
     return Script;
   }
 
+  getParams(): Map<string, AbstractParam<any>> {
+    return super.getParams().merge({
+      title: new StringParam().setMinLength(3),
+      optimisations: new ScriptOptimizationsParam().setDefaultValue({}),
+      code: new StringParam(),
+      context_type: new StringParam().setDefaultValue('AdAccount'),
+    });
+  }
+
   genResponse(context: Context): void {
-    const body = context.getRequest().body;
     const script = Script({
-      title: body.title,
-      optimisations: body.optimisations,
-      code: body.code,
-      // FIXME provide context type from client
-      context_type: 'AdAccount',
+      title: context.getParams().getString('title'),
+      optimisations: context.getParams().getMap('optimisations').toObject(),
+      code: context.getParams().getString('code'),
+      context_type: context.getParams().getString('context_type'),
     });
 
     context.execPromise(script.save()).then((script: Document) => {

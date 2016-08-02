@@ -22,14 +22,17 @@
  * @flow
  */
 
+import type AbstractParam from '../../params/AbstractParam';
 import type Context from '../../RequestContext';
 import type {Document} from 'mongoose';
 import type {RequestMethod} from 'express';
 
 const AbstractController = require('../AbstractController');
 const HttpStatus = require('http-status-codes');
+const MongoIdParam = require('../../params/MongoIdParam');
 const Script = require('../../../model/script');
-const {Set} = require('immutable');
+const StringParam = require('../../params/StringParam');
+const {Map, Set} = require('immutable');
 
 class RoutineCreateController extends AbstractController {
 
@@ -41,11 +44,17 @@ class RoutineCreateController extends AbstractController {
     return new Set(['post']);
   }
 
-  genResponse(context: Context): void {
-    const script_id = context.getRequest().body.script_id.toString();
-    // FIXME provide context from client
+  getParams(): Map<string, AbstractParam<any>> {
+    // FIXME enforce context from client, do not use config
     const ctx_id = this.getApplication().getConfig().getString('DEPRECATED__cxt_id');
+    return super.getParams().merge({
+      script_id: new MongoIdParam(),
+      context_id: new StringParam().setDefaultValue(ctx_id),
+    });
+  }
 
+  genResponse(context: Context): void {
+    const script_id = context.getParams().getString('script_id');
     context.execPromise(Script.findById(script_id).exec())
       .then((script: ?Document) => {
         if (script == null) {
@@ -53,7 +62,7 @@ class RoutineCreateController extends AbstractController {
         } else {
           this.getApplication().getScheduler().exec(
             script_id,
-            ctx_id,
+            context.getParams().getString('context_id'),
             (routine: Document) => { context.sendDocument(routine); }
           );
         }

@@ -22,20 +22,33 @@
  * @flow
  */
 
-const Mongoose = require('mongoose');
-const scriptSchema = new Mongoose.Schema({
-  code: { type: String, required: true },
-  context_type: { type: String, required: true },
-  created_time: { type: Date },
-  optimisations: { type: Object, default: {} },
-  title: { type: String, required: true },
-  updated_time: { type: Date },
-});
+const AbstractJsonParam = require('./AbstractJsonParam');
 
-scriptSchema.pre('save', function(next) {
-  this.updated_time = new Date();
-  this.created_time = this.created_time || this.updated_time;
-  next();
-});
+const ERROR_MSG = 'Expected JSON representation of Map<string, Array<string>>';
 
-module.exports = Mongoose.model('script', scriptSchema);
+class ScriptOptimizationsParam extends AbstractJsonParam<Object> {
+
+  willValidate(value: any): Promise<Object> {
+    return super.willValidate(value).then((value: any) => {
+      if (!value instanceof Object) {
+        return Promise.reject(new Error(ERROR_MSG));
+      }
+
+      for (let i in value) {
+        if (!(value[i] instanceof Array)) {
+          return Promise.reject(new Error(ERROR_MSG));
+        }
+
+        for (let j = 0; j <= value[i].length; j++) {
+          if (!typeof value[i][j] === 'string') {
+            return Promise.reject(new Error(ERROR_MSG));
+          }
+        }
+      }
+
+      return value;
+    });
+  }
+}
+
+module.exports = ScriptOptimizationsParam;

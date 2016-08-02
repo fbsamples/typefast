@@ -22,6 +22,7 @@
  * @flow
  */
 
+import type AbstractParam from '../params/AbstractParam';
 import type Application from '../../services/Application';
 
 export type Resolve<T> = (result: Promise<T> | T) => void;
@@ -29,6 +30,8 @@ export type Reject = (error: any) => void;
 
 const HttpStatus = require('http-status-codes');
 const Context = require('../RequestContext');
+const {Map} = require('immutable');
+const {genMap} = require('../../utils/promises');
 
 class AbstractController {
 
@@ -44,6 +47,10 @@ class AbstractController {
 
   getApplication(): Application {
     return this.application;
+  }
+
+  getParams(): Map<string, AbstractParam<any>> {
+    return new Map();
   }
 
   // This method should be overriden
@@ -67,7 +74,31 @@ class AbstractController {
   }
 
   willValidate(context: Context): Promise<Context> {
-    return new Promise((resolve: Resolve<Context>, reject: Reject) => resolve(context));
+    const body = context.getRequest().body;
+    const query = context.getRequest().query;
+
+    const do_validate = (param: AbstractParam<any>, field: string) => {
+      const value = body[field] || query[field] || param.getDefaultValue();
+      if (!param.isOptional() && value == null) {
+        return Promise.reject(new Error(`Missing required field '${field}'`));
+      }
+
+      return value === undefined
+        ? undefined
+        : param.willValidate(value).catch((error: Error) => {
+          error.message = `Field '${field}': ${error.message}`;
+
+          return Promise.reject(error);
+        });
+    };
+
+    return new Promise((resolve: Resolve<Context>, reject: Reject) => {
+      genMap(this.getParams().map(do_validate))
+        .then((values: Map<string, any>) => resolve(context.setParamsData(values)))
+        .catch((error: Error) => {
+          return context.willDisposeWithError(HttpStatus.BAD_REQUEST, error.message);
+        });
+    });
   }
 
   willRespond(context: Context): Promise<Context> {

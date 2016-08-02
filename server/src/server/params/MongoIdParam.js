@@ -22,20 +22,20 @@
  * @flow
  */
 
-const Mongoose = require('mongoose');
-const scriptSchema = new Mongoose.Schema({
-  code: { type: String, required: true },
-  context_type: { type: String, required: true },
-  created_time: { type: Date },
-  optimisations: { type: Object, default: {} },
-  title: { type: String, required: true },
-  updated_time: { type: Date },
-});
+const AbstractParam = require('./AbstractParam');
+const ObjectId = require('mongoose').Types.ObjectId;
 
-scriptSchema.pre('save', function(next) {
-  this.updated_time = new Date();
-  this.created_time = this.created_time || this.updated_time;
-  next();
-});
+class MongoIdParam extends AbstractParam<string> {
 
-module.exports = Mongoose.model('script', scriptSchema);
+  willValidate(value: any): Promise<string> {
+    return super.willValidate(value).then((value: any) => {
+      if (!ObjectId.isValid(value)) {
+        return Promise.reject(new Error(`'${value}', not a valid document id`));
+      }
+
+      return value.toString();
+    });
+  }
+}
+
+module.exports = MongoIdParam;

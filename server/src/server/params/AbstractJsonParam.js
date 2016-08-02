@@ -22,20 +22,20 @@
  * @flow
  */
 
-const Mongoose = require('mongoose');
-const scriptSchema = new Mongoose.Schema({
-  code: { type: String, required: true },
-  context_type: { type: String, required: true },
-  created_time: { type: Date },
-  optimisations: { type: Object, default: {} },
-  title: { type: String, required: true },
-  updated_time: { type: Date },
-});
+const AbstractParam = require('./AbstractParam');
 
-scriptSchema.pre('save', function(next) {
-  this.updated_time = new Date();
-  this.created_time = this.created_time || this.updated_time;
-  next();
-});
+class AbstractJsonParam<T> extends AbstractParam<T> {
 
-module.exports = Mongoose.model('script', scriptSchema);
+  willValidate(value: any): Promise<T> {
+    return super.willValidate(value)
+      .then((value: any) => {
+        try {
+          return JSON.parse(value);
+        } catch (error) {
+          throw new Error('Not a valid JSON');
+        }
+      });
+  }
+}
+
+module.exports = AbstractJsonParam;
