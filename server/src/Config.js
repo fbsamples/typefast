@@ -35,51 +35,37 @@ const READ_FILE_OPTS = {
   flag: 'r'
 };
 
+const fileExists = function(filepath: string): bool {
+  try {
+    fs.accessSync(filepath, fs.R_OK);
+    return true;
+  } catch (e) {}
+  return false;
+};
+
+const readJson = function(filepath: string): Object {
+  return JSON.parse(fs.readFileSync(filepath, READ_FILE_OPTS));
+};
+
 class Config {
 
-  sources: List<string>;
   data: Map<string, any>;
 
   static fromArgv(argv: Argv): Config {
-    const config = new Config(new List([
+    const data = new List([
       __dirname + '/../config/default.json',
       __dirname + '/../config/local.json',
-    ]));
+    ]).filter(fileExists)
+      .map((path: string) => readJson(path))
+      .push(JSON.parse(argv.get(INLINE_CONFIG_KEY, '{}').toString()))
+      .unshift(new Map()) // will be first element to deep-merge into
+      .reduce((first: Map<string, any>, next: Object) => first.mergeDeep(next));
 
-    const argv_tree = JSON.parse(argv.get(INLINE_CONFIG_KEY, '{}').toString());
-    config.mergeDeep(argv_tree);
-
-    return config;
+    return new Config(data);
   }
 
-  constructor(sources: List<string>): void {
-    this.sources = sources;
-    this.data = new Map();
-    sources.filter(this.fileExists.bind(this))
-      .map(this.readJson.bind(this))
-      .forEach(this.mergeDeep.bind(this));
-  }
-
-  fileExists(filepath: string): bool {
-    try {
-      fs.accessSync(filepath, fs.R_OK);
-      return true;
-    } catch (e) {}
-    return false;
-  }
-
-  readJson(filepath: string): Object {
-    return JSON.parse(fs.readFileSync(filepath, READ_FILE_OPTS));
-  }
-
-  mergeDeep(tree: Object): this {
-    this.data = this.data.mergeDeep(tree);
-
-    return this;
-  }
-
-  getSources(): List<string> {
-    return this.sources;
+  constructor(data: Map<string, any>): void {
+    this.data = data;
   }
 
   getData(): Map<string, any> {
