@@ -1,16 +1,44 @@
+import Radium from 'radium';
 import React from 'react';
-import { loadScript, changePane } from '../actions/actions.js';
+import { loadScript, changePane, toggleScriptList } from '../actions/actions.js';
 import { connect } from 'react-redux';
-import Button from 'react-bootstrap/lib/Button';
+import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import TypeFastScriptListItem from '../components/TypeFastListing'
+
+const styles = {
+  container: {
+    padding: "5px",
+  },
+  close: {
+    float: "right",
+  },
+  row: {
+    paddingRight: 0,
+  }
+}
 
 class TypeFastListingContainer extends React.Component {
   render() {
-    const hidden = this.props.currentPane !== 'listings' ? 'hidden' : '';
+    const hidden = this.props.scriptListOpen ? 'col-lg-2' : 'hidden' ;
     return (
-      <div className={hidden}>
-        <Button onClick={this.props.onClick.bind(null,'new')}>New Script</Button>
-        <div>
+      <div className={`${hidden}`} style={[styles.row]}>
+        <div style={[styles.container]}>
+          <div>
+            <button
+              id="new-script"
+              onClick={this.props.onClick.bind(null,'new')}
+              type="button"
+              className="btn btn-default btn-green navbar-btn">
+              <Glyphicon glyph="new-window" /> New Script
+            </button>
+            <button
+              onClick={this.props.close}
+              type="button"
+              style={[styles.close]}
+              className="btn btn-default navbar-btn">
+              <Glyphicon glyph="remove" />
+            </button>
+          </div>
           {Object.keys(this.props.scripts).map((key, i) => {
             return <TypeFastScriptListItem
               index={i+1}
@@ -27,7 +55,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     scriptCount: state.scriptCount,
     scripts: state.scripts,
-    currentPane: state.currentPane
+    currentPane: state.currentPane,
+    scriptListOpen: state.scriptListOpen
   }
 }
 
@@ -35,7 +64,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onClick: (id) => {
       dispatch(loadScript(id));
-      dispatch(changePane('editor'))
+      dispatch(changePane('editor'));
+    },
+    close: () => {
+      dispatch(toggleScriptList())
     }
   }
 }
@@ -43,4 +75,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TypeFastListingContainer)
+)(Radium(TypeFastListingContainer))

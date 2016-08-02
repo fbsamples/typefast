@@ -1,5 +1,4 @@
 import  React  from 'react';
-import  Radium from 'radium';
 import { connect } from 'react-redux';
 import { fetchScripts } from '../actions/actions.js';
 import TypeFastNavigationContainer from '../containers/TypeFastNavigationContainer';
@@ -14,19 +13,15 @@ class TypeFastApp extends React.Component {
 
   render() {
     return (
-      <div style={[styles.container]}>
+      <div className="full-height">
         <TypeFastNavigationContainer />
-        <TypeFastEditorContainer />
-        <TypeFastListingContainer />
+        <div className="row full-height">
+          <TypeFastListingContainer />
+          <TypeFastEditorContainer />
+        </div>
       </div>
     )
   }
 }
 
-const styles = {
-  container: {
-    height: "100%",
-  }
-}
-
-export default connect()(Radium(TypeFastApp))
+export default connect()(TypeFastApp)

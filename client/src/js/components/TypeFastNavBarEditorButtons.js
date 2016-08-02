@@ -7,6 +7,7 @@ class TypeFastNavBarEditorButtons extends React.Component {
   render() {
     return <div>
       <FormGroup id="script-title">
+        <span>Script  </span>
         <FormControl
           onChange={this.props.onTitleChange}
           type="text"
@@ -14,6 +15,20 @@ class TypeFastNavBarEditorButtons extends React.Component {
           value={this.props.scriptTitle}
           defaultValue="A Untitled Masterwork"/>
       </FormGroup>
+      <button
+        id='preview-button'
+        onClick={this.props.onPreviousRuns}
+        type="button"
+        className="btn btn-default btn-green navbar-btn">
+      <span><Glyphicon glyph="time" /> Logs</span>
+      </button>
+      <button
+        id='preview-button'
+        onClick={this.props.onSchedule}
+        type="button"
+        className="btn btn-default btn-green navbar-btn">
+      <span><Glyphicon glyph="calendar" /> Schedule</span>
+      </button>
       <button
         id='preview-button'
         onClick={this.props.onPreview}

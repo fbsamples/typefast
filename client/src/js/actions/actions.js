@@ -27,7 +27,14 @@ export function changePane(pane) {
   }
 }
 
-export const OPTIMISATIONS_COMPLETE = 'OPTIMISATIONS_COMPLETE'
+export const SCRIPT_LIST_CLICKED = 'SCRIPT_LIST_CLICKED';
+export function toggleScriptList() {
+  return {
+    type: SCRIPT_LIST_CLICKED,
+  }
+}
+
+export const OPTIMISATIONS_COMPLETE = 'OPTIMISATIONS_COMPLETE';
 export function optimisationComplete(optimisations) {
   return {
     type: OPTIMISATIONS_COMPLETE,
@@ -84,6 +91,7 @@ export function saveScript() {
       return response.json();
     })
     .then(function(response) {
+      dispatch(showSaveModal());
       dispatch({
         type: SAVE_SCRIPT_SUCCESS,
         payload: {
@@ -172,4 +180,18 @@ export function fetchScripts() {
         })
       })
   }
+}
+
+export const HIDE_SAVE_MODAL = 'HIDE_SAVE_MODAL';
+export function hideSaveModal() {
+    return {
+      type: HIDE_SAVE_MODAL
+    }
+}
+
+export const SHOW_SAVE_MODAL = 'SHOW_SAVE_MODAL';
+export function showSaveModal() {
+    return {
+      type: SHOW_SAVE_MODAL
+    }
 }

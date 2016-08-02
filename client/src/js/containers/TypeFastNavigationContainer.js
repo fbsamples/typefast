@@ -1,20 +1,23 @@
 import { connect } from 'react-redux'
-import { previewScript, saveScript, changePane } from '../actions/actions.js'
+import { toggleScriptList, changePane } from '../actions/actions.js'
 import TypeFastNavigation from '../components/TypeFastNavigation'
 
 const mapStateToProps = (state, ownProps) => {
   return {
     scriptCount: Object.keys(state.scripts).length,
     currentPane: state.currentPane,
+    scriptListOpen: state.scriptListOpen
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    onNavClick:(paneName) => {
-      console.log('pane')
+    onNavClick: (paneName) => {
       dispatch(changePane(paneName))
-    }
+    },
+    onScriptListClicked: () => {
+      dispatch(toggleScriptList())
+    },
   }
 }
 

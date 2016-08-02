@@ -10,13 +10,7 @@ import TypeFastNavBarEditorButtonsContainer from '../containers/TypeFastNavBarEd
 
 class TypeFastNavigation extends React.Component {
   selectButtons() {
-    switch (this.props.currentPane) {
-      case 'editor':
-        return <TypeFastNavBarEditorButtonsContainer />
-      break;
-      default:
-
-    }
+    return <TypeFastNavBarEditorButtonsContainer />
   }
 
   render() {
@@ -24,16 +18,16 @@ class TypeFastNavigation extends React.Component {
     return (
     <Navbar id="mainnav" fluid >
       <Nav>
-        <NavItem
+        {/*<NavItem
           eventKey={1}
           onClick={this.props.onNavClick.bind(null, 'editor')}
           active={this.props.currentPane === 'editor'} title="edit">
           <Glyphicon glyph="edit" /> Edit
-        </NavItem>
+        </NavItem>*/}
         <NavItem
           eventKey={2}
-          onClick={this.props.onNavClick.bind(null, 'listings')}
-          active={ this.props.currentPane === 'listings' }
+          onClick={this.props.onScriptListClicked}
+          active={this.props.scriptListOpen}
           title="Item">
           <Glyphicon glyph="align-justify" /> Library <Badge>{this.props.scriptCount}</Badge>
         </NavItem>

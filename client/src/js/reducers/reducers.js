@@ -6,7 +6,9 @@ import {
   PREVIEW_SCRIPT_REQUEST, PREVIEW_SCRIPT_CREATED, PREVIEW_SCRIPT_SUCCESS,
   PREVIEW_SCRIPT_FAILURE,
   UI_CHANGE,
-  LOAD_SCRIPT
+  LOAD_SCRIPT,
+  SHOW_SAVE_MODAL,HIDE_SAVE_MODAL,
+  SCRIPT_LIST_CLICKED
 } from '../actions/actions.js'
 
 function initalLog() {
@@ -25,6 +27,7 @@ function initalLog() {
 function typefastApp(state = {
   currentScriptId: null,
   currentRoutineId: null,
+  scriptListOpen: false,
   isSaving: false,
   isFetching: false,
   scripts: [],
@@ -65,7 +68,17 @@ function typefastApp(state = {
         isSaving: false,
         currentScript: action.payload.script,
         scripts: updatedScripts,
-        scriptCount: Object.keys(updatedScripts).length
+        scriptCount: Object.keys(updatedScripts).length,
+      })
+
+    case SHOW_SAVE_MODAL:
+      return Object.assign({}, state, {
+        showSaveModal: true,
+      })
+
+    case HIDE_SAVE_MODAL:
+      return Object.assign({}, state, {
+        showSaveModal: false,
       })
 
     case FETCHING_SCRIPTS_REQUEST:
@@ -111,7 +124,12 @@ function typefastApp(state = {
       return Object.assign({}, state, {
         editorValue: action.payload.code
       })
-      
+
+    case SCRIPT_LIST_CLICKED:
+      return Object.assign({}, state, {
+        scriptListOpen: !state.scriptListOpen,
+    })
+
     case OPTIMISATIONS_COMPLETE: {
       return Object.assign({}, state, {
         optimisations: action.payload.optimisations
