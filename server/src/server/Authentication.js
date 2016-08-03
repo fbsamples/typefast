@@ -23,19 +23,18 @@
  */
 
 import type Application from '../services/Application';
-import type {Request, Response} from 'express';
 import type {Resolve, Reject} from
   './controllers/AbstractController';
 
 const Context = require('./RequestContext');
 const Graph = require('fbgraph');
-const HttpStatus = require('http-status-codes');
+//const HttpStatus = require('http-status-codes');
+const Promises = require('../utils/Promises');
 const Immutable = require('immutable');
-const {Map} = require('immutable');
 
-const MESSAGE_INVALID_ACCESS_TOKEN = "Invalid Access Token";
-const MESSAGE_INVALID_BM_ACCESS_TOKEN = "Invalid System User Token";
-const MESSAGE_USER_NOT_IN_BM = "Unauthorized user. Please ensure they are added to your Business Manager";
+const MESSAGE_INVALID_ACCESS_TOKEN = 'Invalid Access Token';
+const MESSAGE_INVALID_BM_ACCESS_TOKEN = 'Invalid System User Token';
+const MESSAGE_USER_NOT_IN_BM = 'Unauthorized user. Please ensure they are added to your Business Manager';
 
 class Authentication {
 
@@ -61,71 +60,52 @@ class Authentication {
   }
 
   doAuth(context: Context) : Promise<Context> {
-    const m = this;
-
-    return this.verifyUserToken(this.user_access_token).then(
-      ([response, err]) => {
-        if(response.id){
-          return m.verifyBusinessManagerUser(
-            m.business_manager_id,
-            response.id,
-            m.system_access_token
-          ).then(([bmresponse, bmerr]) => {
-            if (bmerr.message) {
-              return context.willDisposeWithError(
-                HttpStatus.UNAUTHORIZED,
-                MESSAGE_INVALID_BM_ACCESS_TOKEN
-              );
-            } else{
-              return bmresponse.has(response.id) ?
-                m.authenticated(context) :
-                context.willDisposeWithError(
-                  HttpStatus.UNAUTHORIZED,
-                  MESSAGE_USER_NOT_IN_BM
-                );
-            }
-          });
-        } else {
-          return context.willDisposeWithError(
-            HttpStatus.UNAUTHORIZED,
-            MESSAGE_INVALID_ACCESS_TOKEN
-          );
-        }
-      }
+    const promiseList = Immutable.List.of(
+      this.verifyUserToken(this.user_access_token),
+      this.verifyBusinessManagerUser()
     );
+    const promises = Promise.resolve(Promises.genList(promiseList));
+    return promises.then(function(results) {
+      const resSeq = results.toSeq();
+      const user_id: number = resSeq.get(0);
+      const user_ids: Map<number, boolean> = resSeq.get(1);
 
+      if (user_ids.has(user_id)) {
+        return new Promise(
+          (resolve: Resolve<Context>, reject: Reject) =>
+            resolve(context)
+          );
+      } else {
+        return new Promise(
+          (resolve: Resolve<Context>, reject: Reject) =>
+            reject(new Error(MESSAGE_USER_NOT_IN_BM))
+          );
+      }
+    });
   }
-
-  authenticated(context: Context): Promise<Context> {
-    return new Promise(
-      (resolve: Resolve<Context>, reject: Reject) =>
-        resolve(context));
-  }
-
-
 
   verifyUserToken(
     access_token: string
-  ): Promise<Array<Object>> {
+  ): Promise<number> {
 
     Graph.setAccessToken(access_token);
     return new Promise((resolve, reject) => {
       Graph.get(
-        "/me",
+        '/me',
         (err, response) => {
-          resolve([response, err]);
+          if (err) {
+            reject(new Error(MESSAGE_INVALID_ACCESS_TOKEN));
+          } else {
+            resolve(response.id);
+          }
         });
 
-      });
+    });
   }
 
-  verifyBusinessManagerUser(
-    business_manager_id: string,
-    user_id: string,
-    access_token: string
-  ): Promise<Array<Object>> {
+  verifyBusinessManagerUser(): Promise<Map<number, boolean>> {
 
-    Graph.setAccessToken(access_token);
+    Graph.setAccessToken(this.user_access_token);
     var ids = {};
 
     return new Promise((resolve, reject) => {
@@ -134,22 +114,26 @@ class Authentication {
           url, {limit: 10000},
           (err, response) => {
             if (response && response.data) {
-              Object.keys(response.data).forEach(function (key) {
+              Object.keys(response.data).forEach(function(key) {
                 let obj = response.data[key];
                 ids[obj.user.id] = true;
               });
               if (response.paging && response.paging.next) {
                 callApi(response.paging.next);
               } else {
-                resolve([Immutable.fromJS(ids), err]);
+                resolve(Immutable.fromJS(ids));
               }
             } else {
-              resolve([response, err]);
+              if (err && err.code == 190) {
+                reject(new Error(MESSAGE_INVALID_BM_ACCESS_TOKEN));
+              } else {
+                reject(new Error(MESSAGE_USER_NOT_IN_BM));
+              }
             }
           }
         );
       }
-      callApi('/' + business_manager_id + "/userpermissions");
+      callApi('/' + this.business_manager_id + '/userpermissions');
     });
   }
 
