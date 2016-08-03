@@ -28,6 +28,7 @@ import type Application from '../../services/Application';
 export type Resolve<T> = (result: Promise<T> | T) => void;
 export type Reject = (error: any) => void;
 
+const Authentication = require('../Authentication');
 const HttpStatus = require('http-status-codes');
 const Context = require('../RequestContext');
 const {Map} = require('immutable');
@@ -70,7 +71,11 @@ class AbstractController {
   }
 
   willAuthorize(context: Context): Promise<Context> {
-    return new Promise((resolve: Resolve<Context>, reject: Reject) => resolve(context));
+    const authentication = new Authentication(
+      this.application,
+      context.getRequest().query.access_token
+    );
+    return authentication.doAuth(context);
   }
 
   willValidate(context: Context): Promise<Context> {
