@@ -23,8 +23,7 @@
  */
 
 import type Application from '../services/Application';
-import type {Resolve, Reject} from
-  './controllers/AbstractController';
+import type {Resolve, Reject} from './controllers/AbstractController';
 
 const Context = require('./RequestContext');
 const Graph = require('fbgraph');
@@ -46,53 +45,33 @@ class Authentication {
   graph_versions: Array<number>;
 
 
-  constructor(
-    application: Application,
-    user_access_token: string
-  ): void {
+  constructor(application: Application, user_access_token: string): void {
     const appconfig = application.getConfig();
-
     this.application = application;
     this.user_access_token = user_access_token;
-    this.system_access_token =
-      appconfig.getString('graph.access_token');
-    this.business_manager_id =
-      appconfig.getString('graph.business_manager_id');
+    this.system_access_token = appconfig.getString('graph.access_token');
+    this.business_manager_id = appconfig.getString('graph.business_manager_id');
   }
 
   doAuth(context: Context) : Promise<Context> {
-    const promiseList = Immutable.List.of(
+    const promiseList = new List([
       this.verifyUserToken(this.user_access_token),
-      this.verifyBusinessManagerUser()
-    );
-    const promises = Promise.resolve(Promises.genList(promiseList));
-    return promises.then(function(results: List<*>) {
-      const resSeq = results.toSeq();
-      const user_id: number = resSeq.get(0);
-      const user_ids: Map<number, boolean> = resSeq.get(1);
+      this.verifyBusinessManagerUser(this.system_access_token)
+    ]);
 
-      return new Promise(
-          (resolve: Resolve<Context>, reject: Reject) => {
-            if (user_ids.has(user_id)) {
-              resolve(context);
-            } else {
-              reject(MESSAGE_USER_NOT_IN_BM);
-            }
-          });
+    return Promises.genList(promiseList).then((results: List<number | Map<number, boolean>>) => {
+      const [user_id, business_roles] = results;
+      return business_roles.has(user_id) ? Promise.resolve(context) : Promise.reject(new Error(MESSAGE_USER_NOT_IN_BM));
     });
   }
 
-  verifyUserToken(
-    access_token: string
-  ): Promise<number> {
-
-    Graph.setAccessToken(access_token);
+  verifyUserToken(user_access_token: string): Promise<number> {
     return new Promise((resolve: Resolve<number>, reject: Reject) => {
       Graph.get(
-        '/me',
+        '/me', {access_token: user_access_token},
         (err: Object, response: Object) => {
           if (err) {
-            reject(MESSAGE_INVALID_ACCESS_TOKEN);
+            reject(new Error(MESSAGE_INVALID_ACCESS_TOKEN));
           } else {
             resolve(response.id);
           }
@@ -101,15 +80,13 @@ class Authentication {
     });
   }
 
-  verifyBusinessManagerUser(): Promise<Map<number, boolean>> {
-
-    Graph.setAccessToken(this.system_access_token);
-    var ids = {};
+  verifyBusinessManagerUser(system_access_token: string): Promise<Map<number, boolean>> {
+    let ids = {};
 
     return new Promise((resolve: Resolve<Map<number, boolean>>, reject: Reject) => {
       function callApi(url) {
         Graph.get(
-          url, {limit: 10000},
+          url, {access_token: system_access_token},
           (err: Object, response: Object) => {
             if (response && response.data) {
               Object.keys(response.data).forEach(function(key) {
@@ -123,9 +100,9 @@ class Authentication {
               }
             } else {
               if (err && err.code == CODE_INVALID_BM_TOKEN) {
-                reject(MESSAGE_INVALID_BM_ACCESS_TOKEN);
+                reject(new Error(MESSAGE_INVALID_BM_ACCESS_TOKEN));
               } else {
-                reject(MESSAGE_USER_NOT_IN_BM);
+                reject(new Error(MESSAGE_USER_NOT_IN_BM));
               }
             }
           }

@@ -76,8 +76,8 @@ class AbstractController {
       context.getRequest().query.access_token
     );
 
-    return authentication.doAuth(context).catch(function(reason) {
-      context.disposeWithError(HttpStatus.UNAUTHORIZED, reason);
+    return authentication.doAuth(context).catch((reason: Error) => {
+      return context.disposeWithError(HttpStatus.UNAUTHORIZED, reason.message);
     });
   }
 
