@@ -19,6 +19,11 @@ body {
   margin-right: 5px;
 }
 
+#save-button {
+  margin-right: 5px;
+  font-weight: bold;
+}
+
 #typefast {
   height: 100%;
 }

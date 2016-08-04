@@ -13,7 +13,7 @@ class TypeFastListing extends React.Component {
           {this.props.script.title}
         </a>
       </div>
-    )
+    );
   }
 }
 

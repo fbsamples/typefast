@@ -2,7 +2,7 @@ import Radium from 'radium';
 import React from 'react';
 import TypeFastLogWindow from '../components/TypeFastLogWindow';
 import TypeFastEditor from '../components/TypeFastEditor';
-import TypeFastSaveModalContainer from './TypeFastSaveModalContainer';
+import TypeFastScheduleModalContainer from './TypeFastScheduleModalContainer';
 import { codeChanged, optimisationComplete } from '../actions/actions';
 import { connect } from 'react-redux';
 
@@ -10,7 +10,7 @@ const styles = {
   container: {
     paddingLeft: 0
   }
-}
+};
 
 class TypeFastEditorContainer extends React.Component {
   render() {
@@ -25,9 +25,9 @@ class TypeFastEditorContainer extends React.Component {
           onOptimisationComplete={this.props.onOptimisationComplete}
         />
         <TypeFastLogWindow log={this.props.log}/>
-        <TypeFastSaveModalContainer />
+        <TypeFastScheduleModalContainer />
       </div>
-    )
+    );
   }
 }
 
@@ -39,8 +39,8 @@ const mapDispatchToProps = (dispatch) => {
     onOptimisationComplete: function(optimisations) {
       dispatch(optimisationComplete(optimisations));
     }
-  }
-}
+  };
+};
 
 const mapStateToProps = (state) => {
   return {
@@ -49,7 +49,7 @@ const mapStateToProps = (state) => {
     log: state.log,
     currentPane: state.currentPane,
     scriptListOpen: state.scriptListOpen
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Radium(TypeFastEditorContainer))
+export default connect(mapStateToProps, mapDispatchToProps)(Radium(TypeFastEditorContainer));

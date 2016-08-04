@@ -11,12 +11,14 @@ class TypeFastEditor extends React.Component {
   }
 
   render() {
-    if(this.props.isFetching) {
-      this.editor.setLoadingText();
-    } else if(this.props.script) {
-      this.editor.setText(this.props.script.code);
-    } else if (this.editor){
-      this.editor.setWelcomeText();
+    if (this.editor) {
+      if (this.props.isFetching) {
+        this.editor.setLoadingText();
+      } else if (this.props.script) {
+        this.editor.setText(this.props.script.code);
+      } else if (this.editor) {
+        this.editor.setWelcomeText();
+      }
     }
 
     return (
@@ -25,7 +27,7 @@ class TypeFastEditor extends React.Component {
         id="sandbox"
         className="col-lg-6 full-height nopadding">
       </div>
-    )
+    );
   }
 }
 

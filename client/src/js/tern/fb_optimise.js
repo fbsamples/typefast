@@ -2,13 +2,13 @@
 // and object properties as docstrings and JSDoc-style type
 // annotations.
 
-const walk = require("acorn/dist/walk");
+const walk = require('acorn/dist/walk');
 
 module.exports = function(infer) {
   var fieldsAccessed = {};
 
   function isEdge(node) {
-      return node.types[0]
+    return node.types[0]
         && node.types[0].retval
         && node.types[0].retval.proto
         && node.types[0].retval.proto.name.indexOf('cursor') > -1;
@@ -22,8 +22,8 @@ module.exports = function(infer) {
 
   function getURLSafeFieldsAccessed() {
     var obj = {};
-    for(var key in fieldsAccessed) {
-      if(fieldsAccessed.hasOwnProperty(key)) {
+    for (var key in fieldsAccessed) {
+      if (fieldsAccessed.hasOwnProperty(key)) {
         obj[key] = Array.from(fieldsAccessed[key]);
       }
     }
@@ -35,31 +35,31 @@ module.exports = function(infer) {
       fieldsAccessed = {};
       walk.simple(ast, {
         MemberExpression: function(node, scope) {
-          if (node.object.fbType === undefined){
+          if (node.object.fbType === undefined) {
             node.object.fbType = infer.expressionType({
               node: node.object,
               state: scope
-            })
+            });
           }
 
           if (node.property.fbType === undefined) {
             node.property.fbType = infer.expressionType({
               node: node.property,
               state: scope
-            })
+            });
           }
 
           var objFbType = node.object.fbType;
-          name = node.property.name
+          name = node.property.name;
 
           if (node.object.type == 'CallExpression') {
             if (objFbType.proto) {
-              properties = objFbType.proto.props
+              properties = objFbType.proto.props;
               if (properties[name]) {
                 if (!fieldsAccessed[objFbType.proto.name]) {
                   fieldsAccessed[objFbType.proto.name] = new Set();
                 }
-                fieldsAccessed[objFbType.proto.name].add(name)
+                fieldsAccessed[objFbType.proto.name].add(name);
               }
             }
           } else if (objFbType.propertyName
@@ -67,9 +67,9 @@ module.exports = function(infer) {
             && !isCursor(objFbType)) {
             var properties = objFbType.types[0].props || {};
 
-            if(Object.keys(properties).length == 0) {
+            if (Object.keys(properties).length == 0) {
               if (objFbType.types[0].proto) {
-                properties = objFbType.types[0].proto.props
+                properties = objFbType.types[0].proto.props;
               }
             }
 
@@ -79,10 +79,10 @@ module.exports = function(infer) {
               if (!fieldsAccessed[objFbType.types[0].proto.name]) {
                 fieldsAccessed[objFbType.types[0].proto.name] = new Set();
               }
-              fieldsAccessed[objFbType.types[0].proto.name].add(name)
+              fieldsAccessed[objFbType.types[0].proto.name].add(name);
             }
           }
-          node.property.parent_object = node.object
+          node.property.parent_object = node.object;
         }
       }, infer.searchVisitor, scope);
       onOptimisationComplete(getURLSafeFieldsAccessed());
@@ -93,5 +93,5 @@ module.exports = function(infer) {
     getURLSafeFieldsAccessed: function() {
       return getURLSafeFieldsAccessed();
     }
-  }
-}
+  };
+};

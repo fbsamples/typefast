@@ -3,30 +3,26 @@ import React from 'react';
 import { loadScript, changePane, toggleScriptList } from '../actions/actions.js';
 import { connect } from 'react-redux';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import TypeFastScriptListItem from '../components/TypeFastListing'
+import TypeFastScriptListItem from '../components/TypeFastListing';
 
 const styles = {
   container: {
-    padding: "5px",
+    padding: '10px 15px 10px 25px'
   },
   close: {
-    float: "right",
+    float: 'right',
   },
-  row: {
-    paddingRight: 0,
-  }
-}
+};
 
 class TypeFastListingContainer extends React.Component {
   render() {
-    const hidden = this.props.scriptListOpen ? 'col-lg-2' : 'hidden' ;
+    const hidden = this.props.scriptListOpen ? 'col-lg-2' : 'hidden';
     return (
-      <div className={`${hidden}`} style={[styles.row]}>
-        <div style={[styles.container]}>
+      <div className={`${hidden}`} style={[styles.container]}>
           <div>
             <button
               id="new-script"
-              onClick={this.props.onClick.bind(null,'new')}
+              onClick={this.props.onClick.bind(null, 'new')}
               type="button"
               className="btn btn-default btn-green navbar-btn">
               <Glyphicon glyph="new-window" /> New Script
@@ -43,11 +39,10 @@ class TypeFastListingContainer extends React.Component {
             return <TypeFastScriptListItem
               index={i+1}
               script={this.props.scripts[key]}
-              onClick={this.props.onClick}/>
+              onClick={this.props.onClick}/>;
           })}
-        </div>
       </div>
-    )
+    );
   }
 }
 
@@ -57,8 +52,8 @@ const mapStateToProps = (state, ownProps) => {
     scripts: state.scripts,
     currentPane: state.currentPane,
     scriptListOpen: state.scriptListOpen
-  }
-}
+  };
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
@@ -67,12 +62,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(changePane('editor'));
     },
     close: () => {
-      dispatch(toggleScriptList())
+      dispatch(toggleScriptList());
     }
-  }
-}
+  };
+};
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Radium(TypeFastListingContainer))
+)(Radium(TypeFastListingContainer));

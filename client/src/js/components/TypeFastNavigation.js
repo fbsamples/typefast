@@ -10,7 +10,7 @@ import TypeFastNavBarEditorButtonsContainer from '../containers/TypeFastNavBarEd
 
 class TypeFastNavigation extends React.Component {
   selectButtons() {
-    return <TypeFastNavBarEditorButtonsContainer />
+    return <TypeFastNavBarEditorButtonsContainer />;
   }
 
   render() {
@@ -18,12 +18,6 @@ class TypeFastNavigation extends React.Component {
     return (
     <Navbar id="mainnav" fluid >
       <Nav>
-        {/*<NavItem
-          eventKey={1}
-          onClick={this.props.onNavClick.bind(null, 'editor')}
-          active={this.props.currentPane === 'editor'} title="edit">
-          <Glyphicon glyph="edit" /> Edit
-        </NavItem>*/}
         <NavItem
           eventKey={2}
           onClick={this.props.onScriptListClicked}
@@ -44,11 +38,11 @@ class TypeFastNavigation extends React.Component {
           <MenuItem eventKey="4.4">Separated link</MenuItem>
         </NavDropdown>
       </Nav>
-      <Navbar.Form pullRight className='nomargin'>
+      <Navbar.Form pullRight className="nomargin">
         {this.selectButtons()}
       </Navbar.Form>
     </Navbar>
-  )}
+  );}
 }
 
 module.exports = TypeFastNavigation;

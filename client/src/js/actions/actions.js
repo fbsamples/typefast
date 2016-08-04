@@ -1,20 +1,20 @@
-import fetch from 'isomorphic-fetch'
+import fetch from 'isomorphic-fetch';
 
 function handleErrors(response) {
-    if (!response.ok) {
-        throw Error(response.statusText);
-    }
-    return response;
+  if (!response.ok) {
+    throw Error(response.statusText);
+  }
+  return response;
 }
 
-export const LOAD_SCRIPT = 'LOAD_SCRIPT'
+export const LOAD_SCRIPT = 'LOAD_SCRIPT';
 export function loadScript(id) {
-    return {
-      type: LOAD_SCRIPT,
-      payload: {
-        id: id
-      }
+  return {
+    type: LOAD_SCRIPT,
+    payload: {
+      id: id
     }
+  };
 }
 
 export const UI_CHANGE = 'UI_CHANGE';
@@ -24,14 +24,14 @@ export function changePane(pane) {
     ui: {
       selectedPane: pane
     }
-  }
+  };
 }
 
 export const SCRIPT_LIST_CLICKED = 'SCRIPT_LIST_CLICKED';
 export function toggleScriptList() {
   return {
     type: SCRIPT_LIST_CLICKED,
-  }
+  };
 }
 
 export const OPTIMISATIONS_COMPLETE = 'OPTIMISATIONS_COMPLETE';
@@ -41,7 +41,7 @@ export function optimisationComplete(optimisations) {
     payload: {
       optimisations: optimisations
     }
-  }
+  };
 }
 
 export const SCRIPT_TITLE_CHANGED = 'SCRIPT_TITLE_CHANGED';
@@ -51,7 +51,7 @@ export function scriptTitleChanged(title) {
     payload: {
       title: title
     }
-  }
+  };
 }
 
 export const SCRIPT_CODE_CHANGED = 'SCRIPT_CODE_CHANGED';
@@ -61,7 +61,7 @@ export function codeChanged(code) {
     payload: {
       code: code
     }
-  }
+  };
 }
 
 export const SAVE_SCRIPT_REQUEST = 'SAVE_SCRIPT_REQUEST';
@@ -83,7 +83,7 @@ export function saveScript() {
       body: JSON.stringify({
         code: getState().editorValue,
         optimisations: getState().optimisations,
-        title: currentScript.title
+        title: getState().currentTitle
       })
     })
     .then(handleErrors)
@@ -91,16 +91,14 @@ export function saveScript() {
       return response.json();
     })
     .then(function(response) {
-      dispatch(showSaveModal());
       dispatch({
         type: SAVE_SCRIPT_SUCCESS,
         payload: {
           script: response
         }
-      })
-      console.log('save', response);
-    })
-  }
+      });
+    });
+  };
 }
 
 export const PREVIEW_SCRIPT_CLICKED = 'PREVIEW_SCRIPT';
@@ -111,7 +109,7 @@ export const PREVIEW_SCRIPT_SUCCESS = 'PREVIEW_SCRIPT_SUCCESS';
 export const PREVIEW_SCRIPT_FAILURE = 'PREVIEW_SCRIPT_FAILURE';
 
 function pollRoutine(routineId, dispatch) {
-  fetch("/routines/" + routineId)
+  fetch('/routines/' + routineId)
   .then(handleErrors)
   .then(function(response) {
     return response.json();
@@ -120,26 +118,26 @@ function pollRoutine(routineId, dispatch) {
     // this is hideous, fix it
     if (response.is_completed) {
       let message
-        = response.runner_log.map(function(a) { return a.chunk }).join("\n");
+        = response.runner_log.map(function(a) { return a.chunk; }).join('\n');
       dispatch({
         type: PREVIEW_SCRIPT_SUCCESS,
-          payload: {
-            log: [{message: message}]
-          }
-       });
+        payload: {
+          log: [{message: message}]
+        }
+      });
     } else {
       setTimeout(function() {
-        pollRoutine(routineId, dispatch)
-      },1000);
+        pollRoutine(routineId, dispatch);
+      }, 1000);
     }
-  })
+  });
 }
 
 export function previewScript() {
   return function(dispatch, getState) {
     dispatch({type: PREVIEW_SCRIPT_REQUEST});
 
-    return fetch("/routines/", {
+    return fetch('/routines/', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -154,9 +152,32 @@ export function previewScript() {
       return response.json();
     })
     .then(function(response) {
-      pollRoutine(response.id, dispatch)
-    })
-  }
+      pollRoutine(response.id, dispatch);
+    });
+  };
+}
+
+export const FETCHING_SCRIPT_LOGS_REQUEST = 'FETCHING_SCRIPT_LOGS_REQUEST';
+export const FETCHING_SCRIPT_LOGS_SUCCESS = 'FETCHING_SCRIPT_LOGS_SUCCESS';
+export const FETCHING_SCRIPT_LOGS_FAILURE = 'FETCHING_SCRIPT_LOGS_FAILURE';
+
+export function fetchScriptLogs(id) {
+  return function(dispatch) {
+    dispatch({type: FETCHING_SCRIPT_LOGS_REQUEST});
+    return fetch(`/scripts/${id}/logs`)
+      .then(handleErrors)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(json) {
+        dispatch({
+          type: FETCHING_SCRIPT_LOGS_SUCCESS,
+          payload: {
+            scriptLogs: json
+          }
+        });
+      });
+  };
 }
 
 export const FETCHING_SCRIPTS_REQUEST = 'FETCHING_SCRIPTS_REQUEST';
@@ -177,21 +198,35 @@ export function fetchScripts() {
           payload: {
             scripts: json
           }
-        })
-      })
-  }
+        });
+      });
+  };
 }
 
-export const HIDE_SAVE_MODAL = 'HIDE_SAVE_MODAL';
-export function hideSaveModal() {
-    return {
-      type: HIDE_SAVE_MODAL
-    }
+export const SHOW_SCHEDULE_SELECTOR = 'SHOW_SCHEDULE_SELECTOR';
+export function showScheduleSelector() {
+  return {
+    type: SHOW_SCHEDULE_SELECTOR
+  };
 }
 
-export const SHOW_SAVE_MODAL = 'SHOW_SAVE_MODAL';
-export function showSaveModal() {
-    return {
-      type: SHOW_SAVE_MODAL
-    }
+export const HIDE_SCHEDULE_SELECTOR = 'HIDE_SCHEDULE_SELECTOR';
+export function hideScheduleSelector() {
+  return {
+    type: HIDE_SCHEDULE_SELECTOR
+  };
+}
+
+export const HIDE_SCHEDULE_MODAL = 'HIDE_SCHEDULE_MODAL';
+export function hideScheduleModal() {
+  return {
+    type: HIDE_SCHEDULE_MODAL
+  };
+}
+
+export const SHOW_SCHEDULE_MODAL = 'SHOW_SCHEDULE_MODAL';
+export function showScheduleModal() {
+  return {
+    type: SHOW_SCHEDULE_MODAL
+  };
 }

@@ -8,6 +8,8 @@ import TypeFastListingContainer from '../containers/TypeFastListingContainer';
 
 class TypeFastApp extends React.Component {
   componentDidMount() {
+    // this causes lots of state sets while rendering so needs to be moved
+    // out 
     this.props.dispatch(fetchScripts());
   }
 
@@ -20,8 +22,8 @@ class TypeFastApp extends React.Component {
           <TypeFastEditorContainer />
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default connect()(TypeFastApp)
+export default connect()(TypeFastApp);

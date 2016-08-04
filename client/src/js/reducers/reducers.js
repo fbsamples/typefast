@@ -7,9 +7,10 @@ import {
   PREVIEW_SCRIPT_FAILURE,
   UI_CHANGE,
   LOAD_SCRIPT,
-  SHOW_SAVE_MODAL,HIDE_SAVE_MODAL,
+  SHOW_SCHEDULE_MODAL, HIDE_SCHEDULE_MODAL,
+  SHOW_SCHEDULE_SELECTOR, HIDE_SCHEDULE_SELECTOR,
   SCRIPT_LIST_CLICKED
-} from '../actions/actions.js'
+} from '../actions/actions.js';
 
 function initalLog() {
   return [{
@@ -20,12 +21,11 @@ function initalLog() {
     Alt-,  - Jump Back
     Ctrl-Q - Rename
     Ctrl-. - Select Name`
-  }]
+  }];
 }
 
 
 function typefastApp(state = {
-  currentScriptId: null,
   currentRoutineId: null,
   scriptListOpen: false,
   isSaving: false,
@@ -33,32 +33,37 @@ function typefastApp(state = {
   scripts: [],
   log: initalLog(),
   currentPane: 'editor',
+  showScheduleSelector: false,
   showScheduleModal: false,
-  showSaveModal: false
+  needToSave: true,
+  currentTitle: 'A Untitled Masterwork',
 }, action) {
   switch (action.type) {
 
     case LOAD_SCRIPT:
       let scriptToLoad;
       if (action.payload.id === 'new') {
-        scriptToLoad = null
+        scriptToLoad = null;
       } else {
-        scriptToLoad = state.scripts[action.payload.id]
+        scriptToLoad = state.scripts[action.payload.id];
       }
       return Object.assign({}, state, {
         currentScript: scriptToLoad,
+        currentTitle: scriptToLoad.title,
+        editorValue: scriptToLoad.code,
+        optimisations: scriptToLoad.optimisations,
         log: initalLog(),
-      })
+      });
 
     case UI_CHANGE:
       return Object.assign({}, state, {
         currentPane: action.ui.selectedPane,
-      })
+      });
 
     case SAVE_SCRIPT_REQUEST:
       return Object.assign({}, state, {
         isSaving: true,
-      })
+      });
     case SAVE_SCRIPT_SUCCESS:
       let script = {};
 
@@ -69,26 +74,37 @@ function typefastApp(state = {
         currentScript: action.payload.script,
         scripts: updatedScripts,
         scriptCount: Object.keys(updatedScripts).length,
-      })
+        needToSave: false,
+      });
 
-    case SHOW_SAVE_MODAL:
+    case SHOW_SCHEDULE_MODAL:
       return Object.assign({}, state, {
-        showSaveModal: true,
-      })
+        showScheduleModal: true,
+      });
 
-    case HIDE_SAVE_MODAL:
+    case HIDE_SCHEDULE_MODAL:
       return Object.assign({}, state, {
-        showSaveModal: false,
-      })
+        showScheduleModal: false,
+      });
+
+    case SHOW_SCHEDULE_SELECTOR:
+      return Object.assign({}, state, {
+        showScheduleSelector: true,
+      });
+
+    case HIDE_SCHEDULE_SELECTOR:
+      return Object.assign({}, state, {
+        showScheduleSelector: false,
+      });
 
     case FETCHING_SCRIPTS_REQUEST:
       return Object.assign({}, state, {
         isFetching: true,
-      })
+      });
     case FETCHING_SCRIPTS_SUCCESS:
       let firstScript;
       if (!state.currentScript) {
-        firstScript = action.payload.scripts.data[0]
+        firstScript = action.payload.scripts.data[0];
       }
 
       const scripts = action.payload.scripts.data.reduce(
@@ -100,45 +116,47 @@ function typefastApp(state = {
         scripts: scripts,
         currentScript: firstScript,
         scriptCount: Object.keys(scripts).length
-      })
+      });
 
     case PREVIEW_SCRIPT_SUCCESS:
       return Object.assign({}, state, {
         log: action.payload.log
-      })
+      });
     case PREVIEW_SCRIPT_REQUEST:
       return Object.assign({}, state, {
         log: [{
           message: 'Processing your script...',
         }]
-      })
+      });
 
     case SCRIPT_TITLE_CHANGED:
-      let currentScript = state.currentScript
-      currentScript.title = action.payload.title
       return Object.assign({}, state, {
-        currentScript: currentScript
-      })
+        currentTitle: action.payload.title
+      });
 
     case SCRIPT_CODE_CHANGED:
+      const needToSave = !(state.currentScript
+        && (state.currentScript.code == action.payload.code));
+
       return Object.assign({}, state, {
-        editorValue: action.payload.code
-      })
+        editorValue: action.payload.code,
+        needToSave: needToSave,
+      });
 
     case SCRIPT_LIST_CLICKED:
       return Object.assign({}, state, {
         scriptListOpen: !state.scriptListOpen,
-    })
+      });
 
     case OPTIMISATIONS_COMPLETE: {
       return Object.assign({}, state, {
         optimisations: action.payload.optimisations
-      })
+      });
     }
     default:
-      return state
+      return state;
   }
 }
 
 
-module.exports = typefastApp
+module.exports = typefastApp;

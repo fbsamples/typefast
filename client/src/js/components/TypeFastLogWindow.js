@@ -4,8 +4,8 @@ import React from 'react';
 class TypeFastLogWindow extends React.Component {
   logGenerator() {
     let elements = this.props.log.map((el) => {
-      return el.message.split("\n").map(i => { return <div>{i}</div>})
-    })
+      return el.message.split('\n').map((i, j) => { return <div key={j}>{i}</div>;});
+    });
     return [].concat.apply([], elements);
   }
 
@@ -18,17 +18,17 @@ class TypeFastLogWindow extends React.Component {
           {this.logGenerator()}
         </code>
       </div>
-    )
+    );
   }
 }
 
 const styles = {
   container: {
-    background: "#FCFCFC",
-    borderLeft: "1px solid #ddd",
-    paddingTop: "15px",
-    overflow: "scroll"
+    background: '#FCFCFC',
+    borderLeft: '1px solid #ddd',
+    paddingTop: '15px',
+    overflow: 'scroll'
   }
-}
+};
 
 module.exports = Radium(TypeFastLogWindow);

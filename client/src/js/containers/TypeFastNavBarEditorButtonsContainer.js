@@ -1,31 +1,37 @@
-import { connect } from 'react-redux'
-import { previewScript, saveScript, scriptTitleChanged } from '../actions/actions.js'
-import TypeFastNavBarEditorButtons from '../components/TypeFastNavBarEditorButtons'
+import { connect } from 'react-redux';
+import { previewScript, saveScript, scriptTitleChanged, showScheduleModal } from '../actions/actions.js';
+import TypeFastNavBarEditorButtons from '../components/TypeFastNavBarEditorButtons';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    scriptTitle: state.currentScript ?
-      state.currentScript.title : 'A Untitled Masterwork'
-  }
-}
+    scriptTitle: state.currentTitle,
+    needToSave: state.needToSave,
+    isSaving: state.isSaving
+  };
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onTitleChange: (event) => {
-      dispatch(scriptTitleChanged(event.target.value))
-    },
-    onSave: () => {
-      dispatch(saveScript())
+      dispatch(scriptTitleChanged(event.target.value));
+    }, onSave: () => {
+      dispatch(saveScript());
     },
     onPreview: () => {
-      dispatch(previewScript())
+      dispatch(previewScript());
+    },
+    onSchedule: () => {
+      dispatch(showScheduleModal());
+    },
+    onPreviousRuns: () => {
+
     }
-  }
-}
+  };
+};
 
 const TypeFastNavBarEditorButtonsContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(TypeFastNavBarEditorButtons)
+)(TypeFastNavBarEditorButtons);
 
-export default TypeFastNavBarEditorButtonsContainer
+export default TypeFastNavBarEditorButtonsContainer;
