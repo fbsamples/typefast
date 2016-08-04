@@ -1,0 +1,8 @@
+[libs]
+decls/
+
+[include]
+../sdk/
+
+[options]
+suppress_comment= \\(.\\|\n\\)*\\FLOW_UNSAFE
