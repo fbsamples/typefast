@@ -31,6 +31,7 @@
   "dependencies": {
     "body-parser": "~1.15.1",
     "express": "~4.13.4",
+    "fbgraph": "~1.2.0",
     "http-status-codes": "~1.0.6",
     "immutable": "~3.8.1",
     "minimist": "~1.2.0",
