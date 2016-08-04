@@ -4,6 +4,7 @@
     "application_id": 0,
     "application_secret": "APPLICATION_SECRET",
     "access_token": "ACCESS_TOKEN",
+    "business_manager_id": "BUSINESS_MANAGER_ID",
     "schema": {
       "bundle": null
     }
