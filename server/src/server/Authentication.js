@@ -27,7 +27,7 @@ import type {Resolve, Reject} from './controllers/AbstractController';
 
 const Context = require('./RequestContext');
 const Graph = require('fbgraph');
-const Promises = require('../utils/Promises');
+const Promises = require('../utils/promises');
 const Immutable = require('immutable');
 const {List} = require('immutable');
 
