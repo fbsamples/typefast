@@ -27,14 +27,17 @@ import type {Document} from 'mongoose';
 import type {Request, Response} from 'express';
 import type {Resolve, Reject} from './controllers/AbstractController';
 
-const {EventEmitter} = require('events');
 const HttpStatus = require('http-status-codes');
+const Params = require('./Params');
+const {EventEmitter} = require('events');
+const {Map} = require('immutable');
 
 class RequestContext extends EventEmitter {
 
   static events: { [key: string]: string };
 
   application: Application;
+  params: Params;
   isResponseFinished: bool;
   target: ?Document;
   request: Request;
@@ -42,6 +45,7 @@ class RequestContext extends EventEmitter {
 
   constructor(application: Application, request: Request, response: Response): void {
     super();
+    this.params = new Map();
     this.application = application;
     this.request = request;
     this.response = response;
@@ -62,6 +66,16 @@ class RequestContext extends EventEmitter {
 
   getResponse(): Response {
     return this.response;
+  }
+
+  setParamsData(data: Map<string, any>): this {
+    this.params = new Params(data);
+
+    return this;
+  }
+
+  getParams(): Params {
+    return this.params;
   }
 
   isDisposed(): bool {
@@ -86,15 +100,21 @@ class RequestContext extends EventEmitter {
     return this.getTarget().get('id');
   }
 
-  getErrorBody(http_status: number, user_message?: string): Object {
+  getErrorBody(http_status: number, user_message?: string, data?: Object): Object {
     const http_message = HttpStatus.getStatusText(http_status);
-    return {
+    const body = {
       error: {
         code: http_status,
         message: http_message,
         user_message: user_message || http_message
       }
     };
+
+    for (let i in data) {
+      body.error[i] = data[i];
+    }
+
+    return body;
   }
 
   dispose(): this {
@@ -105,11 +125,11 @@ class RequestContext extends EventEmitter {
     return this;
   }
 
-  disposeWithError(status: number, user_message?: string): this {
+  disposeWithError(status: number, user_message?: string, data?: Object): this {
     if (!this.isDisposed()) {
       this.getResponse()
         .status(status)
-        .send(this.getErrorBody(status, user_message));
+        .send(this.getErrorBody(status, user_message, data));
 
       return this.dispose();
     }
@@ -118,15 +138,17 @@ class RequestContext extends EventEmitter {
   }
 
   disposeWithInternalError(error: Error): void {
+    const debug = this.getApplication().getConfig().getBoolean('debug');
     const err_message = error.message;
-    const user_message = this.getApplication().getConfig().getBoolean('debug')
-      ? `Debug Mode: ${err_message}`
-      : undefined;
-    this.disposeWithError(HttpStatus.INTERNAL_SERVER_ERROR, user_message);
+    const data = !debug ? undefined : {
+      debug_message: `${err_message}`,
+      stack: error.stack.split('\n'),
+    };
+    this.disposeWithError(HttpStatus.INTERNAL_SERVER_ERROR, undefined, data);
   }
 
-  willDisposeWithError(status: number, user_message?: string): Promise<this> {
-    return new Promise((resolve: Resolve<this>, reject: Reject) => {
+  willDisposeWithError(status: number, user_message?: string): Promise<RequestContext> {
+    return new Promise((resolve: Resolve<RequestContext>, reject: Reject) => {
       if (!this.isDisposed()) {
         this.once(RequestContext.events.DISPOSE, () => reject());
         this.disposeWithError(status, user_message);

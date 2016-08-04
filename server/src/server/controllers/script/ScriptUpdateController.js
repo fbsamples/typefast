@@ -22,14 +22,18 @@
  * @flow
  */
 
+import type AbstractParam from '../../params/AbstractParam';
 import type Context from '../../RequestContext';
 import type {Document} from 'mongoose';
 
 // Flow typeof won't work with import type
 const {Model} = require('mongoose');
+const {Map} = require('immutable');
 
 const AbstractDocumentUpdateController = require('../AbstractDocumentUpdateController');
 const Script = require('../../../model/script');
+const ScriptOptimizationsParam = require('../../params/ScriptOptimizationsParam');
+const StringParam = require('../../params/StringParam');
 
 // implement ../ControllerInterface
 class ScriptUpdateController extends AbstractDocumentUpdateController {
@@ -42,12 +46,25 @@ class ScriptUpdateController extends AbstractDocumentUpdateController {
     return Script;
   }
 
+  getParams(): Map<string, AbstractParam<any>> {
+    return super.getParams().merge({
+      title: new StringParam().setMinLength(3).optional(),
+      optimisations: new ScriptOptimizationsParam().optional(),
+      code: new StringParam().optional(),
+    });
+  }
+
   genResponse(context: Context): void {
-    const body = context.getRequest().body;
+    const script = context.getTarget();
+    const params = context.getParams();
+    const optimisations = params.isNull('optimisations')
+      ? null
+      : params.getMap('optimisations').toObject();
+
     const data = {
-      title: body.title || context.getTarget().get('title'),
-      optimisations: body.optimisations || context.getTarget().get('optimisations'),
-      code: body.code || context.getTarget().get('code'),
+      title: params.getOptionalString('title') || script.get('title'),
+      optimisations: optimisations || script.get('optimisations'),
+      code: params.getOptionalString('code') || context.getTarget().get('code'),
     };
 
     context.execPromise(context.getTarget().set(data).save({ new: true }))
