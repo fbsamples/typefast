@@ -30,7 +30,9 @@ const Context = require('./RequestContext');
 const Graph = require('fbgraph');
 const Promises = require('../utils/Promises');
 const Immutable = require('immutable');
+const {List} = require('immutable');
 
+const CODE_INVALID_BM_TOKEN = 190;
 const MESSAGE_INVALID_ACCESS_TOKEN = 'Invalid Access Token';
 const MESSAGE_INVALID_BM_ACCESS_TOKEN = 'Invalid System User Token';
 const MESSAGE_USER_NOT_IN_BM = 'Unauthorized user. Please ensure they are added to your Business Manager';
@@ -64,22 +66,19 @@ class Authentication {
       this.verifyBusinessManagerUser()
     );
     const promises = Promise.resolve(Promises.genList(promiseList));
-    return promises.then(function(results) {
+    return promises.then(function(results: List<*>) {
       const resSeq = results.toSeq();
       const user_id: number = resSeq.get(0);
       const user_ids: Map<number, boolean> = resSeq.get(1);
 
-      if (user_ids.has(user_id)) {
-        return new Promise(
-          (resolve: Resolve<Context>, reject: Reject) =>
-            resolve(context)
-          );
-      } else {
-        return new Promise(
-          (resolve: Resolve<Context>, reject: Reject) =>
-            reject(MESSAGE_USER_NOT_IN_BM)
-          );
-      }
+      return new Promise(
+          (resolve: Resolve<Context>, reject: Reject) => {
+            if (user_ids.has(user_id)) {
+              resolve(context);
+            } else {
+              reject(MESSAGE_USER_NOT_IN_BM);
+            }
+          });
     });
   }
 
@@ -88,10 +87,10 @@ class Authentication {
   ): Promise<number> {
 
     Graph.setAccessToken(access_token);
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve: Resolve<number>, reject: Reject) => {
       Graph.get(
         '/me',
-        (err, response) => {
+        (err: Object, response: Object) => {
           if (err) {
             reject(MESSAGE_INVALID_ACCESS_TOKEN);
           } else {
@@ -107,11 +106,11 @@ class Authentication {
     Graph.setAccessToken(this.system_access_token);
     var ids = {};
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve: Resolve<Map<number, boolean>>, reject: Reject) => {
       function callApi(url) {
         Graph.get(
           url, {limit: 10000},
-          (err, response) => {
+          (err: Object, response: Object) => {
             if (response && response.data) {
               Object.keys(response.data).forEach(function(key) {
                 let obj = response.data[key];
@@ -123,7 +122,7 @@ class Authentication {
                 resolve(Immutable.fromJS(ids));
               }
             } else {
-              if (err && err.code == 190) {
+              if (err && err.code == CODE_INVALID_BM_TOKEN) {
                 reject(MESSAGE_INVALID_BM_ACCESS_TOKEN);
               } else {
                 reject(MESSAGE_USER_NOT_IN_BM);
