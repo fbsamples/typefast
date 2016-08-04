@@ -37,9 +37,10 @@ function typefastApp(state = {
   showScheduleModal: false,
   needToSave: true,
   currentTitle: 'A Untitled Masterwork',
+  scheduleOn: false
 }, action) {
+  let needToSave;
   switch (action.type) {
-
     case LOAD_SCRIPT:
       let scriptToLoad;
       if (action.payload.id === 'new') {
@@ -130,12 +131,16 @@ function typefastApp(state = {
       });
 
     case SCRIPT_TITLE_CHANGED:
+      needToSave = !(state.currentScript
+      && (state.currentScript.title == action.payload.title));
+
       return Object.assign({}, state, {
-        currentTitle: action.payload.title
+        currentTitle: action.payload.title,
+        needToSave: needToSave
       });
 
     case SCRIPT_CODE_CHANGED:
-      const needToSave = !(state.currentScript
+      needToSave = !(state.currentScript
         && (state.currentScript.code == action.payload.code));
 
       return Object.assign({}, state, {

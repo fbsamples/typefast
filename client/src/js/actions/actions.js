@@ -64,6 +64,36 @@ export function codeChanged(code) {
   };
 }
 
+export const SCHEDULE_STATE_CHANGED = 'SCHEDULE_STATE_CHANGED';
+export function scheduleStateChanged(state) {
+  return {
+    type: SCHEDULE_STATE_CHANGED,
+    payload: {
+      schudeleState: state
+    }
+  };
+}
+
+export const SCHEDULE_START_TIME_CHANGED = 'SCHEDULE_START_TIME_CHANGED';
+export function scheduleStartTimeChanged(startTime) {
+  return {
+    type: SCHEDULE_START_TIME_CHANGED,
+    payload: {
+      schudeleStartTime: startTime
+    }
+  };
+}
+
+export const SCHEDULE_INTERVAL_CHANGED = 'SCHEDULE_INTERVAL_CHANGED';
+export function scheduleIntervalChanged(interval) {
+  return {
+    type: SCHEDULE_INTERVAL_CHANGED,
+    payload: {
+      scheduleInterval: interval
+    }
+  };
+}
+
 export const SAVE_SCRIPT_REQUEST = 'SAVE_SCRIPT_REQUEST';
 export const SAVE_SCRIPT_SUCCESS = 'SAVE_SCRIPT_SUCCESS';
 export const SAVE_SCRIPT_FAILURE = 'SAVE_SCRIPT_FAILURE';

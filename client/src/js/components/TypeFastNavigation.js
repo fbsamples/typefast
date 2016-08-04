@@ -25,18 +25,6 @@ class TypeFastNavigation extends React.Component {
           title="Item">
           <Glyphicon glyph="align-justify" /> Library <Badge>{this.props.scriptCount}</Badge>
         </NavItem>
-        <NavDropdown
-          eventKey={3}
-          title={
-            <span><Glyphicon glyph="user" /> Account</span>
-          }
-          id="nav-dropdown">
-          <MenuItem eventKey="4.1">Action</MenuItem>
-          <MenuItem eventKey="4.2">Another action</MenuItem>
-          <MenuItem eventKey="4.3">Something else here</MenuItem>
-          <MenuItem divider />
-          <MenuItem eventKey="4.4">Separated link</MenuItem>
-        </NavDropdown>
       </Nav>
       <Navbar.Form pullRight className="nomargin">
         {this.selectButtons()}
