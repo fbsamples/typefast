@@ -75,7 +75,10 @@ class AbstractController {
       this.application,
       context.getRequest().query.access_token
     );
-    return authentication.doAuth(context);
+
+    return authentication.doAuth(context).catch(function(reason) {
+      context.disposeWithError(HttpStatus.UNAUTHORIZED, reason);
+    });
   }
 
   willValidate(context: Context): Promise<Context> {

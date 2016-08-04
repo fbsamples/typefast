@@ -28,7 +28,6 @@ import type {Resolve, Reject} from
 
 const Context = require('./RequestContext');
 const Graph = require('fbgraph');
-//const HttpStatus = require('http-status-codes');
 const Promises = require('../utils/Promises');
 const Immutable = require('immutable');
 
@@ -78,7 +77,7 @@ class Authentication {
       } else {
         return new Promise(
           (resolve: Resolve<Context>, reject: Reject) =>
-            reject(new Error(MESSAGE_USER_NOT_IN_BM))
+            reject(MESSAGE_USER_NOT_IN_BM)
           );
       }
     });
@@ -94,7 +93,7 @@ class Authentication {
         '/me',
         (err, response) => {
           if (err) {
-            reject(new Error(MESSAGE_INVALID_ACCESS_TOKEN));
+            reject(MESSAGE_INVALID_ACCESS_TOKEN);
           } else {
             resolve(response.id);
           }
@@ -105,7 +104,7 @@ class Authentication {
 
   verifyBusinessManagerUser(): Promise<Map<number, boolean>> {
 
-    Graph.setAccessToken(this.user_access_token);
+    Graph.setAccessToken(this.system_access_token);
     var ids = {};
 
     return new Promise((resolve, reject) => {
@@ -125,9 +124,9 @@ class Authentication {
               }
             } else {
               if (err && err.code == 190) {
-                reject(new Error(MESSAGE_INVALID_BM_ACCESS_TOKEN));
+                reject(MESSAGE_INVALID_BM_ACCESS_TOKEN);
               } else {
-                reject(new Error(MESSAGE_USER_NOT_IN_BM));
+                reject(MESSAGE_USER_NOT_IN_BM);
               }
             }
           }
