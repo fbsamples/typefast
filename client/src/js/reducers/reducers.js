@@ -23,8 +23,8 @@
  */
 
 import {
-  FETCHING_SCRIPTS_REQUEST, FETCHING_SCRIPTS_SUCCESS, 
-  SAVE_SCRIPT_REQUEST, SAVE_SCRIPT_SUCCESS, 
+  FETCHING_SCRIPTS_REQUEST, FETCHING_SCRIPTS_SUCCESS,
+  SAVE_SCRIPT_REQUEST, SAVE_SCRIPT_SUCCESS,
   SCRIPT_CODE_CHANGED, SCRIPT_TITLE_CHANGED,
   OPTIMISATIONS_COMPLETE,
   PREVIEW_SCRIPT_REQUEST, PREVIEW_SCRIPT_SUCCESS,
@@ -34,7 +34,9 @@ import {
   SHOW_SCHEDULE_SELECTOR, HIDE_SCHEDULE_SELECTOR,
   SCRIPT_LIST_CLICKED,
   SCHEDULE_STATE_CHANGED, SCHEDULE_START_TIME_CHANGED,
-  SCHEDULE_INTERVAL_CHANGED
+  SCHEDULE_INTERVAL_CHANGED,
+  FACEBOOK_AUTH_STARTED, FACEBOOK_AUTH_SUCCESS, FACEBOOK_AUTH_FAILURE,
+  UNAUTHORISED
 } from '../actions/actions.js';
 
 function initalLog() {
@@ -64,7 +66,10 @@ function typefastApp(state = {
   currentTitle: 'A Untitled Masterwork',
   scheduleState: false,
   scheduleInterval: 'daily',
-  scheduleStartTime: Date.now()
+  scheduleStartTime: Date.now(),
+  accessToken: null,
+  isAuthenticated: false,
+  isAuthenticating: false
 }, action) {
   let needToSave;
   switch (action.type) {
@@ -77,10 +82,15 @@ function typefastApp(state = {
       }
       return Object.assign({}, state, {
         currentScript: scriptToLoad,
-        currentTitle: scriptToLoad.title,
-        editorValue: scriptToLoad.code,
-        optimisations: scriptToLoad.optimisations,
+//        currentTitle: scriptToLoad.title,
+//        editorValue: scriptToLoad.code,
+//        optimisations: scriptToLoad.optimisations,
         log: initalLog(),
+      });
+
+    case UNAUTHORISED:
+      return Object.assign({}, state, {
+        isAuthorised: false,
       });
 
     case UI_CHANGE:
@@ -138,6 +148,25 @@ function typefastApp(state = {
     case HIDE_SCHEDULE_SELECTOR:
       return Object.assign({}, state, {
         showScheduleSelector: false,
+      });
+
+    case FACEBOOK_AUTH_SUCCESS:
+      return Object.assign({}, state, {
+        isAuthenticated: true,
+        isAuthenticating: false,
+        accessToken: action.payload.accessToken
+      });
+
+    case FACEBOOK_AUTH_FAILURE:
+      return Object.assign({}, state, {
+        isAuthenticated: false,
+        isAuthenticating: false
+      });
+
+    case FACEBOOK_AUTH_STARTED:
+      return Object.assign({}, state, {
+        isAuthenticated: false,
+        isAuthenticating: true
       });
 
     case FETCHING_SCRIPTS_REQUEST:

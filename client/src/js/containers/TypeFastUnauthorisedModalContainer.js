@@ -21,29 +21,18 @@
  *
  * @flow
  */
-
-import  React  from 'react';
 import { connect } from 'react-redux';
-import TypeFastNavigationContainer from '../containers/TypeFastNavigationContainer';
-import TypeFastEditorContainer from '../containers/TypeFastEditorContainer';
-import TypeFastListingContainer from '../containers/TypeFastListingContainer';
-import TypeFastLoginContainer from '../containers/TypeFastLoginContainer';
-import TypeFastUnauthorisedModalContainer from '../containers/TypeFastUnauthorisedModalContainer';
+import TypeFastUnauthorisedModal from '../components/TypeFastUnauthorisedModal';
 
-class TypeFastApp extends React.Component {
-  render() {
-    return (
-      <div className="full-height">
-        <TypeFastNavigationContainer />
-        <div className="row full-height">
-          <TypeFastListingContainer />
-          <TypeFastEditorContainer />
-        </div>
-        <TypeFastLoginContainer />
-        <TypeFastUnauthorisedModalContainer />
-      </div>
-    );
-  }
-}
+const mapStateToProps = (state, ownProps) => {
+  return {
+    isAuthenticated: state.isAuthenticated,
+    isAuthorised: state.isAuthorised,
+  };
+};
 
-export default connect()(TypeFastApp);
+const TypeFastUnauthorisedModalContainer = connect(
+  mapStateToProps
+)(TypeFastUnauthorisedModal);
+
+export default TypeFastUnauthorisedModalContainer;

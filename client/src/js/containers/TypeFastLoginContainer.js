@@ -21,29 +21,39 @@
  *
  * @flow
  */
-
-import  React  from 'react';
 import { connect } from 'react-redux';
-import TypeFastNavigationContainer from '../containers/TypeFastNavigationContainer';
-import TypeFastEditorContainer from '../containers/TypeFastEditorContainer';
-import TypeFastListingContainer from '../containers/TypeFastListingContainer';
-import TypeFastLoginContainer from '../containers/TypeFastLoginContainer';
-import TypeFastUnauthorisedModalContainer from '../containers/TypeFastUnauthorisedModalContainer';
+import {
+  facebookAuthStarted,
+  facebookAuthSuccess,
+  facebookAuthFailure
+} from '../actions/actions.js';
+import TypeFastLogin from '../components/TypeFastLogin';
 
-class TypeFastApp extends React.Component {
-  render() {
-    return (
-      <div className="full-height">
-        <TypeFastNavigationContainer />
-        <div className="row full-height">
-          <TypeFastListingContainer />
-          <TypeFastEditorContainer />
-        </div>
-        <TypeFastLoginContainer />
-        <TypeFastUnauthorisedModalContainer />
-      </div>
-    );
-  }
-}
+const mapStateToProps = (state, ownProps) => {
+  return {
+    appId:  131584983518288,
+    isAuthenticated: state.isAuthenticated,
+    isAuthenticating: state.isAuthenticating
+  };
+};
 
-export default connect()(TypeFastApp);
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    facebookAuthStarted: () => {
+      dispatch(facebookAuthStarted());
+    },
+    facebookAuthSuccess: (token) => {
+      dispatch(facebookAuthSuccess(token));
+    },
+    facebookAuthFailure: () => {
+      dispatch(facebookAuthFailure());
+    },
+  };
+};
+
+const TypeFastLoginContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TypeFastLogin);
+
+export default TypeFastLoginContainer;

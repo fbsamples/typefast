@@ -24,8 +24,10 @@
 
 import fetch from 'isomorphic-fetch';
 
-function makeUrl(path: string, query: Object): string {
+function makeUrl(path: string, getState: Function, query: ?Object): string {
   const chunks = [];
+  query = query || {};
+  query.access_token = getState().accessToken;
   for (let i in query) {
     if (query.hasOwnProperty(i)) {
       chunks.push(encodeURIComponent(i) + '=' + encodeURIComponent(query[i]));
@@ -34,19 +36,30 @@ function makeUrl(path: string, query: Object): string {
   return path + (chunks.length > 0 ? '?' : '') + chunks.join('&');
 }
 
-function makeFormData(object: Object): FormData {
+function makeFormData(object: Object, getState: Function): FormData {
   const form = new FormData();
+  form.append('access_token', getState().accessToken);
   for (let i in object) {
     form.append(i, object[i]);
   }
   return form;
 }
 
-function handleErrors(response) {
+function handleErrors(response, dispatch) {
   if (!response.ok) {
+    if (response.status === 401) {
+      dispatch(unauthorised());
+    }
     throw Error(response.statusText);
   }
   return response;
+}
+
+export const UNAUTHORISED = 'UNAUTHORISED';
+export function unauthorised() {
+  return {
+    type: UNAUTHORISED
+  };
 }
 
 export const LOAD_SCRIPT = 'LOAD_SCRIPT';
@@ -169,9 +182,9 @@ export function saveScript() {
           startTime: getState().scheduleStartTime,
           interval: getState().scheduleInterval,
         }
-      })
+      }, getState)
     })
-    .then(handleErrors)
+    .then((response) => handleErrors(response, dispatch))
     .then(function(response) {
       return response.json();
     })
@@ -193,9 +206,9 @@ export const PREVIEW_SCRIPT_CREATED = 'PREVIEW_SCRIPT_SUCCESS';
 export const PREVIEW_SCRIPT_SUCCESS = 'PREVIEW_SCRIPT_SUCCESS';
 export const PREVIEW_SCRIPT_FAILURE = 'PREVIEW_SCRIPT_FAILURE';
 
-function pollRoutine(routineId, dispatch) {
-  fetch('/routines/' + routineId)
-  .then(handleErrors)
+function pollRoutine(routineId, dispatch, getState) {
+  fetch(makeUrl('/routines/' + routineId, getState))
+  .then((response) => handleErrors(response, dispatch))
   .then(function(response) {
     return response.json();
   })
@@ -212,7 +225,7 @@ function pollRoutine(routineId, dispatch) {
       });
     } else {
       setTimeout(function() {
-        pollRoutine(routineId, dispatch);
+        pollRoutine(routineId, dispatch, getState);
       }, 1000);
     }
   });
@@ -222,7 +235,7 @@ export function previewScript() {
   return function(dispatch, getState) {
     dispatch({type: PREVIEW_SCRIPT_REQUEST});
 
-    return fetch('/schedules', {
+    return fetch(makeUrl('/schedules', getState), {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -230,24 +243,24 @@ export function previewScript() {
       body: makeFormData({
         queue_name: 'preview_queue',
         script_id: getState().currentScript.id,
-      })
+      }, getState)
     })
-    .then(handleErrors)
+    .then((response) => handleErrors(response, dispatch))
     .then(response => response.json())
     .then(response => {
       const query = {
         queue_name: 'preview_queue',
         schedule_id: response.id,
       };
-      return fetch(makeUrl('/routines', query), {
+      return fetch(makeUrl('/routines', getState, query), {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
         },
       })
-      .then(handleErrors)
+      .then((response) => handleErrors(response, dispatch))
       .then(response => response.json())
-      .then(response => pollRoutine(response.data[0].id, dispatch));
+      .then(response => pollRoutine(response.data[0].id, dispatch, getState));
     });
   };
 }
@@ -257,10 +270,10 @@ export const FETCHING_SCRIPT_LOGS_SUCCESS = 'FETCHING_SCRIPT_LOGS_SUCCESS';
 export const FETCHING_SCRIPT_LOGS_FAILURE = 'FETCHING_SCRIPT_LOGS_FAILURE';
 
 export function fetchScriptLogs(id) {
-  return function(dispatch) {
+  return function(dispatch, getState) {
     dispatch({type: FETCHING_SCRIPT_LOGS_REQUEST});
-    return fetch(`/scripts/${id}/logs`)
-      .then(handleErrors)
+    return fetch(makeUrl(`/scripts/${id}/logs`, getState))
+      .then((response) => handleErrors(response, dispatch))
       .then(function(response) {
         return response.json();
       })
@@ -280,10 +293,10 @@ export const FETCHING_SCRIPTS_SUCCESS = 'FETCHING_SCRIPTS_SUCCESS';
 export const FETCHING_SCRIPTS_FAILURE = 'FETCHING_SCRIPTS_FAILURE';
 
 export function fetchScripts() {
-  return function(dispatch) {
+  return function(dispatch, getState) {
     dispatch({type: FETCHING_SCRIPTS_REQUEST});
-    return fetch('/scripts')
-      .then(handleErrors)
+    return fetch(makeUrl('/scripts', getState))
+      .then((response) => handleErrors(response, dispatch))
       .then(function(response) {
         return response.json();
       })
@@ -309,5 +322,32 @@ export const SHOW_SCHEDULE_MODAL = 'SHOW_SCHEDULE_MODAL';
 export function showScheduleModal() {
   return {
     type: SHOW_SCHEDULE_MODAL
+  };
+}
+
+export const FACEBOOK_AUTH_STARTED = 'FACEBOOK_AUTH_STARTED';
+export function facebookAuthStarted() {
+  return {
+    type: FACEBOOK_AUTH_STARTED
+  };
+}
+
+export const FACEBOOK_AUTH_SUCCESS = 'FACEBOOK_AUTH_SUCCESS';
+export function facebookAuthSuccess(token) {
+  return function(dispatch) {
+    dispatch({
+      type: FACEBOOK_AUTH_SUCCESS,
+      payload: {
+        accessToken: token,
+      }
+    });
+    dispatch(fetchScripts());
+  };
+}
+
+export const FACEBOOK_AUTH_FAILURE = 'FACEBOOK_AUTH_FAILURE';
+export function facebookAuthFailure() {
+  return {
+    type: FACEBOOK_AUTH_FAILURE
   };
 }

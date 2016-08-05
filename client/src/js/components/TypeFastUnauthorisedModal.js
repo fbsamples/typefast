@@ -22,28 +22,25 @@
  * @flow
  */
 
-import  React  from 'react';
-import { connect } from 'react-redux';
-import TypeFastNavigationContainer from '../containers/TypeFastNavigationContainer';
-import TypeFastEditorContainer from '../containers/TypeFastEditorContainer';
-import TypeFastListingContainer from '../containers/TypeFastListingContainer';
-import TypeFastLoginContainer from '../containers/TypeFastLoginContainer';
-import TypeFastUnauthorisedModalContainer from '../containers/TypeFastUnauthorisedModalContainer';
+import React from 'react';
+import Modal from 'react-bootstrap/lib/Modal';
 
-class TypeFastApp extends React.Component {
+class TypeFastUnauthorisedModal extends React.Component {
   render() {
     return (
-      <div className="full-height">
-        <TypeFastNavigationContainer />
-        <div className="row full-height">
-          <TypeFastListingContainer />
-          <TypeFastEditorContainer />
-        </div>
-        <TypeFastLoginContainer />
-        <TypeFastUnauthorisedModalContainer />
-      </div>
+      <Modal show={this.props.isAuthenticated && this.props.isAuthorised === false}>
+       <Modal.Header>
+         <Modal.Title>TypeFast Authorisation Failed</Modal.Title>
+       </Modal.Header>
+       <Modal.Body>
+         <p>You are not authorised in your companies Business Manager to use TypeFast</p>
+         <p>Please contact your manager for permission</p>
+       </Modal.Body>
+       <Modal.Footer>
+       </Modal.Footer>
+     </Modal>
     );
   }
 }
 
-export default connect()(TypeFastApp);
+module.exports = TypeFastUnauthorisedModal;
