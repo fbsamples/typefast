@@ -23,7 +23,7 @@
  */
 
 import type Context from '../../RequestContext';
-import type {Document} from 'mongoose';
+import type {ContextualizedRoutine} from '../../../scheduler/Scheduler';
 import type {RequestMethod} from 'express';
 
 const AbstractController = require('../AbstractController');
@@ -42,13 +42,14 @@ class RoutineReadController extends AbstractController {
 
   genResponse(context: Context): void {
     const target_id = context.getRequest().params.id;
-    this.getApplication().getScheduler().getRoutine(target_id, (routine: ?Document) => {
-      if (routine == null) {
-        context.disposeWithError(HttpStatus.NOT_FOUND, `The entity backed by the id '${target_id}' can't be found`);
-      } else {
-        context.sendDocument(routine);
-      }
-    });
+    this.getApplication().getScheduler().getRoutine(target_id)
+      .then((pair: ?ContextualizedRoutine) => {
+        if (pair == null) {
+          context.disposeWithError(HttpStatus.NOT_FOUND, `The entity backed by the id '${target_id}' can't be found`);
+        } else {
+          context.sendDocument(pair.routine);
+        }
+      });
   }
 }
 

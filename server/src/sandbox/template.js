@@ -68,7 +68,7 @@ module.exports = function(config: Config, script: Document, ctx_id: string): Obj
   ctx.id = ctx_id;
 
   return {
-    api: api, // FIXME should this be directly exposed ?
-    adaccount: ctx// FIXME make ctx dynamically allocable
+    context: ctx,
+    adaccount: ctx, // FIXME make ctx dynamically allocable
   };
 };

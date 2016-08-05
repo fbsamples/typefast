@@ -22,37 +22,28 @@
  * @flow
  */
 
- // eslint-disable-next-line no-undef
-export interface LogEntry {
-  chunk: string;
-  stream: string;
-  time: Date;
+import type Scheduler from '../../scheduler/Scheduler';
+
+const StringParam = require('./StringParam');
+
+class QueueNameParam extends StringParam {
+
+  scheduler: Scheduler;
+
+  constructor(scheduler: Scheduler) {
+    super();
+    this.scheduler = scheduler;
+  }
+
+  willValidate(value: any): Promise<string> {
+    return super.willValidate(value).then((value: string) => {
+      if (!this.scheduler.getQueues().has(value)) {
+        return Promise.reject(new Error(`Unknown queue ${value}`));
+      }
+
+      return value;
+    });
+  }
 }
 
-const Mongoose = require('mongoose');
-const schema = new Mongoose.Schema({
-  context_id: { type: String, required: true },
-  creation_time: { type: Date },
-  is_completed: { type: Boolean, default: false },
-  lock_creation_time: { type: Date, default: null },
-  lock_id: { type: Mongoose.Schema.ObjectId, default: null },
-  runner_end_time: { type: Date, default: null },
-  runner_exit_code: { type: Number, default: 0 },
-  runner_log: { type: Array, value: { type: { time: Date, stream: String, chunk: String } } },
-  runner_start_time: { type: Date, default: null },
-  script_id: { type: Mongoose.Schema.ObjectId, required: true },
-  visible_from: { type: Date, require: true },
-});
-
-schema.index({
-  is_completed: 1,
-  lock_id: 1,
-  visible_from: 1,
-});
-
-schema.pre('save', function(next) {
-  this.createdTime = this.createdTime || new Date();
-  next();
-});
-
-module.exports = schema;
+module.exports = QueueNameParam;

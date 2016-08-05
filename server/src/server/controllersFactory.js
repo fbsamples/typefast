@@ -32,8 +32,12 @@ const {List, Set} = require('immutable');
 
 // controllers
 const HttpErrorController = require('./controllers/HttpErrorController');
-const RoutineCreateController = require('./controllers/routine/RoutineCreateController');
+const RoutineListController = require('./controllers/routine/RoutineListController');
 const RoutineReadController = require('./controllers/routine/RoutineReadController');
+const ScheduleCreateController = require('./controllers/schedule/ScheduleCreateController');
+const ScheduleListController = require('./controllers/schedule/ScheduleListController');
+const ScheduleReadController = require('./controllers/schedule/ScheduleReadController');
+const ScheduleUpdateController = require('./controllers/schedule/ScheduleUpdateController');
 const ScriptCreateController = require('./controllers/script/ScriptCreateController');
 const ScriptListController = require('./controllers/script/ScriptListController');
 const ScriptReadController = require('./controllers/script/ScriptReadController');
@@ -45,8 +49,12 @@ const getHttpMethods = function(): Set<RequestMethod> {
 
 const controllersFactory = function(app: Application): List<ControllerInterface> {
   return new List([
-    new RoutineCreateController(app),
+    new RoutineListController(app),
     new RoutineReadController(app),
+    new ScheduleCreateController(app),
+    new ScheduleListController(app),
+    new ScheduleReadController(app),
+    new ScheduleUpdateController(app),
     new ScriptCreateController(app),
     new ScriptListController(app),
     new ScriptReadController(app),

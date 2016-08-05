@@ -23,58 +23,79 @@
  */
 
 import type Config from '../Config';
+import type {ContextualizedRoutine} from '../scheduler/Scheduler';
 import type {Document} from 'mongoose';
+import type {Resolve, Reject} from '../utils/promises';
 
 const AbstractService = require('./AbstractService');
 const Sandbox = require('../sandbox/Sandbox');
+const Schedule = require('../model/Schedule');
 const Script = require('../model/Script');
 
+const nullthrows = require('../utils/nullthrows');
 const sandbox_template = require('../sandbox/template');
 
 // implement ServiceInterface
 class Runner extends AbstractService {
 
-  contextId: string;
+  routineId: string;
   sandbox: Sandbox;
-  scriptId: string;
 
-  constructor(config: Config, script_id: string, ctx_id: string): void {
+  constructor(config: Config, routine_id: string): void {
     super(config);
     this.sandbox = new Sandbox();
     this.sandbox.setTimeout(config.getInteger('sandbox.timeout'));
-    this.contextId = ctx_id;
-    this.scriptId = script_id;
+    this.routineId = routine_id;
   }
 
   getSandbox(): Sandbox {
     return this.sandbox;
   }
 
-  getContextId(): string {
-    return this.contextId;
+  getRoutineId(): string {
+    return this.routineId;
   }
 
-  getScriptId(): string {
-    return this.scriptId;
+  willGetRoutine(routine_id: string): Promise<Document> {
+    return this.getScheduler().getRoutine(routine_id)
+      .then((pair: ?ContextualizedRoutine) => pair || Promise.reject(new Error(`Unknown routine '${routine_id}'`)))
+      .then((pair: ContextualizedRoutine) => pair.routine );
   }
 
-  init(): void {
-    const script_id = this.getScriptId();
-    Script.findById(script_id).exec((err: ?Error, script: ?Document) => {
-      if (err != null) {
-        throw err;
-      }
-      if (script == null) {
-        throw new Error(`Unknown script ${script_id}`);
-      }
-      this.getSandbox().setSharedObject(sandbox_template(this.getConfig(), script, this.getContextId()));
+  willGetSchedule(schedule_id: string): Promise<Document> {
+    return Schedule.findById(schedule_id).exec()
+      .then((schedule: ?Document) => schedule || Promise.reject(new Error(`Unknown scheudle '${schedule_id}'`)));
+  }
+
+  willGetScript(script_id: string): Promise<Document> {
+    return Script.findById(script_id).exec()
+      .then((script: ?Document) => script || Promise.reject(new Error(`Unknown script '${script_id}'`)));
+  }
+
+  willExecSandbox(script: Document, context_id: string): Promise<void> {
+    return new Promise((resolve: Resolve<void>, reject: Reject) => {
+      this.getSandbox().setSharedObject(sandbox_template(this.getConfig(), script, context_id));
       this.emit(Runner.events.INIT);
       // Prioritize service listeners as sanxbox execute syncronously
       process.nextTick(() => {
-        script && this.getSandbox().run(script.get('code'));
-        this.emit(Runner.events.END);
+        this.getSandbox().run(script.get('code'));
+        resolve();
       });
     });
+  }
+
+  init(): void {
+    const routine_id = this.getRoutineId();
+    let context_id: ?string = null;
+    this.willGetRoutine(routine_id)
+      .then((routine: Document) => this.willGetSchedule(routine.get('schedule_id')))
+      .then((schedule: Document) => {
+        context_id = schedule.get('context_id');
+        return this.willGetScript(schedule.get('script_id'));
+      })
+      .then((script: Document) => this.willExecSandbox(script, nullthrows(context_id)))
+      .then(() => { this.emit(Runner.events.END); })
+      .catch((error: Error) => { throw error; });
   }
 }
 

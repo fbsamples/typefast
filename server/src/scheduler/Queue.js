@@ -24,14 +24,11 @@
 
 import type {Document, Schema} from 'mongoose';
 
-export type OnScheduleCallback = (routine: Document) => void;
-export type OnLengthCallback = (count: number) => void;
-export type OnRoutineCallback = (routine: ?Document) => void;
-export type RoutineEndingOperation = (routine: Document, callback?: OnRoutineCallback) => Queue;
-
 export type Routine = Document;
+export type RoutineMutator = (routine: Routine) => Promise<Routine>;
 
 const Mongoose = require('mongoose');
+const Schedule = require('../model/Schedule');
 // Flow typeof won't work with import type
 const {Model} = require('mongoose');
 
@@ -54,29 +51,22 @@ class Queue {
     return this.model;
   }
 
-  getLength(callback?: OnLengthCallback): this {
-    const conditions = {
-      is_completed: false,
-    };
-    this.getModel().count(conditions, (err: ?Error, count: number) => {
-      callback && callback(count);
-    });
-
-    return this;
+  getLength(): Promise<number> {
+    return this.getModel().count({ is_completed: false }).exec();
   }
 
-  createRoutine(script_id: string, ctx_id: string, date: Date, callback?: OnScheduleCallback): this {
+  createRoutine(script_id: string, schedule_id: ?string, ctx_id: string, date: Date): Promise<Routine> {
     const document = this.getModel()({
       context_id: ctx_id,
+      schedule_id: schedule_id,
       script_id: script_id,
       visible_from: date,
     });
-    document.save((err: ?Error, res: Document) => res && callback && callback(res));
 
-    return this;
+    return document.save();
   }
 
-  getRoutineWithLock(callback?: OnRoutineCallback): this {
+  getRoutineWithLock(): Promise<?Routine> {
     const conditions = {
       is_completed: false,
       lock_id: null,
@@ -86,48 +76,45 @@ class Queue {
       lock_creation_time: new Date(),
       lock_id: new Mongoose.Types.ObjectId(),
     };
-    this.getModel().findOneAndUpdate(
-      conditions,
-      doc,
-      {},
-      (err: ?Error, routine: ?Document) => { callback && callback(routine); }
-    );
 
-    return this;
+    return this.getModel().findOneAndUpdate(conditions, doc).exec();
   }
 
-  unlockRoutine(routine: Document, callback?: OnRoutineCallback): this {
-    const doc = {
-      lock_id: null,
-      lock_creation_time: null,
-    };
-    routine.update(
-      doc,
-      {},
-      (err: ?Error, routine: ?Document) => { callback && callback(routine); }
-    );
+  removeUnlockedRoutines(schedule: Document): Promise<void> {
+    const schedule_id: string = schedule.get('id');
+    const conditions = { is_completed: false, lock_id: null, schedule_id: schedule_id};
 
-    return this;
+    return this.getModel().find(conditions).remove().exec()
+      .then(() => {});
   }
 
-  completeRoutine(routine: Routine, callback?: OnRoutineCallback): this {
-    const doc = {
-      is_completed: true,
-    };
-    routine.update(
-      doc,
-      {},
-      (err: ?Error, routine: ?Document) => { callback && callback(routine); }
-    );
-
-    return this;
+  unlockRoutine(routine: Routine): Promise<Routine> {
+    return routine.update({ lock_id: null, lock_creation_time: null }).exec();
   }
 
-  renewRoutine(routine: Document, callback?: OnRoutineCallback): this {
-    // FIXME Update schedule if no locks
-    throw new Error('Recurrent scheduling not yet supported');
+  completeRoutine(routine: Routine): Promise<Routine> {
+    return routine.update({ is_completed: true }).exec();
+  }
 
-    //return this;
+  renewRoutine(routine: Routine): Promise<?Routine> {
+    const script_id: string = routine.get('script_id');
+    const schedule_id: string = routine.get('schedule_id');
+    const context_id: string = routine.get('context_id');
+
+    return Schedule.findById(schedule_id).exec()
+      .then((schedule: ?Document) => {
+        if (schedule == null) {
+          return null;
+        }
+
+        const recurrence: ?number = schedule.get('recurrence');
+        if (recurrence == null) {
+          return null;
+        }
+
+        const date = new Date(routine.get('visible_from').getTime() + recurrence);
+        return this.createRoutine(script_id, schedule_id, context_id, date);
+      });
   }
 }
 

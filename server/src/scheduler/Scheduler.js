@@ -25,104 +25,113 @@
 import type Config from '../Config';
 import type PollingPool from './PollingPool';
 import type {Document} from 'mongoose';
-import type {OnRoutineCallback, OnScheduleCallback, RoutineEndingOperation} from './Queue';
+import type {Routine, RoutineMutator} from './Queue';
 
-export type OnRoutineContextualizedCallback = (routine: ?Document, queue: Queue) => void;
-export type OnRoutineExecutionEnd = (callback: OnRoutineCallback) => void;
-export type OnPollingRoutine = (
+export type AnonimizedRoutineMutator = () => Promise<Routine>;
+export type ContextualizedRoutine = { routine: Routine, queue: Queue };
+export type OnRoutine = (
   routine: Document,
-  unlock: OnRoutineExecutionEnd,
-  complete: OnRoutineExecutionEnd,
-  renew: OnRoutineExecutionEnd
+  unlock: AnonimizedRoutineMutator,
+  complete: AnonimizedRoutineMutator,
 ) => void;
 
+const nullthrows = require('../utils/nullthrows');
 const PollingThread = require('./PollingThread');
 const Queue = require('./Queue');
-const RoutineSchema = require('./RoutineSchema');
-const {List} = require('immutable');
+const RoutineSchema = require('../model/schema/routine');
+const {List, Map} = require('immutable');
+const {genMap} = require('../utils/promises');
 
 class Scheduler {
 
-  queue: Queue;
-  highPriQueue: Queue;
+  queues: Map<string, Queue>;
 
   static fromConfig(config: Config): Scheduler {
-    return new Scheduler(
-      Queue.fromSchema(RoutineSchema, config.getString('scheduler.main_queue.collection_name')),
-      Queue.fromSchema(RoutineSchema, config.getString('scheduler.preview_queue.collection_name'))
-    );
+    const queues = new Map(new List(['main_queue', 'preview_queue']).map((name: string) => [
+      name,
+      Queue.fromSchema(RoutineSchema, config.getString(`scheduler.${name}.collection_name`))
+    ]).toSeq());
+
+    return new Scheduler(queues);
   }
 
-  constructor(queue: Queue, high_pri_queue: Queue): void {
-    this.queue = queue;
-    this.highPriQueue = high_pri_queue;
+  constructor(queues: Map<string, Queue>): void {
+    this.queues = queues;
   }
 
-  getQueue(): Queue {
-    return this.queue;
+  getQueues(): Map<string, Queue> {
+    return this.queues;
   }
 
-  getHighPriQueue(): Queue {
-    return this.highPriQueue;
+  getQueue(name: string): ?Queue {
+    return this.getQueues().get(name);
   }
 
-  getQueues(): List<Queue> {
-    return new List([this.getHighPriQueue(), this.getQueue()]);
+  enqueue(queue: Queue, script_id: string, ctx_id: string): Promise<Document> {
+    return queue.createRoutine(script_id, null, ctx_id, new Date());
   }
 
-  enqueue(queue: Queue, script_id: string, ctx_id: string, date: Date, callback?: OnScheduleCallback): this {
-    queue.createRoutine(script_id, ctx_id, date, callback);
+  coerceScheduleQueue(schedule: Document): Queue {
+    const queue_name: string = schedule.get('queue_name');
 
-    return this;
+    return nullthrows(this.getQueue(queue_name));
   }
 
-  schedule(script_id: string, ctx_id: string, date: Date, callback?: OnScheduleCallback): this {
-    return this.enqueue(this.getQueue(), script_id, ctx_id, date, callback);
+  getNextScheduleTime(schedule: Document): Date {
+    const start_time: Date = schedule.get('start_time');
+    const recurrence: ?number = schedule.get('recurrence');
+    const t1 = start_time.getTime();
+    const t2 = new Date().getTime();
+
+    if (recurrence == null) {
+      return new Date();
+    }
+
+    return t1 > t2 ? start_time : new Date(t2 + ((t2 - t1) % recurrence));
   }
 
-  // Will schedule on the hi-pri queue
-  exec(script_id: string, ctx_id: string, callback?: OnScheduleCallback): this {
-    return this.enqueue(this.getHighPriQueue(), script_id, ctx_id, new Date(), callback);
+  enqueueScheduled(schedule: Document, date?: Date): Promise<Document> {
+    const script_id: string = schedule.get('script_id');
+    const schedule_id: string = schedule.get('id');
+    const context_id: string = schedule.get('context_id');
+    const next = date == null ? this.getNextScheduleTime(schedule) : date;
+
+    return this.coerceScheduleQueue(schedule).createRoutine(script_id, schedule_id, context_id, next);
   }
 
-  getRoutine(id: string, callback: OnRoutineContextualizedCallback): this {
-    let routine = null;
-    let results = 0;
-    let queues = this.getQueues();
-
-    queues.forEach(
-      (queue: Queue) => queue.getModel().findById(
-        id,
-        (err: Error, doc: ?Document) => {
-          ++results;
-          if ((doc != null && routine === null) || (results === queues.size && routine === null)) {
-            routine = doc;
-            process.nextTick(() => callback(routine, queue));
-          }
-        }
-      )
-    );
-
-    return this;
+  cleanSchedule(schedule: Document): Promise<void> {
+    return this.coerceScheduleQueue(schedule).removeUnlockedRoutines(schedule);
   }
 
-  pollForRoutines(pool: PollingPool, callback: OnPollingRoutine): this {
+  getRoutine(id: string): Promise<?ContextualizedRoutine> {
+    return genMap(this.getQueues().map((queue: Queue) => {
+      return queue.getModel().findById(id).exec()
+        .then((routine: ?Routine) => routine ? { routine: routine, queue: queue } : null);
+    })).then((pairs: Map<string, ?ContextualizedRoutine>) => {
+      return pairs.filter((pair: ?ContextualizedRoutine) => pair).first();
+    });
+  }
+
+  pollForRoutines(pool: PollingPool, callback: OnRoutine): this {
     pool.getThreads().forEach((thread: PollingThread) => {
       const queue = thread.getQueue();
-      const contextify = (operation: RoutineEndingOperation, routine: Document) => {
-        return (callback: OnRoutineCallback) => {
-          operation(routine, callback);
-          thread.start();
+      const contextify = (mutator: RoutineMutator, routine: Routine): AnonimizedRoutineMutator => {
+        return (): Promise<Routine> => {
+          return mutator(routine).then((routine: Routine) => {
+            thread.start();
+            return routine;
+          });
         };
       };
 
       thread.on(PollingThread.events.ROUTINE, (routine: Document) => {
-        callback(
-          routine,
-          contextify(queue.unlockRoutine, routine),
-          contextify(queue.completeRoutine, routine),
-          contextify(queue.renewRoutine, routine)
-        );
+        queue.renewRoutine(routine).then(() => {
+          callback(
+            routine,
+            contextify(queue.unlockRoutine, routine),
+            contextify(queue.completeRoutine, routine)
+          );
+        });
       });
       thread.start();
     });

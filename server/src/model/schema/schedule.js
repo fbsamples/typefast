@@ -23,6 +23,20 @@
  */
 
 const Mongoose = require('mongoose');
-const schema = require('./schema/script');
+const schema = new Mongoose.Schema({
+  context_id: { type: String, required: true },
+  creation_time: { type: Date },
+  start_time: { type: Date },
+  is_paused: { type: Boolean, default: false, required: true },
+  recurrence: { type: Number },
+  script_id: { type: Mongoose.Schema.ObjectId, required: true },
+  queue_name: { type: String, required: true },
+});
 
-module.exports = Mongoose.model('script', schema);
+schema.pre('save', function(next) {
+  this.creation_time = this.creation_time || new Date();
+  this.start_time = this.start_time || this.creation_time;
+  next();
+});
+
+module.exports = schema;

@@ -44,6 +44,8 @@ declare module mongoose {
   }
 
   declare class Model {
+    static modelName: string;
+
     static (doc: Object): Model;
     static count(conditions: Object, callback?: OperationCallback<number>): Query<number>;
     static find(conditions: Object, projection?: Object, options?: Object, callback?: OperationCallback<Array<Document>>): Query<Array<Document>>;
@@ -66,6 +68,7 @@ declare module mongoose {
 
   declare class Query<T> {
     exec(callback?: OperationCallback<T>): Promise<T>;
+    remove(criteria?: Object, callback?: OperationCallback<T>): this;
     sort(arg: Object): this;
   }
 

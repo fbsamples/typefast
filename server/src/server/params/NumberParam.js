@@ -22,7 +22,61 @@
  * @flow
  */
 
-const Mongoose = require('mongoose');
-const schema = require('./schema/script');
+const AbstractParam = require('./AbstractParam');
 
-module.exports = Mongoose.model('script', schema);
+class NumberParam extends AbstractParam<number> {
+
+  min: number;
+  max: number;
+
+  constructor() {
+    super();
+    this.min = Number.MIN_VALUE;
+    this.max = Number.MAX_VALUE;
+  }
+
+  setMin(min: number): this {
+    this.min = min;
+
+    return this;
+  }
+
+  getMin(): number {
+    return this.min;
+  }
+
+  setMax(max: number): this {
+    this.max = max;
+
+    return this;
+  }
+
+  getMax(): number {
+    return this.max;
+  }
+
+  willValidate(value: any): Promise<number> {
+    return super.willValidate(value).then((value: any) => {
+      const num = Number(value);
+
+      if (num.toString() !== value) {
+        return Promise.reject(new Error(`'${value}', not a valid number`));
+      }
+
+      const min = this.getMin();
+      const max = this.getMax();
+
+      if (num < min) {
+        return Promise.reject(new Error(`Can't be lower than ${min}`));
+      }
+
+      if (num > max) {
+        return Promise.reject(new Error(`Can't be greater than ${max}`));
+      }
+
+      return num;
+    });
+  }
+}
+
+module.exports = NumberParam;

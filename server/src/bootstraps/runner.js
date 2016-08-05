@@ -27,8 +27,7 @@ import type {Argv} from '../Config';
 const Config = require('../Config');
 const Runner = require('../services/Runner');
 
-const CTX_ID_KEY = 'ctx-id';
-const SCRIPT_ID_KEY = 'script-id';
+const ROUTINE_ID_KEY = 'routine-id';
 
 const on_init = function(runner: Runner) {
   runner.getSandbox().getConsole().getStdout().pipe(process.stdout);
@@ -36,13 +35,11 @@ const on_init = function(runner: Runner) {
 };
 
 const bootstrap = function(argv: Argv): Runner {
-  console.assert(argv.has(SCRIPT_ID_KEY), `Missing reqired parameter --${SCRIPT_ID_KEY}`);
-  console.assert(argv.has(CTX_ID_KEY), `Missing reqired parameter --${CTX_ID_KEY}`);
+  console.assert(argv.has(ROUTINE_ID_KEY), `Missing reqired parameter --${ROUTINE_ID_KEY}`);
 
-  const script_id = argv.get(SCRIPT_ID_KEY);
-  const ctx_id = argv.get(CTX_ID_KEY);
+  const routine_id: string = argv.get(ROUTINE_ID_KEY).toString();
   const config = Config.fromArgv(argv);
-  const runner = new Runner(config, script_id.toString(), ctx_id.toString());
+  const runner = new Runner(config, routine_id);
   runner.on(Runner.events.INIT, () => on_init(runner));
 
   return runner;

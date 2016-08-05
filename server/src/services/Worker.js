@@ -22,12 +22,13 @@
  * @flow
  */
 
+import type Queue from '../scheduler/Queue';
 import type {ChildProcess} from 'child_process';
 import type {Document} from 'mongoose';
-import type {LogEntry} from '../scheduler/RoutineSchema';
+import type {LogEntry} from '../model/schema/routine';
 import type {Interface as ReadlineInterface} from 'readline';
 import type {ReadStream} from 'fs';
-import type {OnRoutineExecutionEnd} from '../scheduler/Scheduler';
+import type {AnonimizedRoutineMutator as Mutator} from '../scheduler/Scheduler';
 
 type StreamBindings = Map<string, ReadlineInterface>;
 
@@ -38,76 +39,78 @@ const Readline = require('readline');
 const {execFile} = require('child_process');
 const {Map} = require('immutable');
 
+const log = function(message: string): void {
+  const now = new Date().toString();
+  console.log(`[${now}] ${message}`);
+};
+
+const bindStreams = function(proc: ChildProcess, callback: (entry: LogEntry) => void): StreamBindings {
+  const bindings = new Map({ 'stdout': proc.stdout, 'stderr': proc.stderr }).map(
+    (stream: ReadStream, id: string) => Readline.createInterface({ input: stream })
+  );
+
+  bindings.forEach(
+    (io: ReadlineInterface, id: string) => {
+      io.on('line', (line: string) => callback({ time: new Date(), stream: id, chunk: line }));
+    }
+  );
+
+  return bindings;
+};
+
+const freeStreams = function(bindings: StreamBindings): void {
+  bindings.forEach((io: ReadlineInterface) => io.removeAllListeners());
+};
+
 // implement ServiceInterface
 class Worker extends AbstractService {
 
-  log(message: string): void {
-    const now = new Date().toString();
-    console.log(`[${now}] ${message}`);
-  }
-
-  bindStreams(proc: ChildProcess, callback: (entry: LogEntry) => void): StreamBindings {
-    const bindings = new Map({ 'stdout': proc.stdout, 'stderr': proc.stderr }).map(
-      (stream: ReadStream, id: string) => Readline.createInterface({ input: stream })
-    );
-
-    bindings.forEach(
-      (io: ReadlineInterface, id: string) => {
-        io.on('line', (line: string) => callback({ time: new Date(), stream: id, chunk: line }));
-      }
-    );
-
-    return bindings;
-  }
-
-  freeStreams(bindings: StreamBindings): void {
-    bindings.forEach((io: ReadlineInterface) => io.removeAllListeners());
-  }
-
-  onRoutine(
-    routine: Document,
-    unlock: OnRoutineExecutionEnd,
-    complete: OnRoutineExecutionEnd,
-    renew: OnRoutineExecutionEnd
-  ): void {
+  onRoutine(routine: Document, unlock: Mutator, complete: Mutator): void {
     const id = routine.get('id');
-    const script_id = routine.get('script_id');
-    const ctx_id = routine.get('context_id');
 
     // FIXME no transpile by default
-    const argv = ['index.js', '--transpile', '--mode', 'runner', '--script-id', script_id, '--ctx-id', ctx_id];
+    const argv = ['index.js', '--transpile', '--mode', 'runner', '--routine-id', id];
     const child = execFile('node', argv);
 
-    this.log(`Routine ${id} Started`);
+    log(`Routine ${id} Started`);
     routine.set('runner_start_time', new Date());
 
-    const bindings = this.bindStreams(
+    const bindings = bindStreams(
       child,
       (entry: LogEntry) => routine.get('runner_log').push(entry)
     );
 
-    const sync = (callback: (err?: Error, res?: ?Document) => void) => {
-      routine.save(callback);
+    const sync = (): Promise<Document> => {
+      return routine.save()
+        .catch((error: Error) => log(`Error syncing routine ${id}`))
+        .then(() => routine);
     };
 
     const intval = this.getConfig().getInteger('sandbox.routine_sync_interval');
-    let sync_interval = setInterval(() => sync(() => this.log(`Routine ${id} Syncd`)), intval);
+    let sync_interval = setInterval(() => sync(() => log(`Routine ${id} Syncd`)), intval);
 
     child.on('exit', (code) => {
-      this.freeStreams(bindings);
+      freeStreams(bindings);
       clearInterval(sync_interval);
       routine.set('runner_end_time', new Date());
       routine.set('runner_exit_code', code);
       // Final sync -> complete schedule (free pool slot) -> *
-      sync((e, r) => complete(routine => this.log(`Routine ${id} Completed`)));
+      sync().then(() => {
+        complete()
+          .then((routine: Document) => log(`Routine ${id} Completed`))
+          .catch((error: Error) => log(`Error completing routine ${id}`));
+      });
     });
   }
 
   init(): void {
     const polling_interval = this.getConfig().getInteger('scheduler.preview_queue.polling_interval');
+    const preview_queue: Queue = this.getScheduler().getQueues().get('preview_queue');
+    const main_queue: Queue = this.getScheduler().getQueues().get('main_queue');
     // FIXME this arbitrarly enables only 1 thread on the preview queue -> no main queue
     const pool = new PollingPool(1);
-    PollingThread.fromPool(pool, this.getScheduler().getHighPriQueue(), polling_interval);
+    PollingThread.fromPool(pool, preview_queue, polling_interval);
+    PollingThread.fromPool(pool, main_queue, polling_interval);
 
     this.getScheduler().pollForRoutines(pool, this.onRoutine.bind(this));
 

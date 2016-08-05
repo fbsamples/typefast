@@ -26,48 +26,43 @@ import type AbstractParam from '../../params/AbstractParam';
 import type Context from '../../RequestContext';
 import type {Document} from 'mongoose';
 import type {RequestMethod} from 'express';
+import type {Map} from 'immutable';
 
 const AbstractController = require('../AbstractController');
-const HttpStatus = require('http-status-codes');
 const MongoIdParam = require('../../params/MongoIdParam');
-const Script = require('../../../model/script');
-const StringParam = require('../../params/StringParam');
-const {Map, Set} = require('immutable');
+const QueueNameParam = require('../../params/QueueNameParam');
+const {List, Set} = require('immutable');
 
-class RoutineCreateController extends AbstractController {
+class RoutineListController extends AbstractController {
 
   getRoute(): string {
     return '/routines';
   }
 
   getRouteMethods(): Set<RequestMethod> {
-    return new Set(['post']);
+    return new Set(['get']);
   }
 
   getParams(): Map<string, AbstractParam<any>> {
-    // FIXME enforce context from client, do not use config
-    const ctx_id = this.getApplication().getConfig().getString('DEPRECATED__cxt_id');
     return super.getParams().merge({
-      script_id: new MongoIdParam(),
-      context_id: new StringParam().setDefaultValue(ctx_id),
+      queue_name: new QueueNameParam(this.getApplication().getScheduler()),
+      schedule_id: new MongoIdParam().optional(),
     });
   }
 
   genResponse(context: Context): void {
-    const script_id = context.getParams().getString('script_id');
-    context.execPromise(Script.findById(script_id).exec())
-      .then((script: ?Document) => {
-        if (script == null) {
-          context.disposeWithError(HttpStatus.BAD_REQUEST, `Unknown script with id '${script_id}'`);
-        } else {
-          this.getApplication().getScheduler().exec(
-            script_id,
-            context.getParams().getString('context_id'),
-            (routine: Document) => { context.sendDocument(routine); }
-          );
-        }
+    const queue_name = context.getParams().getString('queue_name');
+    const queue = this.getApplication().getScheduler().getQueues().get(queue_name);
+    const schedule_id = context.getParams().getOptionalString('schedule_id');
+    const query = schedule_id == null ? {} : { schedule_id: schedule_id };
+
+    context.execPromise(queue.getModel().find(query).sort({ creation_time: -1 }).exec())
+      .then((docs: Array<Document>) => {
+        context.getResponse().send({
+          data: new List(docs).map(context.exportDocument)
+        });
       });
   }
 }
 
-module.exports = RoutineCreateController;
+module.exports = RoutineListController;

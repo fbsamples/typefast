@@ -41,39 +41,55 @@ class Params {
   }
 
   isNull(key: string): bool {
-    return !!this.toMap().get(key, undefined);
+    return this.toMap().get(key, undefined) == null;
   }
 
   getString(key: string): string {
     return this.toMap().get(key).toString();
   }
 
-  getOptionalString(key: string): ?string {
-    return this.isNull(key) ? this.getString(key) : null;
+  getOptionalString(key: string, def?: string): ?string {
+    return !this.isNull(key) ? this.getString(key) : def !== undefined ? def : null;
   }
 
   getNumber(key: string): number {
     return parseInt(this.toMap().get(key), 10);
   }
 
-  getOptionalNumber(key: string): ?number {
-    return this.isNull(key) ? this.getNumber(key) : null;
+  getOptionalNumber(key: string, def?: number): ?number {
+    return !this.isNull(key) ? this.getNumber(key) : def !== undefined ? def : null;
+  }
+
+  getBoolean(key: string): bool {
+    return !!this.toMap().get(key);
+  }
+
+  getOptionalBoolean(key: string, def?: bool): ?bool {
+    return !this.isNull(key) ? this.getBoolean(key) : def !== undefined ? def : null;
   }
 
   getMap(key: string): Map<string, any> {
     return new Map(this.toMap().get(key));
   }
 
-  getOptionalMap(key: string): ?Map<string, any> {
-    return this.isNull(key) ? this.getMap(key) : null;
+  getOptionalMap(key: string, def?: Map<string, any>): ?Map<string, any> {
+    return !this.isNull(key) ? this.getMap(key) : def !== undefined ? def : null;
   }
 
   getList(key: string): List<any> {
     return new List(this.toMap().get(key));
   }
 
-  getOptionalList(key: string): ?List<any> {
-    return this.isNull(key) ? this.getList(key) : null;
+  getOptionalList(key: string, def?: List<any>): ?List<any> {
+    return !this.isNull(key) ? this.getList(key) : def !== undefined ? def : null;
+  }
+
+  getDate(key: string): Date {
+    return new Date(this.toMap().get(key));
+  }
+
+  getOptionalDate(key: string, def?: Date): ?Date {
+    return !this.isNull(key) ? this.getDate(key) : def !== undefined ? def : null;
   }
 }
 

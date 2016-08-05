@@ -22,7 +22,25 @@
  * @flow
  */
 
-const Mongoose = require('mongoose');
-const schema = require('./schema/script');
+const NumberParam = require('./NumberParam');
 
-module.exports = Mongoose.model('script', schema);
+class IntegerParam extends NumberParam {
+
+  constructor() {
+    super();
+    this.min = Number.MIN_SAFE_INTEGER;
+    this.max = Number.MAX_SAFE_INTEGER;
+  }
+
+  willValidate(value: any): Promise<number> {
+    return super.willValidate(value).then((value: number) => {
+      if (value % 1 !== 0) {
+        return Promise.reject(new Error(`'${value}', not a valid integer`));
+      }
+
+      return parseInt(value, 10);
+    });
+  }
+}
+
+module.exports = IntegerParam;

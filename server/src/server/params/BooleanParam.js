@@ -22,7 +22,15 @@
  * @flow
  */
 
-const Mongoose = require('mongoose');
-const schema = require('./schema/script');
+const AbstractParam = require('./AbstractParam');
 
-module.exports = Mongoose.model('script', schema);
+class BooleanParam extends AbstractParam<bool> {
+
+  willValidate(value: any): Promise<bool> {
+    return super.willValidate(value).then((value: any) => {
+      return !!+value;
+    });
+  }
+}
+
+module.exports = BooleanParam;
