@@ -22,10 +22,7 @@
  * @flow
  */
 
-import Radium from 'radium';
 import React from 'react';
-import Button from 'react-bootstrap/lib/Button';
-import Panel from 'react-bootstrap/lib/Panel';
 
 class TypeFastListing extends React.Component {
   render() {

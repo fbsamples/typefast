@@ -74,7 +74,7 @@ module.exports = function(infer) {
           }
 
           var objFbType = node.object.fbType;
-          name = node.property.name;
+          var name = node.property.name;
 
           if (node.object.type == 'CallExpression') {
             if (objFbType.proto) {

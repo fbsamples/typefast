@@ -25,6 +25,9 @@
 import React from 'React';
 import Modal from 'react-bootstrap/lib/Modal';
 import Button from 'react-bootstrap/lib/Button';
+import Switch from 'react-bootstrap-switch';
+import FormControl from 'react-bootstrap/lib/FormControl';
+import DateTimeField from 'react-bootstrap-datetimepicker';
 
 class TypeFastScheduleModal extends React.Component {
   render() {
@@ -33,9 +36,44 @@ class TypeFastScheduleModal extends React.Component {
        <Modal.Title>Script Scheulde</Modal.Title>
      </Modal.Header>
      <Modal.Body>
-       <p>Setup your script to run periodically.</p>
+       <div className="row">
+         <div className="col-sm-12">
+           <p>Setup your script to run periodically.</p>
+             <div className="row" style={{marginBottom: '10px'}}>
+               <div className="col-sm-3">
+                 Scheduling:
+               </div>
+               <div className="col-sm-5">
+                 Start Date and Time:
+               </div>
+               <div className="col-sm-4">
+                 Run Every:
+               </div>
+             </div>
+           <div className="row">
+             <div className="col-sm-3">
+               <Switch state={this.props.state} onChange={this.props.onStateChange}/>
+             </div>
+             <div className="col-sm-5">
+               <DateTimeField onChange={this.props.onStartTimeChange} />
+             </div>
+             <div className="col-sm-4">
+               <FormControl componentClass="select" onChange={this.props.onIntervalChange} >
+                 <option value="hourly">Hour</option>
+                 <option value="daily">Day</option>
+               </FormControl>
+             </div>
+           </div>
+         </div>
+       </div>
      </Modal.Body>
      <Modal.Footer>
+       <button
+         onClick={this.props.onSave}
+         type="button"
+         className={'btn btn-default btn-green'}>
+         Save
+       </button>
        <Button onClick={this.props.close}>Close</Button>
      </Modal.Footer>
    </Modal>;

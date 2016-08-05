@@ -111,7 +111,7 @@ export function scheduleStateChanged(state) {
   return {
     type: SCHEDULE_STATE_CHANGED,
     payload: {
-      schudeleState: state
+      scheduleState: state
     }
   };
 }
@@ -121,7 +121,7 @@ export function scheduleStartTimeChanged(startTime) {
   return {
     type: SCHEDULE_START_TIME_CHANGED,
     payload: {
-      schudeleStartTime: startTime
+      scheduleStartTime: startTime
     }
   };
 }
@@ -136,6 +136,15 @@ export function scheduleIntervalChanged(interval) {
   };
 }
 
+export const SCHEDULE_SAVE = 'SCHEDULE_SAVE';
+export function saveSchedule() {
+  return function(dispatch, getState) {
+    dispatch({type: SCHEDULE_SAVE});
+    dispatch(saveScript());
+    dispatch(hideScheduleModal());
+  };
+}
+
 export const SAVE_SCRIPT_REQUEST = 'SAVE_SCRIPT_REQUEST';
 export const SAVE_SCRIPT_SUCCESS = 'SAVE_SCRIPT_SUCCESS';
 export const SAVE_SCRIPT_FAILURE = 'SAVE_SCRIPT_FAILURE';
@@ -145,7 +154,6 @@ export function saveScript() {
     dispatch({type: SAVE_SCRIPT_REQUEST});
     const currentScript = getState().currentScript;
     const id = currentScript ? currentScript.id : '';
-
     return fetch('/scripts/' + id, {
       method: 'POST',
       headers: {
@@ -155,7 +163,12 @@ export function saveScript() {
       body: makeFormData({
         code: getState().editorValue,
         optimisations: getState().optimisations,
-        title: getState().currentTitle
+        title: getState().currentTitle,
+        scheulde: {
+          state: getState().scheduleState,
+          startTime: getState().scheduleStartTime,
+          interval: getState().scheduleInterval,
+        }
       })
     })
     .then(handleErrors)
@@ -282,20 +295,6 @@ export function fetchScripts() {
           }
         });
       });
-  };
-}
-
-export const SHOW_SCHEDULE_SELECTOR = 'SHOW_SCHEDULE_SELECTOR';
-export function showScheduleSelector() {
-  return {
-    type: SHOW_SCHEDULE_SELECTOR
-  };
-}
-
-export const HIDE_SCHEDULE_SELECTOR = 'HIDE_SCHEDULE_SELECTOR';
-export function hideScheduleSelector() {
-  return {
-    type: HIDE_SCHEDULE_SELECTOR
   };
 }
 

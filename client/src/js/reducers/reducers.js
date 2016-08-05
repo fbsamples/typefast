@@ -23,17 +23,18 @@
  */
 
 import {
-  FETCHING_SCRIPTS_REQUEST, FETCHING_SCRIPTS_SUCCESS, FETCHING_SCRIPTS_FAILURE,
-  SAVE_SCRIPT_REQUEST, SAVE_SCRIPT_SUCCESS, SAVE_SCRIPT_FAILURE,
+  FETCHING_SCRIPTS_REQUEST, FETCHING_SCRIPTS_SUCCESS, 
+  SAVE_SCRIPT_REQUEST, SAVE_SCRIPT_SUCCESS, 
   SCRIPT_CODE_CHANGED, SCRIPT_TITLE_CHANGED,
   OPTIMISATIONS_COMPLETE,
-  PREVIEW_SCRIPT_REQUEST, PREVIEW_SCRIPT_CREATED, PREVIEW_SCRIPT_SUCCESS,
-  PREVIEW_SCRIPT_FAILURE,
+  PREVIEW_SCRIPT_REQUEST, PREVIEW_SCRIPT_SUCCESS,
   UI_CHANGE,
   LOAD_SCRIPT,
   SHOW_SCHEDULE_MODAL, HIDE_SCHEDULE_MODAL,
   SHOW_SCHEDULE_SELECTOR, HIDE_SCHEDULE_SELECTOR,
-  SCRIPT_LIST_CLICKED
+  SCRIPT_LIST_CLICKED,
+  SCHEDULE_STATE_CHANGED, SCHEDULE_START_TIME_CHANGED,
+  SCHEDULE_INTERVAL_CHANGED
 } from '../actions/actions.js';
 
 function initalLog() {
@@ -61,7 +62,9 @@ function typefastApp(state = {
   showScheduleModal: false,
   needToSave: true,
   currentTitle: 'A Untitled Masterwork',
-  scheduleOn: false
+  scheduleState: false,
+  scheduleInterval: 'daily',
+  scheduleStartTime: Date.now()
 }, action) {
   let needToSave;
   switch (action.type) {
@@ -110,6 +113,21 @@ function typefastApp(state = {
     case HIDE_SCHEDULE_MODAL:
       return Object.assign({}, state, {
         showScheduleModal: false,
+      });
+
+    case SCHEDULE_STATE_CHANGED:
+      return Object.assign({}, state, {
+        scheduleState: action.payload.scheduleState
+      });
+
+    case SCHEDULE_INTERVAL_CHANGED:
+      return Object.assign({}, state, {
+        scheduleInterval: action.payload.scheduleInterval
+      });
+
+    case SCHEDULE_START_TIME_CHANGED:
+      return Object.assign({}, state, {
+        scheduleStartTime: action.payload.scheduleStartTime
       });
 
     case SHOW_SCHEDULE_SELECTOR:
