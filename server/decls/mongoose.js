@@ -66,6 +66,7 @@ declare module mongoose {
 
   declare class Query<T> {
     exec(callback?: OperationCallback<T>): Promise<T>;
+    sort(arg: Object): this;
   }
 
   declare var exports: {

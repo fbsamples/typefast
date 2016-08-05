@@ -59,8 +59,9 @@ class Authentication {
       this.verifyBusinessManagerUser(this.system_access_token)
     ]);
 
-    return Promises.genList(promiseList).then((results: List<number | Map<number, boolean>>) => {
-      const [user_id, business_roles] = results;
+    return Promises.genList(promiseList).then((results: List<any>) => {
+      const user_id = results.get(0);
+      const business_roles = results.get(1);
       return business_roles.has(user_id) ? Promise.resolve(context) : Promise.reject(new Error(MESSAGE_USER_NOT_IN_BM));
     });
   }

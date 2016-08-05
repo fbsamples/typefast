@@ -45,7 +45,7 @@ class RequestContext extends EventEmitter {
 
   constructor(application: Application, request: Request, response: Response): void {
     super();
-    this.params = new Map();
+    this.params = new Params(new Map());
     this.application = application;
     this.request = request;
     this.response = response;
