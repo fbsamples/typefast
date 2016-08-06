@@ -23,7 +23,7 @@
  */
 
 import type Application from '../services/Application';
-import type {Resolve, Reject} from './controllers/AbstractController';
+import type {Resolve, Reject} from '../utils/promises';
 
 const Context = require('./RequestContext');
 const Graph = require('fbgraph');

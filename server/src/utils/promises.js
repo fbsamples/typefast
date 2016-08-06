@@ -24,7 +24,9 @@
 
 const {List, Map} = require('immutable');
 
-type Promisable<T> = Promise<T> | T;
+export type Promisable<T> = Promise<T> | T;
+export type Resolve<T> = (result: Promisable<T>) => void;
+export type Reject = (error: any) => void;
 
 const genList = function<T>(promises: List<Promisable<T>>): Promise<List<T>> {
   return Promise.all(promises.toArray())

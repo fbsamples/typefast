@@ -25,7 +25,7 @@
 import type Application from '../services/Application';
 import type {Document} from 'mongoose';
 import type {Request, Response} from 'express';
-import type {Resolve, Reject} from './controllers/AbstractController';
+import type {Resolve, Reject} from '../utils/promises';
 
 const HttpStatus = require('http-status-codes');
 const Params = require('./Params');

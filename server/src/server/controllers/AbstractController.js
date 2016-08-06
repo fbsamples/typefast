@@ -24,9 +24,7 @@
 
 import type AbstractParam from '../params/AbstractParam';
 import type Application from '../../services/Application';
-
-export type Resolve<T> = (result: Promise<T> | T) => void;
-export type Reject = (error: any) => void;
+import type {Resolve, Reject} from '../../utils/promises';
 
 const Authentication = require('../Authentication');
 const HttpStatus = require('http-status-codes');
