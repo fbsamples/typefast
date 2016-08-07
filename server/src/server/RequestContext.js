@@ -28,6 +28,7 @@ import type {Request, Response} from 'express';
 import type {Resolve, Reject} from '../utils/promises';
 
 const HttpStatus = require('http-status-codes');
+const nullthrows = require('../utils/nullthrows');
 const Params = require('./Params');
 const {EventEmitter} = require('events');
 const {Map} = require('immutable');
@@ -93,7 +94,7 @@ class RequestContext extends EventEmitter {
   }
 
   getTarget(): Document {
-    return this.nullThrows(this.target);
+    return nullthrows(this.target);
   }
 
   getTargetId(): string {
@@ -167,22 +168,6 @@ class RequestContext extends EventEmitter {
         reject(error);
       }
     });
-  }
-
-  assert(condition: bool, user_message?: string): this {
-    if (!condition) {
-      throw new Error(user_message == null ? 'Unknown error' : user_message);
-    }
-
-    return this;
-  }
-
-  nullThrows<T>(subject: ?T, user_message?: string): T {
-    if (subject == null) {
-      throw new Error(user_message == null ? 'Unknown error' : user_message);
-    }
-
-    return subject;
   }
 
   execPromise<T>(promise: Promise<T>): Promise<T> {
