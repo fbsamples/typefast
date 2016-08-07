@@ -24,7 +24,17 @@
 
 import fetch from 'isomorphic-fetch';
 
-function makeFormData(object) {
+function makeUrl(path: string, query: Object): string {
+  const chunks = [];
+  for (let i in query) {
+    if (query.hasOwnProperty(i)) {
+      chunks.push(encodeURIComponent(i) + '=' + encodeURIComponent(query[i]));
+    }
+  }
+  return path + (chunks.length > 0 ? '?' : '') + chunks.join('&');
+}
+
+function makeFormData(object: Object): FormData {
   const form = new FormData();
   for (let i in object) {
     form.append(i, object[i]);
@@ -199,22 +209,32 @@ export function previewScript() {
   return function(dispatch, getState) {
     dispatch({type: PREVIEW_SCRIPT_REQUEST});
 
-    return fetch('/routines/', {
+    return fetch('/schedules', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
       },
       body: makeFormData({
+        queue_name: 'preview_queue',
         script_id: getState().currentScript.id,
       })
     })
     .then(handleErrors)
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(response) {
-      pollRoutine(response.id, dispatch);
+    .then(response => response.json())
+    .then(response => {
+      const query = {
+        queue_name: 'preview_queue',
+        schedule_id: response.id,
+      };
+      return fetch(makeUrl('/routines', query), {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+      })
+      .then(handleErrors)
+      .then(response => response.json())
+      .then(response => pollRoutine(response.data[0].id, dispatch));
     });
   };
 }
