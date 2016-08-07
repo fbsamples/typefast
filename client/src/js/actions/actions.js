@@ -24,6 +24,14 @@
 
 import fetch from 'isomorphic-fetch';
 
+function makeFormData(object) {
+  const form = new FormData();
+  for (let i in object) {
+    form.append(i, object[i]);
+  }
+  return form;
+}
+
 function handleErrors(response) {
   if (!response.ok) {
     throw Error(response.statusText);
@@ -134,7 +142,7 @@ export function saveScript() {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
+      body: makeFormData({
         code: getState().editorValue,
         optimisations: getState().optimisations,
         title: getState().currentTitle
@@ -197,7 +205,7 @@ export function previewScript() {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
+      body: makeFormData({
         script_id: getState().currentScript.id,
       })
     })

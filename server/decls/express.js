@@ -20,8 +20,6 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-//import type {EventEmitter} from 'events';
-
 declare module express {
 
   declare type StringKeyMap<T> = { [key: string]: T };
@@ -47,7 +45,7 @@ declare module express {
     on(event: ApplicationEvent, callback: (parent: Application) => void): void;
     post(path: string, ...callback: Array<HandleCallback>): Application;
     put(path: string, ...callback: Array<HandleCallback>): Application;
-    use(path: string, ...callback: Array<HandleCallback>): Application;
+    use(path: string | HandleCallback, ...callback: Array<HandleCallback>): Application;
   }
 
   declare type RouteLayer = {

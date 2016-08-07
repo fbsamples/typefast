@@ -23,13 +23,13 @@
  */
 
 import type Config from '../Config';
-import type {Application as ExpressApplication, RequestMethod} from 'express';
+import type {Application as ExpressApplication, Request, RequestMethod, Response} from 'express';
 
 const AbstractService = require('./AbstractService');
 const express = require('express');
 const Filesystem = require('fs');
 const Https = require('https');
-const bodyParser = require('body-parser');
+const Multer = require('multer');
 const Router = require('../server/Router');
 const {Map, Set} = require('immutable');
 
@@ -46,8 +46,12 @@ class Application extends AbstractService {
     this.router = new Router(this);
 
     // Middleware
-    this.webApplication.use(bodyParser.urlencoded({extended: true}));
-    this.webApplication.use(bodyParser.json());
+    this.webApplication.use((request: Request, response: Response, next: () => void) => {
+      // Handle Multer inconsistency
+      request.body = request.body || {};
+      next();
+    });
+    this.webApplication.use(new Multer().array());
     this.webApplication.disable('etag');
     this.webApplication.disable('x-powered-by');
     if (this.getConfig().getBoolean('https.client.enable_delivery')) {
