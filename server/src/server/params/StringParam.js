@@ -65,7 +65,7 @@ class StringParam extends AbstractParam<string> {
       }
 
       if (value.length > max) {
-        return Promise.reject(new Error(`Can't be longer than ${min} characters`));
+        return Promise.reject(new Error(`Can't be longer than ${max} characters`));
       }
 
       return value.toString();

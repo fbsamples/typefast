@@ -22,7 +22,15 @@
  * @flow
  */
 
-const Mongoose = require('mongoose');
-const schema = require('./schema/script');
+const AbstractParam = require('./AbstractParam');
 
-module.exports = Mongoose.model('script', schema);
+class DateParam extends AbstractParam<Date> {
+
+  willValidate(value: any): Promise<Date> {
+    return super.willValidate(value).then((value: any) => {
+      return new Date(value);
+    });
+  }
+}
+
+module.exports = DateParam;

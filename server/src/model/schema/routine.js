@@ -22,7 +22,40 @@
  * @flow
  */
 
-const Mongoose = require('mongoose');
-const schema = require('./schema/script');
+ // eslint-disable-next-line no-undef
+export interface LogEntry {
+  chunk: string;
+  stream: string;
+  time: Date;
+}
 
-module.exports = Mongoose.model('script', schema);
+const Mongoose = require('mongoose');
+const schema = new Mongoose.Schema({
+  creation_time: { type: Date },
+  is_completed: { type: Boolean, default: false },
+  lock_creation_time: { type: Date, default: null },
+  lock_id: { type: Mongoose.Schema.ObjectId, default: null },
+  runner_end_time: { type: Date, default: null },
+  runner_exit_code: { type: Number, default: 0 },
+  runner_log: { type: Array, value: { type: { time: Date, stream: String, chunk: String } } },
+  runner_start_time: { type: Date, default: null },
+  schedule_id: { type: Mongoose.Schema.ObjectId, required: true },
+  visible_from: { type: Date, require: true },
+});
+
+schema.index({
+  is_completed: 1,
+  lock_id: 1,
+  visible_from: 1,
+});
+
+schema.index({
+  creation_time: -1
+});
+
+schema.pre('save', function(next) {
+  this.creation_time = this.creation_time || new Date();
+  next();
+});
+
+module.exports = schema;

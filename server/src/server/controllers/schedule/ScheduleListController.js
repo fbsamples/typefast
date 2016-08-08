@@ -22,7 +22,22 @@
  * @flow
  */
 
-const Mongoose = require('mongoose');
-const schema = require('./schema/script');
+// Flow typeof won't work with import type
+const {Model} = require('mongoose');
 
-module.exports = Mongoose.model('script', schema);
+const AbstractDocumentListController = require('../AbstractDocumentListController');
+const Schedule = require('../../../model/Schedule');
+
+// implement ../ControllerInterface
+class ScheduleListController extends AbstractDocumentListController {
+
+  getBaseRoute(): string {
+    return '/schedules';
+  }
+
+  getModel(): typeof Model {
+    return Schedule;
+  }
+}
+
+module.exports = ScheduleListController;

@@ -30,42 +30,53 @@ import type {Map} from 'immutable';
 // Flow typeof won't work with import type
 const {Model} = require('mongoose');
 
-const AbstractDocumentCreateController = require('../AbstractDocumentCreateController');
-const Script = require('../../../model/Script');
-const ScriptOptimizationsParam = require('../../params/ScriptOptimizationsParam');
-const StringParam = require('../../params/StringParam');
+const AbstractDocumentUpdateController = require('../AbstractDocumentUpdateController');
+const IntegerParam = require('../../params/IntegerParam');
+const Schedule = require('../../../model/Schedule');
+const BooleanParam = require('../../params/BooleanParam');
 
-class ScriptCreateController extends AbstractDocumentCreateController {
+// implement ../ControllerInterface
+class ScheduleUpdateController extends AbstractDocumentUpdateController {
 
   getBaseRoute(): string {
-    return '/scripts';
+    return '/schedules';
   }
 
   getModel(): typeof Model {
-    return Script;
+    return Schedule;
   }
 
   getParams(): Map<string, AbstractParam<any>> {
     return super.getParams().merge({
-      title: new StringParam().setMinLength(3),
-      optimisations: new ScriptOptimizationsParam().setDefaultValue({}),
-      code: new StringParam(),
-      context_type: new StringParam().setDefaultValue('AdAccount'),
+      is_paused: new BooleanParam().optional(),
+      recurrence: new IntegerParam().setMin(3600000).optional(), // 1h min intval
     });
   }
 
   genResponse(context: Context): void {
-    const script = Script({
-      title: context.getParams().getString('title'),
-      optimisations: context.getParams().getMap('optimisations').toObject(),
-      code: context.getParams().getString('code'),
-      context_type: context.getParams().getString('context_type'),
-    });
+    const scheduler = this.getApplication().getScheduler();
+    const schedule = context.getTarget();
+    const params = context.getParams();
+    const was_paused: bool = schedule.get('is_paused');
 
-    context.execPromise(script.save()).then((script: Document) => {
-      context.sendDocument(script);
-    });
+    const data = {
+      is_paused: params.getBoolean('is_paused', schedule.get('is_paused')),
+      recurrence: params.getOptionalNumber('recurrence', schedule.get('recurrence')),
+    };
+
+    context.execPromise(context.getTarget().set(data).save({ new: true }))
+      .then((doc: Document) => {
+        const is_paused: bool = schedule.get('is_paused');
+        if (was_paused && !is_paused) {
+          return scheduler.cleanSchedule(schedule).then(() => doc);
+        } else if (!was_paused && is_paused) {
+          return scheduler.enqueueScheduled(schedule).then(() => doc);
+        }
+
+        return doc;
+      })
+      .then((doc: Document) => context.sendDocument(doc));
   }
 }
 
-module.exports = ScriptCreateController;
+module.exports = ScheduleUpdateController;

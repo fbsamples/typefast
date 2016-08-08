@@ -23,6 +23,6 @@
  */
 
 const Mongoose = require('mongoose');
-const schema = require('./schema/script');
+const schema = require('./schema/schedule');
 
-module.exports = Mongoose.model('script', schema);
+module.exports = Mongoose.model('schedule', schema);

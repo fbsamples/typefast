@@ -74,7 +74,7 @@ class PollingThread extends EventEmitter {
   onPoolLock(unlock: Unlock): void {
     // Dispatch ROUTINE event -> Instruct worker to spawn a new runner
     this.emit(PollingThread.events.LOCK);
-    this.getQueue().getRoutineWithLock((routine: ?Document) => {
+    this.getQueue().getRoutineWithLock().then((routine: ?Document) => {
       if (routine !== null && routine !== undefined) {
         // Stop the thread -> Worker to restart once routine is over
         this.stop();
