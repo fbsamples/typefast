@@ -31,6 +31,7 @@ const methods = require('methods');
 const {List, Set} = require('immutable');
 
 // controllers
+const ConfigController = require('./controllers/ConfigController');
 const HttpErrorController = require('./controllers/HttpErrorController');
 const MeController = require('./controllers/user/MeController');
 const RoutineListController = require('./controllers/routine/RoutineListController');
@@ -50,6 +51,7 @@ const getHttpMethods = function(): Set<RequestMethod> {
 
 const controllersFactory = function(app: Application): List<ControllerInterface> {
   return new List([
+    new ConfigController(app),
     new MeController(app),
     new RoutineListController(app),
     new RoutineReadController(app),
