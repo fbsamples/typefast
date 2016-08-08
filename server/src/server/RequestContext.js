@@ -23,6 +23,7 @@
  */
 
 import type Application from '../services/Application';
+import type User from './authentication/User';
 import type {Document} from 'mongoose';
 import type {Request, Response} from 'express';
 import type {Resolve, Reject} from '../utils/promises';
@@ -43,6 +44,7 @@ class RequestContext extends EventEmitter {
   target: ?Document;
   request: Request;
   response: Response;
+  user: ?User;
 
   constructor(application: Application, request: Request, response: Response): void {
     super();
@@ -99,6 +101,16 @@ class RequestContext extends EventEmitter {
 
   getTargetId(): string {
     return this.getTarget().get('id');
+  }
+
+  setUser(user: User): this {
+    this.user = user;
+
+    return this;
+  }
+
+  getUser(): ?User {
+    return this.user;
   }
 
   getErrorBody(http_status: number, user_message?: string, data?: Object): Object {
@@ -185,6 +197,12 @@ class RequestContext extends EventEmitter {
     delete obj._id;
 
     return obj;
+  }
+
+  sendObject(obj: Object): this {
+    this.getResponse().send(obj);
+
+    return this;
   }
 
   sendDocument(doc: Document): this {

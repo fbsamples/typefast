@@ -24,9 +24,9 @@
 
 import type AbstractParam from '../params/AbstractParam';
 import type Application from '../../services/Application';
+import type User from '../authentication/User';
 import type {Resolve, Reject} from '../../utils/promises';
 
-const Authentication = require('../Authentication');
 const HttpStatus = require('http-status-codes');
 const Context = require('../RequestContext');
 const {Map} = require('immutable');
@@ -69,14 +69,17 @@ class AbstractController {
   }
 
   willAuthorize(context: Context): Promise<Context> {
-    const authentication = new Authentication(
-      this.application,
-      context.getRequest().query.access_token
-    );
+    const body = context.getRequest().body;
+    const query = context.getRequest().query;
+    const access_token = body['access_token'] || query['access_token'];
 
-    return authentication.doAuth(context).catch((reason: Error) => {
-      return context.disposeWithError(HttpStatus.UNAUTHORIZED, reason.message);
-    });
+    if (access_token == null) {
+      return context.willDisposeWithError(HttpStatus.UNAUTHORIZED, 'An active access token must be used');
+    }
+
+    return this.getApplication().getAuthentication().willAuthenticateUser(access_token)
+      .then((user: User) => context.setUser(user))
+      .catch((error: Error) => context.willDisposeWithError(HttpStatus.UNAUTHORIZED, error.message));
   }
 
   willValidate(context: Context): Promise<Context> {

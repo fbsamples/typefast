@@ -26,6 +26,7 @@ import type Config from '../Config';
 import type {Application as ExpressApplication, Request, RequestMethod, Response} from 'express';
 
 const AbstractService = require('./AbstractService');
+const Authentication = require('../server/authentication/Authentication');
 const express = require('express');
 const Filesystem = require('fs');
 const Https = require('https');
@@ -35,6 +36,7 @@ const {Map, Set} = require('immutable');
 
 class Application extends AbstractService {
 
+  authentication: Authentication;
   allowedRequestMethods: Set<RequestMethod>;
   router: Router;
   webApplication: ExpressApplication;
@@ -44,6 +46,10 @@ class Application extends AbstractService {
     this.webApplication = express();
     this.allowedRequestMethods = new Set(['get', 'post', 'delete']);
     this.router = new Router(this);
+    this.authentication = new Authentication(
+      config.getString('graph.business_manager_id'),
+      config.getString('graph.access_token')
+    );
 
     // Middleware
     this.webApplication.use((request: Request, response: Response, next: () => void) => {
@@ -66,6 +72,10 @@ class Application extends AbstractService {
 
   getAllowedRequestMethods(): Set<RequestMethod> {
     return this.allowedRequestMethods;
+  }
+
+  getAuthentication(): Authentication {
+    return this.authentication;
   }
 
   getRouter(): Router {
