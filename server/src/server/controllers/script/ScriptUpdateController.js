@@ -27,7 +27,7 @@ import type Context from '../../RequestContext';
 import type {Script} from '../../../model/script';
 
 const AbstractDocumentUpdateController = require('../AbstractDocumentUpdateController');
-const ScriptModel = require('../../../model/script');
+const ScriptModel = require('../../../model/Script');
 const ScriptOptimizationsParam = require('../../params/ScriptOptimizationsParam');
 const StringParam = require('../../params/StringParam');
 const {Map} = require('immutable');

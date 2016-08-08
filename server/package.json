@@ -7,7 +7,7 @@
     "lint": "eslint src/",
     "test": "echo \"Error: no test specified\" && exit 1",
     "transpile": "babel src/ -d build/",
-    "start": "node index.js --transpile --mode=server",
+    "start": "node index.js --mode=server",
     "dev": "nodemon index.js --transpile --inline-config='{\"debug\": true}'",
     "worker": "npm start -- --mode=worker",
     "definition-generation": "node bin/fbTypesGenerator.js",

@@ -22,7 +22,7 @@
  * @flow
  */
 
-import React from 'React';
+import React from 'react';
 import Modal from 'react-bootstrap/lib/Modal';
 import Button from 'react-bootstrap/lib/Button';
 import Switch from 'react-bootstrap-switch';

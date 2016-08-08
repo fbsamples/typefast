@@ -1,0 +1,19 @@
+#!/bin/bash
+
+echo -e "\nInstalling SDK modules..."
+cd sdk ; npm install --save ; npm install --only=dev --save
+
+echo -e "\nInstalling server modules..."
+cd ../server ; npm install --save ; npm install --only=dev --save
+
+echo -e "\nTranspiling..."
+npm run transpile
+
+echo -e "\nConfiguring client..."
+node bin/fbTypesGenerator.js
+
+echo -e "\nInstalling client modules..."
+cd ../client ; mkdir -p src/build ; npm install --save ; npm install --only=dev --save
+
+echo -e "\nBuilding client..."
+npm run build

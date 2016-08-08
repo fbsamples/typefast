@@ -26,7 +26,7 @@
 const {Model} = require('mongoose');
 
 const AbstractDocumentListController = require('../AbstractDocumentListController');
-const Script = require('../../../model/script');
+const Script = require('../../../model/Script');
 
 // implement ../ControllerInterface
 class ScriptListController extends AbstractDocumentListController {
