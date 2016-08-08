@@ -12,10 +12,11 @@ TypeFast Server is the backend responsible for:
 * [Node.js](https://nodejs.org/) 6.0.0+
 * [MongoDB](https://www.mongodb.com/community) 3.2.0+
 * An SSL certificate
+* A Graph Schema Bundle (Contact your FB POC to obtain one)
 
 # Install
 
-### Development with [Flowtype](http://flowtype.org/)
+### Install Dependencies
 
     npm install
 
@@ -28,15 +29,25 @@ TypeFast Server is the backend responsible for:
 
     cp config/local.dist.json config/local.json
 
-### Transpile for packaging
+Than edit `config/local.json`, filling all the keys.
 
-To transpile the source and exit:
+Notes:
+  1. graph.schema.bundle -> absolute path to the provided schema bundle
+  2. DEPRECATED__cxt_id -> a Facebook adaccount Id, requires an 'act_' prefix
 
-    npm run-script transpile
+# Run
 
-### Run from source
+### From source
 
     npm start
+
+### From source - Reloading on file changes [dev-only]
+
+    npm run dev
+
+# [Optional] Transpile for packaging
+
+    npm run-script transpile
 
 # License
 
