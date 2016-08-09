@@ -28,7 +28,7 @@ import type {Document} from 'mongoose';
 import type {RequestMethod} from 'express';
 
 const AbstractDocumentController = require('./AbstractDocumentController');
-const {List, Set} = require('immutable');
+const {List, Map, Set} = require('immutable');
 
 class AbstractDocumentListController extends AbstractDocumentController {
 
@@ -40,8 +40,13 @@ class AbstractDocumentListController extends AbstractDocumentController {
     return new Set(['get']);
   }
 
+  getCriteria(context: Context): Map<string, any> {
+    return new Map();
+  }
+
   genResponse(context: Context): void {
-    context.execPromise(this.getModel().find({}).sort({updated_time: '-1'}).exec()).then(
+    const criteria = this.getCriteria(context).toObject();
+    context.execPromise(this.getModel().find(criteria).sort({updated_time: '-1'}).exec()).then(
       (docs: Array<Document>) => {
         context.getResponse().send({
           data: new List(docs).map(context.exportDocument)
