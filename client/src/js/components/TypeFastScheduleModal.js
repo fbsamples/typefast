@@ -28,9 +28,11 @@ import Button from 'react-bootstrap/lib/Button';
 import Switch from 'react-bootstrap-switch';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import DateTimeField from 'react-bootstrap-datetimepicker';
+import { ScheduleRecurence } from '../constants/constants';
 
 class TypeFastScheduleModal extends React.Component {
   render() {
+    console.log(this.props.interval);
     return (
       <Modal show={this.props.showModal} onHide={this.props.close}>
        <Modal.Header closeButton>
@@ -56,12 +58,17 @@ class TypeFastScheduleModal extends React.Component {
                  <Switch state={this.props.state} onChange={this.props.onStateChange}/>
                </div>
                <div className="col-sm-5">
-                 <DateTimeField onChange={this.props.onStartTimeChange} />
+                 <DateTimeField
+                   dateTime={this.props.startTime}
+                   onChange={this.props.onStartTimeChange} />
                </div>
                <div className="col-sm-4">
-                 <FormControl componentClass="select" onChange={this.props.onIntervalChange} >
-                   <option value="hourly">Hour</option>
-                   <option value="daily">Day</option>
+                 <FormControl
+                   componentClass="select"
+                   onChange={this.props.onIntervalChange}
+                   value={this.props.interval}>
+                   <option value={ScheduleRecurence.HOURLY}>Hour</option>
+                   <option value={ScheduleRecurence.DAILY}>Day</option>
                  </FormControl>
                </div>
              </div>
