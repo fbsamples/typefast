@@ -29,7 +29,7 @@
 const walk = require('acorn/dist/walk');
 
 module.exports = function(infer) {
-  var fieldsAccessed = {};
+  let fieldsAccessed = {};
 
   function isEdge(node) {
     return node.types[0]
@@ -45,7 +45,7 @@ module.exports = function(infer) {
   }
 
   function getURLSafeFieldsAccessed() {
-    var obj = {};
+    let obj = {};
     for (var key in fieldsAccessed) {
       if (fieldsAccessed.hasOwnProperty(key)) {
         obj[key] = Array.from(fieldsAccessed[key]);
@@ -73,12 +73,12 @@ module.exports = function(infer) {
             });
           }
 
-          var objFbType = node.object.fbType;
-          var name = node.property.name;
+          let objFbType = node.object.fbType;
+          let name = node.property.name;
 
           if (node.object.type == 'CallExpression') {
             if (objFbType.proto) {
-              properties = objFbType.proto.props;
+              let properties = objFbType.proto.props;
               if (properties[name]) {
                 if (!fieldsAccessed[objFbType.proto.name]) {
                   fieldsAccessed[objFbType.proto.name] = new Set();
@@ -89,7 +89,7 @@ module.exports = function(infer) {
           } else if (objFbType.propertyName
             && objFbType.types[0]
             && !isCursor(objFbType)) {
-            var properties = objFbType.types[0].props || {};
+            let properties = objFbType.types[0].props || {};
 
             if (Object.keys(properties).length == 0) {
               if (objFbType.types[0].proto) {

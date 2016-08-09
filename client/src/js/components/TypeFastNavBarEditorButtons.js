@@ -64,7 +64,7 @@ class TypeFastNavBarEditorButtons extends React.Component {
       </FormGroup>
       <button
         id="log-button"
-        onClick={this.props.onPreviousRuns}
+        onClick={this.props.onLogs}
         type="button"
         className="btn btn-default btn-green navbar-btn">
         <Glyphicon glyph="time" /> Logs

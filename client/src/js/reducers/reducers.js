@@ -51,6 +51,23 @@ function initalLog() {
   }];
 }
 
+function defaultScript() {
+  return {
+    title: 'A Untitled Masterwork',
+    optimisations: [],
+    code:
+`/*jshint esversion: 6 */
+//
+// Welcome to TypeFast!
+//
+// adaccount is the global varaiable for scripting with.
+// See the following example of how this works
+
+adaccount.getcustomaudiences().forEach(
+    ca => console.log(ca.id + ': ' + ca.name)
+);`,
+  };
+}
 
 function typefastApp(state = {
   currentRoutineId: null,
@@ -59,11 +76,13 @@ function typefastApp(state = {
   isFetching: false,
   scripts: [],
   log: initalLog(),
+  runHistory: {},
   currentPane: 'editor',
   showScheduleSelector: false,
   showScheduleModal: false,
   needToSave: true,
-  currentTitle: 'A Untitled Masterwork',
+  currentTitle: defaultScript().title,
+  currentScript: defaultScript(),
   scheduleState: false,
   scheduleInterval: 'daily',
   scheduleStartTime: Date.now(),
@@ -76,15 +95,15 @@ function typefastApp(state = {
     case LOAD_SCRIPT:
       let scriptToLoad;
       if (action.payload.id === 'new') {
-        scriptToLoad = null;
+        scriptToLoad = defaultScript();
       } else {
         scriptToLoad = state.scripts[action.payload.id];
       }
       return Object.assign({}, state, {
         currentScript: scriptToLoad,
-//        currentTitle: scriptToLoad.title,
-//        editorValue: scriptToLoad.code,
-//        optimisations: scriptToLoad.optimisations,
+        editorValue: scriptToLoad.code,
+        optimisations: scriptToLoad.optimisations,
+        currentTitle: scriptToLoad.title,
         log: initalLog(),
       });
 
@@ -173,13 +192,15 @@ function typefastApp(state = {
       return Object.assign({}, state, {
         isFetching: true,
       });
+
     case FETCHING_SCRIPTS_SUCCESS:
-      let firstScript;
-      if (!state.currentScript) {
-        firstScript = action.payload.scripts.data[0];
+      let firstScript = defaultScript();
+      let scripts = action.payload.scripts.data;
+      if (!state.currentScript.id && scripts.length > 0) {
+        firstScript = scripts[0];
       }
 
-      const scripts = action.payload.scripts.data.reduce(
+      scripts = scripts.reduce(
         (o, v, i) => { o[v.id] = v; return o; },
         {}
       );
@@ -187,6 +208,7 @@ function typefastApp(state = {
         isFetching: false,
         scripts: scripts,
         currentScript: firstScript,
+        currentTitle: firstScript.title,
         scriptCount: Object.keys(scripts).length
       });
 
@@ -202,8 +224,8 @@ function typefastApp(state = {
       });
 
     case SCRIPT_TITLE_CHANGED:
-      needToSave = !(state.currentScript
-      && (state.currentScript.title == action.payload.title));
+      needToSave = !(state.currentScript.id
+        && (state.currentScript.title == action.payload.title));
 
       return Object.assign({}, state, {
         currentTitle: action.payload.title,
@@ -211,7 +233,7 @@ function typefastApp(state = {
       });
 
     case SCRIPT_CODE_CHANGED:
-      needToSave = !(state.currentScript
+      needToSave = !(state.currentScript.id
         && (state.currentScript.code == action.payload.code));
 
       return Object.assign({}, state, {
@@ -229,6 +251,7 @@ function typefastApp(state = {
         optimisations: action.payload.optimisations
       });
     }
+
     default:
       return state;
   }

@@ -40,7 +40,9 @@ function makeFormData(object: Object, getState: Function): FormData {
   const form = new FormData();
   form.append('access_token', getState().accessToken);
   for (let i in object) {
-    form.append(i, object[i]);
+    const value = typeof object[i] === 'object'
+      ? JSON.stringify(object[i]) : object[i];
+    form.append(i, value);
   }
   return form;
 }
@@ -166,12 +168,11 @@ export function saveScript() {
   return function(dispatch, getState) {
     dispatch({type: SAVE_SCRIPT_REQUEST});
     const currentScript = getState().currentScript;
-    const id = currentScript ? currentScript.id : '';
+    const id = currentScript.id || '';
     return fetch('/scripts/' + id, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
       },
       body: makeFormData({
         code: getState().editorValue,
@@ -265,26 +266,32 @@ export function previewScript() {
   };
 }
 
+export const NO_SCRIPT_LOGS = 'NO_SCRIPT_LOGS';
 export const FETCHING_SCRIPT_LOGS_REQUEST = 'FETCHING_SCRIPT_LOGS_REQUEST';
 export const FETCHING_SCRIPT_LOGS_SUCCESS = 'FETCHING_SCRIPT_LOGS_SUCCESS';
 export const FETCHING_SCRIPT_LOGS_FAILURE = 'FETCHING_SCRIPT_LOGS_FAILURE';
 
-export function fetchScriptLogs(id) {
+export function fetchRunHistory() {
   return function(dispatch, getState) {
-    dispatch({type: FETCHING_SCRIPT_LOGS_REQUEST});
-    return fetch(makeUrl(`/scripts/${id}/logs`, getState))
-      .then((response) => handleErrors(response, dispatch))
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
-        dispatch({
-          type: FETCHING_SCRIPT_LOGS_SUCCESS,
-          payload: {
-            scriptLogs: json
-          }
+    const currentScriptId = getState().currentScript.id;
+    if (!currentScriptId) {
+      dispatch({type: NO_SCRIPT_LOGS});
+    } else {
+      dispatch({type: FETCHING_SCRIPT_LOGS_REQUEST});
+      return fetch(makeUrl(`/scripts/${currentScriptId}/logs`, getState))
+        .then((response) => handleErrors(response, dispatch))
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(json) {
+          dispatch({
+            type: FETCHING_SCRIPT_LOGS_SUCCESS,
+            payload: {
+              scriptLogs: json
+            }
+          });
         });
-      });
+    }
   };
 }
 

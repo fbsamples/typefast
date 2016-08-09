@@ -28,10 +28,11 @@ import {
   facebookAuthFailure
 } from '../actions/actions.js';
 import TypeFastLogin from '../components/TypeFastLogin';
+import { serverConfig } from '../ServerConfig';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    appId:  131584983518288,
+    appId:  serverConfig.getRawConfig().application_id,
     isAuthenticated: state.isAuthenticated,
     isAuthenticating: state.isAuthenticating
   };

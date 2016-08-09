@@ -28,7 +28,6 @@ import Modal from 'react-bootstrap/lib/Modal';
 class TypeFastLogin extends React.Component {
 
   statusChangeCallback(response) {
-    console.log(response);
     if (response.status === 'connected') {
       this.props.facebookAuthSuccess(response.authResponse.accessToken);
     } else if (response.status === 'not_authorized') {

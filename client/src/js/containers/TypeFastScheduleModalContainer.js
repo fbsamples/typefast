@@ -36,8 +36,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     showModal: state.showScheduleModal,
     state: state.scheduleState,
-//    interval: state.scheduleInterval,
-//    startTime: state.scheduleStartTime
+    interval: state.scheduleInterval,
+    startTime: state.scheduleStartTime
   };
 };
 
