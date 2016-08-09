@@ -37,7 +37,7 @@ const mapStateToProps = (state, ownProps) => {
     showModal: state.showScheduleModal,
     state: state.scheduleState,
     interval: state.scheduleInterval,
-    startTime: state.scheduleStartTime
+    startTime: new Date(state.scheduleStartTime).getTime()
   };
 };
 
@@ -50,7 +50,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(scheduleStateChanged(state));
     },
     onStartTimeChange: (startTime) => {
-      dispatch(scheduleStartTimeChanged(startTime));
+      const date = new Date(parseInt(startTime)).toISOString();
+      dispatch(scheduleStartTimeChanged(date));
     },
     onIntervalChange: (interval) => {
       dispatch(scheduleIntervalChanged(interval.target.value));
