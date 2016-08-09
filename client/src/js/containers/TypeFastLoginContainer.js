@@ -21,28 +21,40 @@
  *
  * @flow
  */
+import { connect } from 'react-redux';
+import {
+  facebookAuthStarted,
+  facebookAuthSuccess,
+  facebookAuthFailure
+} from '../actions/actions.js';
+import TypeFastLogin from '../components/TypeFastLogin';
+import { serverConfig } from '../ServerConfig';
 
-import thunkMiddleware from 'redux-thunk';
-import { createStore, applyMiddleware } from 'redux';
-import rootReducer from './reducers/reducers.js';
-import { Provider } from 'react-redux';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import TypeFastApp from './components/TypeFastApp';
-import { serverConfig } from './ServerConfig';
+const mapStateToProps = (state, ownProps) => {
+  return {
+    appId:  serverConfig.getRawConfig().application_id,
+    isAuthenticated: state.isAuthenticated,
+    isAuthenticating: state.isAuthenticating
+  };
+};
 
-const store = createStore(
-  rootReducer,
-   applyMiddleware(
-     thunkMiddleware
-   )
-);
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    facebookAuthStarted: () => {
+      dispatch(facebookAuthStarted());
+    },
+    facebookAuthSuccess: (token) => {
+      dispatch(facebookAuthSuccess(token));
+    },
+    facebookAuthFailure: () => {
+      dispatch(facebookAuthFailure());
+    },
+  };
+};
 
-serverConfig.fetch(function() {
-  ReactDOM.render(
-    <Provider store={store}>
-      <TypeFastApp />
-    </Provider>,
-    document.getElementById('typefast')
-  );
-});
+const TypeFastLoginContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TypeFastLogin);
+
+export default TypeFastLoginContainer;

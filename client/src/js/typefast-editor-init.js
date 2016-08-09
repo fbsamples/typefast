@@ -50,7 +50,7 @@ const sampleCode =
 // adaccount is the global varaiable for scripting with.
 // See the following example of how this works
 
-adaccount.getCustomAudiences().forEach(
+adaccount.getcustomaudiences().forEach(
   ca => console.log(ca.id + ': ' + ca.name)
 );`;
 
@@ -100,7 +100,7 @@ module.exports = function(element, onCodeChange, onOptimisationComplete) {
   });
 
   editor.on('change', function(cm, event) {
-    onCodeChange(cm.getValue());
+    onCodeChange(cm.getValue().replace(/\n/g, "\r\n"));
     runAnalysis();
   });
   editor.on('cursorActivity', function(cm) { server.updateArgHints(cm); });

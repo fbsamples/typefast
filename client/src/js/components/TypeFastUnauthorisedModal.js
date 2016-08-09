@@ -22,27 +22,25 @@
  * @flow
  */
 
-import thunkMiddleware from 'redux-thunk';
-import { createStore, applyMiddleware } from 'redux';
-import rootReducer from './reducers/reducers.js';
-import { Provider } from 'react-redux';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import TypeFastApp from './components/TypeFastApp';
-import { serverConfig } from './ServerConfig';
+import Modal from 'react-bootstrap/lib/Modal';
 
-const store = createStore(
-  rootReducer,
-   applyMiddleware(
-     thunkMiddleware
-   )
-);
+class TypeFastUnauthorisedModal extends React.Component {
+  render() {
+    return (
+      <Modal show={this.props.isAuthenticated && this.props.isAuthorised === false}>
+       <Modal.Header>
+         <Modal.Title>TypeFast Authorisation Failed</Modal.Title>
+       </Modal.Header>
+       <Modal.Body>
+         <p>You are not authorised in your companies Business Manager to use TypeFast</p>
+         <p>Please contact your manager for permission</p>
+       </Modal.Body>
+       <Modal.Footer>
+       </Modal.Footer>
+     </Modal>
+    );
+  }
+}
 
-serverConfig.fetch(function() {
-  ReactDOM.render(
-    <Provider store={store}>
-      <TypeFastApp />
-    </Provider>,
-    document.getElementById('typefast')
-  );
-});
+module.exports = TypeFastUnauthorisedModal;

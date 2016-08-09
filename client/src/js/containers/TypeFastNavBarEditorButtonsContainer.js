@@ -23,7 +23,14 @@
  */
 
 import { connect } from 'react-redux';
-import { previewScript, saveScript, scriptTitleChanged, showScheduleModal } from '../actions/actions.js';
+import {
+  previewScript,
+  saveScript,
+  scriptTitleChanged,
+  showScheduleModal,
+  fetchRunHistory,
+  changePane,
+} from '../actions/actions.js';
 import TypeFastNavBarEditorButtons from '../components/TypeFastNavBarEditorButtons';
 
 const mapStateToProps = (state, ownProps) => {
@@ -38,7 +45,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onTitleChange: (event) => {
       dispatch(scriptTitleChanged(event.target.value));
-    }, onSave: () => {
+    },
+    onSave: () => {
       dispatch(saveScript());
     },
     onPreview: () => {
@@ -47,8 +55,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     onSchedule: () => {
       dispatch(showScheduleModal());
     },
-    onPreviousRuns: () => {
-
+    onLogs: () => {
+      dispatch(fetchRunHistory());
+      dispatch(changePane('runHistory'));
     }
   };
 };

@@ -21,28 +21,18 @@
  *
  * @flow
  */
+import { connect } from 'react-redux';
+import TypeFastUnauthorisedModal from '../components/TypeFastUnauthorisedModal';
 
-import thunkMiddleware from 'redux-thunk';
-import { createStore, applyMiddleware } from 'redux';
-import rootReducer from './reducers/reducers.js';
-import { Provider } from 'react-redux';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import TypeFastApp from './components/TypeFastApp';
-import { serverConfig } from './ServerConfig';
+const mapStateToProps = (state, ownProps) => {
+  return {
+    isAuthenticated: state.isAuthenticated,
+    isAuthorised: state.isAuthorised,
+  };
+};
 
-const store = createStore(
-  rootReducer,
-   applyMiddleware(
-     thunkMiddleware
-   )
-);
+const TypeFastUnauthorisedModalContainer = connect(
+  mapStateToProps
+)(TypeFastUnauthorisedModal);
 
-serverConfig.fetch(function() {
-  ReactDOM.render(
-    <Provider store={store}>
-      <TypeFastApp />
-    </Provider>,
-    document.getElementById('typefast')
-  );
-});
+export default TypeFastUnauthorisedModalContainer;

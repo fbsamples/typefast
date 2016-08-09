@@ -21,28 +21,23 @@
  *
  * @flow
  */
+import fetch from 'isomorphic-fetch';
 
-import thunkMiddleware from 'redux-thunk';
-import { createStore, applyMiddleware } from 'redux';
-import rootReducer from './reducers/reducers.js';
-import { Provider } from 'react-redux';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import TypeFastApp from './components/TypeFastApp';
-import { serverConfig } from './ServerConfig';
+class ServerConfig {
+  fetch(cb) {
+    fetch('/config')
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(response) {
+        this.rawConfig = response;
+        cb();
+      }.bind(this));
+  }
 
-const store = createStore(
-  rootReducer,
-   applyMiddleware(
-     thunkMiddleware
-   )
-);
+  getRawConfig() {
+    return this.rawConfig;
+  }
+}
 
-serverConfig.fetch(function() {
-  ReactDOM.render(
-    <Provider store={store}>
-      <TypeFastApp />
-    </Provider>,
-    document.getElementById('typefast')
-  );
-});
+export let serverConfig = new ServerConfig();

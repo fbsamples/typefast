@@ -22,27 +22,24 @@
  * @flow
  */
 
-import thunkMiddleware from 'redux-thunk';
-import { createStore, applyMiddleware } from 'redux';
-import rootReducer from './reducers/reducers.js';
-import { Provider } from 'react-redux';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import TypeFastApp from './components/TypeFastApp';
-import { serverConfig } from './ServerConfig';
+import { connect } from 'react-redux';
+import TypeFastRunHistory from '../components/TypeFastRunHistory';
 
-const store = createStore(
-  rootReducer,
-   applyMiddleware(
-     thunkMiddleware
-   )
-);
+const mapStateToProps = (state, ownProps) => {
+  return {
+    history: state.runHistory[state.currentScript.id],
+  };
+};
 
-serverConfig.fetch(function() {
-  ReactDOM.render(
-    <Provider store={store}>
-      <TypeFastApp />
-    </Provider>,
-    document.getElementById('typefast')
-  );
-});
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    
+  };
+};
+
+const TypeFastRunHistoryContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TypeFastRunHistory);
+
+export default TypeFastRunHistoryContainer;

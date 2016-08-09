@@ -23,20 +23,40 @@
  */
 
 import { connect } from 'react-redux';
-import { hideScheduleModal } from '../actions/actions.js';
+import {
+  hideScheduleModal,
+  scheduleStateChanged,
+  scheduleStartTimeChanged,
+  scheduleIntervalChanged,
+  saveSchedule,
+} from '../actions/actions.js';
 import TypeFastScheduleModal from '../components/TypeFastScheduleModal';
 
 const mapStateToProps = (state, ownProps) => {
   return {
     showModal: state.showScheduleModal,
+    state: state.scheduleState,
+    interval: state.scheduleInterval,
+    startTime: state.scheduleStartTime
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     close:() => {
-      console.log('hide modal');
       dispatch(hideScheduleModal());
+    },
+    onStateChange: (state) => {
+      dispatch(scheduleStateChanged(state));
+    },
+    onStartTimeChange: (startTime) => {
+      dispatch(scheduleStartTimeChanged(startTime));
+    },
+    onIntervalChange: (interval) => {
+      dispatch(scheduleIntervalChanged(interval.target.value));
+    },
+    onSave: () => {
+      dispatch(saveSchedule());
     }
   };
 };

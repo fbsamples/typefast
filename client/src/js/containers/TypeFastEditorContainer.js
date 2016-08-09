@@ -38,10 +38,10 @@ const styles = {
 
 class TypeFastEditorContainer extends React.Component {
   render() {
-    const hidden = this.props.scriptListOpen ? 'col-lg-10' : 'col-lg-12';
+    const width = this.props.scriptListOpen ? 'col-lg-10' : 'col-lg-12';
     return (
       <div
-        className={`container-fluid content ${hidden}`}
+        className={`container-fluid content ${width}`}
         style={[styles.container]}>
         <TypeFastEditor
           script={this.props.script}

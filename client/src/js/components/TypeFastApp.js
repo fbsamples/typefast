@@ -24,19 +24,13 @@
 
 import  React  from 'react';
 import { connect } from 'react-redux';
-import { fetchScripts } from '../actions/actions.js';
 import TypeFastNavigationContainer from '../containers/TypeFastNavigationContainer';
 import TypeFastEditorContainer from '../containers/TypeFastEditorContainer';
 import TypeFastListingContainer from '../containers/TypeFastListingContainer';
-
+import TypeFastLoginContainer from '../containers/TypeFastLoginContainer';
+import TypeFastUnauthorisedModalContainer from '../containers/TypeFastUnauthorisedModalContainer';
 
 class TypeFastApp extends React.Component {
-  componentDidMount() {
-    // this causes lots of state sets while rendering so needs to be moved
-    // out
-    this.props.dispatch(fetchScripts());
-  }
-
   render() {
     return (
       <div className="full-height">
@@ -45,6 +39,8 @@ class TypeFastApp extends React.Component {
           <TypeFastListingContainer />
           <TypeFastEditorContainer />
         </div>
+        <TypeFastLoginContainer />
+        <TypeFastUnauthorisedModalContainer />
       </div>
     );
   }

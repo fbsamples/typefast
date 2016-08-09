@@ -23,13 +23,9 @@
  */
 
 import React from 'React';
-import Form from 'react-bootstrap/lib/Form';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import NavDropdown from 'react-bootstrap/lib/NavDropdown';
-import MenuItem from 'react-bootstrap/lib/MenuItem';
-import Radio from 'react-bootstrap/lib/Radio';
 
 class TypeFastNavBarEditorButtons extends React.Component {
 
@@ -68,7 +64,7 @@ class TypeFastNavBarEditorButtons extends React.Component {
       </FormGroup>
       <button
         id="log-button"
-        onClick={this.props.onPreviousRuns}
+        onClick={this.props.onLogs}
         type="button"
         className="btn btn-default btn-green navbar-btn">
         <Glyphicon glyph="time" /> Logs

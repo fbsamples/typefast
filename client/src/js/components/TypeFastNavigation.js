@@ -27,9 +27,7 @@ import Badge from 'react-bootstrap/lib/Badge';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import Nav from 'react-bootstrap/lib/Nav';
 import Navbar from 'react-bootstrap/lib/Navbar';
-import NavDropdown from 'react-bootstrap/lib/NavDropdown';
 import NavItem from 'react-bootstrap/lib/NavItem';
-import MenuItem from 'react-bootstrap/lib/MenuItem';
 import TypeFastNavBarEditorButtonsContainer from '../containers/TypeFastNavBarEditorButtonsContainer';
 
 class TypeFastNavigation extends React.Component {
@@ -38,7 +36,6 @@ class TypeFastNavigation extends React.Component {
   }
 
   render() {
-    let buttons;
     return (
     <Navbar id="mainnav" fluid >
       <Nav>

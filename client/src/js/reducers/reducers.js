@@ -23,17 +23,20 @@
  */
 
 import {
-  FETCHING_SCRIPTS_REQUEST, FETCHING_SCRIPTS_SUCCESS, FETCHING_SCRIPTS_FAILURE,
-  SAVE_SCRIPT_REQUEST, SAVE_SCRIPT_SUCCESS, SAVE_SCRIPT_FAILURE,
+  FETCHING_SCRIPTS_REQUEST, FETCHING_SCRIPTS_SUCCESS,
+  SAVE_SCRIPT_REQUEST, SAVE_SCRIPT_SUCCESS,
   SCRIPT_CODE_CHANGED, SCRIPT_TITLE_CHANGED,
   OPTIMISATIONS_COMPLETE,
-  PREVIEW_SCRIPT_REQUEST, PREVIEW_SCRIPT_CREATED, PREVIEW_SCRIPT_SUCCESS,
-  PREVIEW_SCRIPT_FAILURE,
+  PREVIEW_SCRIPT_REQUEST, PREVIEW_SCRIPT_SUCCESS,
   UI_CHANGE,
   LOAD_SCRIPT,
   SHOW_SCHEDULE_MODAL, HIDE_SCHEDULE_MODAL,
   SHOW_SCHEDULE_SELECTOR, HIDE_SCHEDULE_SELECTOR,
-  SCRIPT_LIST_CLICKED
+  SCRIPT_LIST_CLICKED,
+  SCHEDULE_STATE_CHANGED, SCHEDULE_START_TIME_CHANGED,
+  SCHEDULE_INTERVAL_CHANGED,
+  FACEBOOK_AUTH_STARTED, FACEBOOK_AUTH_SUCCESS, FACEBOOK_AUTH_FAILURE,
+  UNAUTHORISED
 } from '../actions/actions.js';
 
 function initalLog() {
@@ -48,6 +51,23 @@ function initalLog() {
   }];
 }
 
+function defaultScript() {
+  return {
+    title: 'A Untitled Masterwork',
+    optimisations: [],
+    code:
+`/*jshint esversion: 6 */
+//
+// Welcome to TypeFast!
+//
+// adaccount is the global varaiable for scripting with.
+// See the following example of how this works
+
+adaccount.getcustomaudiences().forEach(
+    ca => console.log(ca.id + ': ' + ca.name)
+);`,
+  };
+}
 
 function typefastApp(state = {
   currentRoutineId: null,
@@ -56,28 +76,40 @@ function typefastApp(state = {
   isFetching: false,
   scripts: [],
   log: initalLog(),
+  runHistory: {},
   currentPane: 'editor',
   showScheduleSelector: false,
   showScheduleModal: false,
   needToSave: true,
-  currentTitle: 'A Untitled Masterwork',
-  scheduleOn: false
+  currentTitle: defaultScript().title,
+  currentScript: defaultScript(),
+  scheduleState: false,
+  scheduleInterval: 'daily',
+  scheduleStartTime: Date.now(),
+  accessToken: null,
+  isAuthenticated: false,
+  isAuthenticating: false
 }, action) {
   let needToSave;
   switch (action.type) {
     case LOAD_SCRIPT:
       let scriptToLoad;
       if (action.payload.id === 'new') {
-        scriptToLoad = null;
+        scriptToLoad = defaultScript();
       } else {
         scriptToLoad = state.scripts[action.payload.id];
       }
       return Object.assign({}, state, {
         currentScript: scriptToLoad,
-        currentTitle: scriptToLoad.title,
         editorValue: scriptToLoad.code,
         optimisations: scriptToLoad.optimisations,
+        currentTitle: scriptToLoad.title,
         log: initalLog(),
+      });
+
+    case UNAUTHORISED:
+      return Object.assign({}, state, {
+        isAuthorised: false,
       });
 
     case UI_CHANGE:
@@ -112,6 +144,21 @@ function typefastApp(state = {
         showScheduleModal: false,
       });
 
+    case SCHEDULE_STATE_CHANGED:
+      return Object.assign({}, state, {
+        scheduleState: action.payload.scheduleState
+      });
+
+    case SCHEDULE_INTERVAL_CHANGED:
+      return Object.assign({}, state, {
+        scheduleInterval: action.payload.scheduleInterval
+      });
+
+    case SCHEDULE_START_TIME_CHANGED:
+      return Object.assign({}, state, {
+        scheduleStartTime: action.payload.scheduleStartTime
+      });
+
     case SHOW_SCHEDULE_SELECTOR:
       return Object.assign({}, state, {
         showScheduleSelector: true,
@@ -122,17 +169,38 @@ function typefastApp(state = {
         showScheduleSelector: false,
       });
 
+    case FACEBOOK_AUTH_SUCCESS:
+      return Object.assign({}, state, {
+        isAuthenticated: true,
+        isAuthenticating: false,
+        accessToken: action.payload.accessToken
+      });
+
+    case FACEBOOK_AUTH_FAILURE:
+      return Object.assign({}, state, {
+        isAuthenticated: false,
+        isAuthenticating: false
+      });
+
+    case FACEBOOK_AUTH_STARTED:
+      return Object.assign({}, state, {
+        isAuthenticated: false,
+        isAuthenticating: true
+      });
+
     case FETCHING_SCRIPTS_REQUEST:
       return Object.assign({}, state, {
         isFetching: true,
       });
+
     case FETCHING_SCRIPTS_SUCCESS:
-      let firstScript;
-      if (!state.currentScript) {
-        firstScript = action.payload.scripts.data[0];
+      let firstScript = defaultScript();
+      let scripts = action.payload.scripts.data;
+      if (!state.currentScript.id && scripts.length > 0) {
+        firstScript = scripts[0];
       }
 
-      const scripts = action.payload.scripts.data.reduce(
+      scripts = scripts.reduce(
         (o, v, i) => { o[v.id] = v; return o; },
         {}
       );
@@ -140,6 +208,7 @@ function typefastApp(state = {
         isFetching: false,
         scripts: scripts,
         currentScript: firstScript,
+        currentTitle: firstScript.title,
         scriptCount: Object.keys(scripts).length
       });
 
@@ -155,8 +224,8 @@ function typefastApp(state = {
       });
 
     case SCRIPT_TITLE_CHANGED:
-      needToSave = !(state.currentScript
-      && (state.currentScript.title == action.payload.title));
+      needToSave = !(state.currentScript.id
+        && (state.currentScript.title == action.payload.title));
 
       return Object.assign({}, state, {
         currentTitle: action.payload.title,
@@ -164,7 +233,7 @@ function typefastApp(state = {
       });
 
     case SCRIPT_CODE_CHANGED:
-      needToSave = !(state.currentScript
+      needToSave = !(state.currentScript.id
         && (state.currentScript.code == action.payload.code));
 
       return Object.assign({}, state, {
@@ -182,6 +251,7 @@ function typefastApp(state = {
         optimisations: action.payload.optimisations
       });
     }
+
     default:
       return state;
   }
