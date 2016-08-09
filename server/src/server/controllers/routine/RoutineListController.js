@@ -24,9 +24,9 @@
 
 import type AbstractParam from '../../params/AbstractParam';
 import type Context from '../../RequestContext';
-import type {Document} from 'mongoose';
-import type {RequestMethod} from 'express';
 import type {Map} from 'immutable';
+import type {RequestMethod} from 'express';
+import type {Routine} from '../../../scheduler/Queue';
 
 const AbstractController = require('../AbstractController');
 const MongoIdParam = require('../../params/MongoIdParam');
@@ -57,7 +57,7 @@ class RoutineListController extends AbstractController {
     const query = schedule_id == null ? {} : { schedule_id: schedule_id };
 
     context.execPromise(queue.getModel().find(query).sort({ creation_time: -1 }).exec())
-      .then((docs: Array<Document>) => {
+      .then((docs: Array<Routine>) => {
         context.getResponse().send({
           data: new List(docs).map(context.exportDocument)
         });

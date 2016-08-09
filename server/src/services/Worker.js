@@ -22,13 +22,13 @@
  * @flow
  */
 
+import type {AnonimizedRoutineMutator as Mutator} from '../scheduler/Scheduler';
 import type Queue from '../scheduler/Queue';
 import type {ChildProcess} from 'child_process';
-import type {Document} from 'mongoose';
 import type {LogEntry} from '../model/schema/routine';
 import type {Interface as ReadlineInterface} from 'readline';
 import type {ReadStream} from 'fs';
-import type {AnonimizedRoutineMutator as Mutator} from '../scheduler/Scheduler';
+import type {Routine} from '../scheduler/Queue';
 
 type StreamBindings = Map<string, ReadlineInterface>;
 
@@ -65,7 +65,7 @@ const freeStreams = function(bindings: StreamBindings): void {
 // implement ServiceInterface
 class Worker extends AbstractService {
 
-  onRoutine(routine: Document, unlock: Mutator, complete: Mutator): void {
+  onRoutine(routine: Routine, unlock: Mutator, complete: Mutator): void {
     const id = routine.get('id');
 
     // FIXME no transpile by default
@@ -80,7 +80,7 @@ class Worker extends AbstractService {
       (entry: LogEntry) => routine.get('runner_log').push(entry)
     );
 
-    const sync = (): Promise<Document> => {
+    const sync = (): Promise<Routine> => {
       return routine.save()
         .catch((error: Error) => log(`Error syncing routine ${id}`))
         .then(() => routine);
@@ -97,7 +97,7 @@ class Worker extends AbstractService {
       // Final sync -> complete schedule (free pool slot) -> *
       sync().then(() => {
         complete()
-          .then((routine: Document) => log(`Routine ${id} Completed`))
+          .then((routine: Routine) => log(`Routine ${id} Completed`))
           .catch((error: Error) => log(`Error completing routine ${id}`));
       });
     });

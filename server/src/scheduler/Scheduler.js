@@ -24,13 +24,13 @@
 
 import type Config from '../Config';
 import type PollingPool from './PollingPool';
-import type {Document} from 'mongoose';
 import type {Routine, RoutineMutator} from './Queue';
+import type {Schedule} from '../model/Schedule';
 
 export type AnonimizedRoutineMutator = () => Promise<Routine>;
 export type ContextualizedRoutine = { routine: Routine, queue: Queue };
 export type OnRoutine = (
-  routine: Document,
+  routine: Routine,
   unlock: AnonimizedRoutineMutator,
   complete: AnonimizedRoutineMutator,
 ) => void;
@@ -67,17 +67,17 @@ class Scheduler {
     return this.getQueues().get(name);
   }
 
-  enqueue(queue: Queue, script_id: string, ctx_id: string): Promise<Document> {
+  enqueue(queue: Queue, script_id: string, ctx_id: string): Promise<Routine> {
     return queue.createRoutine(script_id, null, ctx_id, new Date());
   }
 
-  coerceScheduleQueue(schedule: Document): Queue {
+  coerceScheduleQueue(schedule: Schedule): Queue {
     const queue_name: string = schedule.get('queue_name');
 
     return nullthrows(this.getQueue(queue_name));
   }
 
-  getNextScheduleTime(schedule: Document): Date {
+  getNextScheduleTime(schedule: Schedule): Date {
     const start_time: Date = schedule.get('start_time');
     const recurrence: ?number = schedule.get('recurrence');
     const t1 = start_time.getTime();
@@ -90,7 +90,7 @@ class Scheduler {
     return t1 > t2 ? start_time : new Date(t2 + ((t2 - t1) % recurrence));
   }
 
-  enqueueScheduled(schedule: Document, date?: Date): Promise<Document> {
+  enqueueScheduled(schedule: Schedule, date?: Date): Promise<Routine> {
     const script_id: string = schedule.get('script_id');
     const schedule_id: string = schedule.get('id');
     const context_id: string = schedule.get('context_id');
@@ -99,7 +99,7 @@ class Scheduler {
     return this.coerceScheduleQueue(schedule).createRoutine(script_id, schedule_id, context_id, next);
   }
 
-  cleanSchedule(schedule: Document): Promise<void> {
+  cleanSchedule(schedule: Schedule): Promise<void> {
     return this.coerceScheduleQueue(schedule).removeUnlockedRoutines(schedule);
   }
 
@@ -124,7 +124,7 @@ class Scheduler {
         };
       };
 
-      thread.on(PollingThread.events.ROUTINE, (routine: Document) => {
+      thread.on(PollingThread.events.ROUTINE, (routine: Schedule) => {
         queue.renewRoutine(routine).then(() => {
           callback(
             routine,

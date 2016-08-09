@@ -22,10 +22,10 @@
  * @flow
  */
 
+import type {AuthHandle} from '../../model/AuthHandle';
 import type {Resolve, Reject} from '../../utils/promises';
-import type {Document} from 'mongoose';
 
-const AuthHandle = require('../../model/AuthHandle');
+const AuthHandleModel = require('../../model/AuthHandle');
 const Crypto = require('crypto');
 const Graph = require('fbgraph');
 const User = require('./User');
@@ -112,12 +112,12 @@ class Authentication {
     return Crypto.createHash(HANDLE_KEY_HASH_ALGO).update(raw).digest('base64');
   }
 
-  willGetAuthHandle(user_access_token: string): Promise<?Document> {
-    return AuthHandle.findOne({ handle: this.getAuthHandleKey(user_access_token) }).exec();
+  willGetAuthHandle(user_access_token: string): Promise<?AuthHandle> {
+    return AuthHandleModel.findOne({ handle: this.getAuthHandleKey(user_access_token) }).exec();
   }
 
-  willStoreAuthHandle(user_access_token: string, user_id: number): Promise<Document> {
-    const handle = AuthHandle({
+  willStoreAuthHandle(user_access_token: string, user_id: number): Promise<AuthHandle> {
+    const handle = AuthHandleModel({
       handle: this.getAuthHandleKey(user_access_token),
       user_id: user_id,
     });
@@ -127,7 +127,7 @@ class Authentication {
 
   willAuthenticateUser(user_access_token: string): Promise<User> {
     return this.willGetAuthHandle(user_access_token)
-      .then((handle: ?Document) => {
+      .then((handle: ?AuthHandle) => {
         if (handle) {
           return new User(handle.get('user_id'));
         }

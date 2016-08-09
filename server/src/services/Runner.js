@@ -24,13 +24,15 @@
 
 import type Config from '../Config';
 import type {ContextualizedRoutine} from '../scheduler/Scheduler';
-import type {Document} from 'mongoose';
 import type {Resolve, Reject} from '../utils/promises';
+import type {Routine} from '../scheduler/Queue';
+import type {Schedule} from '../model/Schedule';
+import type {Script} from '../model/Script';
 
 const AbstractService = require('./AbstractService');
 const Sandbox = require('../sandbox/Sandbox');
-const Schedule = require('../model/Schedule');
-const Script = require('../model/Script');
+const ScheduleModel = require('../model/Schedule');
+const ScriptModel = require('../model/Script');
 
 const nullthrows = require('../utils/nullthrows');
 const sandbox_template = require('../sandbox/template');
@@ -56,23 +58,23 @@ class Runner extends AbstractService {
     return this.routineId;
   }
 
-  willGetRoutine(routine_id: string): Promise<Document> {
+  willGetRoutine(routine_id: string): Promise<Routine> {
     return this.getScheduler().getRoutine(routine_id)
       .then((pair: ?ContextualizedRoutine) => pair || Promise.reject(new Error(`Unknown routine '${routine_id}'`)))
       .then((pair: ContextualizedRoutine) => pair.routine );
   }
 
-  willGetSchedule(schedule_id: string): Promise<Document> {
-    return Schedule.findById(schedule_id).exec()
-      .then((schedule: ?Document) => schedule || Promise.reject(new Error(`Unknown scheudle '${schedule_id}'`)));
+  willGetSchedule(schedule_id: string): Promise<Schedule> {
+    return ScheduleModel.findById(schedule_id).exec()
+      .then((schedule: ?Schedule) => schedule || Promise.reject(new Error(`Unknown scheudle '${schedule_id}'`)));
   }
 
-  willGetScript(script_id: string): Promise<Document> {
-    return Script.findById(script_id).exec()
-      .then((script: ?Document) => script || Promise.reject(new Error(`Unknown script '${script_id}'`)));
+  willGetScript(script_id: string): Promise<Script> {
+    return ScriptModel.findById(script_id).exec()
+      .then((script: ?Script) => script || Promise.reject(new Error(`Unknown script '${script_id}'`)));
   }
 
-  willExecSandbox(script: Document, context_id: string): Promise<void> {
+  willExecSandbox(script: Script, context_id: string): Promise<void> {
     return new Promise((resolve: Resolve<void>, reject: Reject) => {
       this.getSandbox().setSharedObject(sandbox_template(this.getConfig(), script, context_id));
       this.emit(Runner.events.INIT);
@@ -88,12 +90,12 @@ class Runner extends AbstractService {
     const routine_id = this.getRoutineId();
     let context_id: ?string = null;
     this.willGetRoutine(routine_id)
-      .then((routine: Document) => this.willGetSchedule(routine.get('schedule_id')))
-      .then((schedule: Document) => {
+      .then((routine: Routine) => this.willGetSchedule(routine.get('schedule_id')))
+      .then((schedule: Schedule) => {
         context_id = schedule.get('context_id');
         return this.willGetScript(schedule.get('script_id'));
       })
-      .then((script: Document) => this.willExecSandbox(script, nullthrows(context_id)))
+      .then((script: Script) => this.willExecSandbox(script, nullthrows(context_id)))
       .then(() => { this.emit(Runner.events.END); })
       .catch((error: Error) => { throw error; });
   }

@@ -24,16 +24,13 @@
 
 import type AbstractParam from '../../params/AbstractParam';
 import type Context from '../../RequestContext';
-import type {Document} from 'mongoose';
-
-// Flow typeof won't work with import type
-const {Model} = require('mongoose');
-const {Map} = require('immutable');
+import type {Script} from '../../../model/script';
 
 const AbstractDocumentUpdateController = require('../AbstractDocumentUpdateController');
-const Script = require('../../../model/script');
+const ScriptModel = require('../../../model/script');
 const ScriptOptimizationsParam = require('../../params/ScriptOptimizationsParam');
 const StringParam = require('../../params/StringParam');
+const {Map} = require('immutable');
 
 // implement ../ControllerInterface
 class ScriptUpdateController extends AbstractDocumentUpdateController {
@@ -42,8 +39,8 @@ class ScriptUpdateController extends AbstractDocumentUpdateController {
     return '/scripts';
   }
 
-  getModel(): typeof Model {
-    return Script;
+  getModel(): typeof ScriptModel {
+    return ScriptModel;
   }
 
   getParams(): Map<string, AbstractParam<any>> {
@@ -68,7 +65,7 @@ class ScriptUpdateController extends AbstractDocumentUpdateController {
     };
 
     context.execPromise(context.getTarget().set(data).save({ new: true }))
-      .then((doc: Document) => context.sendDocument(doc));
+      .then((script: Script) => context.sendDocument(script));
   }
 }
 

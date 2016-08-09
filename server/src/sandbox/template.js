@@ -23,9 +23,9 @@
  */
 
 import type Config from '../Config';
-import type {Document} from 'mongoose';
 import type {FieldName} from '../../../sdk/src/specs/FieldSpec';
 import type {NodeType} from '../../../sdk/src/specs/NodeSpec';
+import type {Script} from '../model/Script';
 
 const Adapter = require('../../../sdk/src/http/adapters/NodejsSynchronousAdapter');
 const Api = require('../../../sdk/src/Api');
@@ -38,7 +38,7 @@ const {Map} = require('immutable');
 
 const {getObject} = require('./GraphSchemaLoader');
 
-module.exports = function(config: Config, script: Document, ctx_id: string): Object {
+module.exports = function(config: Config, script: Script, ctx_id: string): Object {
   // Load configs
   const app_id = config.getInteger('graph.application_id');
   const app_secret = config.getString('graph.application_secret');

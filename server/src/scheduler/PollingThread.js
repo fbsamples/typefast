@@ -24,7 +24,7 @@
 
 import type Queue from './Queue';
 import type PollingPool from './PollingPool';
-import type {Document} from 'mongoose';
+import type {Routine} from './Queue';
 import type {Unlock} from './PollingPool';
 
 const {EventEmitter} = require('events');
@@ -74,7 +74,7 @@ class PollingThread extends EventEmitter {
   onPoolLock(unlock: Unlock): void {
     // Dispatch ROUTINE event -> Instruct worker to spawn a new runner
     this.emit(PollingThread.events.LOCK);
-    this.getQueue().getRoutineWithLock().then((routine: ?Document) => {
+    this.getQueue().getRoutineWithLock().then((routine: ?Routine) => {
       if (routine !== null && routine !== undefined) {
         // Stop the thread -> Worker to restart once routine is over
         this.stop();

@@ -24,11 +24,9 @@
 
 import type AbstractParam from '../../params/AbstractParam';
 import type Context from '../../RequestContext';
-import type {Document} from 'mongoose';
 import type {Map} from 'immutable';
-
-// Flow typeof won't work with import type
-const {Model} = require('mongoose');
+import type {Schedule} from '../../../model/Schedule';
+import type {Script} from '../../../model/Script';
 
 const AbstractDocumentCreateController = require('../AbstractDocumentCreateController');
 const DateParam = require('../../params/DateParam');
@@ -36,8 +34,8 @@ const BooleanParam = require('../../params/BooleanParam');
 const HttpStatus = require('http-status-codes');
 const IntegerParam = require('../../params/IntegerParam');
 const MongoIdParam = require('../../params/MongoIdParam');
-const Schedule = require('../../../model/Schedule');
-const Script = require('../../../model/Script');
+const ScheduleModel = require('../../../model/Schedule');
+const ScriptModel = require('../../../model/Script');
 const StringParam = require('../../params/StringParam');
 const QueueNameParam = require('../../params/QueueNameParam');
 
@@ -47,8 +45,8 @@ class ScheduleCreateController extends AbstractDocumentCreateController {
     return '/schedules';
   }
 
-  getModel(): typeof Model {
-    return Schedule;
+  getModel(): typeof ScheduleModel {
+    return ScheduleModel;
   }
 
   getParams(): Map<string, AbstractParam<any>> {
@@ -66,7 +64,7 @@ class ScheduleCreateController extends AbstractDocumentCreateController {
   genResponse(context: Context): void {
     const scheduler = this.getApplication().getScheduler();
     const script_id = context.getParams().getString('script_id');
-    const schedule = Schedule({
+    const schedule = ScheduleModel({
       context_id: context.getParams().getString('context_id'),
       start_time: context.getParams().getDate('start_time'),
       is_paused: context.getParams().getBoolean('is_paused'),
@@ -75,12 +73,12 @@ class ScheduleCreateController extends AbstractDocumentCreateController {
       script_id: script_id,
     });
 
-    const chain = Script.findById(script_id).exec()
-      .then((script: ?Document) => {
+    const chain = ScriptModel.findById(script_id).exec()
+      .then((script: ?Script) => {
         return script || context.willDisposeWithError(HttpStatus.BAD_REQUEST, `Unknown script with id '${script_id}'`);
       })
       .then(() => {
-        return schedule.save().then((schedule: Document) => {
+        return schedule.save().then((schedule: Schedule) => {
           const is_paused: bool = schedule.get('is_paused');
           if (is_paused) {
             return schedule;
@@ -96,7 +94,7 @@ class ScheduleCreateController extends AbstractDocumentCreateController {
       });
 
     context.execPromise(chain)
-      .then((schedule: Document) => context.sendDocument(schedule));
+      .then((schedule: Schedule) => context.sendDocument(schedule));
   }
 }
 

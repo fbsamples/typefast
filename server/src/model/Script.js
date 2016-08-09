@@ -22,6 +22,10 @@
  * @flow
  */
 
+import type {Document} from 'mongoose';
+
+export type Script = Document;
+
 const Mongoose = require('mongoose');
 const schema = require('./schema/script');
 

@@ -23,12 +23,13 @@
  */
 
 import type {Document, Schema} from 'mongoose';
+import type {Schedule} from '../model/Schedule';
 
 export type Routine = Document;
 export type RoutineMutator = (routine: Routine) => Promise<Routine>;
 
 const Mongoose = require('mongoose');
-const Schedule = require('../model/Schedule');
+const ScheduleModel = require('../model/Schedule');
 // Flow typeof won't work with import type
 const {Model} = require('mongoose');
 
@@ -80,7 +81,7 @@ class Queue {
     return this.getModel().findOneAndUpdate(conditions, doc).exec();
   }
 
-  removeUnlockedRoutines(schedule: Document): Promise<void> {
+  removeUnlockedRoutines(schedule: Schedule): Promise<void> {
     const schedule_id: string = schedule.get('id');
     const conditions = { is_completed: false, lock_id: null, schedule_id: schedule_id};
 
@@ -101,8 +102,8 @@ class Queue {
     const schedule_id: string = routine.get('schedule_id');
     const context_id: string = routine.get('context_id');
 
-    return Schedule.findById(schedule_id).exec()
-      .then((schedule: ?Document) => {
+    return ScheduleModel.findById(schedule_id).exec()
+      .then((schedule: ?Schedule) => {
         if (schedule == null) {
           return null;
         }

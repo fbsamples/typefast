@@ -22,6 +22,10 @@
  * @flow
  */
 
+import type {Document} from 'mongoose';
+
+export type AuthHandle = Document;
+
 const Mongoose = require('mongoose');
 const schema = require('./schema/auth_handle');
 
