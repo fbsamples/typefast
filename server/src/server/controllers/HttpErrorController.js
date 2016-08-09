@@ -57,6 +57,11 @@ class HttpErrorController extends AbstractController {
     return this.code;
   }
 
+  // Public endpoint
+  willAuthorize(context: Context): Promise<Context> {
+    return Promise.resolve(context);
+  }
+
   genResponse(context: Context): void {
     context.disposeWithError(this.getCode());
   }
