@@ -22,30 +22,7 @@
  * @flow
  */
 
-import fetch from 'isomorphic-fetch';
-
-function makeUrl(path: string, getState: Function, query: ?Object): string {
-  const chunks = [];
-  query = query || {};
-  query.access_token = getState().accessToken;
-  for (let i in query) {
-    if (query.hasOwnProperty(i)) {
-      chunks.push(encodeURIComponent(i) + '=' + encodeURIComponent(query[i]));
-    }
-  }
-  return path + (chunks.length > 0 ? '?' : '') + chunks.join('&');
-}
-
-function makeFormData(object: Object, getState: Function): FormData {
-  const form = new FormData();
-  form.append('access_token', getState().accessToken);
-  for (let i in object) {
-    const value = typeof object[i] === 'object'
-      ? JSON.stringify(object[i]) : object[i];
-    form.append(i, value);
-  }
-  return form;
-}
+import {get, post} from '../utils/fetch';
 
 function handleErrors(response, dispatch) {
   if (!response.ok) {
@@ -169,34 +146,30 @@ export function saveScript() {
     dispatch({type: SAVE_SCRIPT_REQUEST});
     const currentScript = getState().currentScript;
     const id = currentScript.id || '';
-    return fetch('/scripts/' + id, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-      },
-      body: makeFormData({
-        code: getState().editorValue,
-        optimisations: getState().optimisations,
-        title: getState().currentTitle,
-        scheulde: {
-          state: getState().scheduleState,
-          startTime: getState().scheduleStartTime,
-          interval: getState().scheduleInterval,
-        }
-      }, getState)
-    })
-    .then((response) => handleErrors(response, dispatch))
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(response) {
-      dispatch({
-        type: SAVE_SCRIPT_SUCCESS,
-        payload: {
-          script: response
-        }
+    const body = {
+      code: getState().editorValue,
+      optimisations: getState().optimisations,
+      title: getState().currentTitle,
+      scheulde: {
+        state: getState().scheduleState,
+        startTime: getState().scheduleStartTime,
+        interval: getState().scheduleInterval,
+      }
+    };
+
+    return post(getState(), '/scripts/' + id, body)
+      .then((response) => handleErrors(response, dispatch))
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(response) {
+        dispatch({
+          type: SAVE_SCRIPT_SUCCESS,
+          payload: {
+            script: response
+          }
+        });
       });
-    });
   };
 }
 
@@ -208,61 +181,52 @@ export const PREVIEW_SCRIPT_SUCCESS = 'PREVIEW_SCRIPT_SUCCESS';
 export const PREVIEW_SCRIPT_FAILURE = 'PREVIEW_SCRIPT_FAILURE';
 
 function pollRoutine(routineId, dispatch, getState) {
-  fetch(makeUrl('/routines/' + routineId, getState))
-  .then((response) => handleErrors(response, dispatch))
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(response) {
-    // this is hideous, fix it
-    if (response.is_completed) {
-      let message
-        = response.runner_log.map(function(a) { return a.chunk; }).join('\n');
-      dispatch({
-        type: PREVIEW_SCRIPT_SUCCESS,
-        payload: {
-          log: [{message: message}]
-        }
-      });
-    } else {
-      setTimeout(function() {
-        pollRoutine(routineId, dispatch, getState);
-      }, 1000);
-    }
-  });
+  get(getState(), '/routines/' + routineId)
+    .then((response) => handleErrors(response, dispatch))
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(response) {
+      // this is hideous, fix it
+      if (response.is_completed) {
+        let message
+          = response.runner_log.map(function(a) { return a.chunk; }).join('\n');
+        dispatch({
+          type: PREVIEW_SCRIPT_SUCCESS,
+          payload: {
+            log: [{message: message}]
+          }
+        });
+      } else {
+        setTimeout(function() {
+          pollRoutine(routineId, dispatch, getState);
+        }, 1000);
+      }
+    });
 }
 
 export function previewScript() {
   return function(dispatch, getState) {
     dispatch({type: PREVIEW_SCRIPT_REQUEST});
+    const body = {
+      queue_name: 'preview_queue',
+      script_id: getState().currentScript.id,
+    };
 
-    return fetch(makeUrl('/schedules', getState), {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-      },
-      body: makeFormData({
-        queue_name: 'preview_queue',
-        script_id: getState().currentScript.id,
-      }, getState)
-    })
-    .then((response) => handleErrors(response, dispatch))
-    .then(response => response.json())
-    .then(response => {
-      const query = {
-        queue_name: 'preview_queue',
-        schedule_id: response.id,
-      };
-      return fetch(makeUrl('/routines', getState, query), {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-        },
-      })
+    return post(getState(), '/schedules', body)
       .then((response) => handleErrors(response, dispatch))
       .then(response => response.json())
-      .then(response => pollRoutine(response.data[0].id, dispatch, getState));
-    });
+      .then(response => {
+        const query = {
+          queue_name: 'preview_queue',
+          schedule_id: response.id,
+        };
+
+        return get(getState(), '/routines', query)
+          .then((response) => handleErrors(response, dispatch))
+          .then(response => response.json())
+          .then(response => pollRoutine(response.data[0].id, dispatch, getState));
+      });
   };
 }
 
@@ -278,7 +242,8 @@ export function fetchRunHistory() {
       dispatch({type: NO_SCRIPT_LOGS});
     } else {
       dispatch({type: FETCHING_SCRIPT_LOGS_REQUEST});
-      return fetch(makeUrl(`/scripts/${currentScriptId}/logs`, getState))
+
+      return get(getState(), `/scripts/${currentScriptId}/logs`)
         .then((response) => handleErrors(response, dispatch))
         .then(function(response) {
           return response.json();
@@ -302,7 +267,8 @@ export const FETCHING_SCRIPTS_FAILURE = 'FETCHING_SCRIPTS_FAILURE';
 export function fetchScripts() {
   return function(dispatch, getState) {
     dispatch({type: FETCHING_SCRIPTS_REQUEST});
-    return fetch(makeUrl('/scripts', getState))
+
+    return get(getState(), '/scripts')
       .then((response) => handleErrors(response, dispatch))
       .then(function(response) {
         return response.json();
