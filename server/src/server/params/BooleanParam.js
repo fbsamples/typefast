@@ -23,12 +23,13 @@
  */
 
 const AbstractParam = require('./AbstractParam');
+const {toBoolean} = require('validator');
 
 class BooleanParam extends AbstractParam<bool> {
 
   willValidate(value: any): Promise<bool> {
-    return super.willValidate(value).then((value: any) => {
-      return !!+value;
+    return super.willValidate(value).then((subject: any) => {
+      return toBoolean(subject.toString());
     });
   }
 }

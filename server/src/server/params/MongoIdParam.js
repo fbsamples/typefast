@@ -24,12 +24,13 @@
 
 const AbstractParam = require('./AbstractParam');
 const ObjectId = require('mongoose').Types.ObjectId;
+const {isMongoId} = require('validator');
 
 class MongoIdParam extends AbstractParam<string> {
 
   willValidate(value: any): Promise<string> {
-    return super.willValidate(value).then((value: any) => {
-      if (!ObjectId.isValid(value)) {
+    return super.willValidate(value).then((subject: any) => {
+      if (!isMongoId(subject.toString())) {
         return Promise.reject(new Error(`'${value}', not a valid document id`));
       }
 

@@ -35,11 +35,13 @@ const DateParam = require('../../params/DateParam');
 const BooleanParam = require('../../params/BooleanParam');
 const HttpStatus = require('http-status-codes');
 const IntegerParam = require('../../params/IntegerParam');
+const OrParam = require('../../params/OrParam');
 const MongoIdParam = require('../../params/MongoIdParam');
 const Schedule = require('../../../model/Schedule');
 const Script = require('../../../model/Script');
 const StringParam = require('../../params/StringParam');
 const QueueNameParam = require('../../params/QueueNameParam');
+const {List} = require('immutable');
 
 class ScheduleCreateController extends AbstractDocumentCreateController {
 
@@ -57,7 +59,10 @@ class ScheduleCreateController extends AbstractDocumentCreateController {
       context_id: new StringParam().setMinLength(1).setDefaultValue(ctx_id),
       start_time: new DateParam().setDefaultValue(new Date()),
       is_paused: new BooleanParam().setDefaultValue(false),
-      recurrence: new IntegerParam().setMin(3600000).optional(), // 1h min intval
+      recurrence: new OrParam(new List([
+        new IntegerParam().setMin(3600000), // 1h min intval,
+        new IntegerParam().setMin(0).setMax(0)
+      ])).setDefaultValue(0).optional(),
       script_id: new MongoIdParam(),
       queue_name: new QueueNameParam(this.getApplication().getScheduler()),
     });

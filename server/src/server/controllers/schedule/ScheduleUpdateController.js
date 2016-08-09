@@ -32,8 +32,10 @@ const {Model} = require('mongoose');
 
 const AbstractDocumentUpdateController = require('../AbstractDocumentUpdateController');
 const IntegerParam = require('../../params/IntegerParam');
+const OrParam = require('../../params/OrParam');
 const Schedule = require('../../../model/Schedule');
 const BooleanParam = require('../../params/BooleanParam');
+const {List} = require('immutable');
 
 // implement ../ControllerInterface
 class ScheduleUpdateController extends AbstractDocumentUpdateController {
@@ -49,7 +51,10 @@ class ScheduleUpdateController extends AbstractDocumentUpdateController {
   getParams(): Map<string, AbstractParam<any>> {
     return super.getParams().merge({
       is_paused: new BooleanParam().optional(),
-      recurrence: new IntegerParam().setMin(3600000).optional(), // 1h min intval
+      recurrence: new OrParam(new List([
+        new IntegerParam().setMin(3600000), // 1h min intval,
+        new IntegerParam().setMin(0).setMax(0)
+      ])).optional()
     });
   }
 

@@ -44,12 +44,16 @@ class Params {
     return this.toMap().get(key, undefined) == null;
   }
 
+  getOptional<T>(provider: (key: string) => T, key: string, def?: T): ?T {
+    return !this.isNull(key) ? provider(key) : def !== undefined && !this.hasKey(key) ? def : null;
+  }
+
   getString(key: string): string {
     return this.toMap().get(key).toString();
   }
 
   getOptionalString(key: string, def?: string): ?string {
-    return !this.isNull(key) ? this.getString(key) : def !== undefined ? def : null;
+    return this.getOptional(this.getString.bind(this), key, def);
   }
 
   getNumber(key: string): number {
@@ -57,7 +61,7 @@ class Params {
   }
 
   getOptionalNumber(key: string, def?: number): ?number {
-    return !this.isNull(key) ? this.getNumber(key) : def !== undefined ? def : null;
+    return this.getOptional(this.getNumber.bind(this), key, def);
   }
 
   getBoolean(key: string): bool {
@@ -65,7 +69,7 @@ class Params {
   }
 
   getOptionalBoolean(key: string, def?: bool): ?bool {
-    return !this.isNull(key) ? this.getBoolean(key) : def !== undefined ? def : null;
+    return this.getOptional(this.getBoolean.bind(this), key, def);
   }
 
   getMap(key: string): Map<string, any> {
@@ -73,7 +77,7 @@ class Params {
   }
 
   getOptionalMap(key: string, def?: Map<string, any>): ?Map<string, any> {
-    return !this.isNull(key) ? this.getMap(key) : def !== undefined ? def : null;
+    return this.getOptional(this.getMap.bind(this), key, def);
   }
 
   getList(key: string): List<any> {
@@ -81,7 +85,7 @@ class Params {
   }
 
   getOptionalList(key: string, def?: List<any>): ?List<any> {
-    return !this.isNull(key) ? this.getList(key) : def !== undefined ? def : null;
+    return this.getOptional(this.getList.bind(this), key, def);
   }
 
   getDate(key: string): Date {
@@ -89,7 +93,7 @@ class Params {
   }
 
   getOptionalDate(key: string, def?: Date): ?Date {
-    return !this.isNull(key) ? this.getDate(key) : def !== undefined ? def : null;
+    return this.getOptional(this.getDate.bind(this), key, def);
   }
 }
 

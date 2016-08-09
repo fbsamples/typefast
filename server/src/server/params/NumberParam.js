@@ -23,6 +23,7 @@
  */
 
 const AbstractParam = require('./AbstractParam');
+const {isNumeric} = require('validator');
 
 class NumberParam extends AbstractParam<number> {
 
@@ -56,13 +57,12 @@ class NumberParam extends AbstractParam<number> {
   }
 
   willValidate(value: any): Promise<number> {
-    return super.willValidate(value).then((value: any) => {
-      const num = Number(value);
-
-      if (num.toString() !== value) {
+    return super.willValidate(value).then((subject: any) => {
+      if (!isNumeric(subject.toString())) {
         return Promise.reject(new Error(`'${value}', not a valid number`));
       }
 
+      const num = Number(subject);
       const min = this.getMin();
       const max = this.getMax();
 

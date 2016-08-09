@@ -29,24 +29,24 @@ const ERROR_MSG = 'Expected JSON representation of Map<string, Array<string>>';
 class ScriptOptimizationsParam extends AbstractJsonParam<Object> {
 
   willValidate(value: any): Promise<Object> {
-    return super.willValidate(value).then((value: any) => {
-      if (!value instanceof Object) {
+    return super.willValidate(value).then((subject: any) => {
+      if (!subject instanceof Object) {
         return Promise.reject(new Error(ERROR_MSG));
       }
 
-      for (let i in value) {
-        if (!(value[i] instanceof Array)) {
+      for (let i in subject) {
+        if (!(subject[i] instanceof Array)) {
           return Promise.reject(new Error(ERROR_MSG));
         }
 
-        for (let j = 0; j <= value[i].length; j++) {
-          if (!typeof value[i][j] === 'string') {
+        for (let j = 0; j <= subject[i].length; j++) {
+          if (!typeof subject[i][j] === 'string') {
             return Promise.reject(new Error(ERROR_MSG));
           }
         }
       }
 
-      return value;
+      return subject;
     });
   }
 }

@@ -23,6 +23,7 @@
  */
 
 const NumberParam = require('./NumberParam');
+const {isInt} = require('validator');
 
 class IntegerParam extends NumberParam {
 
@@ -33,12 +34,12 @@ class IntegerParam extends NumberParam {
   }
 
   willValidate(value: any): Promise<number> {
-    return super.willValidate(value).then((value: number) => {
-      if (value % 1 !== 0) {
+    return super.willValidate(value).then((subject: number) => {
+      if (!isInt(subject.toString())) {
         return Promise.reject(new Error(`'${value}', not a valid integer`));
       }
 
-      return parseInt(value, 10);
+      return parseInt(subject, 10);
     });
   }
 }
