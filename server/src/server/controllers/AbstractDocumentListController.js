@@ -40,8 +40,14 @@ class AbstractDocumentListController extends AbstractDocumentController {
     return new Set(['get']);
   }
 
+  getParamBindings(): List<string> {
+    return new List();
+  }
+
   getCriteria(context: Context): Map<string, any> {
-    return new Map();
+    return Map(this.getParamBindings().map((key: string) => [key, undefined]).toSeq())
+      .map((value: void, key: string) => context.getParams().toMap().get(key, undefined))
+      .filterNot((value: ?any) => value === undefined);
   }
 
   genResponse(context: Context): void {

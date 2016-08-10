@@ -242,7 +242,7 @@ export function previewScript() {
         'Accept': 'application/json',
       },
       body: makeFormData({
-        queue_name: 'preview_queue',
+        queue_name: 'preview',
         script_id: getState().currentScript.id,
       }, getState)
     })
@@ -250,7 +250,7 @@ export function previewScript() {
     .then(response => response.json())
     .then(response => {
       const query = {
-        queue_name: 'preview_queue',
+        queue_name: 'preview',
         schedule_id: response.id,
       };
       return fetch(makeUrl('/routines', getState, query), {

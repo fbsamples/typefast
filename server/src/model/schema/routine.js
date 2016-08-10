@@ -35,6 +35,7 @@ const schema = new Mongoose.Schema({
   is_completed: { type: Boolean, default: false },
   lock_creation_time: { type: Date, default: null },
   lock_id: { type: Mongoose.Schema.ObjectId, default: null },
+  queue_name: { type: String, required: true },
   runner_end_time: { type: Date, default: null },
   runner_exit_code: { type: Number, default: 0 },
   runner_log: { type: Array, value: { type: { time: Date, stream: String, chunk: String } } },
@@ -46,11 +47,8 @@ const schema = new Mongoose.Schema({
 schema.index({
   is_completed: 1,
   lock_id: 1,
+  queue_name: 1,
   visible_from: 1,
-});
-
-schema.index({
-  creation_time: -1
 });
 
 schema.pre('save', function(next) {

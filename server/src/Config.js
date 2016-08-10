@@ -24,7 +24,7 @@
 
 const assert = require('assert');
 const fs = require('fs');
-const {List, Map} = require('immutable');
+const {fromJS, List, Map} = require('immutable');
 
 export type Argv = Map<string, string | number | bool>;
 
@@ -102,6 +102,12 @@ class Config {
     const leaf = this.resolveSubtree(subtree);
     assert(typeof leaf === 'string');
     return leaf;
+  }
+
+  getMap(subtree: string): Map<string, any> {
+    const leaf = this.resolveSubtree(subtree);
+    assert(leaf instanceof Object);
+    return fromJS(leaf);
   }
 }
 

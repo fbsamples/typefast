@@ -23,18 +23,18 @@
  */
 
 import type {AnonimizedRoutineMutator as Mutator} from '../scheduler/Scheduler';
-import type Queue from '../scheduler/Queue';
 import type {ChildProcess} from 'child_process';
 import type {LogEntry} from '../model/schema/routine';
 import type {Interface as ReadlineInterface} from 'readline';
 import type {ReadStream} from 'fs';
-import type {Routine} from '../scheduler/Queue';
+import type {Routine} from '../model/Routine';
 
 type StreamBindings = Map<string, ReadlineInterface>;
 
 const AbstractService = require('./AbstractService');
 const PollingPool = require('../scheduler/PollingPool');
 const PollingThread = require('../scheduler/PollingThread');
+const Queue = require('../scheduler/Queue');
 const Readline = require('readline');
 const {execFile} = require('child_process');
 const {Map} = require('immutable');
@@ -104,13 +104,13 @@ class Worker extends AbstractService {
   }
 
   init(): void {
-    const polling_interval = this.getConfig().getInteger('scheduler.preview_queue.polling_interval');
-    const preview_queue: Queue = this.getScheduler().getQueues().get('preview_queue');
-    const main_queue: Queue = this.getScheduler().getQueues().get('main_queue');
-    // FIXME this arbitrarly enables only 1 thread on the preview queue -> no main queue
-    const pool = new PollingPool(1);
-    PollingThread.fromPool(pool, preview_queue, polling_interval);
-    PollingThread.fromPool(pool, main_queue, polling_interval);
+    const config = this.getConfig().getMap('scheduler.queues');
+
+    // FIXME this arbitrarly enables only 1 thread per queue at pool concurrency n
+    const pool = new PollingPool(config.size);
+    config.map((tree: Map<string, any>, name: string) => {
+      PollingThread.fromPool(pool, new Queue(name), tree.get('polling_interval'));
+    });
 
     this.getScheduler().pollForRoutines(pool, this.onRoutine.bind(this));
 

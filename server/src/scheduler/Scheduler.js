@@ -24,7 +24,8 @@
 
 import type Config from '../Config';
 import type PollingPool from './PollingPool';
-import type {Routine, RoutineMutator} from './Queue';
+import type {Routine} from '../model/Routine';
+import type {RoutineMutator} from './Queue';
 import type {Schedule} from '../model/Schedule';
 
 export type AnonimizedRoutineMutator = () => Promise<Routine>;
@@ -38,8 +39,7 @@ export type OnRoutine = (
 const nullthrows = require('../utils/nullthrows');
 const PollingThread = require('./PollingThread');
 const Queue = require('./Queue');
-const RoutineSchema = require('../model/schema/routine');
-const {List, Map} = require('immutable');
+const {Map} = require('immutable');
 const {genMap} = require('../utils/promises');
 
 class Scheduler {
@@ -47,10 +47,8 @@ class Scheduler {
   queues: Map<string, Queue>;
 
   static fromConfig(config: Config): Scheduler {
-    const queues = new Map(new List(['main_queue', 'preview_queue']).map((name: string) => [
-      name,
-      Queue.fromSchema(RoutineSchema, config.getString(`scheduler.${name}.collection_name`))
-    ]).toSeq());
+    const queues = config.getMap('scheduler.queues')
+      .map((tree: any, name: string) => new Queue(name));
 
     return new Scheduler(queues);
   }
@@ -124,7 +122,7 @@ class Scheduler {
         };
       };
 
-      thread.on(PollingThread.events.ROUTINE, (routine: Schedule) => {
+      thread.on(PollingThread.events.ROUTINE, (routine: Routine) => {
         queue.renewRoutine(routine).then(() => {
           callback(
             routine,
