@@ -29,8 +29,12 @@ import type {Resolve, Reject} from '../../utils/promises';
 
 const HttpStatus = require('http-status-codes');
 const Context = require('../RequestContext');
-const {Map} = require('immutable');
+const {List, Map} = require('immutable');
 const {genMap} = require('../../utils/promises');
+
+const linearSearchDefined = function<T>(...test: Array<?T>): ?T {
+  return new List(test).find((value: ?T) => value !== undefined, this, undefined);
+};
 
 class AbstractController {
 
@@ -86,8 +90,15 @@ class AbstractController {
     const body = context.getRequest().body;
     const query = context.getRequest().query;
 
+    // Filter out optional params without a corresponding value
+    // Will allow controllers to differenciate an optional empty value from a missing optional value
+    const params = this.getParams().filterNot((param: AbstractParam<any>, field: string) => {
+      const value = linearSearchDefined(body[field], query[field]);
+      return value === undefined && param.isOptional() && !param.hasDefaultValue();
+    });
+
     const do_validate = (param: AbstractParam<any>, field: string) => {
-      const value = body[field] || query[field] || param.getDefaultValue();
+      const value = linearSearchDefined(body[field], query[field], param.getDefaultValue());
       if (!param.isOptional() && value == null) {
         return Promise.reject(new Error(`Missing required field '${field}'`));
       }
@@ -102,7 +113,7 @@ class AbstractController {
     };
 
     return new Promise((resolve: Resolve<Context>, reject: Reject) => {
-      genMap(this.getParams().map(do_validate))
+      genMap(params.map(do_validate))
         .then((values: Map<string, any>) => resolve(context.setParamsData(values)))
         .catch((error: Error) => {
           return context.willDisposeWithError(HttpStatus.BAD_REQUEST, error.message);

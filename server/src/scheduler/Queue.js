@@ -109,7 +109,7 @@ class Queue {
         }
 
         const recurrence: ?number = schedule.get('recurrence');
-        if (recurrence == null) {
+        if (recurrence == null || recurrence == 0) {
           return null;
         }
 

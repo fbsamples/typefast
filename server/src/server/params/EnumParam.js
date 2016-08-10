@@ -22,20 +22,33 @@
  * @flow
  */
 
+import type {Set} from 'immutable';
+
 const AbstractParam = require('./AbstractParam');
-const {isDate} = require('validator');
 
-class DateParam extends AbstractParam<Date> {
+class EnumParam<T> extends AbstractParam<T> {
 
-  willValidate(value: any): Promise<Date> {
+  allowedValues: Set<T>;
+
+  constructor(allowed_values: Set<T>): void {
+    super();
+    this.allowedValues = allowed_values;
+  }
+
+  getAllowedValues(): Set<T> {
+    return this.allowedValues;
+  }
+
+  willValidate(value: any): Promise<T> {
     return super.willValidate(value).then((subject: any) => {
-      if (!isDate(subject.toString())) {
-        return Promise.reject(new Error(`'${value}', not a valid date`));
+      if (!this.getAllowedValues().includes(subject)) {
+        const plain = this.getAllowedValues().join(', ');
+        return Promise.reject(new Error(`'${value}', not a valid value. Accepted values are: ${plain}`));
       }
 
-      return new Date(value);
+      return subject;
     });
   }
 }
 
-module.exports = DateParam;
+module.exports = EnumParam;

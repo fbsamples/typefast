@@ -24,25 +24,15 @@
 
 import type Scheduler from '../../scheduler/Scheduler';
 
-const StringParam = require('./StringParam');
+const EnumParam = require('./EnumParam');
 
-class QueueNameParam extends StringParam {
+class QueueNameParam extends EnumParam {
 
   scheduler: Scheduler;
 
   constructor(scheduler: Scheduler) {
-    super();
+    super(scheduler.getQueues().keySeq().toSet());
     this.scheduler = scheduler;
-  }
-
-  willValidate(value: any): Promise<string> {
-    return super.willValidate(value).then((value: string) => {
-      if (!this.scheduler.getQueues().has(value)) {
-        return Promise.reject(new Error(`Unknown queue ${value}`));
-      }
-
-      return value;
-    });
   }
 }
 
