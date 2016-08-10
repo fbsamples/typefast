@@ -22,34 +22,31 @@
  * @flow
  */
 
-import type {Document, Schema} from 'mongoose';
+import type {Routine} from '../model/Routine';
 import type {Schedule} from '../model/Schedule';
 
-export type Routine = Document;
 export type RoutineMutator = (routine: Routine) => Promise<Routine>;
 
 const Mongoose = require('mongoose');
+const RoutineModel = require('../model/Routine');
 const ScheduleModel = require('../model/Schedule');
 // Flow typeof won't work with import type
 const {Model} = require('mongoose');
 
 class Queue {
 
-  model: typeof Model;
+  name: string;
 
-  // WARNING: instanciating 2 different schemas on the same collection
-  // will set the world on fire!!!
-  static fromSchema(schema: Schema, collection_name: string): Queue {
-    const model = Mongoose.model(collection_name, schema, collection_name);
-    return new Queue(model);
-  }
-
-  constructor(model: typeof Model): void {
-    this.model = model;
+  constructor(name: string): void {
+    this.name = name;
   }
 
   getModel(): typeof Model {
-    return this.model;
+    return RoutineModel;
+  }
+
+  getName(): string {
+    return this.name;
   }
 
   getLength(): Promise<number> {
@@ -59,6 +56,7 @@ class Queue {
   createRoutine(script_id: string, schedule_id: ?string, ctx_id: string, date: Date): Promise<Routine> {
     const document = this.getModel()({
       context_id: ctx_id,
+      queue_name: this.getName(),
       schedule_id: schedule_id,
       script_id: script_id,
       visible_from: date,
@@ -71,6 +69,7 @@ class Queue {
     const conditions = {
       is_completed: false,
       lock_id: null,
+      queue_name: this.getName(),
       visible_from: { $lte: new Date() },
     };
     const doc = {

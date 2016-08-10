@@ -23,45 +23,36 @@
  */
 
 import type AbstractParam from '../../params/AbstractParam';
-import type Context from '../../RequestContext';
 import type {Map} from 'immutable';
-import type {RequestMethod} from 'express';
-import type {Routine} from '../../../scheduler/Queue';
 
-const AbstractController = require('../AbstractController');
+const AbstractDocumentListController = require('../AbstractDocumentListController');
 const MongoIdParam = require('../../params/MongoIdParam');
 const QueueNameParam = require('../../params/QueueNameParam');
-const {List, Set} = require('immutable');
+const RoutineModel = require('../../../model/Routine');
+const {List} = require('immutable');
 
-class RoutineListController extends AbstractController {
+class RoutineListController extends AbstractDocumentListController {
 
   getRoute(): string {
     return '/routines';
   }
 
-  getRouteMethods(): Set<RequestMethod> {
-    return new Set(['get']);
+  getModel(): typeof RoutineModel {
+    return RoutineModel;
   }
 
   getParams(): Map<string, AbstractParam<any>> {
     return super.getParams().merge({
-      queue_name: new QueueNameParam(this.getApplication().getScheduler()),
+      queue_name: new QueueNameParam(this.getApplication().getScheduler()).optional(),
       schedule_id: new MongoIdParam().optional(),
     });
   }
 
-  genResponse(context: Context): void {
-    const queue_name = context.getParams().getString('queue_name');
-    const queue = this.getApplication().getScheduler().getQueues().get(queue_name);
-    const schedule_id = context.getParams().getOptionalString('schedule_id');
-    const query = schedule_id == null ? {} : { schedule_id: schedule_id };
-
-    context.execPromise(queue.getModel().find(query).sort({ creation_time: -1 }).exec())
-      .then((docs: Array<Routine>) => {
-        context.getResponse().send({
-          data: new List(docs).map(context.exportDocument)
-        });
-      });
+  getParamBindings(): List<string> {
+    return new List([
+      'queue_name',
+      'schedule_id'
+    ]);
   }
 }
 

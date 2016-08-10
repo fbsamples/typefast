@@ -25,7 +25,7 @@
 import type Config from '../Config';
 import type {ContextualizedRoutine} from '../scheduler/Scheduler';
 import type {Resolve, Reject} from '../utils/promises';
-import type {Routine} from '../scheduler/Queue';
+import type {Routine} from '../model/Routine';
 import type {Schedule} from '../model/Schedule';
 import type {Script} from '../model/Script';
 

@@ -22,20 +22,11 @@
  * @flow
  */
 
-const AbstractParam = require('./AbstractParam');
-const {isMongoId} = require('validator');
+import type {Document} from 'mongoose';
 
-class MongoIdParam extends AbstractParam<string> {
+export type Routine = Document;
 
-  willValidate(value: any): Promise<string> {
-    return super.willValidate(value).then((subject: any) => {
-      if (!isMongoId(subject.toString())) {
-        return Promise.reject(new Error(`'${value}', not a valid document id`));
-      }
+const Mongoose = require('mongoose');
+const schema = require('./schema/routine');
 
-      return value.toString();
-    });
-  }
-}
-
-module.exports = MongoIdParam;
+module.exports = Mongoose.model('routine', schema);

@@ -33,13 +33,13 @@
     "routine_sync_interval": 3000
   },
   "scheduler": {
-    "main_queue": {
-      "collection_name": "scheduler_queue",
-      "polling_interval": 60000
-    },
-    "preview_queue": {
-      "collection_name": "scheduler_queue_high_pri",
-      "polling_interval": 1000
+    "queues": {
+      "main": {
+        "polling_interval": 60000
+      },
+      "preview": {
+        "polling_interval": 1000
+      }
     }
   },
   "worker": {

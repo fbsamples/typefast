@@ -23,15 +23,13 @@
  */
 
 import type AbstractParam from '../../params/AbstractParam';
-import type Context from '../../RequestContext';
 import type {Map} from 'immutable';
-
-// Flow typeof won't work with import type
-const {Model} = require('mongoose');
 
 const AbstractDocumentListController = require('../AbstractDocumentListController');
 const MongoIdParam = require('../../params/MongoIdParam');
-const Schedule = require('../../../model/Schedule');
+const QueueNameParam = require('../../params/QueueNameParam');
+const ScheduleModel = require('../../../model/Schedule');
+const {List} = require('immutable');
 
 // implement ../ControllerInterface
 class ScheduleListController extends AbstractDocumentListController {
@@ -40,23 +38,22 @@ class ScheduleListController extends AbstractDocumentListController {
     return '/schedules';
   }
 
-  getModel(): typeof Model {
-    return Schedule;
+  getModel(): typeof ScheduleModel {
+    return ScheduleModel;
   }
 
   getParams(): Map<string, AbstractParam<any>> {
     return super.getParams().merge({
+      queue_name: new QueueNameParam(this.getApplication().getScheduler()).optional(),
       script_id: new MongoIdParam().optional(),
     });
   }
 
-  getCriteria(context: Context): Map<string, any> {
-    let criteria = super.getCriteria(context);
-    if (!context.getParams().isNull('script_id')) {
-      criteria = criteria.set('script_id', context.getParams().getString('script_id'));
-    }
-
-    return criteria;
+  getParamBindings(): List<string> {
+    return new List([
+      'queue_name',
+      'script_id',
+    ]);
   }
 }
 

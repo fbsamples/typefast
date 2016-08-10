@@ -24,7 +24,7 @@
 
 import type Queue from './Queue';
 import type PollingPool from './PollingPool';
-import type {Routine} from './Queue';
+import type {Routine} from '../model/Routine';
 import type {Unlock} from './PollingPool';
 
 const {EventEmitter} = require('events');
