@@ -22,7 +22,7 @@
  * @flow
  */
 
-import type AbstractParam from '../param/AbstractParam';
+import type AbstractParam from '../params/AbstractParam';
 import type Context from '../RequestContext';
 import type {CrudFunction} from './AbstractDocumentController';
 import type {Document} from 'mongoose';
