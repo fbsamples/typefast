@@ -68,6 +68,7 @@ declare module mongoose {
 
   declare class Query<T> {
     exec(callback?: OperationCallback<T>): Promise<T>;
+    limit(limit: number): this;
     remove(criteria?: Object, callback?: OperationCallback<T>): this;
     sort(arg: Object): this;
   }
