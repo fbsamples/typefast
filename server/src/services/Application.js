@@ -22,17 +22,20 @@
  * @flow
  */
 
+import type AbstractDriver from '../server/drivers/AbstractDriver';
 import type Config from '../Config';
 import type {Application as ExpressApplication, Request, RequestMethod, Response} from 'express';
 
 const AbstractService = require('./AbstractService');
+const assert = require('assert');
 const Authentication = require('../server/authentication/Authentication');
 const express = require('express');
-const Filesystem = require('fs');
-const Https = require('https');
+const HttpDriver = require('../server/drivers/HttpDriver');
+const HttpsDriver = require('../server/drivers/HttpsDriver');
 const Multer = require('multer');
 const Router = require('../server/Router');
 const {Map, Set} = require('immutable');
+const {genMap} = require('../utils/promises');
 
 class Application extends AbstractService {
 
@@ -60,9 +63,9 @@ class Application extends AbstractService {
     this.webApplication.use(new Multer().array());
     this.webApplication.disable('etag');
     this.webApplication.disable('x-powered-by');
-    if (this.getConfig().getBoolean('https.client.enable_delivery')) {
+    if (this.getConfig().getBoolean('server.client.enable_delivery')) {
       this.webApplication.use('/', express.static(
-        this.getConfig().getString('https.client.root')
+        this.getConfig().getString('server.client.root')
       ));
     }
 
@@ -87,16 +90,29 @@ class Application extends AbstractService {
   }
 
   init(): void {
-    const options = new Map({key: 'https.ssl.key', cert: 'https.ssl.cert'}).map(
-      (conf: string) => Filesystem.readFileSync(this.getConfig().getString(conf), 'utf8')
-    ).toObject();
+    const binds: Map<string, Map<string, any>> = this.getConfig().getMap('server.bindings')
+      .filter((config: Map<string, any>) => Boolean(config.get('is_enabled', false)));
+    assert(binds.size > 0, 'No enabled binding by config');
+    const handles = binds.map((config: Map<string, any>): Promise<AbstractDriver> => {
+      const driver_type: string = config.get('driver');
+      const will_bind = (driver: AbstractDriver): Promise<AbstractDriver> => {
+        return driver.willBindWebApplication(this.getWebApplication())
+          .then(() => driver);
+      };
 
-    Https.createServer(options, this.getWebApplication()).listen(
-      this.getConfig().getInteger('https.bind.port'),
-      this.getConfig().getString('https.bind.addr'),
-      this.getConfig().getInteger('https.bind.max_connections'),
-      () => this.emit(Application.events.INIT)
-    );
+      switch (driver_type) {
+        case 'http':
+          return will_bind(new HttpDriver(config));
+        case 'https':
+          return will_bind(new HttpsDriver(config));
+        default:
+          return Promise.reject(new Error(`Unknown driver '${driver_type}'`));
+      }
+    });
+
+    genMap(handles).then((drivers: Map<string, AbstractDriver>) => {
+      this.emit(Application.events.INIT, drivers);
+    }).catch((error: Error) => process.nextTick(() => {throw error; }));
   }
 }
 

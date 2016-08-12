@@ -9,12 +9,6 @@
       "bundle": null
     }
   },
-  "https": {
-    "ssl": {
-      "key": "ssl/key",
-      "cert": "ssl/crt"
-    }
-  },
   "db": {
     "url": "mongodb://localhost/typefast"
   },

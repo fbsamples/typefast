@@ -22,24 +22,30 @@
  * @flow
  */
 
-import type AbstractDriver from '../server/drivers/AbstractDriver';
-import type {Argv} from '../Config';
+import type {Application as ExpressApplication} from 'express';
 import type {Map} from 'immutable';
 
-const Application = require('../services/Application');
-const Config = require('../Config');
-const getControllers = require('../server/controllersFactory');
+class AbstractDriver {
 
-const bootstrap = function(argv: Argv): Application {
-  const app = new Application(Config.fromArgv(argv));
-  getControllers(app).forEach(controller => app.getRouter().mountCountroller(controller));
-  app.on(Application.events.INIT, ((drivers: Map<string, AbstractDriver>) => {
-    drivers.map((driver: AbstractDriver, key: string) => {
-      const listener = driver.getListenerDescription();
-      console.log(`Server listening on [${key}]: ${listener}`);
-    });
-  }));
-  return app;
-};
+  options: Map<string, any>;
 
-module.exports = bootstrap;
+  constructor(options: Map<string, any>) {
+    this.options = options;
+  }
+
+  getOptions(): Map<string, any> {
+    return this.options;
+  }
+
+  getListenerDescription(): string {
+    const class_name = this.constructor.name;
+    throw new Error(`${class_name} must implement abstract method getListenerDescription`);
+  }
+
+  willBindWebApplication(web_application: ExpressApplication): Promise<void> {
+    const class_name = this.constructor.name;
+    return Promise.reject(new Error(`${class_name} must implement abstract method willBindWebApplication`));
+  }
+}
+
+module.exports = AbstractDriver;
