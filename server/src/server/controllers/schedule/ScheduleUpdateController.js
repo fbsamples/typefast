@@ -72,9 +72,9 @@ class ScheduleUpdateController extends AbstractDocumentUpdateController {
     context.execPromise(context.getTarget().set(data).save({ new: true }))
       .then((doc: Document) => {
         const is_paused: bool = schedule.get('is_paused');
-        if (was_paused && !is_paused) {
+        if (!was_paused && is_paused) {
           return scheduler.cleanSchedule(schedule).then(() => doc);
-        } else if (!was_paused && is_paused) {
+        } else if (was_paused && !is_paused) {
           return scheduler.enqueueScheduled(schedule).then(() => doc);
         }
 
