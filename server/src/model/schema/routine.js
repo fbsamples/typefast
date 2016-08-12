@@ -41,6 +41,7 @@ const schema = new Mongoose.Schema({
   runner_log: { type: Array, value: { type: { time: Date, stream: String, chunk: String } } },
   runner_start_time: { type: Date, default: null },
   schedule_id: { type: Mongoose.Schema.ObjectId, required: true },
+  script_id: { type: Mongoose.Schema.ObjectId, required: true },
   visible_from: { type: Date, require: true },
 });
 

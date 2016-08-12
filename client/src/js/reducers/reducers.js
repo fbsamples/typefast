@@ -38,7 +38,9 @@ import {
   FACEBOOK_AUTH_STARTED, FACEBOOK_AUTH_SUCCESS, FACEBOOK_AUTH_FAILURE,
   UNAUTHORISED,
   FETCHING_SCHEDULES_SUCCESS,
-  LOAD_SCHEDULE, SAVE_SCHEDULE_SUCCESS
+  LOAD_SCHEDULE, SAVE_SCHEDULE_SUCCESS,
+  FETCHING_ROUTINES_SUCCESS,
+  SHOW_ROUTINES_MODAL, HIDE_ROUTINES_MODAL
 } from '../actions/actions.js';
 import { ScheduleRecurence } from '../constants/constants';
 
@@ -86,11 +88,13 @@ function typefastApp(state = {
   isFetching: false,
   scripts: [],
   schedules: [],
+  routines: [],
   log: initalLog(),
   runHistory: {},
   currentPane: 'editor',
   showScheduleSelector: false,
   showScheduleModal: false,
+  showRoutinesModal: false,
   needToSave: true,
   currentScript: defaultScript(),
   currentTitle: defaultScript().title,
@@ -202,6 +206,16 @@ function typefastApp(state = {
         showScheduleSelector: false,
       });
 
+    case SHOW_ROUTINES_MODAL:
+      return Object.assign({}, state, {
+        showRoutinesModal: true,
+      });
+
+    case HIDE_ROUTINES_MODAL:
+      return Object.assign({}, state, {
+        showRoutinesModal: false,
+      });
+
     case FACEBOOK_AUTH_SUCCESS:
       return Object.assign({}, state, {
         isAuthenticated: true,
@@ -224,6 +238,23 @@ function typefastApp(state = {
     case FETCHING_SCRIPTS_REQUEST:
       return Object.assign({}, state, {
         isFetching: true,
+      });
+
+    case FETCHING_ROUTINES_SUCCESS:
+      const routines = action.payload.routines.data.reduce(
+        (o, v, i) => {
+          if (!o.hasOwnProperty(v.script_id)) {
+            o[v.script_id] = [v];
+          } else {
+            o[v.script_id].push(v);
+          }
+
+          return o;
+        },
+        {}
+      );
+      return Object.assign({}, state, {
+        routines: routines,
       });
 
     case FETCHING_SCRIPTS_SUCCESS:

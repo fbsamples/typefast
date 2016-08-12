@@ -323,32 +323,27 @@ export function previewScript() {
   };
 }
 
-export const NO_SCRIPT_LOGS = 'NO_SCRIPT_LOGS';
-export const FETCHING_SCRIPT_LOGS_REQUEST = 'FETCHING_SCRIPT_LOGS_REQUEST';
-export const FETCHING_SCRIPT_LOGS_SUCCESS = 'FETCHING_SCRIPT_LOGS_SUCCESS';
-export const FETCHING_SCRIPT_LOGS_FAILURE = 'FETCHING_SCRIPT_LOGS_FAILURE';
+export const NO_ROUTINES = 'NO_ROUTINES';
+export const FETCHING_ROUTINES_REQUEST = 'FETCHING_ROUTINES_REQUEST';
+export const FETCHING_ROUTINES_SUCCESS = 'FETCHING_ROUTINES_SUCCESS';
+export const FETCHING_ROUTINES_FAILURE = 'FETCHING_ROUTINES_FAILURE';
 
-export function fetchRunHistory() {
+export function fetchRoutines() {
   return function(dispatch, getState) {
-    const currentScriptId = getState().currentScript.id;
-    if (!currentScriptId) {
-      dispatch({type: NO_SCRIPT_LOGS});
-    } else {
-      dispatch({type: FETCHING_SCRIPT_LOGS_REQUEST});
-      return fetch(makeUrl(`/scripts/${currentScriptId}/logs`, getState))
-        .then((response) => handleErrors(response, dispatch))
-        .then(function(response) {
-          return response.json();
-        })
-        .then(function(json) {
-          dispatch({
-            type: FETCHING_SCRIPT_LOGS_SUCCESS,
-            payload: {
-              scriptLogs: json
-            }
-          });
+    dispatch({type: FETCHING_ROUTINES_REQUEST});
+    return fetch(makeUrl('/routines', getState))
+      .then((response) => handleErrors(response, dispatch))
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(json) {
+        dispatch({
+          type: FETCHING_ROUTINES_SUCCESS,
+          payload: {
+            routines: json
+          }
         });
-    }
+      });
   };
 }
 
@@ -405,6 +400,20 @@ export function hideScheduleModal() {
   };
 }
 
+export const SHOW_ROUTINES_MODAL = 'SHOW_ROUTINES_MODAL';
+export function showRoutinesModal() {
+  return {
+    type: SHOW_ROUTINES_MODAL
+  };
+}
+
+export const HIDE_ROUTINES_MODAL = 'HIDE_ROUTINES_MODAL';
+export function hideRoutinesModal() {
+  return {
+    type: HIDE_ROUTINES_MODAL
+  };
+}
+
 export const SHOW_SCHEDULE_MODAL = 'SHOW_SCHEDULE_MODAL';
 export function showScheduleModal() {
   return {
@@ -428,8 +437,11 @@ export function facebookAuthSuccess(token) {
         accessToken: token,
       }
     });
+
+    //Bootstrap the app
     dispatch(fetchScripts())
     .then(dispatch(fetchSchedules()));
+    dispatch(fetchRoutines());
   };
 }
 

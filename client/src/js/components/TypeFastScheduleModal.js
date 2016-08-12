@@ -32,7 +32,6 @@ import { ScheduleRecurence } from '../constants/constants';
 
 class TypeFastScheduleModal extends React.Component {
   render() {
-    console.log(this.props.interval);
     return (
       <Modal show={this.props.showModal} onHide={this.props.close}>
        <Modal.Header closeButton>

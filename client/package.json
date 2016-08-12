@@ -29,6 +29,7 @@
     "babelify": "~7.3.0",
     "bootstrap": "~3.3.6",
     "browserify": "~13.0.1",
+    "dateformat": "^1.0.12",
     "eslint": "~2.10.2",
     "eslint-plugin-flowtype": "~2.2.7",
     "eslint-plugin-react": "~6.0.0",
