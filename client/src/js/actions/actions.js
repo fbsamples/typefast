@@ -200,7 +200,7 @@ export function saveSchedule() {
           'Accept': 'application/json',
         },
         body: makeFormData({
-          is_paused: getState().scheduleState,
+          is_paused: !getState().scheduleState,
           queue_name: 'main',
           recurrence: getState().scheduleInterval,
           script_id: getState().currentScript.id,
