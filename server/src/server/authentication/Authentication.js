@@ -60,8 +60,11 @@ class Authentication {
             if (response && response.data) {
               Object.keys(response.data).forEach(function(key) {
                 let obj = response.data[key];
-                ids[obj.user.id] = true;
+                if (obj && obj.user && obj.user.id) {
+                  ids[obj.user.id] = true;
+                }
               });
+
               if (response.paging && response.paging.next) {
                 callApi(response.paging.next);
               } else {

@@ -1,6 +1,6 @@
 {
   "graph": {
-    "version": [2, 6],
+    "version": [2, 7],
     "application_id": 0,
     "application_secret": "APPLICATION_SECRET",
     "access_token": "ACCESS_TOKEN",

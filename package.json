@@ -1,0 +1,10 @@
+{
+  "cacheDirectories": ["client/node_modules", "sdk/node_modules", "server/node_modules"],
+  "engines": {
+    "node": "6.3.1",
+    "npm": "3.10.3"
+  },
+  "scripts": {
+    "postinstall": "./scripts/postinstall"
+  }
+}

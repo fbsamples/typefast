@@ -22,7 +22,7 @@
  * @flow
  */
 
-import React from 'React';
+import React from 'react';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon';
