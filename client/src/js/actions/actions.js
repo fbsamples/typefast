@@ -100,7 +100,6 @@ export function fetchSchedule(scriptId) {
     .then((response) => handleErrors(response, dispatch))
     .then(response => response.json())
     .then(function(response) {
-      console.log(response);
       dispatch({type: FECTH_SCHEDULE_SUCCESS});
     });
   };
