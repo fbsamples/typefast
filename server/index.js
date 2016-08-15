@@ -37,16 +37,14 @@ const main = function(argv /* :List */) {
     .rest()
     .map(value => value instanceof Array ? value.pop() : value);
 
-  let src_path = 'build';
   if (opts.get(TRANSPILE_KEY, false)) {
     require('babel-register');
     require('babel-polyfill');
-    src_path = 'src';
   }
   const mode = opts.get(MODE_KEY, DEFAULT_MODE);
 
   argv = opts.filterNot((value, key) => passthrou_exclude.keyOf(key) != null);
-  const bootstrap = require(`./${src_path}/bootstraps/${mode}`);
+  const bootstrap = require(`./src/bootstraps/${mode}`);
   const service = bootstrap(argv);
 
   service.init();
