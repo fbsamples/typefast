@@ -22,24 +22,40 @@
  * @flow
  */
 
-import type AbstractDriver from '../server/drivers/AbstractDriver';
-import type {Argv} from '../Config';
-import type {Map} from 'immutable';
+import type {Application as ExpressApplication} from 'express';
+import type {Resolve, Reject} from '../../utils/promises';
 
-const Application = require('../services/Application');
-const Config = require('../Config');
-const getControllers = require('../server/controllersFactory');
+const AbstractDriver = require('./AbstractDriver');
+const Http = require('http');
+const nullthrows = require('../../utils/nullthrows');
 
-const bootstrap = function(argv: Argv): Application {
-  const app = new Application(Config.fromArgv(argv));
-  getControllers(app).forEach(controller => app.getRouter().mountCountroller(controller));
-  app.on(Application.events.INIT, ((drivers: Map<string, AbstractDriver>) => {
-    drivers.map((driver: AbstractDriver, key: string) => {
-      const listener = driver.getListenerDescription();
-      console.log(`Server listening on [${key}]: ${listener}`);
+class HttpDriver extends AbstractDriver {
+
+  getPort(): number {
+    return nullthrows(this.getOptions().get('port'));
+  }
+
+  getAddress(): string {
+    return nullthrows(this.getOptions().get('addr'));
+  }
+
+  getMaxConnections(): number {
+    return nullthrows(this.getOptions().get('max_connections'));
+  }
+
+  getListenerDescription(): string {
+    const addr = this.getAddress();
+    const port = this.getPort();
+    return `http://${addr}:${port}/`;
+  }
+
+  willBindWebApplication(web_application: ExpressApplication): Promise<void> {
+    const server = Http.createServer(web_application);
+
+    return new Promise((resolve: Resolve<void>, reject: Reject) => {
+      server.listen(this.getPort(), this.getAddress(), this.getMaxConnections(), resolve);
     });
-  }));
-  return app;
-};
+  }
+}
 
-module.exports = bootstrap;
+module.exports = HttpDriver;

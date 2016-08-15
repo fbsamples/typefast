@@ -10,23 +10,41 @@
       "bundle": null
     }
   },
-  "https": {
-    "bind": {
-      "addr": "127.0.0.1",
-      "port": 8080,
-      "max_connections": 100
-    },
+  "server": {
     "client": {
       "enable_delivery": true,
       "root": "../client/src"
     },
-    "ssl": {
-      "key": null,
-      "cert": null
+    "bindings": {
+      "https": {
+        "is_enabled": true,
+        "driver": "https",
+        "addr": "127.0.0.1",
+        "port": 8080,
+        "max_connections": 100,
+        "ssl": {
+          "key": "ssl/key",
+          "cert": "ssl/crt"
+        }
+      },
+      "http": {
+        "is_enabled": false,
+        "driver": "http",
+        "addr": "127.0.0.1",
+        "port": 80,
+        "max_connections": 100
+      },
+      "http-v6": {
+        "is_enabled": false,
+        "driver": "http",
+        "addr": "::1",
+        "port": 88,
+        "max_connections": 100
+      }
     }
   },
   "db": {
-    "url": null
+    "url": "mongodb://localhost/typefast"
   },
   "sandbox": {
     "timeout": 86400000,
@@ -41,8 +59,5 @@
         "polling_interval": 1000
       }
     }
-  },
-  "worker": {
-    "processes": 1
   }
 }

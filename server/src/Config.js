@@ -109,6 +109,12 @@ class Config {
     assert(leaf instanceof Object);
     return fromJS(leaf);
   }
+
+  getList(subtree: string): List<any> {
+    const leaf = this.resolveSubtree(subtree);
+    assert(leaf instanceof Array);
+    return fromJS(leaf);
+  }
 }
 
 module.exports = Config;
