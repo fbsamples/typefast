@@ -41,21 +41,30 @@ class TypeFastRoutinesModal extends React.Component {
       return prev;
     }, []);
   }
+
   getBody() {
     if (this.props.routines.length == 0) {
       return <p>No Logs</p>;
     } else {
       return this.props.routines.reduce(function(prev, curr, i) {
-        prev.push(
-          <Panel
-            header={dateFormat(curr.creation_time)}
-            eventKey={i}>
-              <p>Time Taken: {this.timeTaken(curr.runner_start_time, curr.runner_end_time)} seconds</p>
-              <div>
-                {this.formatOutputStreams(curr.runner_log)}
-              </div>
-          </Panel>
-        );
+        if (Date.parse(curr.visible_from) > Date.now()) {
+          prev.push(
+            <Panel header="Future Schedule Runs" bsStyle="success">
+              <span>Next execution on {dateFormat(curr.visible_from)}</span>
+            </Panel>
+          );
+        } else {
+          prev.push(
+            <Panel
+              header={dateFormat(curr.visible_from)}
+              eventKey={i}>
+                <p>Time Taken: {this.timeTaken(curr.runner_start_time, curr.runner_end_time)} seconds</p>
+                <div>
+                  {this.formatOutputStreams(curr.runner_log)}
+                </div>
+            </Panel>
+          );
+        }
         return prev;
       }.bind(this), []);
     }
@@ -63,7 +72,10 @@ class TypeFastRoutinesModal extends React.Component {
 
   render() {
     return (
-      <Modal show={this.props.showModal} onHide={this.props.close}>
+      <Modal
+        id="routine-modal"
+        show={this.props.showModal}
+        onHide={this.props.close}>
        <Modal.Header closeButton>
          <Modal.Title>Past Run Logs</Modal.Title>
        </Modal.Header>

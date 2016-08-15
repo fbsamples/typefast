@@ -331,7 +331,7 @@ export const FETCHING_ROUTINES_FAILURE = 'FETCHING_ROUTINES_FAILURE';
 export function fetchRoutines() {
   return function(dispatch, getState) {
     dispatch({type: FETCHING_ROUTINES_REQUEST});
-    return fetch(makeUrl('/routines', getState))
+    return fetch(makeUrl('/routines', getState, {queue_name: 'main'}))
       .then((response) => handleErrors(response, dispatch))
       .then(function(response) {
         return response.json();

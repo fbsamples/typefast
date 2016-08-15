@@ -108,3 +108,7 @@ body {
   min-height: 400px;
   vertical-align: top;
 }
+
+#routine-modal .modal-dialog {
+  width: 900px;
+}
