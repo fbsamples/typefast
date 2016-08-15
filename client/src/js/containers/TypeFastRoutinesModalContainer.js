@@ -23,23 +23,27 @@
  */
 
 import { connect } from 'react-redux';
-import TypeFastRunHistory from '../components/TypeFastRunHistory';
+import { hideRoutinesModal } from '../actions/actions';
+import TypeFastRoutinesModal from '../components/TypeFastRoutinesModal';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    history: state.runHistory[state.currentScript.id],
+    showModal: state.showRoutinesModal,
+    routines: state.routines[state.currentScript.id] || [],
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    
+    close:() => {
+      dispatch(hideRoutinesModal());
+    },
   };
 };
 
-const TypeFastRunHistoryContainer = connect(
+const TypeFastRoutinesModalContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(TypeFastRunHistory);
+)(TypeFastRoutinesModal);
 
-export default TypeFastRunHistoryContainer;
+export default TypeFastRoutinesModalContainer;

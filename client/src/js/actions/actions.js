@@ -65,12 +65,43 @@ export function unauthorised() {
 }
 
 export const LOAD_SCRIPT = 'LOAD_SCRIPT';
+export const LOAD_SCHEDULE = 'LOAD_SCHEDULE';
 export function loadScript(id) {
-  return {
-    type: LOAD_SCRIPT,
-    payload: {
-      id: id
-    }
+  return function(dispatch) {
+    dispatch({
+      type: LOAD_SCRIPT,
+      payload: {
+        id: id,
+      }
+    });
+    dispatch({
+      type: LOAD_SCHEDULE,
+      payload: {
+        scriptId: id,
+      }
+    });
+  };
+}
+
+
+export const FETCH_SCHEDULE_REQUEST = 'FETCH_SCHEDULE_REQUEST';
+export const FECTH_SCHEDULE_SUCCESS = 'FECTH_SCHEDULE_SUCCESS';
+export const FECTH_SCHEDULE_FAILURE = 'FECTH_SCHEDULE_FAILURE';
+export function fetchSchedule(scriptId) {
+  return function(dispatch, getState) {
+    dispatch({type: FETCH_SCHEDULE_REQUEST});
+    return fetch(
+      makeUrl('/schedules', getState, { script_id: scriptId}), {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+      })
+    .then((response) => handleErrors(response, dispatch))
+    .then(response => response.json())
+    .then(function(response) {
+      dispatch({type: FECTH_SCHEDULE_SUCCESS});
+    });
   };
 }
 
@@ -152,11 +183,41 @@ export function scheduleIntervalChanged(interval) {
 }
 
 export const SCHEDULE_SAVE = 'SCHEDULE_SAVE';
+export const SAVE_SCHEDULE_REQUEST = 'SAVE_SCHEDULE_REQUEST';
+export const SAVE_SCHEDULE_SUCCESS = 'SAVE_SCHEDULE_SUCCESS';
+export const SAVE_SCHEDULE_FAILURE = 'SAVE_SCHEDULE_FAILURE';
 export function saveSchedule() {
   return function(dispatch, getState) {
     dispatch({type: SCHEDULE_SAVE});
-    dispatch(saveScript());
-    dispatch(hideScheduleModal());
+    dispatch(saveScript()).then(function() {
+      dispatch({type: SAVE_SCHEDULE_REQUEST});
+      const currentSchedule = getState().currentSchedule;
+      const id = currentSchedule.id || '';
+      return fetch(`/schedules/${id}`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: makeFormData({
+          is_paused: !getState().scheduleState,
+          queue_name: 'main',
+          recurrence: getState().scheduleInterval,
+          script_id: getState().currentScript.id,
+          start_time: getState().scheduleStartTime,
+        }, getState)
+      })
+      .then((response) => handleErrors(response, dispatch))
+      .then(response => response.json())
+      .then(function(response) {
+        dispatch({
+          type: SAVE_SCHEDULE_SUCCESS,
+          payload: {
+            schedule: response
+          }
+        });
+        dispatch(hideScheduleModal());
+      });
+    });
   };
 }
 
@@ -178,11 +239,6 @@ export function saveScript() {
         code: getState().editorValue,
         optimisations: getState().optimisations,
         title: getState().currentTitle,
-        scheulde: {
-          state: getState().scheduleState,
-          startTime: getState().scheduleStartTime,
-          interval: getState().scheduleInterval,
-        }
       }, getState)
     })
     .then((response) => handleErrors(response, dispatch))
@@ -266,32 +322,27 @@ export function previewScript() {
   };
 }
 
-export const NO_SCRIPT_LOGS = 'NO_SCRIPT_LOGS';
-export const FETCHING_SCRIPT_LOGS_REQUEST = 'FETCHING_SCRIPT_LOGS_REQUEST';
-export const FETCHING_SCRIPT_LOGS_SUCCESS = 'FETCHING_SCRIPT_LOGS_SUCCESS';
-export const FETCHING_SCRIPT_LOGS_FAILURE = 'FETCHING_SCRIPT_LOGS_FAILURE';
+export const NO_ROUTINES = 'NO_ROUTINES';
+export const FETCHING_ROUTINES_REQUEST = 'FETCHING_ROUTINES_REQUEST';
+export const FETCHING_ROUTINES_SUCCESS = 'FETCHING_ROUTINES_SUCCESS';
+export const FETCHING_ROUTINES_FAILURE = 'FETCHING_ROUTINES_FAILURE';
 
-export function fetchRunHistory() {
+export function fetchRoutines() {
   return function(dispatch, getState) {
-    const currentScriptId = getState().currentScript.id;
-    if (!currentScriptId) {
-      dispatch({type: NO_SCRIPT_LOGS});
-    } else {
-      dispatch({type: FETCHING_SCRIPT_LOGS_REQUEST});
-      return fetch(makeUrl(`/scripts/${currentScriptId}/logs`, getState))
-        .then((response) => handleErrors(response, dispatch))
-        .then(function(response) {
-          return response.json();
-        })
-        .then(function(json) {
-          dispatch({
-            type: FETCHING_SCRIPT_LOGS_SUCCESS,
-            payload: {
-              scriptLogs: json
-            }
-          });
+    dispatch({type: FETCHING_ROUTINES_REQUEST});
+    return fetch(makeUrl('/routines', getState, {queue_name: 'main'}))
+      .then((response) => handleErrors(response, dispatch))
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(json) {
+        dispatch({
+          type: FETCHING_ROUTINES_SUCCESS,
+          payload: {
+            routines: json
+          }
         });
-    }
+      });
   };
 }
 
@@ -318,10 +369,47 @@ export function fetchScripts() {
   };
 }
 
+export const FETCHING_SCHEDULES_REQUEST = 'FETCHING_SCHEDULES_REQUEST';
+export const FETCHING_SCHEDULES_SUCCESS = 'FETCHING_SCHEDULES_SUCCESS';
+export const FETCHING_SCHEDULES_FAILURE = 'FETCHING_SCHEDULES_FAILURE';
+
+export function fetchSchedules() {
+  return function(dispatch, getState) {
+    dispatch({type: FETCHING_SCHEDULES_REQUEST});
+    return fetch(makeUrl('/schedules', getState, {queue_name: 'main'}))
+      .then((response) => handleErrors(response, dispatch))
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(json) {
+        dispatch({
+          type: FETCHING_SCHEDULES_SUCCESS,
+          payload: {
+            schedules: json
+          }
+        });
+      });
+  };
+}
+
 export const HIDE_SCHEDULE_MODAL = 'HIDE_SCHEDULE_MODAL';
 export function hideScheduleModal() {
   return {
     type: HIDE_SCHEDULE_MODAL
+  };
+}
+
+export const SHOW_ROUTINES_MODAL = 'SHOW_ROUTINES_MODAL';
+export function showRoutinesModal() {
+  return {
+    type: SHOW_ROUTINES_MODAL
+  };
+}
+
+export const HIDE_ROUTINES_MODAL = 'HIDE_ROUTINES_MODAL';
+export function hideRoutinesModal() {
+  return {
+    type: HIDE_ROUTINES_MODAL
   };
 }
 
@@ -348,7 +436,11 @@ export function facebookAuthSuccess(token) {
         accessToken: token,
       }
     });
-    dispatch(fetchScripts());
+
+    //Bootstrap the app
+    dispatch(fetchScripts())
+    .then(dispatch(fetchSchedules()));
+    dispatch(fetchRoutines());
   };
 }
 

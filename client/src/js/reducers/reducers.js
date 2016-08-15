@@ -36,8 +36,13 @@ import {
   SCHEDULE_STATE_CHANGED, SCHEDULE_START_TIME_CHANGED,
   SCHEDULE_INTERVAL_CHANGED,
   FACEBOOK_AUTH_STARTED, FACEBOOK_AUTH_SUCCESS, FACEBOOK_AUTH_FAILURE,
-  UNAUTHORISED
+  UNAUTHORISED,
+  FETCHING_SCHEDULES_SUCCESS,
+  LOAD_SCHEDULE, SAVE_SCHEDULE_SUCCESS,
+  FETCHING_ROUTINES_SUCCESS,
+  SHOW_ROUTINES_MODAL, HIDE_ROUTINES_MODAL
 } from '../actions/actions.js';
+import { ScheduleRecurence } from '../constants/constants';
 
 function initalLog() {
   return [{
@@ -68,6 +73,13 @@ adaccount.getcustomaudiences().forEach(
 );`,
   };
 }
+function defaultSchedule() {
+  return {
+    is_paused: false,
+    recurrence: ScheduleRecurence.HOURLY,
+    start_time: new Date(Date.now()).toISOString(),
+  };
+}
 
 function typefastApp(state = {
   currentRoutineId: null,
@@ -75,28 +87,31 @@ function typefastApp(state = {
   isSaving: false,
   isFetching: false,
   scripts: [],
+  schedules: [],
+  routines: [],
   log: initalLog(),
   runHistory: {},
   currentPane: 'editor',
   showScheduleSelector: false,
   showScheduleModal: false,
+  showRoutinesModal: false,
   needToSave: true,
-  currentTitle: defaultScript().title,
   currentScript: defaultScript(),
-  scheduleState: false,
-  scheduleInterval: 'daily',
-  scheduleStartTime: Date.now(),
+  currentTitle: defaultScript().title,
+  currentSchedule: defaultSchedule(),
+  scheduleState: defaultSchedule().is_paused,
+  scheduleInterval: defaultSchedule().recurrence,
+  scheduleStartTime: defaultSchedule().start_time,
   accessToken: null,
   isAuthenticated: false,
   isAuthenticating: false
 }, action) {
   let needToSave;
   switch (action.type) {
+
     case LOAD_SCRIPT:
-      let scriptToLoad;
-      if (action.payload.id === 'new') {
-        scriptToLoad = defaultScript();
-      } else {
+      let scriptToLoad = defaultScript();
+      if (action.payload.id !== 'new') {
         scriptToLoad = state.scripts[action.payload.id];
       }
       return Object.assign({}, state, {
@@ -105,6 +120,18 @@ function typefastApp(state = {
         optimisations: scriptToLoad.optimisations,
         currentTitle: scriptToLoad.title,
         log: initalLog(),
+      });
+
+    case LOAD_SCHEDULE:
+      let scheduleToLoad = defaultSchedule();
+      if (action.payload.scriptId !== 'new') {
+        scheduleToLoad = state.schedules[action.payload.scriptId];
+      }
+      return Object.assign({}, state, {
+        currentSchedule: scheduleToLoad,
+        scheduleState: scheduleToLoad.is_paused,
+        scheduleInterval: scheduleToLoad.recurrence,
+        scheduleStartTime: scheduleToLoad.start_time,
       });
 
     case UNAUTHORISED:
@@ -132,6 +159,16 @@ function typefastApp(state = {
         scripts: updatedScripts,
         scriptCount: Object.keys(updatedScripts).length,
         needToSave: false,
+      });
+
+    case SAVE_SCHEDULE_SUCCESS:
+      let schedule = {};
+
+      schedule[action.payload.schedule.script_id] = action.payload.schedule;
+      const updatedSchedules = Object.assign({}, state.schedules, schedule);
+      return Object.assign({}, state, {
+        currentSchedule: action.payload.schedule,
+        schedules: updatedSchedules,
       });
 
     case SHOW_SCHEDULE_MODAL:
@@ -169,6 +206,16 @@ function typefastApp(state = {
         showScheduleSelector: false,
       });
 
+    case SHOW_ROUTINES_MODAL:
+      return Object.assign({}, state, {
+        showRoutinesModal: true,
+      });
+
+    case HIDE_ROUTINES_MODAL:
+      return Object.assign({}, state, {
+        showRoutinesModal: false,
+      });
+
     case FACEBOOK_AUTH_SUCCESS:
       return Object.assign({}, state, {
         isAuthenticated: true,
@@ -193,6 +240,23 @@ function typefastApp(state = {
         isFetching: true,
       });
 
+    case FETCHING_ROUTINES_SUCCESS:
+      const routines = action.payload.routines.data.reduce(
+        (o, v, i) => {
+          if (!o.hasOwnProperty(v.script_id)) {
+            o[v.script_id] = [v];
+          } else {
+            o[v.script_id].push(v);
+          }
+
+          return o;
+        },
+        {}
+      );
+      return Object.assign({}, state, {
+        routines: routines,
+      });
+
     case FETCHING_SCRIPTS_SUCCESS:
       let firstScript = defaultScript();
       let scripts = action.payload.scripts.data;
@@ -211,6 +275,25 @@ function typefastApp(state = {
         currentTitle: firstScript.title,
         scriptCount: Object.keys(scripts).length
       });
+
+    case FETCHING_SCHEDULES_SUCCESS:
+      const schedules = action.payload.schedules.data.reduce(
+        (o, v, i) => { o[v.script_id] = v; return o; },
+        {}
+      );
+
+      let newState = {
+        schedules: schedules
+      };
+
+      if (state.currentScript.id && schedules[state.currentScript.id]) {
+        const schedule = schedules[state.currentScript.id];
+        newState.currentSchedule = schedule;
+        newState.scheduleStartTime = new Date(schedule.start_time).getTime();
+        newState.scheduleInterval = schedule.recurrence;
+        newState.scheduleState = schedule.is_paused;
+      }
+      return Object.assign({}, state, newState);
 
     case PREVIEW_SCRIPT_SUCCESS:
       return Object.assign({}, state, {

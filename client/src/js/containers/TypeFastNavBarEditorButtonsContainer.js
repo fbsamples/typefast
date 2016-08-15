@@ -28,8 +28,7 @@ import {
   saveScript,
   scriptTitleChanged,
   showScheduleModal,
-  fetchRunHistory,
-  changePane,
+  showRoutinesModal,
 } from '../actions/actions.js';
 import TypeFastNavBarEditorButtons from '../components/TypeFastNavBarEditorButtons';
 
@@ -56,8 +55,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(showScheduleModal());
     },
     onLogs: () => {
-      dispatch(fetchRunHistory());
-      dispatch(changePane('runHistory'));
+      dispatch(showRoutinesModal());
     }
   };
 };

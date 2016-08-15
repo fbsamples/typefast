@@ -29,6 +29,7 @@ import TypeFastEditorContainer from '../containers/TypeFastEditorContainer';
 import TypeFastListingContainer from '../containers/TypeFastListingContainer';
 import TypeFastLoginContainer from '../containers/TypeFastLoginContainer';
 import TypeFastUnauthorisedModalContainer from '../containers/TypeFastUnauthorisedModalContainer';
+import TypeFastRoutinesModalContainer from '../containers/TypeFastRoutinesModalContainer';
 
 class TypeFastApp extends React.Component {
   render() {
@@ -41,6 +42,7 @@ class TypeFastApp extends React.Component {
         </div>
         <TypeFastLoginContainer />
         <TypeFastUnauthorisedModalContainer />
+        <TypeFastRoutinesModalContainer />
       </div>
     );
   }

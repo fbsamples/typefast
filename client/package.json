@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "codemirror": "~5.15.2",
+    "dateformat": "^1.0.12",
     "flux": "~2.1.1",
     "isomorphic-fetch": "~2.2.1",
     "jquery": "~2.2.4",
