@@ -22,6 +22,7 @@
  * @flow
  */
 
+import type Config from '../Config';
 import type {AnonimizedRoutineMutator as Mutator} from '../scheduler/Scheduler';
 import type {ChildProcess} from 'child_process';
 import type {LogEntry} from '../model/schema/routine';
@@ -65,14 +66,41 @@ const freeStreams = function(bindings: StreamBindings): void {
 // implement ServiceInterface
 class Worker extends AbstractService {
 
+  serviceInlineConfig: string;
+
+  constructor(config: Config): void {
+    super(config);
+    this.serviceInlineConfig = '{}';
+  }
+
+  setServiceInlineConfig(inline_config: string): this {
+    this.serviceInlineConfig = inline_config;
+
+    return this;
+  }
+
+  getServiceInlineConfig(): string {
+    return this.serviceInlineConfig;
+  }
+
   onRoutine(routine: Routine, unlock: Mutator, complete: Mutator): void {
     const id = routine.get('id');
+    const argv = [
+      'index.js',
+      '--mode', 'runner',
+      '--routine-id', id,
+      '--inline-config', this.getServiceInlineConfig(),
+    ];
 
-    // FIXME no transpile by default
-    const argv = ['index.js', '--transpile', '--mode', 'runner', '--routine-id', id];
+    // FIXME @pruno should deprecate the runtime --transpile flag
+    if (process.argv.indexOf('--transpile') !== -1) {
+      argv.push('--transpile');
+    }
+
     const child = execFile('node', argv);
 
     log(`Routine ${id} Started`);
+    log(argv.join(' '));
     routine.set('runner_start_time', new Date());
 
     const bindings = bindStreams(
@@ -113,6 +141,8 @@ class Worker extends AbstractService {
     });
 
     this.getScheduler().pollForRoutines(pool, this.onRoutine.bind(this));
+
+    this.emit(Worker.events.INIT);
 
     // FIXME nicely handle signals
     // this.emit(AbstractService.events.END);

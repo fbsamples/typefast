@@ -28,7 +28,11 @@ const Config = require('../Config');
 const Worker = require('../services/Worker');
 
 const bootstrap = function(argv: Argv): Worker {
-  return new Worker(Config.fromArgv(argv));
+  const inline_config = argv.get('inline-config', '{}').toString();
+  const service = new Worker(Config.fromArgv(argv));
+  service.once(Worker.events.INIT, () => service.setServiceInlineConfig(inline_config));
+
+  return service;
 };
 
 module.exports = bootstrap;
