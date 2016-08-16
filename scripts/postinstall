@@ -43,7 +43,7 @@ cp -rp $ROOT_DIR/server/node_modules $BUILD_DIR/server/node_modules
 cp -rp $ROOT_DIR/server/config $BUILD_DIR/server/config
 cp -rp $ROOT_DIR/server/*.grsb $BUILD_DIR/server/
 echo_cmd 'Building static analysis specs'
-node bin/fbTypesGenerator.js > /dev/null
+node bin/fbTypesGenerator.js --inline-config="{\"graph\": {\"schema\": {\"bundle\": \"da204b3753e6fd7a1845f8763bdf611c.grsb\"}}}" > /dev/null
 echo_cmd 'Transpiling source code'
 mkdir -p $BUILD_DIR/server/src
 mkdir -p $BUILD_DIR/server/bin
