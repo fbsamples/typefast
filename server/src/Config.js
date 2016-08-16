@@ -68,6 +68,24 @@ class Config {
     this.data = data;
   }
 
+  flatten(): Map<string, string | number | bool> {
+    const flat = {};
+    const make_reducer = (tree: string) => {
+      return (value: any, key: string) => {
+        const leaf = tree.length > 0 ? `${tree}.${key}` : key;
+        if (value instanceof Map || value instanceof List) {
+          value.forEach(make_reducer(leaf));
+        } else {
+          flat[leaf] = value;
+        }
+      };
+    };
+
+    this.getData().forEach(make_reducer(''));
+
+    return new Map(flat);
+  }
+
   getData(): Map<string, any> {
     return this.data;
   }

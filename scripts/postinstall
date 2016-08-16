@@ -1,19 +1,68 @@
 #!/bin/bash
 
-echo -e "\nInstalling SDK modules..."
-cd sdk ; npm install --save ; npm install --only=dev --save
+ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd ../ && pwd )"
+BUILD_DIR=$ROOT_DIR/build
 
-echo -e "\nInstalling server modules..."
-cd ../server ; npm install --save ; npm install --only=dev --save
+function echo_step {
+  echo -e "\n\033[1m[$1]\033[0m"
+}
 
-echo -e "\nTranspiling..."
-npm run transpile
+function echo_cmd {
+  echo -e ">> $1"
+}
 
-echo -e "\nConfiguring client..."
-node bin/fbTypesGenerator.js
+function transpile {
+  node ./node_modules/.bin/babel $@ > /dev/null
+}
 
-echo -e "\nInstalling client modules..."
-cd ../client ; mkdir -p src/build ; npm install --save ; npm install --only=dev --save
+echo_step 'Running Pre-Flight Operations'
+cd $ROOT_DIR
+echo_cmd 'Cleaning up traling install files'
+rm -rf $BUILD_DIR
+mkdir $BUILD_DIR
 
-echo -e "\nBuilding client..."
-npm run build
+echo_step 'Installing SDK Module'
+cd sdk
+echo_cmd 'Downloading dependencies'
+npm install > /dev/null
+echo_cmd 'Transpiling source code'
+mkdir -p $BUILD_DIR/sdk/src
+transpile src/ -d $BUILD_DIR/sdk/src
+echo_cmd 'Cloning dependencies + static resources'
+cp -rp $ROOT_DIR/sdk/node_modules $BUILD_DIR/sdk/node_modules
+cd $ROOT_DIR
+
+
+echo_step 'Installing Server Module'
+cd server
+echo_cmd 'Downloading dependencies'
+npm install > /dev/null
+echo_cmd 'Cloning dependencies + static resources'
+mkdir -p $BUILD_DIR/server
+cp -rp $ROOT_DIR/server/node_modules $BUILD_DIR/server/node_modules
+cp -rp $ROOT_DIR/server/config $BUILD_DIR/server/config
+cp -rp $ROOT_DIR/server/*.grsb $BUILD_DIR/server/
+echo_cmd 'Building static analysis specs'
+node bin/fbTypesGenerator.js > /dev/null
+echo_cmd 'Transpiling source code'
+mkdir -p $BUILD_DIR/server/src
+mkdir -p $BUILD_DIR/server/bin
+transpile src/ -d $BUILD_DIR/server/src
+transpile bin/ -d $BUILD_DIR/server/bin
+transpile index.js -o $BUILD_DIR/server/index.js
+cd $ROOT_DIR
+
+
+echo_step 'Installing Client Module'
+cd client
+mkdir -p src/build
+echo_cmd 'Downloading dependencies'
+npm install > /dev/null
+echo_cmd 'Building app bundle'
+npm run build > /dev/null
+echo_cmd 'Cloning dependencies + static resources'
+mkdir -p $BUILD_DIR/client/src
+cp -rp $ROOT_DIR/client/src/build $BUILD_DIR/client/src/build
+cp -rpL $ROOT_DIR/client/src/css $BUILD_DIR/client/src/css
+cp -rp $ROOT_DIR/client/src/index.html $BUILD_DIR/client/src/index.html
+cd $ROOT_DIR
