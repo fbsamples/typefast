@@ -40,6 +40,7 @@ Before starting configuration make sure you have [Heroku CLI](https://toolbelt.h
 
 Following config vars are required for Heroku app:
 
+* *NPM_CONFIG_PRODUCTION* - set to false
 * *db.url* - path to MongoDB (copy from existing MONGODB_URI config var)
 * *DEPRECATED__cxt_id* - adaccount id
 * *graph.access_token* - access token generated for admin system user in Business Manager
@@ -65,6 +66,8 @@ Heroku app restarts automatically whenever you deploy code, change config vars o
 You can check app logs on Heroku website or with:
 
     heroku logs --tail
+
+To add debug information to network calls, set config var debug to true.
 
 ### Alternative way
 
