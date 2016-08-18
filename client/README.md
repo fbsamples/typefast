@@ -2,7 +2,7 @@
 
 ##Development
 
-**Before getting started with client side development, make sure to have the [Sever](../server/README.md)**
+**Before getting started with client side development, make sure to have the [Server](../server/README.md) setup and running and the [SDK](../sdk/README.md)**
 
 TypeFast use a build tool chain to package and transpile all the JSX files and ES6 javascript into a single file. When developing on the UI you can make sure that any changes to the source file are automatically recompiled by running the following commands from the client directory root:
 
@@ -23,4 +23,6 @@ Before Starting Type Fast you will need to generate these definitions by running
 
 ##How things are built
 
-The client side is all built using Redux and React Bootstrap. 
+The client side is all built using Redux and React Bootstrap. Redux means the app has a uni directional data flow. Components trigger actions -> actions trigger state changes -> and state changes update components. Read up on Redux to understand more about how the app is architected.
+
+http://redux.js.org/
