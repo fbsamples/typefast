@@ -54,6 +54,14 @@ module.exports = function(infer) {
     return obj;
   }
 
+  function determineNodeTypeName(objFbType) {
+    if (objFbType.types[0].name === 'AdAccount') {
+      return objFbType.types[0].name;
+    } else {
+      return objFbType.types[0].proto.name;
+    }
+  }
+
   return {
     postInfer: function(ast, scope, onOptimisationComplete) {
       fieldsAccessed = {};
@@ -100,10 +108,11 @@ module.exports = function(infer) {
             if (properties[name] // check its a valid prop
               && !isEdge(properties[name]) // check its not an edge
             ) {
-              if (!fieldsAccessed[objFbType.types[0].proto.name]) {
-                fieldsAccessed[objFbType.types[0].proto.name] = new Set();
+              const nodeName = determineNodeTypeName(objFbType);
+              if (!fieldsAccessed[nodeName]) {
+                fieldsAccessed[nodeName] = new Set();
               }
-              fieldsAccessed[objFbType.types[0].proto.name].add(name);
+              fieldsAccessed[nodeName].add(name);
             }
           }
           node.property.parent_object = node.object;
