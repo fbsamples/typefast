@@ -21,41 +21,15 @@
  *
  * @flow
  */
- 
-import { connect } from 'react-redux';
-import {
-  facebookAuthStarted,
-  facebookAuthSuccess,
-  facebookAuthFailure
-} from '../actions/actions.js';
-import TypeFastLogin from '../components/TypeFastLogin';
-import { serverConfig } from '../ServerConfig';
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    appId:  serverConfig.getRawConfig().application_id,
-    isAuthenticated: state.isAuthenticated,
-    isAuthenticating: state.isAuthenticating
-  };
-};
+import React from 'react';
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    facebookAuthStarted: () => {
-      dispatch(facebookAuthStarted());
-    },
-    facebookAuthSuccess: (token) => {
-      dispatch(facebookAuthSuccess(token));
-    },
-    facebookAuthFailure: () => {
-      dispatch(facebookAuthFailure());
-    },
-  };
-};
+class TypeFastCustomListItem extends React.Component {
+  render() {
+    return (
+      <div>{this.props.children}</div>
+    );
+  }
+}
 
-const TypeFastLoginContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TypeFastLogin);
-
-export default TypeFastLoginContainer;
+module.exports = TypeFastCustomListItem;

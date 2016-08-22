@@ -23,27 +23,49 @@
  */
 
 import { connect } from 'react-redux';
-import { hideRoutinesModal } from '../actions/actions';
-import TypeFastRoutinesModal from '../components/TypeFastRoutinesModal';
+import {
+  hideScheduleDialog,
+  savingScheduleRequest,
+  setNewScheduleRun,
+  setNewScheduleDate,
+  setNewScheduleTime,
+  setNewScheduleEnabled
+} from '../actions/actions.js';
+import TypeFastScheduleDialog from '../components/TypeFastScheduleDialog';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    showModal: state.showRoutinesModal,
-    routines: state.routines[state.currentScript.id] || [],
+    isShowing: state.showScheduleDialog,
+    schedule: state.newSchedule
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    close:() => {
-      dispatch(hideRoutinesModal());
+    onHide: () => {
+      dispatch(hideScheduleDialog());
     },
+    onEnabledChange: (e) => {
+      dispatch(setNewScheduleEnabled(e.target.checked));
+    },
+    onIntervalChange: (e, i, v) => {
+      dispatch(setNewScheduleRun(v));
+    },
+    onTimeChange: (e, v) => {
+      dispatch(setNewScheduleTime(v));
+    },
+    onDateChange: (e, v) => {
+      dispatch(setNewScheduleDate(v));
+    },
+    onApply: () => {
+      dispatch(savingScheduleRequest());
+    }
   };
 };
 
-const TypeFastRoutinesModalContainer = connect(
+const TypeFastScheduleContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(TypeFastRoutinesModal);
+)(TypeFastScheduleDialog);
 
-export default TypeFastRoutinesModalContainer;
+export default TypeFastScheduleContainer;

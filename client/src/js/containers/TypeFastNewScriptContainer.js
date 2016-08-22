@@ -21,41 +21,54 @@
  *
  * @flow
  */
- 
+
 import { connect } from 'react-redux';
 import {
-  facebookAuthStarted,
-  facebookAuthSuccess,
-  facebookAuthFailure
+  hideNewScriptDialog,
+  savingScriptRequest,
+  setNewScriptType,
+  setNewScriptName,
+  setNewScriptSample,
+  showScheduleDialog
 } from '../actions/actions.js';
-import TypeFastLogin from '../components/TypeFastLogin';
-import { serverConfig } from '../ServerConfig';
+import TypeFastNewScriptDialog from '../components/TypeFastNewScriptDialog';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    appId:  serverConfig.getRawConfig().application_id,
-    isAuthenticated: state.isAuthenticated,
-    isAuthenticating: state.isAuthenticating
+    samples: state.samples,
+    isShowing: state.showNewScriptDialog,
+    newScript: state.newScript,
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    facebookAuthStarted: () => {
-      dispatch(facebookAuthStarted());
+    onHide: () => {
+      dispatch(hideNewScriptDialog());
     },
-    facebookAuthSuccess: (token) => {
-      dispatch(facebookAuthSuccess(token));
+    onNameChange: (e, v) => {
+      dispatch(setNewScriptName(v));
     },
-    facebookAuthFailure: () => {
-      dispatch(facebookAuthFailure());
+    onTypeChange: (e, v) => {
+      dispatch(setNewScriptType(v));
     },
+    onSampleChange: (e, v) => {
+      dispatch(setNewScriptSample(v));
+    },
+    onSave: () => {
+      dispatch(savingScriptRequest());
+      dispatch(hideNewScriptDialog());
+    },
+    onSchedule: () => {
+      dispatch(savingScriptRequest(true));
+      dispatch(hideNewScriptDialog());
+    }
   };
 };
 
-const TypeFastLoginContainer = connect(
+const TypeFastNewScriptContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(TypeFastLogin);
+)(TypeFastNewScriptDialog);
 
-export default TypeFastLoginContainer;
+export default TypeFastNewScriptContainer;

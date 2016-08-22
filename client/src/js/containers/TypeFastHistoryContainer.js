@@ -22,36 +22,28 @@
  * @flow
  */
 
-import React from 'react';
-import Badge from 'react-bootstrap/lib/Badge';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import Nav from 'react-bootstrap/lib/Nav';
-import Navbar from 'react-bootstrap/lib/Navbar';
-import NavItem from 'react-bootstrap/lib/NavItem';
-import TypeFastNavBarEditorButtonsContainer from '../containers/TypeFastNavBarEditorButtonsContainer';
+import { connect } from 'react-redux';
+import { hideRunHistoryModal } from '../actions/actions.js';
+import TypeFastHistoryModal from '../components/TypeFastHistoryModal';
 
-class TypeFastNavigation extends React.Component {
-  selectButtons() {
-    return <TypeFastNavBarEditorButtonsContainer />;
-  }
+const mapStateToProps = (state, ownProps) => {
+  return {
+    routines: state.routines[state.currentScript.id] || [],
+    isShowing: state.showRunHistoryModal,
+  };
+};
 
-  render() {
-    return (
-    <Navbar id="mainnav" fluid >
-      <Nav>
-        <NavItem
-          eventKey={2}
-          onClick={this.props.onScriptListClicked}
-          active={this.props.scriptListOpen}
-          title="Item">
-          <Glyphicon glyph="align-justify" /> Library <Badge>{this.props.scriptCount}</Badge>
-        </NavItem>
-      </Nav>
-      <Navbar.Form pullRight className="nomargin">
-        {this.selectButtons()}
-      </Navbar.Form>
-    </Navbar>
-  );}
-}
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    onHide: () => {
+      dispatch(hideRunHistoryModal());
+    },
+  };
+};
 
-module.exports = TypeFastNavigation;
+const TypeFastHistoryContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TypeFastHistoryModal);
+
+export default TypeFastHistoryContainer;

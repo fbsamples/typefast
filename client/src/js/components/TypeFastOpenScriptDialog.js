@@ -22,32 +22,42 @@
  * @flow
  */
 
-import { connect } from 'react-redux';
-import { toggleScriptList, changePane } from '../actions/actions.js';
-import TypeFastNavigation from '../components/TypeFastNavigation';
+import React from 'react';
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    scriptCount: Object.keys(state.scripts).length,
-    currentPane: state.currentPane,
-    scriptListOpen: state.scriptListOpen
-  };
-};
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import {List, ListItem} from 'material-ui/List';
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    onNavClick: (paneName) => {
-      dispatch(changePane(paneName));
-    },
-    onScriptListClicked: () => {
-      dispatch(toggleScriptList());
-    },
-  };
-};
+class TypeFastOpenScriptDialog extends React.Component {
+  render() {
+    const actions = [
+      <FlatButton
+        label="Close"
+        secondary={true}
+        onTouchTap={this.props.onHide}
+      />
+    ];
+    return (
+      <Dialog
+        autoScrollBodyContent={true}
+        title="Scripts"
+        actions={actions}
+        modal={false}
+        open={this.props.isShowing}
+        onRequestClose={this.props.onHide}
+      >
+        <List>
+          {Object.keys(this.props.scripts).map(scriptId =>
+            <ListItem
+              key={scriptId}
+              primaryText={this.props.scripts[scriptId].title}
+              onClick={this.props.onScriptSelect.bind(null, scriptId)}
+            />
+          )}
+        </List>
+      </Dialog>
+    );
+  }
+}
 
-const TypeFastNavigationContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TypeFastNavigation);
-
-export default TypeFastNavigationContainer;
+module.exports = TypeFastOpenScriptDialog;

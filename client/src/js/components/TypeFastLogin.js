@@ -23,7 +23,9 @@
  */
 
 import React from 'react';
-import Modal from 'react-bootstrap/lib/Modal';
+
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 class TypeFastLogin extends React.Component {
 
@@ -82,24 +84,22 @@ class TypeFastLogin extends React.Component {
   }
 
   render() {
+    const actions = [
+      <FlatButton
+        label="Login"
+        primary={true}
+        onTouchTap={this.onLoginClicked.bind(this)}
+        disabled={this.props.isAuthenticating}
+      />
+    ];
     return (
-      <Modal show={!this.props.isAuthenticated}>
-       <Modal.Header>
-         <Modal.Title>TypeFast Login</Modal.Title>
-       </Modal.Header>
-       <Modal.Body>
-         {this.statusMessage()}
-       </Modal.Body>
-       <Modal.Footer>
-         <button
-           onClick={this.onLoginClicked.bind(this)}
-           type="button"
-           className={'btn btn-default btn-green'}
-           disabled={this.props.isAuthenticating}>
-           Login
-         </button>
-       </Modal.Footer>
-     </Modal>
+      <Dialog
+        title="TypeFast Login"
+        actions={actions}
+        modal={true}
+        open={!this.props.isAuthenticated}>
+        {this.statusMessage()}
+      </Dialog>
     );
   }
 }

@@ -23,46 +23,31 @@
  */
 
 import { connect } from 'react-redux';
-import {
-  previewScript,
-  saveScript,
-  scriptTitleChanged,
-  showScheduleModal,
-  showRoutinesModal,
-} from '../actions/actions.js';
-import TypeFastNavBarEditorButtons from '../components/TypeFastNavBarEditorButtons';
+import { loadScript, hideOpenScriptDialog } from '../actions/actions.js';
+import TypeFastOpenScriptDialog from '../components/TypeFastOpenScriptDialog';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    scriptTitle: state.currentTitle,
-    needToSave: state.needToSave,
-    isSaving: state.isSaving
+    scripts: state.scripts,
+    isShowing: state.showOpenScriptDialog,
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    onTitleChange: (event) => {
-      dispatch(scriptTitleChanged(event.target.value));
+    onHide: () => {
+      dispatch(hideOpenScriptDialog());
     },
-    onSave: () => {
-      dispatch(saveScript());
-    },
-    onPreview: () => {
-      dispatch(previewScript());
-    },
-    onSchedule: () => {
-      dispatch(showScheduleModal());
-    },
-    onLogs: () => {
-      dispatch(showRoutinesModal());
+    onScriptSelect: (scriptId) => {
+      dispatch(loadScript(scriptId))
+      dispatch(hideOpenScriptDialog());
     }
   };
 };
 
-const TypeFastNavBarEditorButtonsContainer = connect(
+const TypeFastOpenScriptContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(TypeFastNavBarEditorButtons);
+)(TypeFastOpenScriptDialog);
 
-export default TypeFastNavBarEditorButtonsContainer;
+export default TypeFastOpenScriptContainer;
