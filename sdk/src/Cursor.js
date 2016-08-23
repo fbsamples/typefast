@@ -27,14 +27,14 @@ import type Node from './Node';
 import type NodeSpec from './specs/NodeSpec';
 import type Response from './http/Response';
 
-const {List} = require('immutable');
+const {fromJS, List} = require('immutable');
 
 type CursorMapper = (node: Node, index: number, cursor?: Cursor) => any;
 
-// FIXME implement implicit fetching
 class Cursor {
 
   api: Api;
+  hardLimit: ?number;
   index: number;
   last_response: Response;
   node_spec: NodeSpec;
@@ -43,6 +43,7 @@ class Cursor {
   constructor(node_spec: NodeSpec, first_response: Response): void {
     this.node_spec = node_spec;
     this.nodes = new List();
+    this.hardLimit = first_response.getRequest().getParams().get('limit', null);
     this.pushResponse(first_response);
     this.rewind();
   }
@@ -53,9 +54,9 @@ class Cursor {
     return Node.fromData(this.getLastResponse().getRequest().getApi(), this.getNodeSpec(), node_content);
   }
 
-  pushResponse(response: Response): Cursor {
+  pushResponse(response: Response): this {
     this.last_response = response;
-    this.nodes = this.nodes.merge(
+    this.nodes = this.nodes.concat(
       new List(response.getContent().data).map(this.makeNode.bind(this))
     );
     return this;
@@ -67,6 +68,10 @@ class Cursor {
 
   getLastResponse(): Response {
     return this.last_response;
+  }
+
+  getHardLimit(): ?number {
+    return this.hardLimit;
   }
 
   count(): number {
@@ -96,6 +101,7 @@ class Cursor {
 
   next(): ?Node {
     ++this.index;
+    this.isValid() || this.paginateAfter();
     return this.current();
   }
 
@@ -104,7 +110,27 @@ class Cursor {
   }
 
   map(mapper: CursorMapper, thisArg?: any): Array<Node> {
-    return this.nodes.map((value, key) => mapper.call(thisArg, value, key, this), thisArg).toArray();
+    const results = [];
+    this.rewind();
+    let current = this.next();
+    while (current != null) {
+      results.push(mapper.call(thisArg, current, this.key(), this));
+      current = this.next();
+    }
+
+    return results;
+  }
+
+  paginateAfter(): this {
+    const limit = this.getHardLimit();
+    const after = fromJS(this.getLastResponse().getContent()).getIn(['paging', 'cursors', 'after'], null);
+    if ((limit != null && limit <= this.nodes.size) || after == null) {
+      return this;
+    }
+
+    const request = this.getLastResponse().getRequest().getCopy();
+    request.setParams(request.getParams().remove('before').set('after', after));
+    return this.pushResponse(request.execute());
   }
 
   forEach(mapper: CursorMapper, thisArg?: any): Cursor {
