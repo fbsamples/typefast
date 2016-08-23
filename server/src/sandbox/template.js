@@ -64,8 +64,15 @@ module.exports = function(config: Config, script: Script, ctx_id: string): Objec
 
   // Init context
   const ctx = Node.fromSpec(api, registry.get(script.get('context_type')));
+
   // FLOW_UNSAFE
   ctx.id = ctx_id;
+
+  // Automatically fetch all accessed fields of ctx
+  if (optimizer.getFieldPredictions(ctx.getType()).size > 0 && ctx.hasOwnProperty('read')) {
+    // FLOW_UNSAFE
+    ctx.read();
+  }
 
   return {
     context: ctx,

@@ -26,13 +26,23 @@ import type {RequestMethod} from './../http/Request';
 
 export type CrudFunction = | 'READ' | 'UPDATE' | 'DELETE';
 
+const {Map} = require('immutable');
+
+const crud_name_overrides: Map<string, CrudFunction> = new Map({
+  get: 'READ',
+});
+
+const coerce_crud_function = function(name: string): CrudFunction {
+  return crud_name_overrides.get(name, name.toUpperCase());
+};
+
 class CrudSpec {
 
   crudFunction: CrudFunction;
   method: RequestMethod;
 
   static fromSchema(schema: Object): CrudSpec {
-    return new CrudSpec(schema.name.substr(1).toUpperCase(), schema.method);
+    return new CrudSpec(coerce_crud_function(schema.name.substr(1)), schema.method);
   }
 
   constructor(crud_function: CrudFunction, method: RequestMethod): void {

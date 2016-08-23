@@ -64,7 +64,7 @@ describe('NodeSpec', () => {
         description: 'Create something',
       },
       {
-        name: '#read'
+        name: '#get'
       },
       {
         name: '#update'
