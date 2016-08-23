@@ -98,8 +98,6 @@ class Runner extends AbstractService {
       .then((script: Script) => this.willExecSandbox(script, nullthrows(context_id)))
       .then(() => { this.emit(Runner.events.END); })
       .catch((error: Error) => process.nextTick(() => { throw error; }));
-
-    this.emit(Runner.events.INIT);
   }
 }
 

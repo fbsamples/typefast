@@ -40,7 +40,7 @@ const bootstrap = function(argv: Argv): Runner {
   const routine_id: string = argv.get(ROUTINE_ID_KEY).toString();
   const config = Config.fromArgv(argv);
   const runner = new Runner(config, routine_id);
-  runner.on(Runner.events.INIT, () => on_init(runner));
+  runner.once(Runner.events.INIT, () => on_init(runner));
 
   return runner;
 };
