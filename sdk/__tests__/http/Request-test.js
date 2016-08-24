@@ -95,4 +95,15 @@ describe('Request', () => {
     request.getApi().execRequest.mockReturnValue(response);
     expect(request.execute()).toBe(response);
   });
+
+  it('can generate copies of itself with references to new disposable objects', () => {
+    const request = makeRequest();
+    const copy = request.getCopy();
+    expect(copy).toEqual(jasmine.any(Request));
+    expect(copy).not.toBe(request);
+    expect(copy.getApi()).toBe(request.getApi());
+    expect(copy.getPath()).toEqual(request.getPath());
+    expect(copy.getMethod()).toEqual(request.getMethod());
+    expect(copy.getParams().toJS()).toEqual(request.getParams().toJS());
+  });
 });

@@ -128,6 +128,10 @@ class Request {
       : null;
   }
 
+  getCopy(): Request {
+    return new Request(this.getApi(), this.getPath(), this.getMethod(), this.getParams());
+  }
+
   execute(): Response {
     return this.getApi().execRequest(this);
   }

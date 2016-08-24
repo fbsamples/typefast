@@ -21,13 +21,18 @@
  */
 
 jest.unmock('../src/Cursor');
+jest.mock('../src/Node', () => {
+  const Node = jest.genMockFromModule('../src/Node');
+  Node.fromData = () => new Node(/* mock */);
+  return Node;
+});
 
 const Api = require('../src/Api');
 const Cursor = require('../src/Cursor');
 const NodeSpec = require('../src/specs/NodeSpec');
 const Request = require('../src/http/Request');
 const Response = require('../src/http/Response');
-const SpecRegistry = require('../src/SpecRegistry');
+const {Map, Repeat} = require('immutable');
 
 describe('Cursor', () => {
 
@@ -35,14 +40,18 @@ describe('Cursor', () => {
     field_name: 1234567890
   };
 
+  const response_content = {
+    data: [response_object_data, response_object_data],
+  };
+
   const makeNodeSpec = () => {
-    const registry = new SpecRegistry(/* mock */);
-    return NodeSpec.fromJson(registry, JSON.stringify({}));
+    return new NodeSpec(/* mock */);
   };
 
   const makeRequest = () => {
     const request = new Request(/* mock */);
     request.getApi.mockReturnValue(new Api(/* mock */));
+    request.getParams.mockReturnValue(new Map());
     return request;
   };
 
@@ -57,6 +66,31 @@ describe('Cursor', () => {
     return new Cursor(makeNodeSpec(), makeResponse(response_data));
   };
 
+  const makeChainResponse = (response_data, pages, limit) => {
+    response_data.paging = {
+      cursors: {
+        after: '==hash',
+      },
+    };
+
+    if (limit != null) {
+      response_data.data = Repeat(response_object_data, limit).toArray();
+    }
+    const response = makeResponse(pages > 0 ? response_data : { data: []});
+    const request = response.getRequest();
+
+    if (limit != null ) {
+      request.getParams.mockReturnValue(request.getParams().set('limit', limit));
+    }
+    request.execute.mockReturnValue(response);
+    request.getCopy.mockImplementation(() => makeChainResponse(response_data, --pages).getRequest());
+    return response;
+  };
+
+  const makeChainCursor = (response_data, pages, limit) => {
+    return new Cursor(makeNodeSpec(), makeChainResponse(response_data, pages, limit));
+  };
+
   it('can return the provided arguments', () => {
     const node_spec = makeNodeSpec();
     const response = makeResponse();
@@ -66,19 +100,17 @@ describe('Cursor', () => {
   });
 
   it('provides a counting method', () => {
-    const content = {data:[response_object_data, response_object_data]};
-    const cursor = makeCursor(content);
-    expect(cursor.count()).toEqual(content.data.length);
+    const cursor = makeCursor(response_content);
+    expect(cursor.count()).toEqual(response_content.data.length);
   });
 
   it('can be converted to Array', () => {
-    const content = {data:[response_object_data, response_object_data]};
-    const cursor = makeCursor(content);
-    expect(cursor.toArray().length).toEqual(content.data.length);
+    const cursor = makeCursor(response_content);
+    expect(cursor.toArray().length).toEqual(response_content.data.length);
   });
 
   it('provides iteration through methods', () => {
-    const content = {data:[response_object_data]};
+    const content = {data: [response_object_data]};
     const cursor = makeCursor(content);
     expect(cursor.key()).toEqual(-1);
     expect(cursor.isValid()).toBeFalsy();
@@ -95,14 +127,30 @@ describe('Cursor', () => {
   });
 
   it('provides iteration through mappers', () => {
-    const content = {data:[response_object_data, response_object_data]};
-    const cursor = makeCursor(content);
+    const cursor = makeCursor(response_content);
     let count = 0;
-    const array = cursor.map(value => {++count; return count;});
-    expect(count).toEqual(content.data.length);
-    expect(array.length).toEqual(content.data.length);
+    const array = cursor.map(value => ++count);
+    expect(count).toEqual(response_content.data.length);
+    expect(array.length).toEqual(response_content.data.length);
     count = 0;
     cursor.forEach(value => ++count);
-    expect(count).toEqual(content.data.length);
+    expect(count).toEqual(response_content.data.length);
+  });
+
+  it('provides an implicit paginator', () => {
+    const pages = 3;
+    const cursor = makeChainCursor(response_content, pages);
+    let count = 0;
+    cursor.forEach(value => ++count);
+    expect(count).toEqual(response_content.data.length * pages);
+  });
+
+  it('allows to limit the number of returned object', () => {
+    const pages = 3;
+    const limit = 1;
+    const cursor = makeChainCursor(response_content, pages, limit);
+    let count = 0;
+    cursor.forEach(value => ++count);
+    expect(count).toEqual(limit);
   });
 });
