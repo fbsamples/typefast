@@ -55,7 +55,7 @@ class NodeSpec {
     let fields = new List(idx(obj, 'fields', []));
     let edges = new List(idx(obj, 'apis', []));
     let cruds = new Map({
-      read: null,
+      get: null,
       update: null,
       'delete': null,
     });
@@ -81,7 +81,7 @@ class NodeSpec {
       obj.type,
       listToMap(fields, spec => spec.getName()),
       listToMap(edges, spec => spec.getName()),
-      cruds.get('read'),
+      cruds.get('get'),
       cruds.get('update'),
       cruds.get('delete')
     );
