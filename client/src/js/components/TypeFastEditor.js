@@ -34,7 +34,7 @@ class TypeFastEditor extends React.Component {
     );
   }
 
-  render() {
+  componentWillUpdate() {
     if (this.editor) {
       if (this.props.isFetching) {
         this.editor.setLoadingText();
@@ -44,7 +44,9 @@ class TypeFastEditor extends React.Component {
         this.editor.setWelcomeText();
       }
     }
+  }
 
+  render() {
     return (
       <div
         ref="sandbox"
