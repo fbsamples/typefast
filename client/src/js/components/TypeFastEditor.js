@@ -34,7 +34,7 @@ class TypeFastEditor extends React.Component {
     );
   }
 
-  componentWillUpdate() {
+  componentDidUpdate() {
     if (this.editor) {
       if (this.props.isFetching) {
         this.editor.setLoadingText();
