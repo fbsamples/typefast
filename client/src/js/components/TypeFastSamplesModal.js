@@ -28,8 +28,6 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import {List, ListItem} from 'material-ui/List';
 
-import TypeFastCustomListItem from '../components/TypeFastCustomListItem';
-
 class TypeFastSamplesModal extends React.Component {
   render() {
     const actions = [
@@ -40,7 +38,7 @@ class TypeFastSamplesModal extends React.Component {
         onTouchTap={this.props.onHide}
       />
     ];
-    return(
+    return (
       <Dialog
         autoScrollBodyContent={true}
         title="Samples"
@@ -53,15 +51,9 @@ class TypeFastSamplesModal extends React.Component {
         <List>
           {this.props.samples.map(sample =>
             <ListItem
+              onClick={this.props.onSampleClick.bind(null, sample.id)}
               key={sample.id}
               primaryText={sample.name}
-              nestedItems={[
-                <TypeFastCustomListItem key={0}>
-                  {sample.code.split("\n").map((line, index) =>
-                    <div key={index}>{line}</div>
-                  )}
-                </TypeFastCustomListItem>
-              ]}
             />
           )}
         </List>

@@ -28,7 +28,6 @@ import {
   showHelpModal,
   showNewScriptDialog,
   showOpenScriptDialog,
-  showRunHistoryModal,
   showSamplesModal,
   showPopover,
   hidePopover
@@ -54,9 +53,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     onOpenScriptClick: () => {
       dispatch(showOpenScriptDialog());
-    },
-    onHistoryClick: () => {
-      dispatch(showRunHistoryModal());
     },
     onSamplesClick: () => {
       dispatch(showSamplesModal());

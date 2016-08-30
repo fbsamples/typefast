@@ -56,10 +56,6 @@ class TypeFastAppBar extends React.Component {
               onClick={this.props.onOpenScriptClick}
             />
             <MenuItem
-              primaryText="Run History"
-              onClick={this.props.onHistoryClick}
-            />
-            <MenuItem
               primaryText="Samples"
               onClick={this.props.onSamplesClick}
             />
@@ -92,7 +88,7 @@ class TypeFastAppBar extends React.Component {
               onTouchTap={this.props.onPopoverShow}
               label={this.props.currentAdaccount.name}
               labelPosition="before"
-              labelStyle={{color: "white"}}
+              labelStyle={{color: 'white'}}
               icon={
                 <FontIcon
                   className="material-icons"

@@ -26,13 +26,12 @@ import React from 'react';
 
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import TextField from 'material-ui/TextField';
 import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Toggle from 'material-ui/Toggle';
-import { ScheduleRecurence, SchedulePeriods } from '../constants/constants.js';
+import { SchedulePeriods } from '../constants/constants.js';
 
 class TypeFastScheduleDialog extends React.Component {
   render() {
@@ -60,7 +59,7 @@ class TypeFastScheduleDialog extends React.Component {
       >
         <Toggle
           label="Enabled: "
-          style={{maxWidth: "135px"}}
+          style={{maxWidth: '135px'}}
           onToggle={this.props.onEnabledChange.bind(this)}
           checked={this.props.schedule.enabled}
         />

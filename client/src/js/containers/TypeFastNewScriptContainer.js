@@ -28,8 +28,7 @@ import {
   savingScriptRequest,
   setNewScriptType,
   setNewScriptName,
-  setNewScriptSample,
-  showScheduleDialog
+  setNewScriptSample
 } from '../actions/actions.js';
 import TypeFastNewScriptDialog from '../components/TypeFastNewScriptDialog';
 

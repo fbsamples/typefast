@@ -31,10 +31,10 @@ import { connect } from 'react-redux';
 
 const styles = {
   container: {
-    position: "absolute",
-    top: "120px",
-    bottom: "0",
-    width: "100%"
+    position: 'absolute',
+    top: '120px',
+    bottom: '0',
+    width: '100%'
   }
 };
 

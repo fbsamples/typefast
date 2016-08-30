@@ -48,7 +48,7 @@ import {
   SHOW_SAMPLES_MODAL,
   HIDE_SAMPLES_MODAL,
   FETCH_SAMPLES,
-  SELECT_SAMPLE,
+  LOAD_SAMPLE,
 
   SHOW_HELP_MODAL,
   HIDE_HELP_MODAL,
@@ -102,7 +102,7 @@ function defaultSchedule() {
 function defaultAdaccount() {
   return {
     name: 'Select ad account'
-  }
+  };
 }
 
 function initialLog() {
@@ -256,7 +256,7 @@ function typefastApp(state = {
     case FETCH_SCHEDULE_SUCCESS:
       let newSchedule = defaultSchedule();
       if (action.payload.schedule.length > 0) {
-        newSchedule = action.payload.schedule[0]
+        newSchedule = action.payload.schedule[0];
       }
       return Object.assign({}, state, {
         currentSchedule: newSchedule
@@ -430,7 +430,9 @@ console.log("1");
 
     case SHOW_SCHEDULE_DIALOG: {
       let currentSchedule = state.currentSchedule;
-      if (!currentSchedule.id) currentSchedule = defaultSchedule();
+      if (!currentSchedule.id) {
+        currentSchedule = defaultSchedule();
+      }
       return Object.assign({}, state, {
         showScheduleDialog: true,
         newSchedule: Object.assign({}, currentSchedule, {
@@ -542,6 +544,16 @@ console.log("1");
       return Object.assign({}, state, {
         showPopover: false
       });
+    }
+
+    case LOAD_SAMPLE: {
+      const sample = state.samples.filter(s => s.id === action.payload.sampleId);
+      if (sample.length > 0) {
+        return Object.assign({}, state, {
+          log: [{message: sample[0].code}]
+        });
+      }
+      return state;
     }
 
     default:

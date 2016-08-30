@@ -24,9 +24,9 @@
 
 import { connect } from 'react-redux';
 import {
-  showScriptSaveDialog,
   previewScript,
   saveScript,
+  showRunHistoryModal,
   showScheduleDialog
 } from '../actions/actions.js';
 import TypeFastToolbar from '../components/TypeFastToolbar';
@@ -49,7 +49,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     onScriptSchedule: () => {
       dispatch(showScheduleDialog());
-    }
+    },
+    onScriptHistory: () => {
+      dispatch(showRunHistoryModal());
+    },
   };
 };
 

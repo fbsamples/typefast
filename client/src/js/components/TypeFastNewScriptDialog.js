@@ -27,14 +27,16 @@ import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import FlatButton from 'material-ui/FlatButton';
-import {List, ListItem} from 'material-ui/List';
 import MenuItem from 'material-ui/MenuItem';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import TextField from 'material-ui/TextField';
 
 class TypeFastNewScriptDialog extends React.Component {
   nameLengthError() {
-    if (this.props.newScript.script.title.length < 3) return "Minimum 3 chars";
+    if (this.props.newScript.script.title.length < 3) {
+      return 'Minimum 3 chars';
+    }
+    return '';
   }
 
   render() {
