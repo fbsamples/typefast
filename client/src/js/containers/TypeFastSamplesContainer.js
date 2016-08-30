@@ -22,20 +22,28 @@
  * @flow
  */
 
-import React from 'react';
+import { connect } from 'react-redux';
+import { hideSamplesModal, selectSample } from '../actions/actions.js';
+import TypeFastSamplesModal from '../components/TypeFastSamplesModal';
 
-class TypeFastListing extends React.Component {
-  render() {
-    return (
-      <div>
-        <a
-          onClick={this.props.onClick.bind(null, this.props.script.id)}
-          href="#" >
-          {this.props.script.title}
-        </a>
-      </div>
-    );
-  }
-}
+const mapStateToProps = (state, ownProps) => {
+  return {
+    isShowing: state.showSamplesModal,
+    samples: state.samples,
+  };
+};
 
-module.exports = TypeFastListing;
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    onHide: () => {
+      dispatch(hideSamplesModal());
+    }
+  };
+};
+
+const TypeFastSamplesContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TypeFastSamplesModal);
+
+export default TypeFastSamplesContainer;

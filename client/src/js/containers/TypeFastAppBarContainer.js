@@ -21,41 +21,61 @@
  *
  * @flow
  */
- 
+
 import { connect } from 'react-redux';
 import {
-  facebookAuthStarted,
-  facebookAuthSuccess,
-  facebookAuthFailure
+  selectAdaccount,
+  showHelpModal,
+  showNewScriptDialog,
+  showOpenScriptDialog,
+  showRunHistoryModal,
+  showSamplesModal,
+  showPopover,
+  hidePopover
 } from '../actions/actions.js';
-import TypeFastLogin from '../components/TypeFastLogin';
-import { serverConfig } from '../ServerConfig';
+import TypeFastAppBar from '../components/TypeFastAppBar';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    appId:  serverConfig.getRawConfig().application_id,
-    isAuthenticated: state.isAuthenticated,
-    isAuthenticating: state.isAuthenticating
+    adaccounts: state.adaccounts,
+    currentAdaccount: state.currentAdaccount,
+    showPopover: state.showPopover,
+    popover: state.popover
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    facebookAuthStarted: () => {
-      dispatch(facebookAuthStarted());
+    onAdaccountSelect: (adaccountId) => {
+      dispatch(selectAdaccount(adaccountId));
     },
-    facebookAuthSuccess: (token) => {
-      dispatch(facebookAuthSuccess(token));
+    onNewScriptClick: () => {
+      dispatch(showNewScriptDialog());
     },
-    facebookAuthFailure: () => {
-      dispatch(facebookAuthFailure());
+    onOpenScriptClick: () => {
+      dispatch(showOpenScriptDialog());
     },
+    onHistoryClick: () => {
+      dispatch(showRunHistoryModal());
+    },
+    onSamplesClick: () => {
+      dispatch(showSamplesModal());
+    },
+    onHelpClick: () => {
+      dispatch(showHelpModal());
+    },
+    onPopoverShow: (e) => {
+      dispatch(showPopover(e.currentTarget));
+    },
+    onPopoverHide: () => {
+      dispatch(hidePopover());
+    }
   };
 };
 
-const TypeFastLoginContainer = connect(
+const TypeFastAppBarContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(TypeFastLogin);
+)(TypeFastAppBar);
 
-export default TypeFastLoginContainer;
+export default TypeFastAppBarContainer;

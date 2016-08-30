@@ -30,18 +30,24 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import TypeFastApp from './components/TypeFastApp';
 import { serverConfig } from './ServerConfig';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
+injectTapEventPlugin();
 
 const store = createStore(
   rootReducer,
-   applyMiddleware(
-     thunkMiddleware
-   )
+  applyMiddleware(
+    thunkMiddleware
+  )
 );
 
 serverConfig.fetch(function() {
   ReactDOM.render(
     <Provider store={store}>
-      <TypeFastApp />
+      <MuiThemeProvider>
+        <TypeFastApp />
+      </MuiThemeProvider>
     </Provider>,
     document.getElementById('typefast')
   );

@@ -25,20 +25,49 @@
 import React from 'react';
 
 import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import {List, ListItem} from 'material-ui/List';
 
-class TypeFastUnauthorisedModal extends React.Component {
+import TypeFastCustomListItem from '../components/TypeFastCustomListItem';
+
+class TypeFastSamplesModal extends React.Component {
   render() {
-    return (
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        secondary={true}
+        keyboardFocused={true}
+        onTouchTap={this.props.onHide}
+      />
+    ];
+    return(
       <Dialog
-        title="TypeFast Authorisation Failed"
-        modal={true}
-        open={this.props.isAuthenticated && this.props.isAuthorised === false}
+        autoScrollBodyContent={true}
+        title="Samples"
+        actions={actions}
+        modal={false}
+        open={this.props.isShowing}
+        onRequestClose={this.props.onHide}
+        bodyStyle={{paddingBottom: '0px'}}
       >
-        <p>You are not authorised in your companies Business Manager to use TypeFast</p>
-        <p>Please contact your manager for permission</p>
+        <List>
+          {this.props.samples.map(sample =>
+            <ListItem
+              key={sample.id}
+              primaryText={sample.name}
+              nestedItems={[
+                <TypeFastCustomListItem key={0}>
+                  {sample.code.split("\n").map((line, index) =>
+                    <div key={index}>{line}</div>
+                  )}
+                </TypeFastCustomListItem>
+              ]}
+            />
+          )}
+        </List>
       </Dialog>
     );
   }
 }
 
-module.exports = TypeFastUnauthorisedModal;
+module.exports = TypeFastSamplesModal;

@@ -25,40 +25,57 @@
 import {
   FETCHING_SCRIPTS_REQUEST, FETCHING_SCRIPTS_SUCCESS,
   SAVE_SCRIPT_REQUEST, SAVE_SCRIPT_SUCCESS,
-  SCRIPT_CODE_CHANGED, SCRIPT_TITLE_CHANGED,
+  SCRIPT_CODE_CHANGED,
   OPTIMISATIONS_COMPLETE,
   PREVIEW_SCRIPT_REQUEST, PREVIEW_SCRIPT_SUCCESS,
   UI_CHANGE,
   LOAD_SCRIPT,
-  SHOW_SCHEDULE_MODAL, HIDE_SCHEDULE_MODAL,
-  SHOW_SCHEDULE_SELECTOR, HIDE_SCHEDULE_SELECTOR,
-  SCRIPT_LIST_CLICKED,
-  SCHEDULE_STATE_CHANGED, SCHEDULE_START_TIME_CHANGED,
-  SCHEDULE_INTERVAL_CHANGED,
   FACEBOOK_AUTH_STARTED, FACEBOOK_AUTH_SUCCESS, FACEBOOK_AUTH_FAILURE,
   UNAUTHORISED,
-  FETCHING_SCHEDULES_SUCCESS,
-  LOAD_SCHEDULE, SAVE_SCHEDULE_SUCCESS,
+  FETCH_SCHEDULE_SUCCESS,
+  SAVE_SCHEDULE_SUCCESS,
   FETCHING_ROUTINES_SUCCESS,
-  SHOW_ROUTINES_MODAL, HIDE_ROUTINES_MODAL
+
+  FETCH_ADACCOUNTS,
+  SELECT_ADACCOUNT,
+
+  SHOW_OPEN_SCRIPT_DIALOG,
+  HIDE_OPEN_SCRIPT_DIALOG,
+
+  SHOW_RUN_HISTORY_MODAL,
+  HIDE_RUN_HISTORY_MODAL,
+
+  SHOW_SAMPLES_MODAL,
+  HIDE_SAMPLES_MODAL,
+  FETCH_SAMPLES,
+  SELECT_SAMPLE,
+
+  SHOW_HELP_MODAL,
+  HIDE_HELP_MODAL,
+
+  SHOW_NEW_SCRIPT_DIALOG,
+  HIDE_NEW_SCRIPT_DIALOG,
+  SET_NEW_SCRIPT_TYPE,
+  SET_NEW_SCRIPT_NAME,
+  SET_NEW_SCRIPT_SAMPLE,
+  NEW_SCRIPT_REQUEST,
+
+  SHOW_SCHEDULE_DIALOG,
+  HIDE_SCHEDULE_DIALOG,
+  SET_NEW_SCHEDULE_DATE,
+  SET_NEW_SCHEDULE_TIME,
+  SET_NEW_SCHEDULE_RUN,
+  SET_NEW_SCHEDULE_ENABLED,
+  NEW_SCHEDULE_REQUEST,
+
+  SHOW_POPOVER,
+  HIDE_POPOVER
 } from '../actions/actions.js';
 import { ScheduleRecurence } from '../constants/constants';
 
-function initalLog() {
-  return [{
-    message:   `Ctrl-N - Auto Complete word
-    Ctrl-I - Show Type
-    Ctrl-O - Show Docs
-    Alt-.  - Jump To Definition,
-    Alt-,  - Jump Back
-    Ctrl-Q - Rename
-    Ctrl-. - Select Name`
-  }];
-}
-
 function defaultScript() {
   return {
-    title: 'A Untitled Masterwork',
+    title: 'Untitled',
     optimisations: [],
     code:
 `/*jshint esversion: 6 */
@@ -73,11 +90,30 @@ adaccount.getcustomaudiences().forEach(
 );`,
   };
 }
+
 function defaultSchedule() {
   return {
     is_paused: false,
     recurrence: ScheduleRecurence.HOURLY,
     start_time: new Date(Date.now()).toISOString(),
+  };
+}
+
+function defaultAdaccount() {
+  return {
+    name: 'Select ad account'
+  }
+}
+
+function initialLog() {
+  return [];
+}
+
+function defaultNewScript() {
+  return {
+    script: defaultScript(),
+    type: 'sample',
+    sampleId: 0
   };
 }
 
@@ -89,26 +125,34 @@ function typefastApp(state = {
   scripts: [],
   schedules: [],
   routines: [],
-  log: initalLog(),
+  log: initialLog(),
   runHistory: {},
   currentPane: 'editor',
   showScheduleSelector: false,
-  showScheduleModal: false,
-  showRoutinesModal: false,
+
   needToSave: true,
   currentScript: defaultScript(),
-  currentTitle: defaultScript().title,
   currentSchedule: defaultSchedule(),
-  scheduleState: defaultSchedule().is_paused,
-  scheduleInterval: defaultSchedule().recurrence,
-  scheduleStartTime: defaultSchedule().start_time,
   accessToken: null,
   isAuthenticated: false,
-  isAuthenticating: false
+  isAuthenticating: false,
+
+  adaccounts: [],
+  currentAdaccount: defaultAdaccount(),
+  samples: [],
+  showHelpModal: false,
+  showRunHistoryModal: false,
+  showOpenScriptDialog: false,
+  showSamplesModal: false,
+  showNewScriptDialog: false,
+  showScheduleDialog: false,
+  newScript: defaultNewScript(),
+  newSchedule: {},
+  showPopover: false,
+  popover: null
 }, action) {
   let needToSave;
   switch (action.type) {
-
     case LOAD_SCRIPT:
       let scriptToLoad = defaultScript();
       if (action.payload.id !== 'new') {
@@ -118,20 +162,7 @@ function typefastApp(state = {
         currentScript: scriptToLoad,
         editorValue: scriptToLoad.code,
         optimisations: scriptToLoad.optimisations,
-        currentTitle: scriptToLoad.title,
-        log: initalLog(),
-      });
-
-    case LOAD_SCHEDULE:
-      let scheduleToLoad = defaultSchedule();
-      if (action.payload.scriptId !== 'new') {
-        scheduleToLoad = state.schedules[action.payload.scriptId];
-      }
-      return Object.assign({}, state, {
-        currentSchedule: scheduleToLoad,
-        scheduleState: scheduleToLoad.is_paused,
-        scheduleInterval: scheduleToLoad.recurrence,
-        scheduleStartTime: scheduleToLoad.start_time,
+        log: initialLog(),
       });
 
     case UNAUTHORISED:
@@ -148,14 +179,13 @@ function typefastApp(state = {
       return Object.assign({}, state, {
         isSaving: true,
       });
+
     case SAVE_SCRIPT_SUCCESS:
       let script = {};
-
       script[action.payload.script.id] = action.payload.script;
       const updatedScripts = Object.assign({}, state.scripts, script);
       return Object.assign({}, state, {
         isSaving: false,
-        currentScript: action.payload.script,
         scripts: updatedScripts,
         scriptCount: Object.keys(updatedScripts).length,
         needToSave: false,
@@ -163,57 +193,11 @@ function typefastApp(state = {
 
     case SAVE_SCHEDULE_SUCCESS:
       let schedule = {};
-
       schedule[action.payload.schedule.script_id] = action.payload.schedule;
       const updatedSchedules = Object.assign({}, state.schedules, schedule);
       return Object.assign({}, state, {
         currentSchedule: action.payload.schedule,
         schedules: updatedSchedules,
-      });
-
-    case SHOW_SCHEDULE_MODAL:
-      return Object.assign({}, state, {
-        showScheduleModal: true,
-      });
-
-    case HIDE_SCHEDULE_MODAL:
-      return Object.assign({}, state, {
-        showScheduleModal: false,
-      });
-
-    case SCHEDULE_STATE_CHANGED:
-      return Object.assign({}, state, {
-        scheduleState: action.payload.scheduleState
-      });
-
-    case SCHEDULE_INTERVAL_CHANGED:
-      return Object.assign({}, state, {
-        scheduleInterval: action.payload.scheduleInterval
-      });
-
-    case SCHEDULE_START_TIME_CHANGED:
-      return Object.assign({}, state, {
-        scheduleStartTime: action.payload.scheduleStartTime
-      });
-
-    case SHOW_SCHEDULE_SELECTOR:
-      return Object.assign({}, state, {
-        showScheduleSelector: true,
-      });
-
-    case HIDE_SCHEDULE_SELECTOR:
-      return Object.assign({}, state, {
-        showScheduleSelector: false,
-      });
-
-    case SHOW_ROUTINES_MODAL:
-      return Object.assign({}, state, {
-        showRoutinesModal: true,
-      });
-
-    case HIDE_ROUTINES_MODAL:
-      return Object.assign({}, state, {
-        showRoutinesModal: false,
       });
 
     case FACEBOOK_AUTH_SUCCESS:
@@ -248,7 +232,6 @@ function typefastApp(state = {
           } else {
             o[v.script_id].push(v);
           }
-
           return o;
         },
         {}
@@ -258,12 +241,7 @@ function typefastApp(state = {
       });
 
     case FETCHING_SCRIPTS_SUCCESS:
-      let firstScript = defaultScript();
       let scripts = action.payload.scripts.data;
-      if (!state.currentScript.id && scripts.length > 0) {
-        firstScript = scripts[0];
-      }
-
       scripts = scripts.reduce(
         (o, v, i) => { o[v.id] = v; return o; },
         {}
@@ -271,29 +249,18 @@ function typefastApp(state = {
       return Object.assign({}, state, {
         isFetching: false,
         scripts: scripts,
-        currentScript: firstScript,
-        currentTitle: firstScript.title,
+        currentScript: defaultScript(),
         scriptCount: Object.keys(scripts).length
       });
 
-    case FETCHING_SCHEDULES_SUCCESS:
-      const schedules = action.payload.schedules.data.reduce(
-        (o, v, i) => { o[v.script_id] = v; return o; },
-        {}
-      );
-
-      let newState = {
-        schedules: schedules
-      };
-
-      if (state.currentScript.id && schedules[state.currentScript.id]) {
-        const schedule = schedules[state.currentScript.id];
-        newState.currentSchedule = schedule;
-        newState.scheduleStartTime = new Date(schedule.start_time).getTime();
-        newState.scheduleInterval = schedule.recurrence;
-        newState.scheduleState = schedule.is_paused;
+    case FETCH_SCHEDULE_SUCCESS:
+      let newSchedule = defaultSchedule();
+      if (action.payload.schedule.length > 0) {
+        newSchedule = action.payload.schedule[0]
       }
-      return Object.assign({}, state, newState);
+      return Object.assign({}, state, {
+        currentSchedule: newSchedule
+      });
 
     case PREVIEW_SCRIPT_SUCCESS:
       return Object.assign({}, state, {
@@ -306,27 +273,12 @@ function typefastApp(state = {
         }]
       });
 
-    case SCRIPT_TITLE_CHANGED:
-      needToSave = !(state.currentScript.id
-        && (state.currentScript.title == action.payload.title));
-
-      return Object.assign({}, state, {
-        currentTitle: action.payload.title,
-        needToSave: needToSave
-      });
-
     case SCRIPT_CODE_CHANGED:
       needToSave = !(state.currentScript.id
         && (state.currentScript.code == action.payload.code));
-
       return Object.assign({}, state, {
         editorValue: action.payload.code,
         needToSave: needToSave,
-      });
-
-    case SCRIPT_LIST_CLICKED:
-      return Object.assign({}, state, {
-        scriptListOpen: !state.scriptListOpen,
       });
 
     case OPTIMISATIONS_COMPLETE: {
@@ -335,10 +287,266 @@ function typefastApp(state = {
       });
     }
 
+    case FETCH_ADACCOUNTS: {
+      return Object.assign({}, state, {
+        adaccounts: [
+          {
+            id: 'act_1',
+            name: 'Account 1'
+          },
+          {
+            id: 'act_2',
+            name: 'Account 2'
+          },
+          {
+            id: 'act_3',
+            name: 'Account 3'
+          },
+        ]
+      });
+    }
+
+    case SELECT_ADACCOUNT: {
+      if (state.adaccounts[action.payload.adaccountId] === undefined) {
+        console.log('Ad account id not found ' + action.payload.adaccountId);
+        return state;
+      }
+
+      return Object.assign({}, state, {
+        currentAdaccount: state.adaccounts[action.payload.adaccountId],
+      });
+    }
+
+    case SHOW_OPEN_SCRIPT_DIALOG: {
+      return Object.assign({}, state, {
+        showOpenScriptDialog: true,
+      });
+    }
+
+    case HIDE_OPEN_SCRIPT_DIALOG: {
+      return Object.assign({}, state, {
+        showOpenScriptDialog: false,
+      });
+    }
+
+    case SHOW_RUN_HISTORY_MODAL: {
+      return Object.assign({}, state, {
+        showRunHistoryModal: true,
+      });
+    }
+
+    case HIDE_RUN_HISTORY_MODAL: {
+      return Object.assign({}, state, {
+        showRunHistoryModal: false,
+      });
+    }
+
+    case SHOW_SAMPLES_MODAL: {
+      return Object.assign({}, state, {
+        showSamplesModal: true,
+      });
+    }
+
+    case HIDE_SAMPLES_MODAL: {
+      return Object.assign({}, state, {
+        showSamplesModal: false,
+      });
+    }
+
+    case FETCH_SAMPLES: {
+      return Object.assign({}, state, {
+        samples: [
+          {
+            id: 1,
+            name: 'Sample 1',
+            code: `
+console.log("1");
+console.log("1");
+`
+          },
+          {
+            id: 2,
+            name: 'Sample 2',
+            code: 'console.log("2");'
+          },
+          {
+            id: 3,
+            name: 'Sample 3',
+            code: 'console.log("3");'
+          },
+          {
+            id: 4,
+            name: 'Sample 4',
+            code: 'console.log("4");'
+          },
+          {
+            id: 5,
+            name: 'Sample 5',
+            code: 'console.log("5");'
+          },
+          {
+            id: 6,
+            name: 'Sample 6',
+            code: 'console.log("6");'
+          },
+          {
+            id: 7,
+            name: 'Sample 7',
+            code: 'console.log("7");'
+          },
+          {
+            id: 8,
+            name: 'Sample 8',
+            code: 'console.log("8");'
+          }
+        ],
+      });
+    }
+
+    case SHOW_HELP_MODAL: {
+      return Object.assign({}, state, {
+        showHelpModal: true,
+      });
+    }
+
+    case HIDE_HELP_MODAL: {
+      return Object.assign({}, state, {
+        showHelpModal: false,
+      });
+    }
+
+    case SHOW_NEW_SCRIPT_DIALOG: {
+      return Object.assign({}, state, {
+        showNewScriptDialog: true,
+        newScript: defaultNewScript(),
+      });
+    }
+
+    case HIDE_NEW_SCRIPT_DIALOG: {
+      return Object.assign({}, state, {
+        showNewScriptDialog: false,
+      });
+    }
+
+    case SHOW_SCHEDULE_DIALOG: {
+      let currentSchedule = state.currentSchedule;
+      if (!currentSchedule.id) currentSchedule = defaultSchedule();
+      return Object.assign({}, state, {
+        showScheduleDialog: true,
+        newSchedule: Object.assign({}, currentSchedule, {
+          enabled: !currentSchedule.is_paused,
+          date: new Date(currentSchedule.start_time),
+          time: new Date(currentSchedule.start_time),
+        })
+      });
+    }
+
+    case HIDE_SCHEDULE_DIALOG: {
+      return Object.assign({}, state, {
+        showScheduleDialog: false,
+      });
+    }
+
+    case SET_NEW_SCRIPT_TYPE: {
+      return Object.assign({}, state, {
+        newScript: Object.assign({}, state.newScript, {
+          type: action.payload.scriptType,
+        })}
+      );
+    }
+
+    case SET_NEW_SCRIPT_NAME: {
+      return Object.assign({}, state, {
+        newScript: Object.assign({}, state.newScript, {
+          script: Object.assign({}, state.newScript.script, {
+            title: action.payload.scriptName
+          })
+        })
+      });
+    }
+
+    case SET_NEW_SCRIPT_SAMPLE: {
+      return Object.assign({}, state, {
+        newScript: Object.assign({}, state.newScript, {
+          sampleId: action.payload.scriptSample
+        })}
+      );
+    }
+
+    case NEW_SCRIPT_REQUEST: {
+      let currentScript = state.newScript.script;
+      if (state.newScript.type === 'sample') {
+        currentScript.code = state.samples[state.newScript.sampleId].code;
+      }
+      return Object.assign({}, state, {
+        currentScript: currentScript,
+        editorValue: currentScript.code,
+        optimisations: currentScript.optimisations,
+      });
+    }
+
+    case SET_NEW_SCHEDULE_ENABLED: {
+      return Object.assign({}, state, {
+        newSchedule: Object.assign({}, state.newSchedule, {
+          enabled: action.payload.scheduleEnabled
+        })
+      });
+    }
+
+    case SET_NEW_SCHEDULE_RUN: {
+      return Object.assign({}, state, {
+        newSchedule: Object.assign({}, state.newSchedule, {
+          recurrence: action.payload.scheduleRun
+        })
+      });
+    }
+
+    case SET_NEW_SCHEDULE_TIME: {
+      const time = new Date(action.payload.scheduleTime);
+      return Object.assign({}, state, {
+        newSchedule: Object.assign({}, state.newSchedule, {time})
+      });
+    }
+
+    case SET_NEW_SCHEDULE_DATE: {
+      const date = new Date(action.payload.scheduleDate);
+      return Object.assign({}, state, {
+        newSchedule: Object.assign({}, state.newSchedule, {date})
+      });
+    }
+
+    case NEW_SCHEDULE_REQUEST: {
+      const startTime = new Date();
+      startTime.setMinutes(state.newSchedule.time.getMinutes());
+      startTime.setHours(state.newSchedule.time.getHours());
+      startTime.setDate(state.newSchedule.date.getDate());
+      startTime.setMonth(state.newSchedule.date.getMonth());
+      startTime.setFullYear(state.newSchedule.date.getFullYear());
+      return Object.assign({}, state, {
+        currentSchedule: Object.assign({}, state.currentSchedule, {
+          is_paused: !state.newSchedule.enabled,
+          recurrence: state.newSchedule.recurrence,
+          start_time: startTime.toISOString()
+        })
+      });
+    }
+
+    case SHOW_POPOVER: {
+      return Object.assign({}, state, {
+        showPopover: true,
+        popover: action.payload.element
+      });
+    }
+
+    case HIDE_POPOVER: {
+      return Object.assign({}, state, {
+        showPopover: false
+      });
+    }
+
     default:
       return state;
   }
 }
-
 
 module.exports = typefastApp;

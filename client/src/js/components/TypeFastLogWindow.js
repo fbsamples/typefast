@@ -36,11 +36,12 @@ class TypeFastLogWindow extends React.Component {
   render() {
     return (
       <div
-        className="col-lg-6 full-height visible-md visible-lg"
         style={[styles.container]}>
-        <code id="logbox" style="white-space:pre">
-          {this.logGenerator()}
-        </code>
+        <div style={{marginLeft: "15px"}}>
+          <code id="logbox" style={{whiteSpace: "pre"}}>
+            {this.logGenerator()}
+          </code>
+        </div>
       </div>
     );
   }
@@ -48,10 +49,12 @@ class TypeFastLogWindow extends React.Component {
 
 const styles = {
   container: {
-    background: '#FCFCFC',
-    borderLeft: '1px solid #ddd',
+    height: '100%',
+    background: '#F6F6F6',
     paddingTop: '15px',
-    overflow: 'scroll'
+    overflow: 'scroll',
+    float: 'left',
+    width: '50%',
   }
 };
 

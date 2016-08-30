@@ -23,48 +23,26 @@
  */
 
 import { connect } from 'react-redux';
-import {
-  hideScheduleModal,
-  scheduleStateChanged,
-  scheduleStartTimeChanged,
-  scheduleIntervalChanged,
-  saveSchedule,
-} from '../actions/actions.js';
-import TypeFastScheduleModal from '../components/TypeFastScheduleModal';
+import { hideHelpModal } from '../actions/actions.js';
+import TypeFastHelpModal from '../components/TypeFastHelpModal';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    showModal: state.showScheduleModal,
-    state: state.scheduleState,
-    interval: state.scheduleInterval,
-    startTime: new Date(state.scheduleStartTime).getTime()
+    isShowing: state.showHelpModal,
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    close:() => {
-      dispatch(hideScheduleModal());
+    onHide: () => {
+      dispatch(hideHelpModal());
     },
-    onStateChange: (state) => {
-      dispatch(scheduleStateChanged(state));
-    },
-    onStartTimeChange: (startTime) => {
-      const date = new Date(parseInt(startTime)).toISOString();
-      dispatch(scheduleStartTimeChanged(date));
-    },
-    onIntervalChange: (interval) => {
-      dispatch(scheduleIntervalChanged(interval.target.value));
-    },
-    onSave: () => {
-      dispatch(saveSchedule());
-    }
   };
 };
 
-const TypeFastScheduleModalContainer = connect(
+const TypeFastHelpContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(TypeFastScheduleModal);
+)(TypeFastHelpModal);
 
-export default TypeFastScheduleModalContainer;
+export default TypeFastHelpContainer;

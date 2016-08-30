@@ -21,41 +21,41 @@
  *
  * @flow
  */
- 
+
 import { connect } from 'react-redux';
 import {
-  facebookAuthStarted,
-  facebookAuthSuccess,
-  facebookAuthFailure
+  showScriptSaveDialog,
+  previewScript,
+  saveScript,
+  showScheduleDialog
 } from '../actions/actions.js';
-import TypeFastLogin from '../components/TypeFastLogin';
-import { serverConfig } from '../ServerConfig';
+import TypeFastToolbar from '../components/TypeFastToolbar';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    appId:  serverConfig.getRawConfig().application_id,
-    isAuthenticated: state.isAuthenticated,
-    isAuthenticating: state.isAuthenticating
+    isSaving: state.isSaving,
+    script: state.currentScript,
+    needToSave: state.needToSave
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    facebookAuthStarted: () => {
-      dispatch(facebookAuthStarted());
+    onScriptSave: () => {
+      dispatch(saveScript());
     },
-    facebookAuthSuccess: (token) => {
-      dispatch(facebookAuthSuccess(token));
+    onScriptPreview: () => {
+      dispatch(previewScript());
     },
-    facebookAuthFailure: () => {
-      dispatch(facebookAuthFailure());
-    },
+    onScriptSchedule: () => {
+      dispatch(showScheduleDialog());
+    }
   };
 };
 
-const TypeFastLoginContainer = connect(
+const TypeFastToolbarContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(TypeFastLogin);
+)(TypeFastToolbar);
 
-export default TypeFastLoginContainer;
+export default TypeFastToolbarContainer;

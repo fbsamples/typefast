@@ -24,25 +24,41 @@
 
 import  React  from 'react';
 import { connect } from 'react-redux';
-import TypeFastNavigationContainer from '../containers/TypeFastNavigationContainer';
+
 import TypeFastEditorContainer from '../containers/TypeFastEditorContainer';
-import TypeFastListingContainer from '../containers/TypeFastListingContainer';
+
+import TypeFastAppBarContainer from '../containers/TypeFastAppBarContainer';
+import TypeFastHelpContainer from '../containers/TypeFastHelpContainer';
+import TypeFastHistoryContainer from '../containers/TypeFastHistoryContainer';
 import TypeFastLoginContainer from '../containers/TypeFastLoginContainer';
+import TypeFastNewScriptContainer from '../containers/TypeFastNewScriptContainer';
+import TypeFastOpenScriptContainer from '../containers/TypeFastOpenScriptContainer';
+import TypeFastSamplesContainer from '../containers/TypeFastSamplesContainer';
+import TypeFastScheduleContainer from '../containers/TypeFastScheduleContainer';
+import TypeFastToolbarContainer from '../containers/TypeFastToolbarContainer';
 import TypeFastUnauthorisedModalContainer from '../containers/TypeFastUnauthorisedModalContainer';
-import TypeFastRoutinesModalContainer from '../containers/TypeFastRoutinesModalContainer';
 
 class TypeFastApp extends React.Component {
   render() {
     return (
-      <div className="full-height">
-        <TypeFastNavigationContainer />
-        <div className="row full-height">
-          <TypeFastListingContainer />
-          <TypeFastEditorContainer />
+      <div>
+        <div style={{position: "fixed", width: "100%", zIndex: "5"}}>
+          <TypeFastAppBarContainer />
+          <TypeFastToolbarContainer />
         </div>
+
+        <div style={{width: "100%", height: "120px"}}></div>
+
+        <TypeFastEditorContainer />
+
+        <TypeFastHelpContainer />
+        <TypeFastHistoryContainer />
+        <TypeFastNewScriptContainer />
+        <TypeFastOpenScriptContainer />
+        <TypeFastSamplesContainer />
+        <TypeFastScheduleContainer />
         <TypeFastLoginContainer />
         <TypeFastUnauthorisedModalContainer />
-        <TypeFastRoutinesModalContainer />
       </div>
     );
   }

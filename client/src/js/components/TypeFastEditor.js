@@ -23,7 +23,18 @@
  */
 
 import React from 'react';
+import Radium from 'radium';
+
 import TypeFastEditorInit from '../typefast-editor-init';
+
+const styles = {
+  container: {
+    width: "50%",
+    float: "left",
+    height: "100%",
+    overflow: "scroll"
+  }
+};
 
 class TypeFastEditor extends React.Component {
   componentDidMount() {
@@ -48,13 +59,11 @@ class TypeFastEditor extends React.Component {
 
   render() {
     return (
-      <div
-        ref="sandbox"
-        id="sandbox"
-        className="col-lg-6 full-height nopadding">
+      <div style={[styles.container]}>
+        <div ref="sandbox" id="sandbox"></div>
       </div>
     );
   }
 }
 
-module.exports = TypeFastEditor;
+module.exports = Radium(TypeFastEditor);

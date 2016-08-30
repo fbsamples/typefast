@@ -20,8 +20,47 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../font/MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: local('Material Icons'),
+    local('MaterialIcons-Regular'),
+    url(../font/MaterialIcons-Regular.woff2) format('woff2'),
+    url(../font/MaterialIcons-Regular.woff) format('woff'),
+    url(../font/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
 html, body {
   height: 100%;
+  margin: 0;
+  overflow: hidden;
 }
 body {
   background: #fff;
@@ -75,6 +114,9 @@ body {
   background: #FCFCFC;
   white-space: nowrap;
 }
+.CodeMirror-scroll div:nth-child(2) {
+  position: static !important;
+}
 .navbar-right {
   margin-right: 0;
 }
@@ -111,4 +153,8 @@ body {
 
 #routine-modal .modal-dialog {
   width: 900px;
+}
+
+code {
+  padding: 0;
 }

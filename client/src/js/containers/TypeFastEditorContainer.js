@@ -26,30 +26,27 @@ import Radium from 'radium';
 import React from 'react';
 import TypeFastLogWindow from '../components/TypeFastLogWindow';
 import TypeFastEditor from '../components/TypeFastEditor';
-import TypeFastScheduleModalContainer from './TypeFastScheduleModalContainer';
 import { codeChanged, optimisationComplete } from '../actions/actions';
 import { connect } from 'react-redux';
 
 const styles = {
   container: {
-    paddingLeft: 0
+    position: "absolute",
+    top: "120px",
+    bottom: "0",
+    width: "100%"
   }
 };
 
 class TypeFastEditorContainer extends React.Component {
   render() {
-    const width = this.props.scriptListOpen ? 'col-lg-10' : 'col-lg-12';
     return (
-      <div
-        className={`container-fluid content ${width}`}
-        style={[styles.container]}>
+      <div style={[styles.container]}>
         <TypeFastEditor
           script={this.props.script}
           onCodeChange={this.props.onCodeChange}
-          onOptimisationComplete={this.props.onOptimisationComplete}
-        />
-        <TypeFastLogWindow log={this.props.log}/>
-        <TypeFastScheduleModalContainer />
+          onOptimisationComplete={this.props.onOptimisationComplete} />
+        <TypeFastLogWindow log={this.props.log} />
       </div>
     );
   }
