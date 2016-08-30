@@ -79,7 +79,8 @@ class TypeFastLogin extends React.Component {
     } else if (this.props.isAuthenticated) {
       return <p>Logged In!!</p>;
     } else {
-      return <p>To use TypeFast you will need to login to your Facebook Account and authorise the Facebook Application</p>;
+      return <p>To use TypeFast you will need to login to your Facebook Account
+       and authorise the Facebook Application</p>;
     }
   }
 

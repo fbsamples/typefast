@@ -29,10 +29,10 @@ import TypeFastEditorInit from '../typefast-editor-init';
 
 const styles = {
   container: {
-    width: "50%",
-    float: "left",
-    height: "100%",
-    overflow: "scroll"
+    width: '50%',
+    float: 'left',
+    height: '100%',
+    overflow: 'scroll'
   }
 };
 

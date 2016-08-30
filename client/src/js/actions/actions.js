@@ -127,7 +127,7 @@ export function fetchScripts() {
         if (json.payload.scripts.data.length > 0) {
           dispatch(loadScript(json.payload.scripts.data[0].id));
         }
-      })
+      });
   };
 }
 
@@ -178,7 +178,7 @@ export const FETCH_ADACCOUNTS = 'FETCH_ADACCOUNTS';
 export function fetchAdaccounts() {
   return {
     type: FETCH_ADACCOUNTS
-  }
+  };
 }
 
 export const SELECT_ADACCOUNT = 'SELECT_ADACCOUNT';
@@ -188,7 +188,7 @@ export function selectAdaccount(adaccountId) {
     payload: {
       adaccountId: adaccountId
     }
-  }
+  };
 }
 
 export const SHOW_POPOVER = 'SHOW_POPOVER';
@@ -198,14 +198,14 @@ export function showPopover(element) {
     payload: {
       element: element
     }
-  }
+  };
 }
 
 export const HIDE_POPOVER = 'HIDE_POPOVER';
 export function hidePopover() {
   return {
     type: HIDE_POPOVER
-  }
+  };
 }
 
 /******************************** OPEN SCRIPT *********************************/
@@ -214,14 +214,14 @@ export const SHOW_OPEN_SCRIPT_DIALOG = 'SHOW_OPEN_SCRIPT_DIALOG';
 export function showOpenScriptDialog() {
   return {
     type: SHOW_OPEN_SCRIPT_DIALOG
-  }
+  };
 }
 
 export const HIDE_OPEN_SCRIPT_DIALOG = 'HIDE_OPEN_SCRIPT_DIALOG';
 export function hideOpenScriptDialog() {
   return {
     type: HIDE_OPEN_SCRIPT_DIALOG
-  }
+  };
 }
 
 /******************************** HISTORY **********************************/
@@ -230,14 +230,14 @@ export const SHOW_RUN_HISTORY_MODAL = 'SHOW_RUN_HISTORY_MODAL';
 export function showRunHistoryModal() {
   return {
     type: SHOW_RUN_HISTORY_MODAL
-  }
+  };
 }
 
 export const HIDE_RUN_HISTORY_MODAL = 'HIDE_RUN_HISTORY_MODAL';
 export function hideRunHistoryModal() {
   return {
     type: HIDE_RUN_HISTORY_MODAL
-  }
+  };
 }
 
 /******************************** SAMPLES **********************************/
@@ -246,31 +246,31 @@ export const SHOW_SAMPLES_MODAL = 'SHOW_SAMPLES_MODAL';
 export function showSamplesModal() {
   return {
     type: SHOW_SAMPLES_MODAL
-  }
+  };
 }
 
 export const HIDE_SAMPLES_MODAL = 'HIDE_SAMPLES_MODAL';
 export function hideSamplesModal() {
   return {
     type: HIDE_SAMPLES_MODAL
-  }
+  };
 }
 
 export const FETCH_SAMPLES = 'FETCH_SAMPLES';
 export function fetchSamples() {
   return {
     type: FETCH_SAMPLES
-  }
+  };
 }
 
-export const SELECT_SAMPLE = 'SELECT_SAMPLE';
-export function selectSample(sampleId) {
+export const LOAD_SAMPLE = 'LOAD_SAMPLE';
+export function loadSample(sampleId) {
   return {
-    type: SELECT_SAMPLE,
+    type: LOAD_SAMPLE,
     payload: {
       sampleId: sampleId
     }
-  }
+  };
 }
 
 /******************************** HELP **********************************/
@@ -279,14 +279,14 @@ export const SHOW_HELP_MODAL = 'SHOW_HELP_MODAL';
 export function showHelpModal() {
   return {
     type: SHOW_HELP_MODAL
-  }
+  };
 }
 
 export const HIDE_HELP_MODAL = 'HIDE_HELP_MODAL';
 export function hideHelpModal() {
   return {
     type: HIDE_HELP_MODAL
-  }
+  };
 }
 
 /******************************** NEW SCRIPT **********************************/
@@ -295,14 +295,14 @@ export const SHOW_NEW_SCRIPT_DIALOG = 'SHOW_NEW_SCRIPT_DIALOG';
 export function showNewScriptDialog() {
   return {
     type: SHOW_NEW_SCRIPT_DIALOG
-  }
+  };
 }
 
 export const HIDE_NEW_SCRIPT_DIALOG = 'HIDE_NEW_SCRIPT_DIALOG';
 export function hideNewScriptDialog() {
   return {
     type: HIDE_NEW_SCRIPT_DIALOG
-  }
+  };
 }
 
 export const SET_NEW_SCRIPT_TYPE = 'SET_NEW_SCRIPT_TYPE';
@@ -310,7 +310,7 @@ export function setNewScriptType(scriptType) {
   return {
     type: SET_NEW_SCRIPT_TYPE,
     payload: {scriptType}
-  }
+  };
 }
 
 export const SET_NEW_SCRIPT_NAME = 'SET_NEW_SCRIPT_NAME';
@@ -318,7 +318,7 @@ export function setNewScriptName(scriptName) {
   return {
     type: SET_NEW_SCRIPT_NAME,
     payload: {scriptName}
-  }
+  };
 }
 
 export const SET_NEW_SCRIPT_SAMPLE = 'SET_NEW_SCRIPT_SAMPLE';
@@ -326,7 +326,7 @@ export function setNewScriptSample(scriptSample) {
   return {
     type: SET_NEW_SCRIPT_SAMPLE,
     payload: {scriptSample}
-  }
+  };
 }
 
 export const NEW_SCRIPT_REQUEST = 'NEW_SCRIPT_REQUEST';
@@ -335,8 +335,6 @@ export function savingScriptRequest(isScheduled) {
     dispatch({type: NEW_SCRIPT_REQUEST});
     if (isScheduled) {
       dispatch(saveScript()).then(dispatch(showScheduleDialog()));
-    } else {
-      dispatch(saveScript());
     }
   };
 }
@@ -453,14 +451,14 @@ export const SHOW_SCHEDULE_DIALOG = 'SHOW_SCHEDULE_DIALOG';
 export function showScheduleDialog() {
   return {
     type: SHOW_SCHEDULE_DIALOG
-  }
+  };
 }
 
 export const HIDE_SCHEDULE_DIALOG = 'HIDE_SCHEDULE_DIALOG';
 export function hideScheduleDialog() {
   return {
     type: HIDE_SCHEDULE_DIALOG
-  }
+  };
 }
 
 export const SET_NEW_SCHEDULE_ENABLED = 'SET_NEW_SCHEDULE_ENABLED';
@@ -468,7 +466,7 @@ export function setNewScheduleEnabled(scheduleEnabled) {
   return {
     type: SET_NEW_SCHEDULE_ENABLED,
     payload: {scheduleEnabled}
-  }
+  };
 }
 
 export const SET_NEW_SCHEDULE_DATE = 'SET_NEW_SCHEDULE_DATE';
@@ -476,7 +474,7 @@ export function setNewScheduleDate(scheduleDate) {
   return {
     type: SET_NEW_SCHEDULE_DATE,
     payload: {scheduleDate}
-  }
+  };
 }
 
 export const SET_NEW_SCHEDULE_TIME = 'SET_NEW_SCHEDULE_TIME';
@@ -484,7 +482,7 @@ export function setNewScheduleTime(scheduleTime) {
   return {
     type: SET_NEW_SCHEDULE_TIME,
     payload: {scheduleTime}
-  }
+  };
 }
 
 export const SET_NEW_SCHEDULE_RUN = 'SET_NEW_SCHEDULE_RUN';
@@ -492,7 +490,7 @@ export function setNewScheduleRun(scheduleRun) {
   return {
     type: SET_NEW_SCHEDULE_RUN,
     payload: {scheduleRun}
-  }
+  };
 }
 
 export const NEW_SCHEDULE_REQUEST = 'NEW_SCHEDULE_REQUEST';

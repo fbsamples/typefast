@@ -39,7 +39,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(hideOpenScriptDialog());
     },
     onScriptSelect: (scriptId) => {
-      dispatch(loadScript(scriptId))
+      dispatch(loadScript(scriptId));
       dispatch(hideOpenScriptDialog());
     }
   };

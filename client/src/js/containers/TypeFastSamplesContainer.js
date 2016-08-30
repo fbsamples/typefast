@@ -23,7 +23,7 @@
  */
 
 import { connect } from 'react-redux';
-import { hideSamplesModal, selectSample } from '../actions/actions.js';
+import { hideSamplesModal, loadSample } from '../actions/actions.js';
 import TypeFastSamplesModal from '../components/TypeFastSamplesModal';
 
 const mapStateToProps = (state, ownProps) => {
@@ -36,6 +36,10 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onHide: () => {
+      dispatch(hideSamplesModal());
+    },
+    onSampleClick: (sampleId) => {
+      dispatch(loadSample(sampleId));
       dispatch(hideSamplesModal());
     }
   };

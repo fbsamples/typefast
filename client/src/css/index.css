@@ -114,9 +114,6 @@ body {
   background: #FCFCFC;
   white-space: nowrap;
 }
-.CodeMirror-scroll div:nth-child(2) {
-  position: static !important;
-}
 .navbar-right {
   margin-right: 0;
 }

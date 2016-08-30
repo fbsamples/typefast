@@ -42,12 +42,12 @@ class TypeFastApp extends React.Component {
   render() {
     return (
       <div>
-        <div style={{position: "fixed", width: "100%", zIndex: "5"}}>
+        <div style={{position: 'fixed', width: '100%', zIndex: '5'}}>
           <TypeFastAppBarContainer />
           <TypeFastToolbarContainer />
         </div>
 
-        <div style={{width: "100%", height: "120px"}}></div>
+        <div style={{width: '100%', height: '120px'}}></div>
 
         <TypeFastEditorContainer />
 

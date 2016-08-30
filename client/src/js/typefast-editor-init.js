@@ -100,7 +100,7 @@ module.exports = function(element, onCodeChange, onOptimisationComplete) {
   });
 
   editor.on('change', function(cm, event) {
-    onCodeChange(cm.getValue().replace(/\n/g, "\r\n"));
+    onCodeChange(cm.getValue().replace(/\n/g, '\r\n'));
     runAnalysis();
   });
   editor.on('cursorActivity', function(cm) { server.updateArgHints(cm); });

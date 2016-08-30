@@ -37,8 +37,8 @@ class TypeFastLogWindow extends React.Component {
     return (
       <div
         style={[styles.container]}>
-        <div style={{marginLeft: "15px"}}>
-          <code id="logbox" style={{whiteSpace: "pre"}}>
+        <div style={{marginLeft: '15px'}}>
+          <code id="logbox" style={{whiteSpace: 'pre'}}>
             {this.logGenerator()}
           </code>
         </div>

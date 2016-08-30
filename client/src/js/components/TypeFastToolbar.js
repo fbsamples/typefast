@@ -41,21 +41,27 @@ class TypeFastToolbar extends React.Component {
             primary={true}
             onClick={this.props.onScriptSave}
             icon={<FontIcon className="material-icons">save</FontIcon>}
-            style={{margin: "10px 0"}}
+            style={{margin: '10px 0'}}
           />
           <FlatButton
             label="Preview"
             primary={true}
             onClick={this.props.onScriptPreview}
             icon={<FontIcon className="material-icons">play_arrow</FontIcon>}
-            style={{margin: "10px 0"}}
+            style={{margin: '10px 0'}}
             disabled={this.props.needToSave}
           />
           <FlatButton
             label="Schedule"
             onClick={this.props.onScriptSchedule}
             icon={<FontIcon className="material-icons">schedule</FontIcon>}
-            style={{margin: "10px 0"}}
+            style={{margin: '10px 0'}}
+          />
+          <FlatButton
+            label="Run History"
+            onClick={this.props.onScriptHistory}
+            icon={<FontIcon className="material-icons">history</FontIcon>}
+            style={{margin: '10px 0'}}
           />
         </ToolbarGroup>
       </Toolbar>
