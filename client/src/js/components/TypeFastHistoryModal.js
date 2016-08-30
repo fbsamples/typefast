@@ -54,7 +54,7 @@ class TypeFastHistoryModal extends React.Component {
     return (
       <Dialog
         autoScrollBodyContent={true}
-        title="Past Run Logs"
+        title="Run History"
         actions={actions}
         modal={false}
         open={this.props.isShowing}
@@ -77,6 +77,9 @@ class TypeFastHistoryModal extends React.Component {
             />
           )}
         </List>
+        <div style={{visibility: (this.props.routines.length == 0) ? 'visible' : 'hidden'}}>
+          No history available
+        </div>
       </Dialog>
     );
   }

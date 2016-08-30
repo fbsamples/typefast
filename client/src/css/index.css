@@ -155,3 +155,7 @@ body {
 code {
   padding: 0;
 }
+
+#sandbox {
+  height: 100%;
+}

@@ -158,7 +158,6 @@ export function facebookAuthSuccess(token) {
     });
 
     // Bootstrap the app
-    dispatch(fetchAdaccounts());
     dispatch(fetchScripts());
     dispatch(fetchRoutines());
     dispatch(fetchSamples());
@@ -169,42 +168,6 @@ export const FACEBOOK_AUTH_FAILURE = 'FACEBOOK_AUTH_FAILURE';
 export function facebookAuthFailure() {
   return {
     type: FACEBOOK_AUTH_FAILURE
-  };
-}
-
-/******************************** AD ACCOUNT **********************************/
-
-export const FETCH_ADACCOUNTS = 'FETCH_ADACCOUNTS';
-export function fetchAdaccounts() {
-  return {
-    type: FETCH_ADACCOUNTS
-  };
-}
-
-export const SELECT_ADACCOUNT = 'SELECT_ADACCOUNT';
-export function selectAdaccount(adaccountId) {
-  return {
-    type: SELECT_ADACCOUNT,
-    payload: {
-      adaccountId: adaccountId
-    }
-  };
-}
-
-export const SHOW_POPOVER = 'SHOW_POPOVER';
-export function showPopover(element) {
-  return {
-    type: SHOW_POPOVER,
-    payload: {
-      element: element
-    }
-  };
-}
-
-export const HIDE_POPOVER = 'HIDE_POPOVER';
-export function hidePopover() {
-  return {
-    type: HIDE_POPOVER
   };
 }
 
@@ -242,34 +205,10 @@ export function hideRunHistoryModal() {
 
 /******************************** SAMPLES **********************************/
 
-export const SHOW_SAMPLES_MODAL = 'SHOW_SAMPLES_MODAL';
-export function showSamplesModal() {
-  return {
-    type: SHOW_SAMPLES_MODAL
-  };
-}
-
-export const HIDE_SAMPLES_MODAL = 'HIDE_SAMPLES_MODAL';
-export function hideSamplesModal() {
-  return {
-    type: HIDE_SAMPLES_MODAL
-  };
-}
-
 export const FETCH_SAMPLES = 'FETCH_SAMPLES';
 export function fetchSamples() {
   return {
     type: FETCH_SAMPLES
-  };
-}
-
-export const LOAD_SAMPLE = 'LOAD_SAMPLE';
-export function loadSample(sampleId) {
-  return {
-    type: LOAD_SAMPLE,
-    payload: {
-      sampleId: sampleId
-    }
   };
 }
 
@@ -305,45 +244,30 @@ export function hideNewScriptDialog() {
   };
 }
 
-export const SET_NEW_SCRIPT_TYPE = 'SET_NEW_SCRIPT_TYPE';
-export function setNewScriptType(scriptType) {
+export const LOAD_SAMPLE = 'LOAD_SAMPLE';
+export function loadSample(sampleId) {
   return {
-    type: SET_NEW_SCRIPT_TYPE,
-    payload: {scriptType}
-  };
-}
-
-export const SET_NEW_SCRIPT_NAME = 'SET_NEW_SCRIPT_NAME';
-export function setNewScriptName(scriptName) {
-  return {
-    type: SET_NEW_SCRIPT_NAME,
-    payload: {scriptName}
-  };
-}
-
-export const SET_NEW_SCRIPT_SAMPLE = 'SET_NEW_SCRIPT_SAMPLE';
-export function setNewScriptSample(scriptSample) {
-  return {
-    type: SET_NEW_SCRIPT_SAMPLE,
-    payload: {scriptSample}
-  };
-}
-
-export const NEW_SCRIPT_REQUEST = 'NEW_SCRIPT_REQUEST';
-export function savingScriptRequest(isScheduled) {
-  return function(dispatch) {
-    dispatch({type: NEW_SCRIPT_REQUEST});
-    if (isScheduled) {
-      dispatch(saveScript()).then(dispatch(showScheduleDialog()));
+    type: LOAD_SAMPLE,
+    payload: {
+      sampleId: sampleId
     }
   };
 }
 
 /******************************** SCRIPT **********************************/
 
-// This action should be always used when updating currentScript
+export const CHANGE_SCRIPT_TITLE = 'CHANGE_SCRIPT_TITLE';
+export function changeScriptTitle(title) {
+  return {
+    type: CHANGE_SCRIPT_TITLE,
+    payload: {
+      title: title
+    }
+  };
+}
+
 export const LOAD_SCRIPT = 'LOAD_SCRIPT';
-export function loadScript(id) {
+export function loadScript(id, loadSchedule = true) {
   return function(dispatch) {
     dispatch({
       type: LOAD_SCRIPT,
@@ -351,7 +275,9 @@ export function loadScript(id) {
         id: id,
       }
     });
-    dispatch(fetchSchedule(id));
+    if (loadSchedule) {
+      dispatch(fetchSchedule(id));
+    }
   };
 }
 
@@ -397,17 +323,15 @@ function pollRoutine(routineId, dispatch, getState) {
     return response.json();
   })
   .then(function(response) {
-    // this is hideous, fix it
-    if (response.is_completed) {
-      let message
-        = response.runner_log.map(function(a) { return a.chunk; }).join('\n');
-      dispatch({
-        type: PREVIEW_SCRIPT_SUCCESS,
-        payload: {
-          log: [{message: message}]
-        }
-      });
-    } else {
+    let message = response.runner_log.map(a => a.chunk).join('\n');
+    dispatch({
+      type: PREVIEW_SCRIPT_SUCCESS,
+      payload: {
+        log: [{message: message}],
+        is_completed: response.is_completed
+      }
+    });
+    if (!response.is_completed) {
       setTimeout(function() {
         pollRoutine(routineId, dispatch, getState);
       }, 1000);
@@ -417,7 +341,7 @@ function pollRoutine(routineId, dispatch, getState) {
 
 export const SAVE_SCRIPT_REQUEST = 'SAVE_SCRIPT_REQUEST';
 export const SAVE_SCRIPT_SUCCESS = 'SAVE_SCRIPT_SUCCESS';
-export function saveScript() {
+export function saveScript(loadSchedule = true) {
   return function(dispatch, getState) {
     dispatch({type: SAVE_SCRIPT_REQUEST});
     const currentScript = getState().currentScript;
@@ -430,7 +354,7 @@ export function saveScript() {
       body: makeFormData({
         code: getState().editorValue,
         optimisations: getState().optimisations,
-        title: getState().currentScript.title,
+        title: getState().currentScriptTitle,
       }, getState)
     })
     .then(response => handleErrors(response, dispatch))
@@ -441,7 +365,7 @@ export function saveScript() {
         script: response
       }
     }))
-    .then(response => dispatch(loadScript(response.payload.script.id)));
+    .then(response => dispatch(loadScript(response.payload.script.id, loadSchedule)));
   };
 }
 
@@ -461,11 +385,13 @@ export function hideScheduleDialog() {
   };
 }
 
-export const SET_NEW_SCHEDULE_ENABLED = 'SET_NEW_SCHEDULE_ENABLED';
-export function setNewScheduleEnabled(scheduleEnabled) {
+export const SET_NEW_SCHEDULE_PAUSED = 'SET_NEW_SCHEDULE_PAUSED';
+export function setNewSchedulePaused(schedulePaused) {
   return {
-    type: SET_NEW_SCHEDULE_ENABLED,
-    payload: {scheduleEnabled}
+    type: SET_NEW_SCHEDULE_PAUSED,
+    payload: {
+      schedulePaused: schedulePaused
+    }
   };
 }
 
@@ -473,7 +399,9 @@ export const SET_NEW_SCHEDULE_DATE = 'SET_NEW_SCHEDULE_DATE';
 export function setNewScheduleDate(scheduleDate) {
   return {
     type: SET_NEW_SCHEDULE_DATE,
-    payload: {scheduleDate}
+    payload: {
+      scheduleDate: scheduleDate
+    }
   };
 }
 
@@ -481,15 +409,29 @@ export const SET_NEW_SCHEDULE_TIME = 'SET_NEW_SCHEDULE_TIME';
 export function setNewScheduleTime(scheduleTime) {
   return {
     type: SET_NEW_SCHEDULE_TIME,
-    payload: {scheduleTime}
+    payload: {
+      scheduleTime: scheduleTime
+    }
   };
 }
 
-export const SET_NEW_SCHEDULE_RUN = 'SET_NEW_SCHEDULE_RUN';
-export function setNewScheduleRun(scheduleRun) {
+export const SET_NEW_SCHEDULE_INTERVAL = 'SET_NEW_SCHEDULE_INTERVAL';
+export function setNewScheduleInterval(scheduleInterval) {
   return {
-    type: SET_NEW_SCHEDULE_RUN,
-    payload: {scheduleRun}
+    type: SET_NEW_SCHEDULE_INTERVAL,
+    payload: {
+      scheduleInterval: scheduleInterval
+    }
+  };
+}
+
+export const SET_NEW_SCHEDULE_DAY = 'SET_NEW_SCHEDULE_DAY';
+export function setNewScheduleDay(scheduleDay) {
+  return {
+    type: SET_NEW_SCHEDULE_DAY,
+    payload: {
+      scheduleDay: scheduleDay
+    }
   };
 }
 
@@ -501,27 +443,27 @@ export function savingScheduleRequest() {
   };
 }
 
-export const SCHEDULE_SAVE = 'SCHEDULE_SAVE';
 export const SAVE_SCHEDULE_REQUEST = 'SAVE_SCHEDULE_REQUEST';
 export const SAVE_SCHEDULE_SUCCESS = 'SAVE_SCHEDULE_SUCCESS';
 export function saveSchedule() {
   return function(dispatch, getState) {
-    dispatch({type: SCHEDULE_SAVE});
-    dispatch(saveScript()).then(function() {
+    // TODO: remove flag passed to save script and chain callbacks
+    // so they do not conflict with each other and execute
+    // in determined order
+    dispatch(saveScript(false)).then(function() {
       dispatch({type: SAVE_SCHEDULE_REQUEST});
-      const currentSchedule = getState().currentSchedule;
-      const id = currentSchedule.id || '';
-      return fetch(`/schedules/${id}`, {
+      const currentSchedule = getState().newSchedule;
+      return fetch('/schedules/', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
         },
         body: makeFormData({
-          is_paused: getState().currentSchedule.is_paused,
+          is_paused: currentSchedule.is_paused,
           queue_name: 'main',
-          recurrence: getState().currentSchedule.recurrence,
+          recurrence: currentSchedule.recurrence,
           script_id: getState().currentScript.id,
-          start_time: getState().currentSchedule.start_time,
+          start_time: currentSchedule.start_time,
         }, getState)
       })
       .then((response) => handleErrors(response, dispatch))
@@ -540,16 +482,6 @@ export function saveSchedule() {
 }
 
 /******************************** EDITOR **********************************/
-
-export const UI_CHANGE = 'UI_CHANGE';
-export function changePane(pane) {
-  return {
-    type: UI_CHANGE,
-    ui: {
-      selectedPane: pane
-    }
-  };
-}
 
 export const OPTIMISATIONS_COMPLETE = 'OPTIMISATIONS_COMPLETE';
 export function optimisationComplete(optimisations) {

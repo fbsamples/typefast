@@ -24,6 +24,7 @@
 
 import { connect } from 'react-redux';
 import {
+  changeScriptTitle,
   previewScript,
   saveScript,
   showRunHistoryModal,
@@ -33,8 +34,9 @@ import TypeFastToolbar from '../components/TypeFastToolbar';
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    isRunning: state.isRunning,
     isSaving: state.isSaving,
-    script: state.currentScript,
+    currentTitle: state.currentScriptTitle,
     needToSave: state.needToSave
   };
 };
@@ -53,6 +55,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     onScriptHistory: () => {
       dispatch(showRunHistoryModal());
     },
+    onScriptTitleChange: (e) => {
+      dispatch(changeScriptTitle(e.target.value));
+    },
+    onScriptIconClick: () => {
+      document.getElementById('script_name').focus();
+    }
   };
 };
 

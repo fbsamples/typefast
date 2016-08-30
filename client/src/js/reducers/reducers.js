@@ -28,7 +28,6 @@ import {
   SCRIPT_CODE_CHANGED,
   OPTIMISATIONS_COMPLETE,
   PREVIEW_SCRIPT_REQUEST, PREVIEW_SCRIPT_SUCCESS,
-  UI_CHANGE,
   LOAD_SCRIPT,
   FACEBOOK_AUTH_STARTED, FACEBOOK_AUTH_SUCCESS, FACEBOOK_AUTH_FAILURE,
   UNAUTHORISED,
@@ -36,40 +35,30 @@ import {
   SAVE_SCHEDULE_SUCCESS,
   FETCHING_ROUTINES_SUCCESS,
 
-  FETCH_ADACCOUNTS,
-  SELECT_ADACCOUNT,
-
   SHOW_OPEN_SCRIPT_DIALOG,
   HIDE_OPEN_SCRIPT_DIALOG,
 
   SHOW_RUN_HISTORY_MODAL,
   HIDE_RUN_HISTORY_MODAL,
 
-  SHOW_SAMPLES_MODAL,
-  HIDE_SAMPLES_MODAL,
   FETCH_SAMPLES,
-  LOAD_SAMPLE,
 
   SHOW_HELP_MODAL,
   HIDE_HELP_MODAL,
 
   SHOW_NEW_SCRIPT_DIALOG,
   HIDE_NEW_SCRIPT_DIALOG,
-  SET_NEW_SCRIPT_TYPE,
-  SET_NEW_SCRIPT_NAME,
-  SET_NEW_SCRIPT_SAMPLE,
-  NEW_SCRIPT_REQUEST,
+  LOAD_SAMPLE,
+  CHANGE_SCRIPT_TITLE,
 
   SHOW_SCHEDULE_DIALOG,
   HIDE_SCHEDULE_DIALOG,
   SET_NEW_SCHEDULE_DATE,
   SET_NEW_SCHEDULE_TIME,
-  SET_NEW_SCHEDULE_RUN,
-  SET_NEW_SCHEDULE_ENABLED,
-  NEW_SCHEDULE_REQUEST,
-
-  SHOW_POPOVER,
-  HIDE_POPOVER
+  SET_NEW_SCHEDULE_INTERVAL,
+  SET_NEW_SCHEDULE_DAY,
+  SET_NEW_SCHEDULE_PAUSED,
+  NEW_SCHEDULE_REQUEST
 } from '../actions/actions.js';
 import { ScheduleRecurence } from '../constants/constants';
 
@@ -77,31 +66,19 @@ function defaultScript() {
   return {
     title: 'Untitled',
     optimisations: [],
-    code:
-`/*jshint esversion: 6 */
-//
-// Welcome to TypeFast!
-//
-// adaccount is the global varaiable for scripting with.
-// See the following example of how this works
-
-adaccount.getcustomaudiences().forEach(
-    ca => console.log(ca.id + ': ' + ca.name)
-);`,
+    code: '',
   };
 }
 
 function defaultSchedule() {
   return {
     is_paused: false,
-    recurrence: ScheduleRecurence.HOURLY,
     start_time: new Date(Date.now()).toISOString(),
-  };
-}
-
-function defaultAdaccount() {
-  return {
-    name: 'Select ad account'
+    interval: -1,
+    day: 1,
+    recurrence: {},
+    time: new Date(),
+    date: new Date()
   };
 }
 
@@ -109,47 +86,32 @@ function initialLog() {
   return [];
 }
 
-function defaultNewScript() {
-  return {
-    script: defaultScript(),
-    type: 'sample',
-    sampleId: 0
-  };
-}
-
 function typefastApp(state = {
-  currentRoutineId: null,
-  scriptListOpen: false,
   isSaving: false,
   isFetching: false,
+  isRunning: false,
   scripts: [],
   schedules: [],
   routines: [],
   log: initialLog(),
   runHistory: {},
-  currentPane: 'editor',
-  showScheduleSelector: false,
 
   needToSave: true,
   currentScript: defaultScript(),
+  currentScriptTitle: defaultScript().title,
   currentSchedule: defaultSchedule(),
+  editorValue: defaultScript().code,
   accessToken: null,
   isAuthenticated: false,
   isAuthenticating: false,
 
-  adaccounts: [],
-  currentAdaccount: defaultAdaccount(),
   samples: [],
   showHelpModal: false,
   showRunHistoryModal: false,
   showOpenScriptDialog: false,
-  showSamplesModal: false,
   showNewScriptDialog: false,
   showScheduleDialog: false,
-  newScript: defaultNewScript(),
-  newSchedule: {},
-  showPopover: false,
-  popover: null
+  newSchedule: defaultSchedule(),
 }, action) {
   let needToSave;
   switch (action.type) {
@@ -160,6 +122,7 @@ function typefastApp(state = {
       }
       return Object.assign({}, state, {
         currentScript: scriptToLoad,
+        currentScriptTitle: scriptToLoad.title,
         editorValue: scriptToLoad.code,
         optimisations: scriptToLoad.optimisations,
         log: initialLog(),
@@ -168,11 +131,6 @@ function typefastApp(state = {
     case UNAUTHORISED:
       return Object.assign({}, state, {
         isAuthorised: false,
-      });
-
-    case UI_CHANGE:
-      return Object.assign({}, state, {
-        currentPane: action.ui.selectedPane,
       });
 
     case SAVE_SCRIPT_REQUEST:
@@ -192,12 +150,8 @@ function typefastApp(state = {
       });
 
     case SAVE_SCHEDULE_SUCCESS:
-      let schedule = {};
-      schedule[action.payload.schedule.script_id] = action.payload.schedule;
-      const updatedSchedules = Object.assign({}, state.schedules, schedule);
       return Object.assign({}, state, {
-        currentSchedule: action.payload.schedule,
-        schedules: updatedSchedules,
+        currentSchedule: state.newSchedule
       });
 
     case FACEBOOK_AUTH_SUCCESS:
@@ -250,27 +204,41 @@ function typefastApp(state = {
         isFetching: false,
         scripts: scripts,
         currentScript: defaultScript(),
+        currentScriptTitle: defaultScript().title,
         scriptCount: Object.keys(scripts).length
       });
 
     case FETCH_SCHEDULE_SUCCESS:
-      let newSchedule = defaultSchedule();
+      let currentSchedule = defaultSchedule();
       if (action.payload.schedule.length > 0) {
-        newSchedule = action.payload.schedule[0];
+        currentSchedule = Object.assign(currentSchedule, action.payload.schedule[0]);
+        currentSchedule.date = new Date(currentSchedule.start_time);
+        currentSchedule.time = new Date(currentSchedule.start_time);
+        if (currentSchedule.recurrence) {
+          if (currentSchedule.recurrence.minutes.length > 0) {
+            currentSchedule.interval = ScheduleRecurence.HOURLY;
+          }
+          if (currentSchedule.recurrence.hours.length > 0) {
+            currentSchedule.interval = ScheduleRecurence.DAILY;
+          }
+          if (currentSchedule.recurrence.week_days.length > 0) {
+            currentSchedule.interval = ScheduleRecurence.WEEKLY;
+            currentSchedule.day = currentSchedule.recurrence.week_days[0];
+          }
+        }
       }
-      return Object.assign({}, state, {
-        currentSchedule: newSchedule
-      });
+      return Object.assign({}, state, {currentSchedule});
 
     case PREVIEW_SCRIPT_SUCCESS:
       return Object.assign({}, state, {
-        log: action.payload.log
+        log: action.payload.log,
+        isRunning: !action.payload.is_completed
       });
+
     case PREVIEW_SCRIPT_REQUEST:
       return Object.assign({}, state, {
-        log: [{
-          message: 'Processing your script...',
-        }]
+        log: [],
+        isRunning: true
       });
 
     case SCRIPT_CODE_CHANGED:
@@ -284,36 +252,6 @@ function typefastApp(state = {
     case OPTIMISATIONS_COMPLETE: {
       return Object.assign({}, state, {
         optimisations: action.payload.optimisations
-      });
-    }
-
-    case FETCH_ADACCOUNTS: {
-      return Object.assign({}, state, {
-        adaccounts: [
-          {
-            id: 'act_1',
-            name: 'Account 1'
-          },
-          {
-            id: 'act_2',
-            name: 'Account 2'
-          },
-          {
-            id: 'act_3',
-            name: 'Account 3'
-          },
-        ]
-      });
-    }
-
-    case SELECT_ADACCOUNT: {
-      if (state.adaccounts[action.payload.adaccountId] === undefined) {
-        console.log('Ad account id not found ' + action.payload.adaccountId);
-        return state;
-      }
-
-      return Object.assign({}, state, {
-        currentAdaccount: state.adaccounts[action.payload.adaccountId],
       });
     }
 
@@ -341,24 +279,13 @@ function typefastApp(state = {
       });
     }
 
-    case SHOW_SAMPLES_MODAL: {
-      return Object.assign({}, state, {
-        showSamplesModal: true,
-      });
-    }
-
-    case HIDE_SAMPLES_MODAL: {
-      return Object.assign({}, state, {
-        showSamplesModal: false,
-      });
-    }
-
     case FETCH_SAMPLES: {
       return Object.assign({}, state, {
         samples: [
           {
             id: 1,
             name: 'Sample 1',
+            description: 'Longer description for sample 1',
             code: `
 console.log("1");
 console.log("1");
@@ -367,36 +294,43 @@ console.log("1");
           {
             id: 2,
             name: 'Sample 2',
+            description: 'Longer description for sample 2',
             code: 'console.log("2");'
           },
           {
             id: 3,
             name: 'Sample 3',
+            description: 'Description for sample 3',
             code: 'console.log("3");'
           },
           {
             id: 4,
             name: 'Sample 4',
+            description: 'Even longer description for sample 4',
             code: 'console.log("4");'
           },
           {
             id: 5,
             name: 'Sample 5',
+            description: 'Short desc 5',
             code: 'console.log("5");'
           },
           {
             id: 6,
             name: 'Sample 6',
+            description: 'Longer description for sample 6',
             code: 'console.log("6");'
           },
           {
             id: 7,
             name: 'Sample 7',
+            description: 'Longer description for sample 7',
             code: 'console.log("7");'
           },
           {
             id: 8,
             name: 'Sample 8',
+            description: 'Longer description for sample 8',
             code: 'console.log("8");'
           }
         ],
@@ -417,29 +351,20 @@ console.log("1");
 
     case SHOW_NEW_SCRIPT_DIALOG: {
       return Object.assign({}, state, {
-        showNewScriptDialog: true,
-        newScript: defaultNewScript(),
+        showNewScriptDialog: true
       });
     }
 
     case HIDE_NEW_SCRIPT_DIALOG: {
       return Object.assign({}, state, {
-        showNewScriptDialog: false,
+        showNewScriptDialog: false
       });
     }
 
     case SHOW_SCHEDULE_DIALOG: {
-      let currentSchedule = state.currentSchedule;
-      if (!currentSchedule.id) {
-        currentSchedule = defaultSchedule();
-      }
       return Object.assign({}, state, {
         showScheduleDialog: true,
-        newSchedule: Object.assign({}, currentSchedule, {
-          enabled: !currentSchedule.is_paused,
-          date: new Date(currentSchedule.start_time),
-          time: new Date(currentSchedule.start_time),
-        })
+        newSchedule: state.currentSchedule
       });
     }
 
@@ -449,56 +374,33 @@ console.log("1");
       });
     }
 
-    case SET_NEW_SCRIPT_TYPE: {
-      return Object.assign({}, state, {
-        newScript: Object.assign({}, state.newScript, {
-          type: action.payload.scriptType,
-        })}
-      );
-    }
-
-    case SET_NEW_SCRIPT_NAME: {
-      return Object.assign({}, state, {
-        newScript: Object.assign({}, state.newScript, {
-          script: Object.assign({}, state.newScript.script, {
-            title: action.payload.scriptName
-          })
-        })
-      });
-    }
-
-    case SET_NEW_SCRIPT_SAMPLE: {
-      return Object.assign({}, state, {
-        newScript: Object.assign({}, state.newScript, {
-          sampleId: action.payload.scriptSample
-        })}
-      );
-    }
-
-    case NEW_SCRIPT_REQUEST: {
-      let currentScript = state.newScript.script;
-      if (state.newScript.type === 'sample') {
-        currentScript.code = state.samples[state.newScript.sampleId].code;
+    case LOAD_SAMPLE: {
+      let currentScript = defaultScript();
+      const sample = state.samples.filter(s => s.id === action.payload.sampleId);
+      if (sample.length > 0) {
+        currentScript.code = sample[0].code;
       }
       return Object.assign({}, state, {
         currentScript: currentScript,
+        currentScriptTitle: currentScript.title,
         editorValue: currentScript.code,
         optimisations: currentScript.optimisations,
+        currentSchedule: defaultSchedule()
       });
     }
 
-    case SET_NEW_SCHEDULE_ENABLED: {
+    case SET_NEW_SCHEDULE_PAUSED: {
       return Object.assign({}, state, {
         newSchedule: Object.assign({}, state.newSchedule, {
-          enabled: action.payload.scheduleEnabled
+          is_paused: action.payload.schedulePaused
         })
       });
     }
 
-    case SET_NEW_SCHEDULE_RUN: {
+    case SET_NEW_SCHEDULE_INTERVAL: {
       return Object.assign({}, state, {
         newSchedule: Object.assign({}, state.newSchedule, {
-          recurrence: action.payload.scheduleRun
+          interval: action.payload.scheduleInterval
         })
       });
     }
@@ -517,43 +419,54 @@ console.log("1");
       });
     }
 
+    case SET_NEW_SCHEDULE_DAY: {
+      return Object.assign({}, state, {
+        newSchedule: Object.assign({}, state.newSchedule, {
+          day: action.payload.scheduleDay
+        })
+      });
+    }
+
     case NEW_SCHEDULE_REQUEST: {
-      const startTime = new Date();
+      let startTime = new Date();
       startTime.setMinutes(state.newSchedule.time.getMinutes());
       startTime.setHours(state.newSchedule.time.getHours());
       startTime.setDate(state.newSchedule.date.getDate());
       startTime.setMonth(state.newSchedule.date.getMonth());
       startTime.setFullYear(state.newSchedule.date.getFullYear());
+
+      let recurrence = {
+        minutes: [],
+        hours: [],
+        week_days: [],
+      };
+      if (state.newSchedule.interval >= ScheduleRecurence.HOURLY) {
+        recurrence.minutes.push(state.newSchedule.time.getMinutes());
+      }
+      if (state.newSchedule.interval >= ScheduleRecurence.DAILY) {
+        recurrence.hours.push(state.newSchedule.time.getHours());
+      }
+      if (state.newSchedule.interval >= ScheduleRecurence.WEEKLY) {
+        recurrence.week_days.push(state.newSchedule.day);
+      }
+
       return Object.assign({}, state, {
-        currentSchedule: Object.assign({}, state.currentSchedule, {
-          is_paused: !state.newSchedule.enabled,
-          recurrence: state.newSchedule.recurrence,
+        newSchedule: Object.assign({}, state.newSchedule, {
+          recurrence: recurrence,
           start_time: startTime.toISOString()
         })
       });
     }
 
-    case SHOW_POPOVER: {
+    case CHANGE_SCRIPT_TITLE: {
+      needToSave = (
+        !state.currentScript.id ||
+        action.payload.title !== state.currentScript.title
+      );
       return Object.assign({}, state, {
-        showPopover: true,
-        popover: action.payload.element
+        needToSave: needToSave,
+        currentScriptTitle: action.payload.title
       });
-    }
-
-    case HIDE_POPOVER: {
-      return Object.assign({}, state, {
-        showPopover: false
-      });
-    }
-
-    case LOAD_SAMPLE: {
-      const sample = state.samples.filter(s => s.id === action.payload.sampleId);
-      if (sample.length > 0) {
-        return Object.assign({}, state, {
-          log: [{message: sample[0].code}]
-        });
-      }
-      return state;
     }
 
     default:

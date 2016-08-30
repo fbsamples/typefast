@@ -23,31 +23,21 @@
  */
 
 import { connect } from 'react-redux';
-import { hideSamplesModal, loadSample } from '../actions/actions.js';
-import TypeFastSamplesModal from '../components/TypeFastSamplesModal';
+import TypeFastLoaderModal from '../components/TypeFastLoaderModal';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    isShowing: state.showSamplesModal,
-    samples: state.samples,
+    isFetching: state.isFetching
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    onHide: () => {
-      dispatch(hideSamplesModal());
-    },
-    onSampleClick: (sampleId) => {
-      dispatch(loadSample(sampleId));
-      dispatch(hideSamplesModal());
-    }
-  };
+  return {};
 };
 
-const TypeFastSamplesContainer = connect(
+const TypeFastLoaderContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(TypeFastSamplesModal);
+)(TypeFastLoaderModal);
 
-export default TypeFastSamplesContainer;
+export default TypeFastLoaderContainer;

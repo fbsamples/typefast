@@ -24,20 +24,14 @@
 
 import { connect } from 'react-redux';
 import {
-  selectAdaccount,
   showHelpModal,
   showNewScriptDialog,
   showOpenScriptDialog,
-  showSamplesModal,
-  showPopover,
-  hidePopover
 } from '../actions/actions.js';
 import TypeFastAppBar from '../components/TypeFastAppBar';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    adaccounts: state.adaccounts,
-    currentAdaccount: state.currentAdaccount,
     showPopover: state.showPopover,
     popover: state.popover
   };
@@ -45,26 +39,14 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    onAdaccountSelect: (adaccountId) => {
-      dispatch(selectAdaccount(adaccountId));
-    },
     onNewScriptClick: () => {
       dispatch(showNewScriptDialog());
     },
     onOpenScriptClick: () => {
       dispatch(showOpenScriptDialog());
     },
-    onSamplesClick: () => {
-      dispatch(showSamplesModal());
-    },
     onHelpClick: () => {
       dispatch(showHelpModal());
-    },
-    onPopoverShow: (e) => {
-      dispatch(showPopover(e.currentTarget));
-    },
-    onPopoverHide: () => {
-      dispatch(hidePopover());
     }
   };
 };
