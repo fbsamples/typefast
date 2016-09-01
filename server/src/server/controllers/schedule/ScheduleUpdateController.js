@@ -31,11 +31,9 @@ import type {Map} from 'immutable';
 const {Model} = require('mongoose');
 
 const AbstractDocumentUpdateController = require('../AbstractDocumentUpdateController');
-const IntegerParam = require('../../params/IntegerParam');
-const OrParam = require('../../params/OrParam');
 const Schedule = require('../../../model/Schedule');
 const BooleanParam = require('../../params/BooleanParam');
-const {List} = require('immutable');
+const ScheduleRecurrenceParam = require('../../params/ScheduleRecurrenceParam');
 
 // implement ../ControllerInterface
 class ScheduleUpdateController extends AbstractDocumentUpdateController {
@@ -51,10 +49,7 @@ class ScheduleUpdateController extends AbstractDocumentUpdateController {
   getParams(): Map<string, AbstractParam<any>> {
     return super.getParams().merge({
       is_paused: new BooleanParam().optional(),
-      recurrence: new OrParam(new List([
-        new IntegerParam().setMin(3600000), // 1h min intval,
-        new IntegerParam().setMin(0).setMax(0)
-      ])).optional()
+      recurrence: new ScheduleRecurrenceParam().optional(),
     });
   }
 
@@ -63,24 +58,32 @@ class ScheduleUpdateController extends AbstractDocumentUpdateController {
     const schedule = context.getTarget();
     const params = context.getParams();
     const was_paused: bool = schedule.get('is_paused');
+    const recurrence = context.getParams().getOptionalMap('recurrence');
 
     const data = {
       is_paused: params.getBoolean('is_paused', schedule.get('is_paused')),
-      recurrence: params.getOptionalNumber('recurrence', schedule.get('recurrence')),
+      recurrence: recurrence != null ? recurrence.toJS() : schedule.get('recurrence'),
     };
 
-    context.execPromise(context.getTarget().set(data).save({ new: true }))
+    const is_paused: bool = data.is_paused;
+    const chain = context.getTarget().set(data).save({ new: true })
       .then((doc: Document) => {
-        const is_paused: bool = schedule.get('is_paused');
-        if (!was_paused && is_paused) {
-          return scheduler.cleanSchedule(schedule).then(() => doc);
-        } else if (was_paused && !is_paused) {
-          return scheduler.enqueueScheduled(schedule).then(() => doc);
-        }
+        const chain = !was_paused && (is_paused || recurrence != null)
+          ? scheduler.cleanSchedule(schedule)
+          : Promise.resolve();
 
-        return doc;
+        return chain.then(() => doc);
+      })
+      .then((doc: Document) => {
+        const chain = !is_paused && (was_paused || recurrence != null)
+          ? scheduler.enqueueScheduled(schedule).then(() => {})
+          : Promise.resolve();
+
+        return chain.then(() => doc);
       })
       .then((doc: Document) => context.sendDocument(doc));
+
+    context.execPromise(chain);
   }
 }
 

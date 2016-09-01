@@ -29,7 +29,6 @@ export type RoutineMutator = (routine: Routine) => Promise<Routine>;
 
 const Mongoose = require('mongoose');
 const RoutineModel = require('../model/Routine');
-const ScheduleModel = require('../model/Schedule');
 // Flow typeof won't work with import type
 const {Model} = require('mongoose');
 
@@ -94,27 +93,6 @@ class Queue {
 
   completeRoutine(routine: Routine): Promise<Routine> {
     return routine.update({ is_completed: true }).exec();
-  }
-
-  renewRoutine(routine: Routine): Promise<?Routine> {
-    const script_id: string = routine.get('script_id');
-    const schedule_id: string = routine.get('schedule_id');
-    const context_id: string = routine.get('context_id');
-
-    return ScheduleModel.findById(schedule_id).exec()
-      .then((schedule: ?Schedule) => {
-        if (schedule == null) {
-          return null;
-        }
-
-        const recurrence: ?number = schedule.get('recurrence');
-        if (recurrence == null || recurrence == 0) {
-          return null;
-        }
-
-        const date = new Date(routine.get('visible_from').getTime() + recurrence);
-        return this.createRoutine(script_id, schedule_id, context_id, date);
-      });
   }
 }
 

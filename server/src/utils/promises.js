@@ -22,7 +22,7 @@
  * @flow
  */
 
-const {List, Map} = require('immutable');
+const {List, Map, Set} = require('immutable');
 
 export type Promisable<T> = Promise<T> | T;
 export type Resolve<T> = (result: Promisable<T>) => void;
@@ -42,8 +42,14 @@ const genMap = function<T>(promises: Map<string, Promisable<T>>): Promise<Map<st
   ));
 };
 
+const genSet = function<T>(promises: Set<Promisable<T>>): Promise<Set<T>> {
+  return genList(promises.toList())
+    .then((list: List<T>) => list.toSet());
+};
+
 module.exports = {
+  genArray: Promise.all,
   genList: genList,
   genMap: genMap,
-  genArray: Promise.all,
+  genSet: genSet,
 };

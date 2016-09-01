@@ -39,8 +39,10 @@ export type OnRoutine = (
 const nullthrows = require('../utils/nullthrows');
 const PollingThread = require('./PollingThread');
 const Queue = require('./Queue');
-const {Map} = require('immutable');
+const ScheduleModel = require('../model/Schedule');
+const {fromJS, Map} = require('immutable');
 const {genMap} = require('../utils/promises');
+const {get_next_schedule_date_from_expression} = require('./utils/recurrences');
 
 class Scheduler {
 
@@ -75,26 +77,42 @@ class Scheduler {
     return nullthrows(this.getQueue(queue_name));
   }
 
-  getNextScheduleTime(schedule: Schedule): Date {
+  getNextScheduleDate(schedule: Schedule, since?: Date): Date {
     const start_time: Date = schedule.get('start_time');
-    const recurrence: ?number = schedule.get('recurrence');
-    const t1 = start_time.getTime();
-    const t2 = new Date().getTime();
+    const recurrence: ?Object = schedule.get('recurrence');
+    const next = new Date(Math.max(start_time, since || new Date()));
 
-    if (recurrence == null) {
-      return new Date();
-    }
-
-    return t1 > t2 ? start_time : new Date(t2 + ((t2 - t1) % recurrence));
+    return recurrence == null ? next : get_next_schedule_date_from_expression(next, fromJS(recurrence));
   }
 
   enqueueScheduled(schedule: Schedule, date?: Date): Promise<Routine> {
     const script_id: string = schedule.get('script_id');
     const schedule_id: string = schedule.get('id');
     const context_id: string = schedule.get('context_id');
-    const next = date == null ? this.getNextScheduleTime(schedule) : date;
+    const next = date == null ? this.getNextScheduleDate(schedule) : date;
 
     return this.coerceScheduleQueue(schedule).createRoutine(script_id, schedule_id, context_id, next);
+  }
+
+  enqueNextRoutine(routine: Routine): Promise<?Routine> {
+    const schedule_id: string = routine.get('schedule_id');
+    const start_time: Date = routine.get('start_time');
+
+    return ScheduleModel.findById(schedule_id).exec()
+      .then((schedule: ?Schedule) => {
+        if (schedule == null) {
+          return null;
+        }
+
+        const recurrence: ?Object = schedule.get('recurrence');
+
+        if (recurrence == null) {
+          return null;
+        }
+
+        const next_start = this.getNextScheduleDate(schedule, start_time);
+        return this.enqueueScheduled(schedule, next_start);
+      });
   }
 
   cleanSchedule(schedule: Schedule): Promise<void> {
@@ -123,7 +141,7 @@ class Scheduler {
       };
 
       thread.on(PollingThread.events.ROUTINE, (routine: Routine) => {
-        queue.renewRoutine(routine).then(() => {
+        this.enqueNextRoutine(routine).then(() => {
           callback(
             routine,
             contextify(queue.unlockRoutine, routine),

@@ -28,7 +28,7 @@ const schema = new Mongoose.Schema({
   creation_time: { type: Date },
   start_time: { type: Date },
   is_paused: { type: Boolean, default: false, required: true },
-  recurrence: { type: Number, default: 0 },
+  recurrence: { type: Object, value: { type: Array, value: { type: Number } } },
   script_id: { type: Mongoose.Schema.ObjectId, required: true },
   queue_name: { type: String, required: true },
 });
