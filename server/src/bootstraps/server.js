@@ -33,12 +33,12 @@ const getControllers = require('../server/controllersFactory');
 const bootstrap = function(argv: Argv): Application {
   const app = new Application(Config.fromArgv(argv));
   getControllers(app).forEach(controller => app.getRouter().mountCountroller(controller));
-  app.on(Application.events.INIT, ((drivers: Map<string, AbstractDriver>) => {
+  app.on(Application.events.INIT, (drivers: Map<string, AbstractDriver>) => {
     drivers.map((driver: AbstractDriver, key: string) => {
       const listener = driver.getListenerDescription();
       console.log(`Server listening on [${key}]: ${listener}`);
     });
-  }));
+  });
   return app;
 };
 

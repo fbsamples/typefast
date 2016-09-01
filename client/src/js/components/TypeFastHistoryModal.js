@@ -64,7 +64,7 @@ class TypeFastHistoryModal extends React.Component {
           {this.props.routines.map(curr =>
             <ListItem
               key={curr.id}
-              primaryText={curr.creation_time}
+              primaryText={curr.visible_from}
               initiallyOpen={false}
               nestedItems={[
                 <TypeFastCustomListItem key={0}>

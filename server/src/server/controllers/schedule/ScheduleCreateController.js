@@ -32,14 +32,12 @@ const AbstractDocumentCreateController = require('../AbstractDocumentCreateContr
 const DateParam = require('../../params/DateParam');
 const BooleanParam = require('../../params/BooleanParam');
 const HttpStatus = require('http-status-codes');
-const IntegerParam = require('../../params/IntegerParam');
-const OrParam = require('../../params/OrParam');
 const MongoIdParam = require('../../params/MongoIdParam');
+const ScheduleRecurrenceParam = require('../../params/ScheduleRecurrenceParam');
 const ScheduleModel = require('../../../model/Schedule');
 const ScriptModel = require('../../../model/Script');
 const StringParam = require('../../params/StringParam');
 const QueueNameParam = require('../../params/QueueNameParam');
-const {List} = require('immutable');
 
 class ScheduleCreateController extends AbstractDocumentCreateController {
 
@@ -57,10 +55,7 @@ class ScheduleCreateController extends AbstractDocumentCreateController {
       context_id: new StringParam().setMinLength(1).setDefaultValue(ctx_id),
       start_time: new DateParam().setDefaultValue(new Date()),
       is_paused: new BooleanParam().setDefaultValue(false),
-      recurrence: new OrParam(new List([
-        new IntegerParam().setMin(3600000), // 1h min intval,
-        new IntegerParam().setMin(0).setMax(0)
-      ])).setDefaultValue(0).optional(),
+      recurrence: new ScheduleRecurrenceParam().optional(),
       script_id: new MongoIdParam(),
       queue_name: new QueueNameParam(this.getApplication().getScheduler()),
     });
@@ -69,12 +64,13 @@ class ScheduleCreateController extends AbstractDocumentCreateController {
   genResponse(context: Context): void {
     const scheduler = this.getApplication().getScheduler();
     const script_id = context.getParams().getString('script_id');
+    const recurrence = context.getParams().getOptionalMap('recurrence');
     const schedule = ScheduleModel({
       context_id: context.getParams().getString('context_id'),
       start_time: context.getParams().getDate('start_time'),
       is_paused: context.getParams().getBoolean('is_paused'),
       queue_name: context.getParams().getString('queue_name'),
-      recurrence: context.getParams().getOptionalNumber('recurrence'),
+      recurrence: recurrence == null ? null : recurrence.toJS(),
       script_id: script_id,
     });
 
