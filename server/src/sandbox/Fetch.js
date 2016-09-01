@@ -64,7 +64,7 @@ class SandboxFetch {
     });
   }
 
-  getUrl(path: string, method: RequestMethod, params: ?Object, send_body: boolean): string {
+  createUrl(path: string, method: RequestMethod, params: ?Object, send_body: boolean): string {
     const urlParams = new Map(params);
     const query = send_body || urlParams.count() === 0
       ? ''
@@ -73,7 +73,7 @@ class SandboxFetch {
     return `${path}${query}`;
   }
 
-  url(path: string, method: RequestMethod, params: ?Object, headers: ?Object) : Object {
+  getUrl(path: string, method: RequestMethod, params: ?Object, headers: ?Object) : Object {
 
     const validUrl = this.validateUrl(path, method);
     if (parseInt(validUrl.get('status'), 10) < 0) {
@@ -81,7 +81,7 @@ class SandboxFetch {
     }
 
     const send_body = method !== 'GET';
-    const reqUrl = this.getUrl(path, method, params, send_body);
+    const reqUrl = this.createUrl(path, method, params, send_body);
 
     const out = SyncRequest(method, reqUrl, {
       qs: !send_body
