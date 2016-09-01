@@ -24,14 +24,12 @@
 
 const Vm = require('vm');
 const Console = require('./Console');
-const Fetch = require('./Fetch');
 const {PassThrough} = require('stream');
 
 class Sandbox {
 
   console: ?Console;
   context: ?Object;
-  fetch: ?Fetch;
   sharedObject: Object;
   timeout: ?number;
 
@@ -59,18 +57,9 @@ class Sandbox {
     if (this.context == null) {
       const shared_object = this.sharedObject;
       shared_object.console = this.getConsole();
-      shared_object.fetch = this.getFetch();
       this.context = Vm.createContext(shared_object);
     }
     return this.context;
-  }
-
-  getFetch(): Fetch {
-    if (this.fetch == null) {
-      this.fetch = new Fetch();
-    }
-
-    return this.fetch;
   }
 
   setTimeout(timout: number): this {

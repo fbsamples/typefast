@@ -33,10 +33,7 @@ const MESSAGE_INVALID_URL = 'Invalid Resource/URL: Could not fetch contents';
 const MESSAGE_INVALID_URL_FORMAT = 'Invalid URL Format: Please enter a valid HTTP(S) URL';
 const MESSAGE_INVALID_METHOD_FORMAT = 'Invalid Method: Please enter either "GET" or "POST"';
 
-class SandboxFetch {
-
-  constructor(): void {
-  }
+class Fetch {
 
   validMethod(method: string) : boolean {
     return method === 'POST' || method === 'GET';
@@ -74,7 +71,7 @@ class SandboxFetch {
   }
 
   getUrl(path: string, method: RequestMethod, params: ?Object, headers: ?Object) : Object {
-    let returnMessage = null;
+
     const validUrl = this.validateUrl(path, method);
     if (parseInt(validUrl.get('status'), 10) < 0) {
       return validUrl.toObject();
@@ -83,34 +80,24 @@ class SandboxFetch {
     const send_body = method !== 'GET';
     const reqUrl = this.createUrl(path, method, params, send_body);
 
-    try {
-      const out = SyncRequest(method, reqUrl, {
-        qs: !send_body
+    const out = SyncRequest(method, reqUrl, {
+      qs: !send_body
           ? params
           : {},
-        body: send_body
+      body: send_body
           ? encodeBody(params)
           : '',
-        headers: headers
-      });
+      headers: headers
+    });
 
-      returnMessage = {
-        url: reqUrl,
-        status: out.statusCode,
-        body: (out.statusCode === 200) ? out.body.toString() : MESSAGE_INVALID_URL
-      };
-    } catch (err) {
-      returnMessage = {
-        url: reqUrl,
-        status: -1,
-        body: err
-      };
-    }
-
-    return returnMessage;
+    return {
+      url: reqUrl,
+      status: out.statusCode,
+      body: (out.statusCode === 200) ? out.body.toString() : MESSAGE_INVALID_URL
+    };
   }
 
 
 }
 
-module.exports = SandboxFetch;
+module.exports = Fetch;
