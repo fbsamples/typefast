@@ -28,7 +28,6 @@ const {isURL} = require('validator');
 const encodeBody = require('form-urlencoded');
 const SyncRequest = require('sync-request');
 
-const MESSAGE_INVALID_URL = 'Invalid Resource/URL: Could not fetch contents';
 const MESSAGE_INVALID_URL_FORMAT = 'Invalid URL Format: Please enter a valid HTTP(S) URL';
 
 const defaultOptions = function({
@@ -78,7 +77,6 @@ const validateUrl = function(path: string, method: string) : void {
 
 const fetch = function(path: string, method: RequestMethod, options: ?Object) : Object {
   options = defaultOptions(options);
-  console.log(options);
 
   validateUrl(path, method);
   const out = SyncRequest(method, path, options);
@@ -87,7 +85,7 @@ const fetch = function(path: string, method: RequestMethod, options: ?Object) : 
     url: out.url,
     headers: out.headers,
     status: out.statusCode,
-    body: (out.statusCode === 200) ? out.body.toString() : MESSAGE_INVALID_URL
+    body: out.body.toString()
   };
 };
 
