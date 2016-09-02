@@ -23,7 +23,6 @@
  */
 
 import type {RequestMethod} from '../../../sdk/src/http/Request';
-const {Map} = require('immutable');
 const {isURL} = require('validator');
 
 const encodeBody = require('form-urlencoded');
@@ -31,60 +30,68 @@ const SyncRequest = require('sync-request');
 
 const MESSAGE_INVALID_URL = 'Invalid Resource/URL: Could not fetch contents';
 const MESSAGE_INVALID_URL_FORMAT = 'Invalid URL Format: Please enter a valid HTTP(S) URL';
-const MESSAGE_INVALID_METHOD_FORMAT = 'Invalid Method: Please enter either "GET" or "POST"';
 
-class Fetch {
+const defaultOptions = function({
+    qs = {},
+    headers = {},
+    body = '',
+    json = '',
+    followRedirects = true,
+    maxRedirects = Infinity,
+    gzip = true,
+    timeout = false,
+    socketTimeout = false,
+    retry = false,
+    retryDelay = 200,
+    maxRetries = 5
+  } = {}) {
 
-  validMethod(method: string) : boolean {
-    return method === 'POST' || method === 'GET';
+  if (typeof body === 'object') {
+    body = encodeBody(body);
   }
 
-  validPath(path: string) : boolean {
-    return isURL(path, { protocols: ['http', 'https'] });
+  return {
+    qs: qs,
+    headers: headers,
+    body: body,
+    json: json,
+    followRedirects: followRedirects,
+    maxRedirects: maxRedirects,
+    gzip: gzip,
+    timeout: timeout,
+    socketTimeout: socketTimeout,
+    retry: retry,
+    retryDelay: retryDelay,
+    maxRetries: maxRetries
+  };
+};
+
+const validPath = function(path: string) : boolean {
+  return isURL(path, { protocols: ['http', 'https'] });
+};
+
+const validateUrl = function(path: string, method: string) : void {
+  if (!validPath(path)) {
+    throw new Error(MESSAGE_INVALID_URL_FORMAT);
   }
+};
 
-  validateUrl(path: string, method: string) : void {
-    if (!this.validPath(path)) {
-      throw new Error(MESSAGE_INVALID_URL_FORMAT);
-    }
+const fetch = function(path: string, method: RequestMethod, options: ?Object) : Object {
+  options = defaultOptions(options);
+  console.log(options);
 
-    if (!this.validMethod(method)) {
-      throw new Error(MESSAGE_INVALID_METHOD_FORMAT);
-    }
-  }
+  validateUrl(path, method);
+  const out = SyncRequest(method, path, options);
 
-  createUrl(path: string, method: RequestMethod, params: ?Object, send_body: boolean): string {
-    const urlParams = new Map(params);
-    const query = send_body || urlParams.count() === 0
-      ? ''
-      : '?' + urlParams.map((value, key) => key + '=' + String(value)).join('&');
-
-    return `${path}${query}`;
-  }
-
-  getUrl(path: string, method: RequestMethod, params: ?Object, headers: ?Object) : Object {
-    this.validateUrl(path, method);
-    const send_body = method !== 'GET';
-    const reqUrl = this.createUrl(path, method, params, send_body);
-
-    const out = SyncRequest(method, reqUrl, {
-      qs: !send_body
-          ? params
-          : {},
-      body: send_body
-          ? encodeBody(params)
-          : '',
-      headers: headers
-    });
-
-    return {
-      url: reqUrl,
-      status: out.statusCode,
-      body: (out.statusCode === 200) ? out.body.toString() : MESSAGE_INVALID_URL
-    };
-  }
+  return {
+    url: out.url,
+    headers: out.headers,
+    status: out.statusCode,
+    body: (out.statusCode === 200) ? out.body.toString() : MESSAGE_INVALID_URL
+  };
+};
 
 
-}
-
-module.exports = Fetch;
+module.exports = {
+  fetch: fetch
+};

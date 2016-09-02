@@ -30,7 +30,7 @@ import type {Script} from '../model/Script';
 const Adapter = require('../../../sdk/src/http/adapters/NodejsSynchronousAdapter');
 const Api = require('../../../sdk/src/Api');
 const ApiOptimizer = require('../../../sdk/src/ApiOptimizer');
-const Fetch = require('./Fetch');
+const {fetch} = require('./Fetch');
 const Node = require('../../../sdk/src/Node');
 const NodeSpec = require('../../../sdk/src/specs/NodeSpec');
 const Session = require('../../../sdk/src/Session');
@@ -78,6 +78,6 @@ module.exports = function(config: Config, script: Script, ctx_id: string): Objec
   return {
     context: ctx,
     adaccount: ctx, // FIXME make ctx dynamically allocable
-    fetch: new Fetch(),
+    fetch: fetch,
   };
 };
