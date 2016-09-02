@@ -42,8 +42,8 @@ const defaultOptions = function({
     socketTimeout = false,
     retry = false,
     retryDelay = 200,
-    maxRetries = 5
-  } = {}) {
+    maxRetries = 5,
+  } = {}): Object {
 
   if (typeof body === 'object') {
     body = encodeBody(body);
@@ -61,31 +61,31 @@ const defaultOptions = function({
     socketTimeout: socketTimeout,
     retry: retry,
     retryDelay: retryDelay,
-    maxRetries: maxRetries
+    maxRetries: maxRetries,
   };
 };
 
-const validPath = function(path: string) : boolean {
+const validPath = function(path: string): boolean {
   return isURL(path, { protocols: ['http', 'https'] });
 };
 
-const validateUrl = function(path: string) : void {
+const validateUrl = function(path: string): void {
   if (!validPath(path)) {
     throw new Error(MESSAGE_INVALID_URL_FORMAT);
   }
 };
 
-const fetch = function(method: RequestMethod, path: string, options: ?Object) : Object {
+const fetch = function(method: RequestMethod, path: string, options: ?Object): Object {
   options = defaultOptions(options);
 
   validateUrl(path);
   const out = SyncRequest(method, path, options);
-  
+
   return {
     url: out.url,
     headers: out.headers,
     status: out.statusCode,
-    body: out.body.toString()
+    body: out.body.toString(),
   };
 };
 
