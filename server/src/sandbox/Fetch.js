@@ -43,22 +43,14 @@ class Fetch {
     return isURL(path, { protocols: ['http', 'https'] });
   }
 
-  validateUrl(path: string, method: string) : Map<string, string> {
-    let errors = [];
-
+  validateUrl(path: string, method: string) : void {
     if (!this.validPath(path)) {
-      errors.push(MESSAGE_INVALID_URL_FORMAT);
+      throw new Error(MESSAGE_INVALID_URL_FORMAT);
     }
 
     if (!this.validMethod(method)) {
-      errors.push(MESSAGE_INVALID_METHOD_FORMAT);
+      throw new Error(MESSAGE_INVALID_METHOD_FORMAT);
     }
-
-    return new Map({
-      url: path,
-      status: (errors.length > 0) ? -1 : 1,
-      body: errors.join(' and ')
-    });
   }
 
   createUrl(path: string, method: RequestMethod, params: ?Object, send_body: boolean): string {
@@ -71,12 +63,7 @@ class Fetch {
   }
 
   getUrl(path: string, method: RequestMethod, params: ?Object, headers: ?Object) : Object {
-
-    const validUrl = this.validateUrl(path, method);
-    if (parseInt(validUrl.get('status'), 10) < 0) {
-      return validUrl.toObject();
-    }
-
+    this.validateUrl(path, method);
     const send_body = method !== 'GET';
     const reqUrl = this.createUrl(path, method, params, send_body);
 
