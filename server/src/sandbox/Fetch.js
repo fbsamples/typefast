@@ -75,12 +75,12 @@ const validateUrl = function(path: string) : void {
   }
 };
 
-const fetch = function(path: string, method: RequestMethod, options: ?Object) : Object {
+const fetch = function(method: RequestMethod, path: string, options: ?Object) : Object {
   options = defaultOptions(options);
 
   validateUrl(path);
   const out = SyncRequest(method, path, options);
-
+  
   return {
     url: out.url,
     headers: out.headers,
