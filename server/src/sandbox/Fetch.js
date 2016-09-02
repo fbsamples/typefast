@@ -69,7 +69,7 @@ const validPath = function(path: string) : boolean {
   return isURL(path, { protocols: ['http', 'https'] });
 };
 
-const validateUrl = function(path: string, method: string) : void {
+const validateUrl = function(path: string) : void {
   if (!validPath(path)) {
     throw new Error(MESSAGE_INVALID_URL_FORMAT);
   }
@@ -78,7 +78,7 @@ const validateUrl = function(path: string, method: string) : void {
 const fetch = function(path: string, method: RequestMethod, options: ?Object) : Object {
   options = defaultOptions(options);
 
-  validateUrl(path, method);
+  validateUrl(path);
   const out = SyncRequest(method, path, options);
 
   return {
