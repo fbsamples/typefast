@@ -35,6 +35,7 @@ import TypeFastLoginContainer from '../containers/TypeFastLoginContainer';
 import TypeFastNewScriptContainer from '../containers/TypeFastNewScriptContainer';
 import TypeFastOpenScriptContainer from '../containers/TypeFastOpenScriptContainer';
 import TypeFastScheduleContainer from '../containers/TypeFastScheduleContainer';
+import TypeFastSnackbarContainer from '../containers/TypeFastSnackbarContainer';
 import TypeFastToolbarContainer from '../containers/TypeFastToolbarContainer';
 import TypeFastUnauthorisedModalContainer from '../containers/TypeFastUnauthorisedModalContainer';
 
@@ -59,6 +60,7 @@ class TypeFastApp extends React.Component {
         <TypeFastLoginContainer />
         <TypeFastLoaderContainer />
         <TypeFastUnauthorisedModalContainer />
+        <TypeFastSnackbarContainer />
       </div>
     );
   }

@@ -41,7 +41,7 @@ class TypeFastOpenScriptDialog extends React.Component {
     return (
       <Dialog
         autoScrollBodyContent={true}
-        title="Scripts"
+        title="Your scripts"
         actions={actions}
         modal={false}
         open={this.props.isShowing}

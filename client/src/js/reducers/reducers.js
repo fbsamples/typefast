@@ -112,6 +112,9 @@ function typefastApp(state = {
   showNewScriptDialog: false,
   showScheduleDialog: false,
   newSchedule: defaultSchedule(),
+
+  showSaveScheduleSnack: false,
+  showSaveScriptSnack: false
 }, action) {
   let needToSave;
   switch (action.type) {
@@ -147,11 +150,13 @@ function typefastApp(state = {
         scripts: updatedScripts,
         scriptCount: Object.keys(updatedScripts).length,
         needToSave: false,
+        showSaveScriptSnack: true
       });
 
     case SAVE_SCHEDULE_SUCCESS:
       return Object.assign({}, state, {
-        currentSchedule: state.newSchedule
+        currentSchedule: state.newSchedule,
+        showSaveScheduleSnack: true
       });
 
     case FACEBOOK_AUTH_SUCCESS:
