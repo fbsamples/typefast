@@ -32,7 +32,6 @@ echo_cmd 'Cloning dependencies + static resources'
 cp -rp $ROOT_DIR/sdk/node_modules $BUILD_DIR/sdk/node_modules
 cd $ROOT_DIR
 
-
 echo_step 'Installing Server Module'
 cd server
 echo_cmd 'Downloading dependencies'
@@ -43,7 +42,7 @@ cp -rp $ROOT_DIR/server/node_modules $BUILD_DIR/server/node_modules
 cp -rp $ROOT_DIR/server/config $BUILD_DIR/server/config
 cp -rp $ROOT_DIR/server/*.grsb $BUILD_DIR/server/
 echo_cmd 'Building static analysis specs'
-node bin/fbTypesGenerator.js > /dev/null
+node bin/fbTypesGenerator.js --inline-config="{\"graph\": {\"schema\": {\"bundle\": \"da204b3753e6fd7a1845f8763bdf611c.grsb\"}}}" > /dev/null
 echo_cmd 'Transpiling source code'
 mkdir -p $BUILD_DIR/server/src
 mkdir -p $BUILD_DIR/server/bin
@@ -51,7 +50,6 @@ transpile src/ -d $BUILD_DIR/server/src
 transpile bin/ -d $BUILD_DIR/server/bin
 transpile index.js -o $BUILD_DIR/server/index.js
 cd $ROOT_DIR
-
 
 echo_step 'Installing Client Module'
 cd client
@@ -66,3 +64,8 @@ cp -rp $ROOT_DIR/client/src/build $BUILD_DIR/client/src/build
 cp -rpL $ROOT_DIR/client/src/css $BUILD_DIR/client/src/css
 cp -rp $ROOT_DIR/client/src/index.html $BUILD_DIR/client/src/index.html
 cd $ROOT_DIR
+
+echo_step 'Cleaning source dirs'
+rm -rf $ROOT_DIR/server $ROOT_DIR/sdk
+echo_cmd 'Finished!'
+
