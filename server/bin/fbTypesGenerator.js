@@ -41,39 +41,34 @@ function isObjectType(type) {
 }
 
 function typeTransformer(type) {
-  if(!type) { return null };
+  if (!type) { return null; }
   var matches = null;
-  switch(type) {
+  switch (type) {
     case 'int':
     case 'unsigned int':
     case 'float':
       return 'number';
-    break;
     case 'datetime':
     case enums[type]:
       return 'string';
     case 'string':
     case 'bool':
       return type;
-    break;
     case isObjectType(type):
       return 'Object';
-    break;
     case /^list<(.*)>/:
-      const matches = type.match(/^list<(.*)>/)
+      const matches = type.match(/^list<(.*)>/);
       return '[' + typeTransformer(matches[1]) + ']';
-    break;
     case 'list':
       return '[?]';
-    break;
     // this fudge is for the offline conversions spec that is borked and we
     // need to look at how to fix
     case 'Returns the number of object received.':
-      return 'OffsiteConversion'
-    break;
+      return 'OffsiteConversion';
+    case '(struct with keys: success) or (struct with keys: success, account_group)':
+      return 'Object';
     default:
       return type;
-    break;
   }
 }
 
@@ -86,11 +81,21 @@ delete schema.enums;
 var ternDefinitions = {
   '!name': '!Facebook Scripting Definitions',
   '!define':  {
-    "cursor_prototype": {
-      ":Symbol.iterator": "fn() -> !this",
+    'cursor_prototype': {
+      ':Symbol.iterator': 'fn() -> !this',
     },
+    'fetchReturnType': {
+      url: 'string',
+      headers: 'Array',
+      status: 'number',
+      body: 'string',
+    }
   },
-  'adaccount': 'AdAccount',
+  'business': 'Business',
+  'fetch': {
+    '!type': 'fn(method: string, path: string, options?: Object) -> +fetchReturnType',
+    '!doc': '',
+  }
 };
 
 new Map(schema).forEach(function(spec, type) {
@@ -129,46 +134,46 @@ new Map(schema).forEach(function(spec, type) {
     defs[name] = {};
 
     ternDefinitions['!define'][returntype + '_cursor'] = {
-      "!proto": "cursor_prototype",
-      "forEach": {
-        "!type": "fn(f: fn(el: +"
-        + returntype + ", i: number, array: +Array), context?: ?)",
+      '!proto': 'cursor_prototype',
+      'forEach': {
+        '!type': 'fn(f: fn(el: +'
+        + returntype + ', i: number, array: +Array), context?: ?)',
       },
-      "valid": {
-        "!type": "fn() -> bool",
-        "!doc": "Wether the cursor is valid",
+      'valid': {
+        '!type': 'fn() -> bool',
+        '!doc': 'Wether the cursor is valid',
       },
-      "key": {
-        "!type": "fn() -> number",
-        "!doc": "The current index of the cursor",
+      'key': {
+        '!type': 'fn() -> number',
+        '!doc': 'The current index of the cursor',
       },
-      "rewind": {
-        "!type": "fn() -> !this",
+      'rewind': {
+        '!type': 'fn() -> !this',
       },
-      "next": {
-        "!type": "fn() -> +" + returntype ,
-        "!doc": "Return the next " + returntype + " item from the cursor.",
-        "!url": "https://facebook.com",
+      'next': {
+        '!type': 'fn() -> +' + returntype,
+        '!doc': 'Return the next ' + returntype + ' item from the cursor.',
+        '!url': 'https://facebook.com',
       },
-      "current": {
-        "!type": "fn() -> +" + returntype ,
-        "!doc": "Gets the current " + returntype + " of the cursor",
+      'current': {
+        '!type': 'fn() -> +' + returntype,
+        '!doc': 'Gets the current ' + returntype + ' of the cursor',
       },
-    }
+    };
 
     defs[name]['!type'] = 'fn() -> +' + returntype + '_cursor';
     defs[name]['!doc'] = description;
   });
 
-  nodeSpec.getFieldSpecs().forEach(function(fieldSpec){
+  nodeSpec.getFieldSpecs().forEach(function(fieldSpec) {
     const name = fieldSpec.getName();
     const fieldType = fieldSpec.getType();
-    if (!defs[name]){
+    if (!defs[name]) {
       defs[name] = {};
     }
-    if(!isObjectType(fieldType)) {
-      defs[name]["!type"] = typeTransformer(fieldType);
-      defs[name]["!doc"] = fieldSpec.getDescription();
+    if (!isObjectType(fieldType)) {
+      defs[name]['!type'] = typeTransformer(fieldType);
+      defs[name]['!doc'] = fieldSpec.getDescription();
     }
   });
 
@@ -176,9 +181,9 @@ new Map(schema).forEach(function(spec, type) {
 });
 
 fs.writeFile(outputFilename, 'module.exports = ' + JSON.stringify(ternDefinitions, null, 4), function(err) {
-    if(err) {
-      console.log(err);
-    } else {
-      console.log("JSON saved to " + outputFilename);
-    }
+  if (err) {
+    console.log(err);
+  } else {
+    console.log('JSON saved to ' + outputFilename);
+  }
 });

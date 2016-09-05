@@ -55,7 +55,7 @@ module.exports = function(infer) {
   }
 
   function determineNodeTypeName(objFbType) {
-    if (objFbType.types[0].name === 'AdAccount') {
+    if (objFbType.types[0].name === 'Business') {
       return objFbType.types[0].name;
     } else {
       return objFbType.types[0].proto.name;
@@ -87,7 +87,8 @@ module.exports = function(infer) {
           if (node.object.type == 'CallExpression') {
             if (objFbType.proto) {
               let properties = objFbType.proto.props;
-              if (properties[name]) {
+              if (properties[name]
+                && properties[name].origin == '!Facebook Scripting Definitions' ) {
                 if (!fieldsAccessed[objFbType.proto.name]) {
                   fieldsAccessed[objFbType.proto.name] = new Set();
                 }
@@ -106,7 +107,8 @@ module.exports = function(infer) {
             }
 
             if (properties[name] // check its a valid prop
-              && !isEdge(properties[name]) // check its not an edge
+              && !isEdge(properties[name])
+              && properties[name].origin == '!Facebook Scripting Definitions' // check its a FB Definition
             ) {
               const nodeName = determineNodeTypeName(objFbType);
               if (!fieldsAccessed[nodeName]) {

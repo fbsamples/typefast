@@ -32,7 +32,9 @@ const MESSAGE_INVALID_URL_FORMAT = 'Invalid URL Format: Please enter a valid HTT
 
 const defaultOptions = function({
     qs = {},
-    headers = {},
+    headers = {
+      'user-agent': 'typefast'
+    },
     body = '',
     json = '',
     followRedirects = true,

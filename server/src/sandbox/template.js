@@ -77,7 +77,7 @@ module.exports = function(config: Config, script: Script, ctx_id: string): Objec
 
   return {
     context: ctx,
-    adaccount: ctx, // FIXME make ctx dynamically allocable
+    business: ctx, // FIXME make ctx dynamically allocable
     fetch: fetch,
   };
 };

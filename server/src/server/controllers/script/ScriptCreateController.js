@@ -50,7 +50,7 @@ class ScriptCreateController extends AbstractDocumentCreateController {
       title: new StringParam().setMinLength(3),
       optimisations: new ScriptOptimizationsParam().setDefaultValue({}),
       code: new StringParam(),
-      context_type: new StringParam().setDefaultValue('AdAccount'),
+      context_type: new StringParam().setDefaultValue('Business'),
     });
   }
 
