@@ -50,7 +50,7 @@ class ScheduleCreateController extends AbstractDocumentCreateController {
   }
 
   getParams(): Map<string, AbstractParam<any>> {
-    const ctx_id = this.getApplication().getConfig().getString('DEPRECATED__cxt_id');
+    const ctx_id = this.getApplication().getConfig().getString('graph.business_manager_id');
     return super.getParams().merge({
       context_id: new StringParam().setMinLength(1).setDefaultValue(ctx_id),
       start_time: new DateParam().setDefaultValue(new Date()),

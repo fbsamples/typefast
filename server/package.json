@@ -9,7 +9,8 @@
     "transpile": "babel src/ -d build/",
     "start": "node index.js --mode=server",
     "dev": "nodemon index.js --transpile --inline-config='{\"debug\": true}'",
-    "worker": "npm start -- --transpile --mode=worker",
+    "worker": "npm start -- --mode=worker",
+    "dev-worker": "npm start -- --transpile --mode=worker",
     "definition-generation": "node bin/fbTypesGenerator.js",
     "debug": "node debug index.js --transpile"
   },
