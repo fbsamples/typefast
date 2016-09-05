@@ -24,7 +24,7 @@
 
 const Mongoose = require('mongoose');
 const schema = new Mongoose.Schema({
-  code: { type: String, required: true },
+  code: { type: String, default: '' },
   context_type: { type: String, required: true },
   created_time: { type: Date },
   optimisations: { type: Object, default: {} },
