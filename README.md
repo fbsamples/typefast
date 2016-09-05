@@ -42,7 +42,6 @@ Following config vars are required for Heroku app:
 
 * *NPM_CONFIG_PRODUCTION* - set to false
 * *db.url* - path to MongoDB (copy from existing MONGODB_URI config var)
-* *DEPRECATED__cxt_id* - adaccount id
 * *graph.access_token* - access token generated for admin system user in Business Manager
 * *graph.application_id* - application id from [developers.facebook.com/apps](https://developers.facebook.com/apps)
 * *graph.application_secret* - application secret

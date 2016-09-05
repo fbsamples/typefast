@@ -33,7 +33,6 @@ Than edit `config/local.json`, filling all the keys.
 
 Notes:
   1. graph.schema.bundle -> absolute path to the provided schema bundle
-  2. DEPRECATED__cxt_id -> a Facebook adaccount Id, requires an 'act_' prefix
 
 # Run
 

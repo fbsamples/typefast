@@ -59,6 +59,5 @@
         "polling_interval": 1000
       }
     }
-  },
-  "DEPRECATED__cxt_id": null
+  }
 }
