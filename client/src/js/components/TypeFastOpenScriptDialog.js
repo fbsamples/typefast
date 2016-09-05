@@ -26,13 +26,14 @@ import React from 'react';
 
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import FontIcon from 'material-ui/FontIcon';
 import {List, ListItem} from 'material-ui/List';
 
 class TypeFastOpenScriptDialog extends React.Component {
   render() {
     const actions = [
       <FlatButton
-        label="Close"
+        label="Cancel"
         secondary={true}
         onTouchTap={this.props.onHide}
       />
@@ -53,6 +54,7 @@ class TypeFastOpenScriptDialog extends React.Component {
               primaryText={this.props.scripts[scriptId].title}
               secondaryText={new Date(this.props.scripts[scriptId].updated_time).toString()}
               onClick={this.props.onScriptSelect.bind(null, scriptId)}
+              leftIcon={<FontIcon className="material-icons">description</FontIcon>}
             />
           )}
         </List>

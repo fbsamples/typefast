@@ -32,7 +32,7 @@ class TypeFastHelpModal extends React.Component {
   render() {
     const actions = [
       <FlatButton
-        label="Close"
+        label="Cancel"
         secondary={true}
         keyboardFocused={true}
         onTouchTap={this.props.onHide}

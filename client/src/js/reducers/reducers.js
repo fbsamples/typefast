@@ -72,9 +72,9 @@ function defaultScript() {
 
 function defaultSchedule() {
   return {
-    is_paused: false,
+    is_paused: true,
     start_time: new Date(Date.now()).toISOString(),
-    interval: -1,
+    interval: 0,
     day: 1,
     recurrence: {},
     time: new Date(),

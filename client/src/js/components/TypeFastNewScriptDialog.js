@@ -26,18 +26,19 @@ import React from 'react';
 
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import FontIcon from 'material-ui/FontIcon';
 import { List, ListItem } from 'material-ui/List';
 
 class TypeFastNewScriptDialog extends React.Component {
   render() {
     const actions = [
       <FlatButton
-        label="Close"
+        label="Cancel"
         secondary={true}
         onTouchTap={this.props.onHide}
       />,
       <FlatButton
-        label="Create from blank"
+        label="Create blank script"
         primary={true}
         onTouchTap={this.props.onSampleClick}
       />
@@ -45,7 +46,7 @@ class TypeFastNewScriptDialog extends React.Component {
     return (
       <Dialog
         autoScrollBodyContent={true}
-        title="Select sample to create from"
+        title="Create script from template"
         actions={actions}
         modal={false}
         open={this.props.isShowing}
@@ -58,6 +59,7 @@ class TypeFastNewScriptDialog extends React.Component {
               key={sample.id}
               primaryText={sample.name}
               secondaryText={sample.description}
+              leftIcon={<FontIcon className="material-icons">description</FontIcon>}
             />
           )}
         </List>

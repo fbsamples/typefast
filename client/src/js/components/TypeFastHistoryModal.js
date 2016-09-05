@@ -46,7 +46,7 @@ class TypeFastHistoryModal extends React.Component {
   render() {
     const actions = [
       <FlatButton
-        label="Close"
+        label="Cancel"
         secondary={true}
         onTouchTap={this.props.onHide}
       />
