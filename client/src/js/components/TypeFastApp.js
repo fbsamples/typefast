@@ -30,10 +30,10 @@ import TypeFastEditorContainer from '../containers/TypeFastEditorContainer';
 import TypeFastAppBarContainer from '../containers/TypeFastAppBarContainer';
 import TypeFastHelpContainer from '../containers/TypeFastHelpContainer';
 import TypeFastHistoryContainer from '../containers/TypeFastHistoryContainer';
+import TypeFastLoaderContainer from '../containers/TypeFastLoaderContainer';
 import TypeFastLoginContainer from '../containers/TypeFastLoginContainer';
 import TypeFastNewScriptContainer from '../containers/TypeFastNewScriptContainer';
 import TypeFastOpenScriptContainer from '../containers/TypeFastOpenScriptContainer';
-import TypeFastSamplesContainer from '../containers/TypeFastSamplesContainer';
 import TypeFastScheduleContainer from '../containers/TypeFastScheduleContainer';
 import TypeFastToolbarContainer from '../containers/TypeFastToolbarContainer';
 import TypeFastUnauthorisedModalContainer from '../containers/TypeFastUnauthorisedModalContainer';
@@ -55,9 +55,9 @@ class TypeFastApp extends React.Component {
         <TypeFastHistoryContainer />
         <TypeFastNewScriptContainer />
         <TypeFastOpenScriptContainer />
-        <TypeFastSamplesContainer />
         <TypeFastScheduleContainer />
         <TypeFastLoginContainer />
+        <TypeFastLoaderContainer />
         <TypeFastUnauthorisedModalContainer />
       </div>
     );

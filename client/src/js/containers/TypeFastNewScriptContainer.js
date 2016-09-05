@@ -25,10 +25,7 @@
 import { connect } from 'react-redux';
 import {
   hideNewScriptDialog,
-  savingScriptRequest,
-  setNewScriptType,
-  setNewScriptName,
-  setNewScriptSample
+  loadSample,
 } from '../actions/actions.js';
 import TypeFastNewScriptDialog from '../components/TypeFastNewScriptDialog';
 
@@ -45,21 +42,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     onHide: () => {
       dispatch(hideNewScriptDialog());
     },
-    onNameChange: (e, v) => {
-      dispatch(setNewScriptName(v));
-    },
-    onTypeChange: (e, v) => {
-      dispatch(setNewScriptType(v));
-    },
-    onSampleChange: (e, v) => {
-      dispatch(setNewScriptSample(v));
-    },
-    onSave: () => {
-      dispatch(savingScriptRequest());
-      dispatch(hideNewScriptDialog());
-    },
-    onSchedule: () => {
-      dispatch(savingScriptRequest(true));
+    onSampleClick: (sampleId = 0) => {
+      dispatch(loadSample(sampleId));
       dispatch(hideNewScriptDialog());
     }
   };

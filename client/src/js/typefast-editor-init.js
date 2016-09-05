@@ -41,18 +41,7 @@ require('codemirror/addon/hint/show-hint');
 require('codemirror/addon/tern/tern');
 
 const loadingLastScript = 'Loading your last script...';
-
-const sampleCode =
-`/*jshint esversion: 6 */
-//
-// Welcome to TypeFast!
-//
-// adaccount is the global varaiable for scripting with.
-// See the following example of how this works
-
-adaccount.getcustomaudiences().forEach(
-  ca => console.log(ca.id + ': ' + ca.name)
-);`;
+const sampleCode = '';
 
 module.exports = function(element, onCodeChange, onOptimisationComplete) {
   tern.registerPlugin('fb_optimise', function(server, options) {

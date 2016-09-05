@@ -51,10 +51,14 @@ class TypeFastOpenScriptDialog extends React.Component {
             <ListItem
               key={scriptId}
               primaryText={this.props.scripts[scriptId].title}
+              secondaryText={new Date(this.props.scripts[scriptId].updated_time).toString()}
               onClick={this.props.onScriptSelect.bind(null, scriptId)}
             />
           )}
         </List>
+        <div style={{visibility: (this.props.scripts.length == 0) ? 'visible' : 'hidden'}}>
+          No scripts available
+        </div>
       </Dialog>
     );
   }

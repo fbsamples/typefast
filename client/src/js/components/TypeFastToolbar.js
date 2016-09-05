@@ -26,14 +26,29 @@ import React from 'react';
 
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
-import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
+import TextField from 'material-ui/TextField';
+import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 
 class TypeFastToolbar extends React.Component {
+  titleLengthError() {
+    if (this.props.currentTitle.length < 3) {
+      return 'Minimum 3 chars';
+    }
+    return '';
+  }
+
   render() {
     return (
       <Toolbar>
-        <ToolbarGroup firstChild={true}>
-          <ToolbarTitle text={this.props.script.title} style={{marginLeft: '10px'}} />
+        <ToolbarGroup>
+          <TextField
+            onChange={this.props.onScriptTitleChange}
+            value={this.props.currentTitle}
+            id={"script_name"}
+            errorText={this.titleLengthError()}
+            errorStyle={{bottom: '5px'}}
+          />
+          <FontIcon onClick={this.props.onScriptIconClick} className="material-icons">create</FontIcon>
         </ToolbarGroup>
         <ToolbarGroup>
           <FlatButton
@@ -49,7 +64,7 @@ class TypeFastToolbar extends React.Component {
             onClick={this.props.onScriptPreview}
             icon={<FontIcon className="material-icons">play_arrow</FontIcon>}
             style={{margin: '10px 0'}}
-            disabled={this.props.needToSave}
+            disabled={this.props.needToSave || this.props.isRunning}
           />
           <FlatButton
             label="Schedule"

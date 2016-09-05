@@ -25,14 +25,11 @@
 import React from 'react';
 
 import AppBar from 'material-ui/AppBar';
-import FlatButton from 'material-ui/FlatButton';
-import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
-import Menu from 'material-ui/Menu';
+import FontIcon from 'material-ui/FontIcon';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import Popover from 'material-ui/Popover';
 
 class TypeFastAppBar extends React.Component {
   render() {
@@ -48,55 +45,21 @@ class TypeFastAppBar extends React.Component {
             anchorOrigin={{horizontal: 'left', vertical: 'top'}}
           >
             <MenuItem
+              leftIcon={<FontIcon className="material-icons">note_add</FontIcon>}
               primaryText="New Script"
               onClick={this.props.onNewScriptClick}
             />
             <MenuItem
+              leftIcon={<FontIcon className="material-icons">description</FontIcon>}
               primaryText="Open Script"
               onClick={this.props.onOpenScriptClick}
             />
             <MenuItem
-              primaryText="Samples"
-              onClick={this.props.onSamplesClick}
-            />
-            <MenuItem
+              leftIcon={<FontIcon className="material-icons">help_outline</FontIcon>}
               primaryText="Help"
               onClick={this.props.onHelpClick}
             />
           </IconMenu>
-        }
-        iconElementRight={
-          <div>
-            <Popover
-              open={this.props.showPopover}
-              anchorEl={this.props.popover}
-              anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-              targetOrigin={{horizontal: 'left', vertical: 'top'}}
-              onRequestClose={this.props.onPopoverHide}
-            >
-              <Menu>
-                {this.props.adaccounts.map(adaccount =>
-                  <MenuItem
-                    key={adaccount.id}
-                    primaryText={adaccount.name}
-                    checked={this.props.currentAdaccount.id === adaccount.id}
-                  />
-                )}
-              </Menu>
-            </Popover>
-            <FlatButton
-              onTouchTap={this.props.onPopoverShow}
-              label={this.props.currentAdaccount.name}
-              labelPosition="before"
-              labelStyle={{color: 'white'}}
-              icon={
-                <FontIcon
-                  className="material-icons"
-                  color="white"
-                >expand_more</FontIcon>
-              }
-            />
-          </div>
         }
       />
     );

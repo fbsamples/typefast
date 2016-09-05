@@ -24,14 +24,14 @@
 
 import React from 'react';
 
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
 import DatePicker from 'material-ui/DatePicker';
-import TimePicker from 'material-ui/TimePicker';
+import Dialog from 'material-ui/Dialog';
 import DropDownMenu from 'material-ui/DropDownMenu';
+import FlatButton from 'material-ui/FlatButton';
 import MenuItem from 'material-ui/MenuItem';
+import { SchedulePeriods, ScheduleRecurence, Weekdays } from '../constants/constants.js';
+import TimePicker from 'material-ui/TimePicker';
 import Toggle from 'material-ui/Toggle';
-import { SchedulePeriods } from '../constants/constants.js';
 
 class TypeFastScheduleDialog extends React.Component {
   render() {
@@ -46,11 +46,13 @@ class TypeFastScheduleDialog extends React.Component {
         primary={true}
         keyboardFocused={true}
         onTouchTap={this.props.onApply}
+        disabled={this.props.schedule.interval < 0}
       />,
     ];
 
     return (
       <Dialog
+        autoScrollBodyContent={true}
         title="Schedule"
         actions={actions}
         modal={false}
@@ -59,28 +61,44 @@ class TypeFastScheduleDialog extends React.Component {
       >
         <Toggle
           label="Enabled: "
-          style={{maxWidth: '135px'}}
+          style={{maxWidth: '135px', marginTop: '20px'}}
           onToggle={this.props.onEnabledChange.bind(this)}
-          checked={this.props.schedule.enabled}
+          toggled={!this.props.schedule.is_paused}
         />
         Run:
         <DropDownMenu
-          value={this.props.schedule.recurrence}
-          onChange={this.props.onIntervalChange.bind(this)}>
-          {SchedulePeriods.map((runType) =>
+          value={this.props.schedule.interval}
+          onChange={this.props.onIntervalChange.bind(this)}
+        >
+          {SchedulePeriods.map(runType =>
             <MenuItem key={runType.name} value={runType.value} primaryText={runType.name} />)
           }
-        </DropDownMenu><br /><br />
-        Time:
-        <TimePicker
-          defaultTime={this.props.schedule.date}
-          hintText="Click to select time"
-          onChange={this.props.onTimeChange.bind(this)} />
-        Date:
-        <DatePicker
-          defaultDate={this.props.schedule.time}
-          hintText="Click to select date"
-          onChange={this.props.onDateChange.bind(this)} />
+        </DropDownMenu>
+        <DropDownMenu
+          value={this.props.schedule.day}
+          onChange={this.props.onDayChange}
+          style={{visibility: (this.props.schedule.interval >= ScheduleRecurence.WEEKLY) ? '' : 'hidden'}}
+        >
+          {Weekdays.map(day =>
+            <MenuItem key={day.key} value={day.key} primaryText={day.name} />)
+          }
+        </DropDownMenu>
+        <div>
+          <TimePicker
+            floatingLabelText="Start Time"
+            defaultTime={this.props.schedule.time}
+            hintText="Click to select time"
+            onChange={this.props.onTimeChange.bind(this)}
+            style={{display: 'inline-block', width:'auto'}}
+          />
+          <DatePicker
+            floatingLabelText="Start Date"
+            defaultDate={this.props.schedule.date}
+            hintText="Click to select date"
+            onChange={this.props.onDateChange.bind(this)}
+            style={{marginLeft: '20px', display: 'inline-block', width:'auto'}}
+          />
+        </div>
       </Dialog>
     );
   }

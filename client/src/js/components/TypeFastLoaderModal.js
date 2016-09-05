@@ -25,41 +25,18 @@
 import React from 'react';
 
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import {List, ListItem} from 'material-ui/List';
 
-class TypeFastSamplesModal extends React.Component {
+class TypeFastLoaderModal extends React.Component {
   render() {
-    const actions = [
-      <FlatButton
-        label="Cancel"
-        secondary={true}
-        keyboardFocused={true}
-        onTouchTap={this.props.onHide}
-      />
-    ];
     return (
       <Dialog
-        autoScrollBodyContent={true}
-        title="Samples"
-        actions={actions}
-        modal={false}
-        open={this.props.isShowing}
-        onRequestClose={this.props.onHide}
-        bodyStyle={{paddingBottom: '0px'}}
-      >
-        <List>
-          {this.props.samples.map(sample =>
-            <ListItem
-              onClick={this.props.onSampleClick.bind(null, sample.id)}
-              key={sample.id}
-              primaryText={sample.name}
-            />
-          )}
-        </List>
-      </Dialog>
+        title="Fetching data..."
+        modal={true}
+        open={this.props.isFetching}
+        titleStyle={{textAlign: 'center'}}
+      ></Dialog>
     );
   }
 }
 
-module.exports = TypeFastSamplesModal;
+module.exports = TypeFastLoaderModal;

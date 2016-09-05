@@ -24,10 +24,13 @@
 
 import Radium from 'radium';
 import React from 'react';
-import TypeFastLogWindow from '../components/TypeFastLogWindow';
+
+import TypeFastLogContainer from '../containers/TypeFastLogContainer';
 import TypeFastEditor from '../components/TypeFastEditor';
 import { codeChanged, optimisationComplete } from '../actions/actions';
 import { connect } from 'react-redux';
+
+import RefreshIndicator from 'material-ui/RefreshIndicator';
 
 const styles = {
   container: {
@@ -42,11 +45,20 @@ class TypeFastEditorContainer extends React.Component {
   render() {
     return (
       <div style={[styles.container]}>
+        <div style={{position: 'absolute', top: '50%', left: 'calc(75% - 20px)'}}>
+          <RefreshIndicator
+            size={40}
+            top={0}
+            left={0}
+            status={(this.props.isRunning) ? 'loading' : 'hide'}
+          />
+        </div>
         <TypeFastEditor
           script={this.props.script}
           onCodeChange={this.props.onCodeChange}
-          onOptimisationComplete={this.props.onOptimisationComplete} />
-        <TypeFastLogWindow log={this.props.log} />
+          onOptimisationComplete={this.props.onOptimisationComplete}
+        />
+        <TypeFastLogContainer />
       </div>
     );
   }
@@ -65,11 +77,8 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
   return {
+    isRunning: state.isRunning,
     script: state.currentScript,
-    isFetching: state.isFetching,
-    log: state.log,
-    currentPane: state.currentPane,
-    scriptListOpen: state.scriptListOpen
   };
 };
 

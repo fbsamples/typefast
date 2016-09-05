@@ -23,53 +23,23 @@
  */
 
 import { connect } from 'react-redux';
-import {
-  hideScheduleDialog,
-  savingScheduleRequest,
-  setNewScheduleInterval,
-  setNewScheduleDate,
-  setNewScheduleTime,
-  setNewScheduleDay,
-  setNewSchedulePaused
-} from '../actions/actions.js';
-import TypeFastScheduleDialog from '../components/TypeFastScheduleDialog';
+import TypeFastLogWindow from '../components/TypeFastLogWindow';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    isShowing: state.showScheduleDialog,
-    schedule: state.newSchedule
+    log: state.log,
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    onHide: () => {
-      dispatch(hideScheduleDialog());
-    },
-    onEnabledChange: (e) => {
-      dispatch(setNewSchedulePaused(!e.target.checked));
-    },
-    onIntervalChange: (e, i, v) => {
-      dispatch(setNewScheduleInterval(v));
-    },
-    onTimeChange: (e, v) => {
-      dispatch(setNewScheduleTime(v));
-    },
-    onDateChange: (e, v) => {
-      dispatch(setNewScheduleDate(v));
-    },
-    onDayChange: (e, v, t) => {
-      dispatch(setNewScheduleDay(v));
-    },
-    onApply: () => {
-      dispatch(savingScheduleRequest());
-    }
+
   };
 };
 
-const TypeFastScheduleContainer = connect(
+const TypeFastLogContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(TypeFastScheduleDialog);
+)(TypeFastLogWindow);
 
-export default TypeFastScheduleContainer;
+export default TypeFastLogContainer;

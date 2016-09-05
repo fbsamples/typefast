@@ -25,76 +25,45 @@
 import React from 'react';
 
 import Dialog from 'material-ui/Dialog';
-import DropDownMenu from 'material-ui/DropDownMenu';
 import FlatButton from 'material-ui/FlatButton';
-import MenuItem from 'material-ui/MenuItem';
-import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
-import TextField from 'material-ui/TextField';
+import { List, ListItem } from 'material-ui/List';
 
 class TypeFastNewScriptDialog extends React.Component {
-  nameLengthError() {
-    if (this.props.newScript.script.title.length < 3) {
-      return 'Minimum 3 chars';
-    }
-    return '';
-  }
-
   render() {
     const actions = [
       <FlatButton
-        label="Cancel"
+        label="Close"
         secondary={true}
         onTouchTap={this.props.onHide}
       />,
       <FlatButton
-        disabled={this.props.newScript.script.title.length < 3}
-        label="Save"
+        label="Create from blank"
         primary={true}
-        keyboardFocused={true}
-        onTouchTap={this.props.onSave}
-      />,
-      <FlatButton
-        disabled={this.props.newScript.script.title.length < 3}
-        label="Save & Schedule"
-        primary={true}
-        onTouchTap={this.props.onSchedule}
-      />,
+        onTouchTap={this.props.onSampleClick}
+      />
     ];
     return (
       <Dialog
-        title="Select type"
+        autoScrollBodyContent={true}
+        title="Select sample to create from"
         actions={actions}
         modal={false}
         open={this.props.isShowing}
         onRequestClose={this.props.onHide}
       >
-        <TextField
-          onChange={this.props.onNameChange.bind(this)}
-          hintText="Enter script name"
-          errorText={this.nameLengthError()}
-          defaultValue={this.props.newScript.script.title} />
-        <RadioButtonGroup
-          name="type"
-          onChange={this.props.onTypeChange.bind(this)}
-          value={this.props.newScript.type}
-          defaultSelected="sample">
-          <RadioButton
-            value="blank"
-            label="Create blank"
-          />
-          <RadioButton
-            value="sample"
-            label="Create from sample"
-          />
-        </RadioButtonGroup>
-        Select sample: <DropDownMenu
-          onChange={this.props.onSampleChange.bind(this)}
-          disabled={this.props.newScript.type !== 'sample'}
-          value={this.props.newScript.sampleId}>
-          {this.props.samples.map((sample, index) =>
-            <MenuItem key={sample.id} value={index} primaryText={sample.name} />
+        <List>
+          {this.props.samples.map(sample =>
+            <ListItem
+              onClick={this.props.onSampleClick.bind(null, sample.id)}
+              key={sample.id}
+              primaryText={sample.name}
+              secondaryText={sample.description}
+            />
           )}
-        </DropDownMenu>
+        </List>
+        <div style={{visibility: (this.props.samples.length == 0) ? 'visible' : 'hidden'}}>
+          No samples available
+        </div>
       </Dialog>
     );
   }
