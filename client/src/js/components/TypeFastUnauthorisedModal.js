@@ -30,6 +30,7 @@ class TypeFastUnauthorisedModal extends React.Component {
   render() {
     return (
       <Dialog
+        autoScrollBodyContent={true}
         title="TypeFast Authorisation Failed"
         modal={true}
         open={this.props.isAuthenticated && this.props.isAuthorised === false}

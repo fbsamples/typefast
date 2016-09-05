@@ -124,7 +124,7 @@ function typefastApp(state = {
         currentScript: scriptToLoad,
         currentScriptTitle: scriptToLoad.title,
         editorValue: scriptToLoad.code,
-        optimisations: scriptToLoad.optimisations,
+        optimisations: scriptToLoad.optimisations || state.optimisations || [],
         log: initialLog(),
       });
 

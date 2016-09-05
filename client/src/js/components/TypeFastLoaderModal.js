@@ -30,6 +30,7 @@ class TypeFastLoaderModal extends React.Component {
   render() {
     return (
       <Dialog
+        autoScrollBodyContent={true}
         title="Fetching data..."
         modal={true}
         open={this.props.isFetching}

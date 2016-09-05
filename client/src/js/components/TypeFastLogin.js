@@ -95,6 +95,7 @@ class TypeFastLogin extends React.Component {
     ];
     return (
       <Dialog
+        autoScrollBodyContent={true}
         title="TypeFast Login"
         actions={actions}
         modal={true}
