@@ -282,57 +282,9 @@ function typefastApp(state = {
     case FETCH_SAMPLES: {
       return Object.assign({}, state, {
         samples: [
-          {
-            id: 1,
-            name: 'Sample 1',
-            description: 'Longer description for sample 1',
-            code: `
-console.log("1");
-console.log("1");
-`
-          },
-          {
-            id: 2,
-            name: 'Sample 2',
-            description: 'Longer description for sample 2',
-            code: 'console.log("2");'
-          },
-          {
-            id: 3,
-            name: 'Sample 3',
-            description: 'Description for sample 3',
-            code: 'console.log("3");'
-          },
-          {
-            id: 4,
-            name: 'Sample 4',
-            description: 'Even longer description for sample 4',
-            code: 'console.log("4");'
-          },
-          {
-            id: 5,
-            name: 'Sample 5',
-            description: 'Short desc 5',
-            code: 'console.log("5");'
-          },
-          {
-            id: 6,
-            name: 'Sample 6',
-            description: 'Longer description for sample 6',
-            code: 'console.log("6");'
-          },
-          {
-            id: 7,
-            name: 'Sample 7',
-            description: 'Longer description for sample 7',
-            code: 'console.log("7");'
-          },
-          {
-            id: 8,
-            name: 'Sample 8',
-            description: 'Longer description for sample 8',
-            code: 'console.log("8");'
-          }
+          // TODO: add samples here
+          // Format: {id, name, description, code}
+          // id should be >0
         ],
       });
     }
