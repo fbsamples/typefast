@@ -23,16 +23,38 @@
  */
 
 import { connect } from 'react-redux';
+
+import {
+  facebookAuthStarted,
+  facebookAuthSuccess,
+  facebookAuthFailure
+} from '../actions/actions.js';
 import TypeFastLoaderModal from '../components/TypeFastLoaderModal';
+import { serverConfig } from '../ServerConfig';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    isFetching: state.isFetching
+    appId:  serverConfig.getRawConfig().application_id,
+    isAuthenticated: state.isAuthenticated,
+    isAuthenticating: state.isAuthenticating,
+    isAuthorised: state.isAuthorised,
+    isFetching: state.isFetching,
+    isLoading: state.isLoading,
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  return {};
+  return {
+    facebookAuthStarted: () => {
+      dispatch(facebookAuthStarted());
+    },
+    facebookAuthSuccess: (token) => {
+      dispatch(facebookAuthSuccess(token));
+    },
+    facebookAuthFailure: () => {
+      dispatch(facebookAuthFailure());
+    },
+  };
 };
 
 const TypeFastLoaderContainer = connect(

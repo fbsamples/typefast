@@ -58,7 +58,9 @@ import {
   SET_NEW_SCHEDULE_INTERVAL,
   SET_NEW_SCHEDULE_DAY,
   SET_NEW_SCHEDULE_PAUSED,
-  NEW_SCHEDULE_REQUEST
+  NEW_SCHEDULE_REQUEST,
+
+  FETCH_BUSINESS_SUCCESS
 } from '../actions/actions.js';
 import { ScheduleRecurence } from '../constants/constants';
 
@@ -88,6 +90,7 @@ function initialLog() {
 }
 
 function typefastApp(state = {
+  isLoading: true,
   isSaving: false,
   isFetching: false,
   isRunning: false,
@@ -115,7 +118,9 @@ function typefastApp(state = {
   newSchedule: defaultSchedule(),
 
   showSaveScheduleSnack: false,
-  showSaveScriptSnack: false
+  showSaveScriptSnack: false,
+
+  business: {id: 0, name: 'TypeFast'}
 }, action) {
   let needToSave;
   switch (action.type) {
@@ -208,6 +213,7 @@ function typefastApp(state = {
       );
       return Object.assign({}, state, {
         isFetching: false,
+        isLoading: false,
         scripts: scripts,
         currentScript: defaultScript(),
         currentScriptTitle: defaultScript().title,
@@ -424,6 +430,12 @@ function typefastApp(state = {
       return Object.assign({}, state, {
         needToSave: needToSave,
         currentScriptTitle: action.payload.title
+      });
+    }
+
+    case FETCH_BUSINESS_SUCCESS: {
+      return Object.assign({}, state, {
+        business: action.payload.business
       });
     }
 

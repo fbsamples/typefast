@@ -77,7 +77,7 @@ class TypeFastHistoryModal extends React.Component {
             />
           )}
         </List>
-        <div style={{visibility: (this.props.routines.length == 0) ? 'visible' : 'hidden'}}>
+        <div style={{display: (this.props.routines.length == 0) ? '' : 'none'}}>
           No history available
         </div>
       </Dialog>

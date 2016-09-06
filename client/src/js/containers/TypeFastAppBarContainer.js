@@ -32,8 +32,7 @@ import TypeFastAppBar from '../components/TypeFastAppBar';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    showPopover: state.showPopover,
-    popover: state.popover
+    businessName: state.business.name
   };
 };
 

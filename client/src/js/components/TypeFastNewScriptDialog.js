@@ -63,7 +63,7 @@ class TypeFastNewScriptDialog extends React.Component {
             />
           )}
         </List>
-        <div style={{visibility: (this.props.samples.length == 0) ? 'visible' : 'hidden'}}>
+        <div style={{display: (this.props.samples.length == 0) ? '' : 'none'}}>
           No samples available
         </div>
       </Dialog>

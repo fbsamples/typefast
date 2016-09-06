@@ -35,7 +35,7 @@ class TypeFastAppBar extends React.Component {
   render() {
     return (
       <AppBar
-        title="TypeFast"
+        title={this.props.businessName}
         iconElementLeft={
           <IconMenu
             iconButtonElement={

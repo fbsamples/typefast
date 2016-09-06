@@ -58,7 +58,7 @@ class TypeFastOpenScriptDialog extends React.Component {
             />
           )}
         </List>
-        <div style={{visibility: (this.props.scripts.length == 0) ? 'visible' : 'hidden'}}>
+        <div style={{display: (this.props.scripts.length == 0) ? '' : 'none'}}>
           No scripts available
         </div>
       </Dialog>

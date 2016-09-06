@@ -23,6 +23,7 @@
  */
 
 import fetch from 'isomorphic-fetch';
+import { serverConfig } from '../ServerConfig';
 
 /******************************** COMMON **********************************/
 
@@ -57,6 +58,12 @@ function handleErrors(response, dispatch) {
     throw Error(response.statusText);
   }
   return response;
+}
+
+function fetchData(dispatch) {
+  dispatch(fetchScripts());
+  dispatch(fetchRoutines());
+  dispatch(fetchSamples());
 }
 
 /******************************** FETCH **********************************/
@@ -147,21 +154,36 @@ export function facebookAuthStarted() {
   };
 }
 
+export const FETCH_BUSINESS_SUCCESS = 'FETCH_BUSINESS_SUCCESS';
 export const FACEBOOK_AUTH_SUCCESS = 'FACEBOOK_AUTH_SUCCESS';
 export function facebookAuthSuccess(token) {
   return function(dispatch) {
+    const business_manager_id = serverConfig.getRawConfig().business_manager_id;
+    window.FB.api('/' + business_manager_id, {fields: 'id,name'}, response => {
+      dispatch({
+        type: FACEBOOK_AUTH_SUCCESS,
+        payload: {
+          accessToken: token
+        }
+      });
+      onBusinessFetch(response, dispatch);
+      fetchData(dispatch);
+    });
+  };
+}
+
+export function onBusinessFetch(response, dispatch) {
+  if (response && !response.error) {
     dispatch({
-      type: FACEBOOK_AUTH_SUCCESS,
+      type: FETCH_BUSINESS_SUCCESS,
       payload: {
-        accessToken: token,
+        business: {
+          id: response.id,
+          name: response.name
+        }
       }
     });
-
-    // Bootstrap the app
-    dispatch(fetchScripts());
-    dispatch(fetchRoutines());
-    dispatch(fetchSamples());
-  };
+  }
 }
 
 export const FACEBOOK_AUTH_FAILURE = 'FACEBOOK_AUTH_FAILURE';

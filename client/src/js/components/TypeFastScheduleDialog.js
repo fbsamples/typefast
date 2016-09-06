@@ -77,7 +77,7 @@ class TypeFastScheduleDialog extends React.Component {
         <DropDownMenu
           value={this.props.schedule.day}
           onChange={this.props.onDayChange}
-          style={{visibility: (this.props.schedule.interval >= ScheduleRecurence.WEEKLY) ? '' : 'hidden'}}
+          style={{display: (this.props.schedule.interval >= ScheduleRecurence.WEEKLY) ? '' : 'none'}}
         >
           {Weekdays.map(day =>
             <MenuItem key={day.key} value={day.key} primaryText={day.name} />)
