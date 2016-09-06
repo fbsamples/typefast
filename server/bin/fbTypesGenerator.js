@@ -92,7 +92,7 @@ var ternDefinitions = {
     'cursor_prototype': {
       ':Symbol.iterator': 'fn() -> !this',
     },
-    'fetchReturnType': {
+    'requestReturnType': {
       url: 'string',
       headers: 'Array',
       status: 'number',
@@ -100,8 +100,8 @@ var ternDefinitions = {
     }
   },
   'business': 'Business',
-  'fetch': {
-    '!type': 'fn(method: string, path: string, options?: Object) -> +fetchReturnType',
+  'request': {
+    '!type': 'fn(method: string, path: string, options?: Object) -> +requestReturnType',
     '!doc': '',
   }
 };
