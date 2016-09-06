@@ -30,7 +30,7 @@ import type {Script} from '../model/Script';
 const Adapter = require('../../../sdk/src/http/adapters/NodejsSynchronousAdapter');
 const Api = require('../../../sdk/src/Api');
 const ApiOptimizer = require('../../../sdk/src/ApiOptimizer');
-const {get, post, request} = require('./Fetch');
+const {request} = require('./Fetch');
 const Node = require('../../../sdk/src/Node');
 const NodeSpec = require('../../../sdk/src/specs/NodeSpec');
 const Session = require('../../../sdk/src/Session');
