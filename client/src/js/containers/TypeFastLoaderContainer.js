@@ -34,12 +34,12 @@ import { serverConfig } from '../ServerConfig';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    isLoading: state.isLoading,
-    isFetching: state.isFetching,
     appId:  serverConfig.getRawConfig().application_id,
     isAuthenticated: state.isAuthenticated,
     isAuthenticating: state.isAuthenticating,
     isAuthorised: state.isAuthorised,
+    isFetching: state.isFetching,
+    isLoading: state.isLoading,
   };
 };
 

@@ -41,7 +41,7 @@ class TypeFastLoaderModal extends React.Component {
 
   onLoginClicked() {
     this.props.facebookAuthStarted();
-    window.FB.login(this.statusChangeCallback.bind(this));
+    window.FB.login(this.statusChangeCallback.bind(this), {scope: 'public_profile,business_management'});
   }
 
   componentDidMount() {
@@ -80,11 +80,10 @@ class TypeFastLoaderModal extends React.Component {
       return <p>Attempting to log you in...</p>;
     } else if (this.props.isAuthenticated) {
       if (this.props.isAuthorised === false) {
-        return
-          <p>You are not authorised in your companies Business Manager to use TypeFast.
+        return <p>You are not authorised in your companies Business Manager to use TypeFast.
           Please contact your manager for permission</p>;
       }
-      return <p>Logged In!!</p>;
+      return <p>Logged In!</p>;
     } else {
       return <p>To use TypeFast you will need to login to your Facebook Account
        and authorise the Facebook Application</p>;
