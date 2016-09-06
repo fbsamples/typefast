@@ -87,6 +87,7 @@ function initialLog() {
 }
 
 function typefastApp(state = {
+  isLoading: true,
   isSaving: false,
   isFetching: false,
   isRunning: false,
@@ -207,6 +208,7 @@ function typefastApp(state = {
       );
       return Object.assign({}, state, {
         isFetching: false,
+        isLoading: false,
         scripts: scripts,
         currentScript: defaultScript(),
         currentScriptTitle: defaultScript().title,
