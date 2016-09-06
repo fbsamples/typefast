@@ -91,17 +91,6 @@ const request = function(method: RequestMethod, path: string, options: ?Object):
   };
 };
 
-const get = function(path: string, options: ?Object): Object {
-  return request('GET', path, options);
-};
-
-const post = function(path: string, options: ?Object): Object {
-  return request('POST', path, options);
-};
-
-
 module.exports = {
   request: request,
-  get: get,
-  post: post,
 };

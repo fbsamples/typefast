@@ -78,8 +78,6 @@ module.exports = function(config: Config, script: Script, ctx_id: string): Objec
   return {
     context: ctx,
     business: ctx, // FIXME make ctx dynamically allocable
-    get: get,
-    post: post,
     request: request,
   };
 };
