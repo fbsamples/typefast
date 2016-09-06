@@ -33,7 +33,7 @@ const MESSAGE_INVALID_URL_FORMAT = 'Invalid URL Format: Please enter a valid HTT
 const defaultOptions = function({
     qs = {},
     headers = {
-      'user-agent': 'typefast'
+      'User-Agent': 'typefast'
     },
     body = '',
     json = '',
@@ -77,7 +77,7 @@ const validateUrl = function(path: string): void {
   }
 };
 
-const fetch = function(method: RequestMethod, path: string, options: ?Object): Object {
+const request = function(method: RequestMethod, path: string, options: ?Object): Object {
   options = defaultOptions(options);
 
   validateUrl(path);
@@ -91,7 +91,6 @@ const fetch = function(method: RequestMethod, path: string, options: ?Object): O
   };
 };
 
-
 module.exports = {
-  fetch: fetch
+  request: request,
 };
