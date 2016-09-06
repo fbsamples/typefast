@@ -46,7 +46,6 @@ class ConfigController extends AbstractController {
     const config = this.getApplication().getConfig();
     context.sendObject({
       application_id: config.getInteger('graph.application_id'),
-      business_manager_id: config.getString('graph.business_manager_id'),
     });
   }
 }

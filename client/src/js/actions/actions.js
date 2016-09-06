@@ -154,7 +154,6 @@ export function facebookAuthStarted() {
   };
 }
 
-export const FETCH_BUSINESS_SUCCESS = 'FETCH_BUSINESS_SUCCESS';
 export const FACEBOOK_AUTH_SUCCESS = 'FACEBOOK_AUTH_SUCCESS';
 export function facebookAuthSuccess(token) {
   return function(dispatch) {
@@ -164,27 +163,8 @@ export function facebookAuthSuccess(token) {
         accessToken: token
       }
     });
-    fetchBusiness(dispatch);
-  };
-}
-
-export function fetchBusiness(dispatch) {
-  const business_manager_id = serverConfig.getRawConfig().business_manager_id;
-  window.FB.api('/' + business_manager_id, {fields: 'id,name'}, response => {
-    if (response && !response.error) {
-      dispatch({
-        type: FETCH_BUSINESS_SUCCESS,
-        payload: {
-          business: {
-            id: response.id,
-            name: response.name
-          }
-        }
-      });
-    }
     fetchData(dispatch);
-  });
-
+  };
 }
 
 export const FACEBOOK_AUTH_FAILURE = 'FACEBOOK_AUTH_FAILURE';

@@ -41,6 +41,15 @@ class TypeFastToolbar extends React.Component {
     return (
       <Toolbar>
         <ToolbarGroup>
+          <span
+            style={{
+              fontFamily: 'Roboto, sans-serif',
+              fontSize: '20px',
+              color: 'rgba(0, 0, 0, 0.6)',
+              marginTop: '14px',
+              marginRight: '10px'
+            }}
+          >Title:</span>
           <TextField
             onChange={this.props.onScriptTitleChange}
             value={this.props.currentTitle}

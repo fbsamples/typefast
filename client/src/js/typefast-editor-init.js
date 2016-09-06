@@ -54,6 +54,7 @@ module.exports = function(element, onCodeChange, onOptimisationComplete) {
     mode: 'javascript',
     value: sampleCode,
     lineNumbers: true,
+    lineWrapping: true,
     gutters: ['CodeMirror-lint-markers'],
     lint: true,
   });

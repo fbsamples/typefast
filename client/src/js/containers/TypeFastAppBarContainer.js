@@ -31,9 +31,7 @@ import {
 import TypeFastAppBar from '../components/TypeFastAppBar';
 
 const mapStateToProps = (state, ownProps) => {
-  return {
-    businessName: state.business.name
-  };
+  return {};
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
