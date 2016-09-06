@@ -66,7 +66,8 @@ function defaultScript() {
   return {
     title: 'Untitled',
     optimisations: [],
-    code: '',
+    code: `/*jshint esversion: 6 */
+`,
   };
 }
 
