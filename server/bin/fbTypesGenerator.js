@@ -97,12 +97,18 @@ var ternDefinitions = {
       headers: 'Array',
       status: 'number',
       body: 'string',
-    }
+    },
+    'Utils' : {
+      base64encode: 'fn(string: string) -> string'
+    },
   },
   'business': 'Business',
   'request': {
     '!type': 'fn(method: string, path: string, options?: Object) -> +requestReturnType',
     '!doc': '',
+  },
+  'utils': {
+    '!type': 'Utils',
   }
 };
 
