@@ -202,7 +202,11 @@ function typefastApp(state = {
       });
 
     case FETCHING_SCRIPTS_SUCCESS:
-      let scripts = action.payload.scripts.data;
+      let scripts = action.payload.scripts.data.sort((a, b) => {
+        if (a.updated_time > b.updated_time) return -1;
+        if (a.updated_time < b.updated_time) return 1;
+        return 0;
+      });
       scripts = scripts.reduce(
         (o, v, i) => { o[v.id] = v; return o; },
         {}
