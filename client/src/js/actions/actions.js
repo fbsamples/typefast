@@ -310,7 +310,7 @@ export function previewScript() {
           'Accept': 'application/json',
         },
       })
-      .then((response) => handleErrors(response, dispatch))
+      .then(response => handleErrors(response, dispatch))
       .then(response => response.json())
       .then(response => pollRoutine(response.data[0].id, dispatch, getState));
     });

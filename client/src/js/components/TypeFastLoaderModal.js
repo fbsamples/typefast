@@ -26,6 +26,7 @@ import React from 'react';
 
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import RefreshIndicator from 'material-ui/RefreshIndicator';
 
 class TypeFastLoaderModal extends React.Component {
 
@@ -100,15 +101,25 @@ class TypeFastLoaderModal extends React.Component {
       />
     ];
     return (
-      <Dialog
-        autoScrollBodyContent={true}
-        actions={actions}
-        title="Loading..."
-        modal={true}
-        open={this.props.isLoading}
-      >
-        <div>{this.statusMessage()}</div>
-      </Dialog>
+      <div>
+        <Dialog
+          autoScrollBodyContent={true}
+          actions={actions}
+          title="Loading..."
+          modal={true}
+          open={this.props.isLoading}
+        >
+          <div>{this.statusMessage()}</div>
+        </Dialog>
+        <div style={{position: 'absolute', top: '50%', left: 'calc(75% - 20px)'}}>
+          <RefreshIndicator
+            size={40}
+            top={0}
+            left={0}
+            status={(this.props.isRunning) ? 'loading' : 'hide'}
+          />
+        </div>
+      </div>
     );
   }
 }

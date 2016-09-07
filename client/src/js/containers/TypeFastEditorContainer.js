@@ -30,8 +30,6 @@ import TypeFastEditor from '../components/TypeFastEditor';
 import { codeChanged, optimisationComplete } from '../actions/actions';
 import { connect } from 'react-redux';
 
-import RefreshIndicator from 'material-ui/RefreshIndicator';
-
 const styles = {
   container: {
     position: 'absolute',
@@ -45,14 +43,6 @@ class TypeFastEditorContainer extends React.Component {
   render() {
     return (
       <div style={[styles.container]}>
-        <div style={{position: 'absolute', top: '50%', left: 'calc(75% - 20px)'}}>
-          <RefreshIndicator
-            size={40}
-            top={0}
-            left={0}
-            status={(this.props.isRunning) ? 'loading' : 'hide'}
-          />
-        </div>
         <TypeFastEditor
           script={this.props.script}
           onCodeChange={this.props.onCodeChange}
@@ -77,7 +67,6 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
   return {
-    isRunning: state.isRunning,
     script: state.currentScript,
   };
 };

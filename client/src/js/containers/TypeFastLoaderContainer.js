@@ -40,6 +40,7 @@ const mapStateToProps = (state, ownProps) => {
     isAuthorised: state.isAuthorised,
     isFetching: state.isFetching,
     isLoading: state.isLoading,
+    isRunning: state.isRunning
   };
 };
 
