@@ -140,36 +140,42 @@ new Map(schema).forEach(function(spec, type) {
     const returntype = typeTransformer(edge.getReturnType());
     const description = edge.getDescription();
     defs[name] = {};
+    if (edge.method === 'POST') {
+      // This is a create so it returns an object not a cursor
+      defs[name]['!type'] = 'fn() -> +' + returntype;
+    } else {
+      ternDefinitions['!define'][returntype + '_cursor'] = {
+        '!proto': 'cursor_prototype',
+        'forEach': {
+          '!type': 'fn(f: fn(el: +'
+          + returntype + ', i: number, array: +Array), context?: ?)',
+          '!doc': 'Loop of each element of the cursor applying the given function',
+        },
+        'valid': {
+          '!type': 'fn() -> bool',
+          '!doc': 'Whether the cursor is valid',
+        },
+        'key': {
+          '!type': 'fn() -> number',
+          '!doc': 'The current index of the cursor',
+        },
+        'rewind': {
+          '!type': 'fn() -> !this',
+          '!doc': 'Reset the cursor to index to the start',
+        },
+        'next': {
+          '!type': 'fn() -> +' + returntype,
+          '!doc': 'Return the next ' + returntype + ' item from the cursor',
+          '!url': 'https://facebook.com',
+        },
+        'current': {
+          '!type': 'fn() -> +' + returntype,
+          '!doc': 'Gets the current ' + returntype + ' of the cursor',
+        },
+      };
 
-    ternDefinitions['!define'][returntype + '_cursor'] = {
-      '!proto': 'cursor_prototype',
-      'forEach': {
-        '!type': 'fn(f: fn(el: +'
-        + returntype + ', i: number, array: +Array), context?: ?)',
-      },
-      'valid': {
-        '!type': 'fn() -> bool',
-        '!doc': 'Wether the cursor is valid',
-      },
-      'key': {
-        '!type': 'fn() -> number',
-        '!doc': 'The current index of the cursor',
-      },
-      'rewind': {
-        '!type': 'fn() -> !this',
-      },
-      'next': {
-        '!type': 'fn() -> +' + returntype,
-        '!doc': 'Return the next ' + returntype + ' item from the cursor.',
-        '!url': 'https://facebook.com',
-      },
-      'current': {
-        '!type': 'fn() -> +' + returntype,
-        '!doc': 'Gets the current ' + returntype + ' of the cursor',
-      },
-    };
-
-    defs[name]['!type'] = 'fn() -> +' + returntype + '_cursor';
+      defs[name]['!type'] = 'fn() -> +' + returntype + '_cursor';
+    }
     defs[name]['!doc'] = description;
   });
 
