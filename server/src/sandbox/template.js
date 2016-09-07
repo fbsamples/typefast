@@ -31,6 +31,7 @@ const Adapter = require('../../../sdk/src/http/adapters/NodejsSynchronousAdapter
 const Api = require('../../../sdk/src/Api');
 const ApiOptimizer = require('../../../sdk/src/ApiOptimizer');
 const {request} = require('./Fetch');
+const utils = require('./Utils');
 const Node = require('../../../sdk/src/Node');
 const NodeSpec = require('../../../sdk/src/specs/NodeSpec');
 const Session = require('../../../sdk/src/Session');
@@ -79,5 +80,6 @@ module.exports = function(config: Config, script: Script, ctx_id: string): Objec
     context: ctx,
     business: ctx, // FIXME make ctx dynamically allocable
     request: request,
+    utils: utils,
   };
 };

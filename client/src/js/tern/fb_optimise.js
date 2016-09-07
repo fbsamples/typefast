@@ -108,7 +108,8 @@ module.exports = function(infer) {
 
             if (properties[name] // check its a valid prop
               && !isEdge(properties[name])
-              && properties[name].origin == '!Facebook Scripting Definitions' // check its a FB Definition
+              && properties[name].origin === '!Facebook Scripting Definitions' // check its a FB Definition
+              && determineNodeTypeName(objFbType) !== 'Object.prototype' // we dont need to capture these since they are not optimisation values
             ) {
               const nodeName = determineNodeTypeName(objFbType);
               if (!fieldsAccessed[nodeName]) {
