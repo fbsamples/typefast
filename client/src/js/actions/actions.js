@@ -270,7 +270,7 @@ export function changeScriptTitle(title) {
 }
 
 export const LOAD_SCRIPT = 'LOAD_SCRIPT';
-export function loadScript(id, loadSchedule = true) {
+export function loadScript(id) {
   return function(dispatch) {
     dispatch({
       type: LOAD_SCRIPT,
@@ -278,9 +278,7 @@ export function loadScript(id, loadSchedule = true) {
         id: id,
       }
     });
-    if (loadSchedule) {
-      dispatch(fetchSchedule(id));
-    }
+    dispatch(fetchSchedule(id));
   };
 }
 
@@ -344,7 +342,7 @@ function pollRoutine(routineId, dispatch, getState) {
 
 export const SAVE_SCRIPT_REQUEST = 'SAVE_SCRIPT_REQUEST';
 export const SAVE_SCRIPT_SUCCESS = 'SAVE_SCRIPT_SUCCESS';
-export function saveScript(loadSchedule = true) {
+export function saveScript() {
   return function(dispatch, getState) {
     dispatch({type: SAVE_SCRIPT_REQUEST});
     const currentScript = getState().currentScript;
@@ -368,7 +366,7 @@ export function saveScript(loadSchedule = true) {
         script: response
       }
     }))
-    .then(response => dispatch(loadScript(response.payload.script.id, loadSchedule)));
+    .then(response => dispatch(loadScript(response.payload.script.id)));
   };
 }
 
@@ -398,22 +396,22 @@ export function setNewSchedulePaused(schedulePaused) {
   };
 }
 
-export const SET_NEW_SCHEDULE_DATE = 'SET_NEW_SCHEDULE_DATE';
-export function setNewScheduleDate(scheduleDate) {
+export const SET_NEW_SCHEDULE_MINUTE = 'SET_NEW_SCHEDULE_MINUTE';
+export function setNewScheduleMinute(scheduleMinute) {
   return {
-    type: SET_NEW_SCHEDULE_DATE,
+    type: SET_NEW_SCHEDULE_MINUTE,
     payload: {
-      scheduleDate: scheduleDate
+      scheduleMinute: scheduleMinute
     }
   };
 }
 
-export const SET_NEW_SCHEDULE_TIME = 'SET_NEW_SCHEDULE_TIME';
-export function setNewScheduleTime(scheduleTime) {
+export const SET_NEW_SCHEDULE_HOUR = 'SET_NEW_SCHEDULE_HOUR';
+export function setNewScheduleHour(scheduleHour) {
   return {
-    type: SET_NEW_SCHEDULE_TIME,
+    type: SET_NEW_SCHEDULE_HOUR,
     payload: {
-      scheduleTime: scheduleTime
+      scheduleHour: scheduleHour
     }
   };
 }
@@ -450,13 +448,11 @@ export const SAVE_SCHEDULE_REQUEST = 'SAVE_SCHEDULE_REQUEST';
 export const SAVE_SCHEDULE_SUCCESS = 'SAVE_SCHEDULE_SUCCESS';
 export function saveSchedule() {
   return function(dispatch, getState) {
-    // TODO: remove flag passed to save script and chain callbacks
-    // so they do not conflict with each other and execute
-    // in determined order
-    dispatch(saveScript(false)).then(function() {
+    dispatch(saveScript()).then(function() {
       dispatch({type: SAVE_SCHEDULE_REQUEST});
       const currentSchedule = getState().newSchedule;
-      return fetch('/schedules/', {
+      const id = currentSchedule.id || '';
+      return fetch(`/schedules/${id}`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -469,7 +465,7 @@ export function saveSchedule() {
           start_time: currentSchedule.start_time,
         }, getState)
       })
-      .then((response) => handleErrors(response, dispatch))
+      .then(response => handleErrors(response, dispatch))
       .then(response => response.json())
       .then(function(response) {
         dispatch({

@@ -27,8 +27,8 @@ import {
   hideScheduleDialog,
   savingScheduleRequest,
   setNewScheduleInterval,
-  setNewScheduleDate,
-  setNewScheduleTime,
+  setNewScheduleMinute,
+  setNewScheduleHour,
   setNewScheduleDay,
   setNewSchedulePaused
 } from '../actions/actions.js';
@@ -52,11 +52,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     onIntervalChange: (e, i, v) => {
       dispatch(setNewScheduleInterval(v));
     },
-    onTimeChange: (e, v) => {
-      dispatch(setNewScheduleTime(v));
+    onMinuteChange: (e, v) => {
+      dispatch(setNewScheduleMinute(v));
     },
-    onDateChange: (e, v) => {
-      dispatch(setNewScheduleDate(v));
+    onHourChange: (e, v) => {
+      dispatch(setNewScheduleHour(v));
     },
     onDayChange: (e, v, t) => {
       dispatch(setNewScheduleDay(v));

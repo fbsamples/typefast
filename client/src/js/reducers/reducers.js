@@ -53,8 +53,8 @@ import {
 
   SHOW_SCHEDULE_DIALOG,
   HIDE_SCHEDULE_DIALOG,
-  SET_NEW_SCHEDULE_DATE,
-  SET_NEW_SCHEDULE_TIME,
+  SET_NEW_SCHEDULE_MINUTE,
+  SET_NEW_SCHEDULE_HOUR,
   SET_NEW_SCHEDULE_INTERVAL,
   SET_NEW_SCHEDULE_DAY,
   SET_NEW_SCHEDULE_PAUSED,
@@ -77,9 +77,9 @@ function defaultSchedule() {
     start_time: new Date(Date.now()).toISOString(),
     interval: 0,
     day: 1,
+    hour: 0,
+    minute: 0,
     recurrence: {},
-    time: new Date(),
-    date: new Date()
   };
 }
 
@@ -224,14 +224,14 @@ function typefastApp(state = {
       let currentSchedule = defaultSchedule();
       if (action.payload.schedule.length > 0) {
         currentSchedule = Object.assign(currentSchedule, action.payload.schedule[0]);
-        currentSchedule.date = new Date(currentSchedule.start_time);
-        currentSchedule.time = new Date(currentSchedule.start_time);
         if (currentSchedule.recurrence) {
           if (currentSchedule.recurrence.minutes.length > 0) {
             currentSchedule.interval = ScheduleRecurence.HOURLY;
+            currentSchedule.minute = currentSchedule.recurrence.minutes[0];
           }
           if (currentSchedule.recurrence.hours.length > 0) {
             currentSchedule.interval = ScheduleRecurence.DAILY;
+            currentSchedule.hour = currentSchedule.recurrence.hours[0];
           }
           if (currentSchedule.recurrence.week_days.length > 0) {
             currentSchedule.interval = ScheduleRecurence.WEEKLY;
@@ -369,17 +369,19 @@ function typefastApp(state = {
       });
     }
 
-    case SET_NEW_SCHEDULE_TIME: {
-      const time = new Date(action.payload.scheduleTime);
+    case SET_NEW_SCHEDULE_MINUTE: {
       return Object.assign({}, state, {
-        newSchedule: Object.assign({}, state.newSchedule, {time})
+        newSchedule: Object.assign({}, state.newSchedule, {
+          minute: action.payload.scheduleMinute
+        })
       });
     }
 
-    case SET_NEW_SCHEDULE_DATE: {
-      const date = new Date(action.payload.scheduleDate);
+    case SET_NEW_SCHEDULE_HOUR: {
       return Object.assign({}, state, {
-        newSchedule: Object.assign({}, state.newSchedule, {date})
+        newSchedule: Object.assign({}, state.newSchedule, {
+          hour: action.payload.scheduleHour
+        })
       });
     }
 
@@ -392,23 +394,16 @@ function typefastApp(state = {
     }
 
     case NEW_SCHEDULE_REQUEST: {
-      let startTime = new Date();
-      startTime.setMinutes(state.newSchedule.time.getMinutes());
-      startTime.setHours(state.newSchedule.time.getHours());
-      startTime.setDate(state.newSchedule.date.getDate());
-      startTime.setMonth(state.newSchedule.date.getMonth());
-      startTime.setFullYear(state.newSchedule.date.getFullYear());
-
       let recurrence = {
         minutes: [],
         hours: [],
         week_days: [],
       };
       if (state.newSchedule.interval >= ScheduleRecurence.HOURLY) {
-        recurrence.minutes.push(state.newSchedule.time.getMinutes());
+        recurrence.minutes.push(state.newSchedule.minute);
       }
       if (state.newSchedule.interval >= ScheduleRecurence.DAILY) {
-        recurrence.hours.push(state.newSchedule.time.getHours());
+        recurrence.hours.push(state.newSchedule.hour);
       }
       if (state.newSchedule.interval >= ScheduleRecurence.WEEKLY) {
         recurrence.week_days.push(state.newSchedule.day);
@@ -417,7 +412,6 @@ function typefastApp(state = {
       return Object.assign({}, state, {
         newSchedule: Object.assign({}, state.newSchedule, {
           recurrence: recurrence,
-          start_time: startTime.toISOString()
         })
       });
     }

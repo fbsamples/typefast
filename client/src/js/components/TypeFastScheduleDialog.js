@@ -74,30 +74,45 @@ class TypeFastScheduleDialog extends React.Component {
             <MenuItem key={runType.name} value={runType.value} primaryText={runType.name} />)
           }
         </DropDownMenu>
-        <DropDownMenu
-          value={this.props.schedule.day}
-          onChange={this.props.onDayChange}
-          style={{display: (this.props.schedule.interval >= ScheduleRecurence.WEEKLY) ? '' : 'none'}}
-        >
-          {Weekdays.map(day =>
-            <MenuItem key={day.key} value={day.key} primaryText={day.name} />)
-          }
-        </DropDownMenu>
-        <div>
-          <TimePicker
-            floatingLabelText="Start Time"
-            defaultTime={this.props.schedule.time}
-            hintText="Click to select time"
-            onChange={this.props.onTimeChange.bind(this)}
-            style={{display: 'inline-block', width:'auto'}}
-          />
-          <DatePicker
-            floatingLabelText="Start Date"
-            defaultDate={this.props.schedule.date}
-            hintText="Click to select date"
-            onChange={this.props.onDateChange.bind(this)}
-            style={{marginLeft: '20px', display: 'inline-block', width:'auto'}}
-          />
+        on
+        <div style={{
+          display: (this.props.schedule.interval >= ScheduleRecurence.HOURLY) ?
+          'inline-block' : 'none'
+        }}>
+          <DropDownMenu
+            value={this.props.schedule.minute}
+            onChange={this.props.onMinuteChange}
+          >
+            {(new Array(60)).fill().map((_, i) =>
+              <MenuItem key={i} value={i} primaryText={i.toString()} />)
+            }
+          </DropDownMenu> m
+        </div>
+        <div style={{
+          display: (this.props.schedule.interval >= ScheduleRecurence.DAILY) ?
+          'inline-block' : 'none'
+        }}>
+          <DropDownMenu
+            value={this.props.schedule.hour}
+            onChange={this.props.onHourChange}
+          >
+            {(new Array(24)).fill().map((_, i) =>
+              <MenuItem key={i} value={i} primaryText={i.toString()} />)
+            }
+          </DropDownMenu> h
+        </div>
+        <div style={{
+          display: (this.props.schedule.interval >= ScheduleRecurence.WEEKLY) ?
+          'inline-block' : 'none'
+        }}>
+          <DropDownMenu
+            value={this.props.schedule.day}
+            onChange={this.props.onDayChange}
+          >
+            {Weekdays.map(day =>
+              <MenuItem key={day.key} value={day.key} primaryText={day.name} />)
+            }
+          </DropDownMenu>
         </div>
       </Dialog>
     );
