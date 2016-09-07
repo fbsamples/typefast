@@ -38,7 +38,7 @@ require('codemirror/mode/javascript/javascript');
 require('codemirror/addon/lint/lint');
 require('codemirror/addon/lint/javascript-lint');
 require('codemirror/addon/hint/show-hint');
-require('codemirror/addon/tern/tern');
+require('./tern/tern-codemirror')(CodeMirror);
 
 const loadingLastScript = 'Loading your last script...';
 const sampleCode = '';
