@@ -22,8 +22,17 @@
  * @flow
  */
 
+const csv = require('csv');
+const xmlParser = require('xml2js').parseString;
+
 module.exports = {
   base64encode: function(string: string) {
     return new Buffer(string.toString()).toString('base64');
   },
+  csvParser: function(data: string, callback: Function) {
+    csv.parse(data, callback);
+  },
+  xmlParser: function(data: string, callback: Function, options = {}) {
+    xmlParser(data, options, callback);
+  }
 };

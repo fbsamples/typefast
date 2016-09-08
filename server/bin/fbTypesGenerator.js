@@ -99,7 +99,9 @@ var ternDefinitions = {
       body: 'string',
     },
     'Utils' : {
-      base64encode: 'fn(string: string) -> string'
+      base64encode: 'fn(string: string) -> string',
+      csvParser: 'fn(data: string, callback: fn(error: ?, data: ?))',
+      xmlParser: 'fn(data: string, callback: fn(error: ?, data: ?), options?: Object)'
     },
   },
   'business': 'Business',
