@@ -32,10 +32,11 @@ module.exports = function(infer) {
   let fieldsAccessed = {};
 
   function isEdge(node) {
-    return node.types[0]
+    return ((node.types[0]
         && node.types[0].retval
         && node.types[0].retval.proto
-        && node.types[0].retval.proto.name.indexOf('cursor') > -1;
+        && node.types[0].retval.proto.name.search(/cursor/) > -1)
+        || (node.propertyName && node.propertyName.search(/create/) > -1));
   }
 
   function isCursor(node) {
