@@ -294,6 +294,193 @@ function typefastApp(state = {
     case FETCH_SAMPLES: {
       return Object.assign({}, state, {
         samples: [
+          {
+            id: 1,
+            name: 'Fetching Ads Insights',
+            description: 'How to fetch Ads Insights for all Ad Accounts',
+            code: `/*jshint esversion: 6 */
+
+business.getowned_ad_accounts().forEach(function(adaccount) {
+  var adsets = adaccount.getadsets();
+  adsets.forEach(function(adset) {
+    var insightsCursor = adset.getinsights();
+    insights = insightsCursor.next();
+    if (insights) {
+     	console.log("CPM Was " + insights.cpm);
+    }
+  });
+});
+            `,
+          },
+          {
+            id: 2,
+            name: 'Send a Email based on Insights Data',
+            description: 'Send A Mail Gun Email when Relevence Score is less than 5',
+            code: `/*jshint esversion: 6 */
+
+const domain = 'sandbox410d9fbb28224914a6fd0a94a2374516.mailgun.org'; // Your Mail Gun Domain
+const apiKey = 'key-5d76f855268b063f97b4283d05fc9168'; // Your Mail Gun API Key
+const relevanceLimit = 5;
+
+var mailgun = new Mailgun(domain, apiKey);
+
+var poorAds = [];
+business.getowned_ad_accounts().forEach(function(adaccount) {
+  var adsets = adaccount.getadsets();
+  adsets.forEach(function(adset) {
+    var insightsCursor = adset.getinsights();
+    insights = insightsCursor.next();
+    if (insights && insights.relevance_score < 5) {
+     	poorAds.push("Low relevance score for ad " + adset.id + " - " + adset.name);
+    }
+  });
+});
+
+mailgun.sendMail(
+  'Jordan <jordanrs@fb.com>',
+  'Mailgun Sandbox <postmaster@sandbox410d9fbb28224914a6fd0a94a2374516.mailgun.org>',
+  'Your Ads Have Low Relevence',
+  "The following ads all have a low relevence score \\n " +
+  "total: " + poorAds.length + "\\n\\n" +
+  poorAds.join("\\n")
+);
+
+function Mailgun(domain, apiKey) {
+  this.domain = domain;
+  this.apiKey = apiKey;
+  this.messagesEndpoint = 'https://api.mailgun.net/v3/' + domain + '/messages';
+
+  this.sendMail = function(to,from,subject,body) {
+    var resp = request('post', this.messagesEndpoint, {
+      headers: {
+        'Authorization': 'Basic ' + utils.base64encode("api:" + this.apiKey),
+        'Content-Type' : 'application/x-www-form-urlencoded'
+      },
+      body : {
+      	to: to,
+	      from: from,
+        subject: subject,
+        text: body
+    }});
+    console.log(resp.body);
+    return resp;
+  };
+}
+            `,
+          },
+          {
+            id: 3,
+            name: 'Lead Ads Retrieval',
+            description: 'How to loop through all forms and leads for a specific ad account',
+            code: `/*jshint esversion: 6 */
+//
+
+const TARGET_ACCOUNT_ID = 1049380368502275;
+
+business.getowned_ad_accounts().forEach(account => {
+  if (account.account_id == TARGET_ACCOUNT_ID) {
+    account.getleadgen_forms().forEach(form => {
+      form.getleads().forEach(function(lead) {
+      	console.log(lead);
+      });
+    });
+  }
+});
+            `,
+          },
+          {
+            id: 4,
+            name: 'Update Custom Audiences',
+            description: 'This uses a mock API to return JSON user data which is parsed and added to a new custom audience.',
+            code: `// This is our API providing list of new subscribed users with their email addresses hashed.
+var res = request('GET', 'http://www.mocky.io/v2/57cee8b72600007b0464feef');
+var users = JSON.parse(res.body);
+
+// Let's extract the list of email addresses only for the purpose of this script
+var emails = users.map(function(user) {
+	return user.email;
+});
+
+business.getowned_ad_accounts().forEach(function(account) {
+  // This is our main ad account
+  if (account.account_id == 1049380368502275) {
+    account.getcustomaudiences().forEach(function(adcc) {
+      	adcc.delete();
+    });
+    var now = Math.floor(Date.now() / 1000);
+    // Let's create a new audience
+    var audience = account.createcustomaudiences({
+      name: now,
+      subtype: 'CUSTOM',
+      description: 'Example audience'
+    });
+    // Let's add users to our newly created audience
+    audience.createusers({
+      payload: {
+          schema: 'EMAIL_SHA256',
+          data: emails
+        }
+    });
+    console.log(audience.id);
+  }
+});
+            `
+          },
+          {
+            id: 5,
+            name: 'Send SMS when Product Count is 0',
+            description: 'When the product count is 0 send an SMS to let you know.',
+            code:`/*jshint esversion: 6 */
+
+const accountSid = 'ACf2cc30e87ff7b1929b9752a7c46834e9'; // Your Account SID
+const authToken = '00ffc884e63137a18531796a9f24b1b7'; // Your Auth Token
+const recipient = '+447818610137'; // Your Number
+const sender = '+15005550006'; // Your Twilio Number
+const message = 'TEST';
+
+var twilio = new Twilio(accountSid, authToken);
+
+var catalogs = business.getproduct_catalogs();
+catalogs.forEach(function(cat) {
+  var feeds = cat.getproduct_feeds();
+  feeds.forEach(function(feed) {
+
+    if (feed.product_count === 0) {
+     	 twilio.sendMessage(
+           recipient,
+           sender,
+           'Product Feed ' + feed.name + ' - ' + feed.id + ' has zero products'
+         );
+    }
+  });
+});
+
+// twilio.sendMessage(recipient, sender, message)
+
+function Twilio(accountSid, authToken) {
+  this.accountSid = accountSid;
+  this.authToken = authToken;
+  this.messagesEndpoint = 'https://api.twilio.com/2010-04-01/Accounts/'+this.accountSid+'/Messages.json';
+
+  this.sendMessage = function(to,from,body) {
+    var resp = request('post', this.messagesEndpoint, {
+      headers: {
+        'Authorization': 'Basic ' + utils.base64encode(this.accountSid + ":" + this.authToken),
+        'Content-Type' : 'application/x-www-form-urlencoded'
+      },
+      body : {
+      	To: to,
+	      From: from,
+        Body: body
+    }});
+    console.log(resp.body);
+    return resp;
+  };
+}
+
+
+            `
+          }
           // TODO: add samples here
           // Format: {id, name, description, code}
           // id should be >0
