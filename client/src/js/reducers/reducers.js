@@ -483,22 +483,22 @@ function Twilio(accountSid, authToken) {
             id: 6,
             name: 'CSV Fetch',
             description: 'How to fetch a CSV file',
-            code: `csv = request('get', 'http://www.sample-videos.com/csv/Sample-Spreadsheet-10000-rows.csv')
+            code: `csv = request('get', 'http://www.sample-videos.com/csv/Sample-Spreadsheet-10000-rows.csv');
 
 utils.csvParse(csv.body, function(err, data) {
   console.log(err, data);
-})
+});
             `
           },
           {
             id: 7,
             name: 'XML Fetch',
             description: 'How to fetch a XML file',
-            code: `xml = request('get', 'http://www.w3schools.com/xml/note.xml')
+            code: `xml = request('get', 'http://www.w3schools.com/xml/note.xml');
 
 utils.xmlParser(xml.body, function(err, data) {
-	console.log(data)
-})
+	console.log(data);
+});
             `
           }
           // TODO: add samples here
