@@ -24,11 +24,29 @@
 
 import Radium from 'radium';
 import React from 'react';
+import dateformat from 'dateformat';
 
 class TypeFastLogWindow extends React.Component {
+
+  getTimebox(entry) {
+    const time = dateformat(new Date(entry.time), 'HH:MM:ss.l');
+    return (
+      <div style={[styles.time_box]}>{`[${time}]`}</div>
+    );
+  }
+
   logGenerator() {
-    let elements = this.props.log.map((el) => {
-      return el.message.split('\n').map((i, j) => { return <div key={j}>{i}</div>;});
+    let elements = this.props.log.map((entry, key) => {
+      const chunk_style = [styles.chunk];
+      if (entry.stream === 'stderr') {
+        chunk_style.push(styles.error_chunk);
+      }
+      return (
+        <div key={key}>
+          {this.getTimebox(entry)}
+          <div style={chunk_style}>{entry.chunk}</div>
+        </div>
+      );
     });
     return [].concat.apply([], elements);
   }
@@ -54,7 +72,21 @@ const styles = {
     overflow: 'scroll',
     float: 'left',
     width: '50%',
-  }
+  },
+  chunk: {
+    display: 'inline-block',
+    width: '64px',
+  },
+  error_chunk: {
+    color: '#C33C33'
+  },
+  time_box: {
+    color: '#999999',
+    display: 'inline-block',
+    fontStyle: 'italic',
+    minWidth: '96px',
+    paddingRight: '5px',
+  },
 };
 
 module.exports = Radium(TypeFastLogWindow);
