@@ -22,30 +22,45 @@
  * @flow
  */
 
-import type Request from '../Request';
+const fetch = require('node-fetch');
+const parse = require('qs').parse;
+const stringify = require('qs').stringify;
 
-const encodeBody = require('form-urlencoded');
-const syncRequest = require('../SyncRequest');
-const Response = require('../Response');
+function handleQs(url, query) {
+  url = url.split('?');
+  const start = url[0];
+  let qs = (url[1] || '').split('#')[0];
+  const end = url[1] && url[1].split('#').length > 1 ? '#' + url[1].split('#')[1] : '';
 
-class NodejsSynchronousAdapter {
-
-  executeRequest(request: Request): Response {
-    const out = syncRequest(request.getMethod(), request.getUrl(), {
-      qs: !request.willSendBody()
-        ? request.getParams().toObject()
-        : {},
-      body: request.willSendBody()
-        ? encodeBody(request.getParams().toObject())
-        : ''
-    });
-
-    // FIXME handle proxy errors
-    if (out.status !== 200) {
-      throw new Error(out.body.toString());
-    }
-    return new Response(request, out.status, out.body.toString());
+  let baseQs = parse(qs);
+  for (let i in query) {
+    baseQs[i] = query[i];
   }
+  qs = stringify(baseQs);
+  if (qs !== '') {
+    qs = '?' + qs;
+  }
+  return start + qs + end;
 }
 
-module.exports = NodejsSynchronousAdapter;
+process.stdin.setEncoding('utf8');
+process.stdin.on('data', function (stdin) {
+  const req = JSON.parse(stdin.toString());
+  if (req.options.qs) {
+    req.url = handleQs(req.url, req.options.qs);
+  }
+  fetch(req.url, {method: req.method, body: req.options.body})
+    .then(response => {
+      response.text().then(body => {
+        const data = {
+          status: response.status,
+          body: body,
+          headers: response.headers,
+          url: response.url
+        };
+        process.stdout.write(JSON.stringify({success: true, response: data}), function() {
+          process.exit(0);
+        });
+      });
+    });
+});
