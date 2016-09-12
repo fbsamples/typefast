@@ -324,12 +324,11 @@ function pollRoutine(routineId, dispatch, getState) {
     return response.json();
   })
   .then(function(response) {
-    let message = response.runner_log.map(a => a.chunk).join('\n');
     dispatch({
       type: PREVIEW_SCRIPT_SUCCESS,
       payload: {
-        log: [{message: message}],
-        is_completed: response.is_completed
+        log: response.runner_log,
+        is_completed: response.is_completed,
       }
     });
     if (!response.is_completed) {
