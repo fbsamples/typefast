@@ -74,7 +74,7 @@ export function fetchSchedule(scriptId) {
   return function(dispatch, getState) {
     dispatch({type: FETCH_SCHEDULE_REQUEST});
     return fetch(
-      makeUrl('/schedules', getState, { script_id: scriptId }), {
+      makeUrl('/schedules', getState, { script_id: scriptId, queue_name: 'main' }), {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
