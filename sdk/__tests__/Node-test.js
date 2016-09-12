@@ -61,8 +61,14 @@ describe('Node', () => {
 
   // Cruds
   const crud_read = new CrudSpec(/* mock */);
-  crud_read.getFunctionName('READ');
-  const cruds = new Map().set('GET', crud_read);
+  crud_read.getFunctionName.mockReturnValue('get');
+  crud_read.getCrudFunction.mockReturnValue('READ');
+  const crud_update = new CrudSpec(/* mock */);
+  crud_update.getFunctionName.mockReturnValue('update');
+  crud_update.getCrudFunction.mockReturnValue('UPDATE');
+  const cruds = new Map()
+    .set('GET', crud_read)
+    .set('POST', crud_update);
 
   // Node
   const makeNodeSpec = () => {
@@ -72,6 +78,7 @@ describe('Node', () => {
     spec.getEdgeSpecs.mockReturnValue(edges);
     spec.getCrudSpecs.mockReturnValue(cruds);
     spec.getReadSpec.mockReturnValue(crud_read);
+    spec.getUpdateSpec.mockReturnValue(crud_update);
     return spec;
   };
 
@@ -173,5 +180,21 @@ describe('Node', () => {
     expect(executor()).toBe(node);
     expect(executor({})).toEqual(node);
     expect(executor(new Map())).toEqual(node);
+  });
+
+  it('can selectively populate itself from UPDATE params matching fields', () => {
+    const custom_field_name = 'custom_field';
+    const custom_field_value = 'custom_field_value';
+    const custom_field_spec = new FieldSpec(/* mock */);
+    custom_field_spec.getName.mockReturnValue(custom_field_name);
+    const spec = makeNodeSpec();
+    spec.getFieldSpecs.mockReturnValue(spec.getFieldSpecs().set(custom_field_name, custom_field_spec));
+    const node = Node.fromData(makeApi(), spec, {id: 123});
+    const executor = node[spec.getUpdateSpec().getFunctionName()];
+    expect(executor).toEqual(jasmine.any(Function));
+    expect(executor()).toBe(node);
+    expect(node[custom_field_name]).toBeNull();
+    expect(executor(new Map().set(custom_field_name, custom_field_value))).toEqual(node);
+    expect(node[custom_field_name]).toBe(custom_field_value);
   });
 });

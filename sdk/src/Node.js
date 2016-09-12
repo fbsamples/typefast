@@ -60,10 +60,15 @@ const getEdgeExecutor = function(node: Node, edge_spec: EdgeSpec): EdgeExecutor 
 };
 
 const getCrudExecutor = function(node: Node, crud_spec: CrudSpec): CrudExecutor {
-  return function(params?: LooseParams): Node {
+  return function(loose_params?: LooseParams): Node {
     const id = node.assertId();
     const path = `/${id}`;
-    const response = node.getApi().call(path, crud_spec.getMethod(), normalizeParams(params), node.getSpec());
+    const params = normalizeParams(loose_params);
+    const spec: NodeSpec = node.getSpec();
+    const response = node.getApi().call(path, crud_spec.getMethod(), params, spec);
+    if (crud_spec.getCrudFunction() === 'UPDATE') {
+      Object.assign(node, params.filter((value: any, key: string) => spec.getFieldSpecs().has(key)).toObject());
+    }
     node.setData(response.getContent());
     return node;
   };
