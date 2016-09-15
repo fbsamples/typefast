@@ -22,30 +22,39 @@
  * @flow
  */
 
-import type Request from '../Request';
+const spawnSync = require('child_process').spawnSync;
+const fetch = require('node-fetch');
 
-const encodeBody = require('form-urlencoded');
-const syncRequest = require('../SyncRequest');
-const Response = require('../Response');
+function syncRequest(method, url, options): Object {
+  const req = JSON.stringify({
+    method: method,
+    url: url,
+    options: options
+  });
+  const res = spawnSync(
+    process.execPath,
+    [require('path').resolve(__dirname, 'SyncRequestWorker.js')],
+    {input: req}
+  );
 
-class NodejsSynchronousAdapter {
-
-  executeRequest(request: Request): Response {
-    const out = syncRequest(request.getMethod(), request.getUrl(), {
-      qs: !request.willSendBody()
-        ? request.getParams().toObject()
-        : {},
-      body: request.willSendBody()
-        ? encodeBody(request.getParams().toObject())
-        : ''
-    });
-
-    // FIXME handle proxy errors
-    if (out.status !== 200) {
-      throw new Error(out.body.toString());
-    }
-    return new Response(request, out.status, out.body.toString());
+  if (res.status !== 0) {
+    throw new Error(res.stderr.toString());
+  }
+  if (res.error) {
+    if (typeof res.error === 'string') res.error = new Error(res.error);
+    throw res.error;
+  }
+  const response = JSON.parse(res.stdout);
+  if (response.success) {
+    return {
+      status: response.response.status,
+      headers: response.response.headers,
+      body: response.response.body,
+      url: response.response.url
+    };
+  } else {
+    throw new Error(response.error.message || response.error || response);
   }
 }
 
-module.exports = NodejsSynchronousAdapter;
+module.exports = syncRequest;

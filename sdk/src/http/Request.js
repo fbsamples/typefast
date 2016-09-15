@@ -106,7 +106,7 @@ class Request {
   }
 
   willSendBody(): bool {
-    return this.getMethod() === 'POST';
+    return this.getMethod() !== 'GET';
   }
 
   getUrl(): string {
