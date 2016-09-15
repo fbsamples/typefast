@@ -57,6 +57,7 @@ module.exports = function(element, onCodeChange, onOptimisationComplete) {
     lineWrapping: true,
     gutters: ['CodeMirror-lint-markers'],
     lint: true,
+    tabSize: 2,
   });
 
   const server = new CodeMirror.TernServer({
