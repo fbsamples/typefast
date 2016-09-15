@@ -135,7 +135,9 @@ function typefastApp(state = {
 
     case UNAUTHORISED:
       return Object.assign({}, state, {
+        isLoading: true,
         isAuthorised: false,
+        isRunning: false,
       });
 
     case SAVE_SCRIPT_REQUEST:
