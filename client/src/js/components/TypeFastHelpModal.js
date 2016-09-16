@@ -57,6 +57,10 @@ class TypeFastHelpModal extends React.Component {
               <TableRowColumn>Auto Complete word</TableRowColumn>
             </TableRow>
             <TableRow>
+              <TableRowColumn>Ctrl-/</TableRowColumn>
+              <TableRowColumn>Toogle comment</TableRowColumn>
+            </TableRow>
+            <TableRow>
               <TableRowColumn>Ctrl-I</TableRowColumn>
               <TableRowColumn>Show Type</TableRowColumn>
             </TableRow>
