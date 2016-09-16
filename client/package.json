@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "browserify -t babelify src/js/index.js -o src/build/app.js",
+    "build": "browserify -t [babelify --compact false] src/js/index.js -o src/build/app.js",
     "lint": "eslint src/",
-    "watch": "watchify -t babelify src/js/index.js -o src/build/app.js"
+    "watch": "watchify -t [babelify --compact false] src/js/index.js -o src/build/app.js"
   },
   "dependencies": {
     "codemirror": "~5.15.2",
