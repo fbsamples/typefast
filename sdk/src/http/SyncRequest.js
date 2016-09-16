@@ -23,7 +23,6 @@
  */
 
 const spawnSync = require('child_process').spawnSync;
-const fetch = require('node-fetch');
 
 function syncRequest(method, url, options): Object {
   const req = JSON.stringify({
@@ -41,7 +40,9 @@ function syncRequest(method, url, options): Object {
     throw new Error(res.stderr.toString());
   }
   if (res.error) {
-    if (typeof res.error === 'string') res.error = new Error(res.error);
+    if (typeof res.error === 'string') {
+      res.error = new Error(res.error);
+    }
     throw res.error;
   }
   const response = JSON.parse(res.stdout);

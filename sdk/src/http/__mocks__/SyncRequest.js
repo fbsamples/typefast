@@ -20,14 +20,11 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-const HttpResponse = require('http-response-object');
-
 const SyncRequest = (method, url, options) => {
   const is_failure = method === 'TRIGGER_DRIVER_ERROR';
-  const response = new HttpResponse(/* mock */);
-  response.statusCode = is_failure ? 500 : 200;
-  response.body = {
-    toString: () => '{}'
+  const response = {
+    status: is_failure ? 500 : 200,
+    body: '{}'
   };
 
   return response;

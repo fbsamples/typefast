@@ -44,7 +44,7 @@ function handleQs(url, query) {
 }
 
 process.stdin.setEncoding('utf8');
-process.stdin.on('data', function (stdin) {
+process.stdin.on('data', function(stdin) {
   const req = JSON.parse(stdin.toString());
   if (req.options.qs) {
     req.url = handleQs(req.url, req.options.qs);
