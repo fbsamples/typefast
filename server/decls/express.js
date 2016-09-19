@@ -20,6 +20,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+import type {IncomingMessage, ServerResponse} from 'http';
+
 declare module express {
 
   declare type StringKeyMap<T> = { [key: string]: T };
@@ -32,7 +34,7 @@ declare module express {
     locals: StringKeyMap<string>;
     mountpath: Array<string>;
 
-    (req: Request, res: Response, next: () => void): void;
+    (req: Request | IncomingMessage, res: Response | ServerResponse, next?: () => void): void;
     all(path: string, ...callback: Array<HandleCallback>): Application;
     delete(path: string, ...callback: Array<HandleCallback>): Application;
     disable(name: string): Application;

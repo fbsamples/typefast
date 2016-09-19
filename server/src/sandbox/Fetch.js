@@ -23,65 +23,60 @@
  */
 
 import type {RequestMethod} from '../../../sdk/src/http/Request';
-const {isURL} = require('validator');
+
+export type Response = {
+  url: ?string,
+  headers: {[key: string]: string},
+  status: number,
+  body: string,
+};
 
 const encodeBody = require('form-urlencoded');
 const SyncRequest = require('sync-request');
+const {isURL} = require('validator');
+const {Map} = require('immutable');
 
 const MESSAGE_INVALID_URL_FORMAT = 'Invalid URL Format: Please enter a valid HTTP(S) URL';
 
-const defaultOptions = function({
-    qs = {},
-    headers = {
-      'User-Agent': 'typefast'
-    },
-    body = '',
-    json = '',
-    followRedirects = true,
-    maxRedirects = Infinity,
-    gzip = true,
-    timeout = false,
-    socketTimeout = false,
-    retry = false,
-    retryDelay = 200,
-    maxRetries = 5,
-  } = {}): Object {
+const statics: Map<string, any> = new Map({
+  body: '',
+  followRedirects: true,
+  maxRedirects: Infinity,
+  maxRetries: 5,
+  gzip: true,
+  headers: {
+    'User-Agent': 'typefast',
+  },
+  json: '',
+  qs: {},
+  retry: false,
+  retryDelay: 200,
+  socketTimeout: false,
+  timeout: false,
+});
 
-  if (typeof body === 'object') {
-    body = encodeBody(body);
+const normalize_options = function(options: Object): Map<string, any> {
+  let dynamics = new Map(options);
+  const body = dynamics.get('body', statics.get('body', {}));
+  if ( typeof body === 'object') {
+    dynamics = dynamics.set('body', encodeBody(body));
   }
-
-  return {
-    qs: qs,
-    headers: headers,
-    body: body,
-    json: json,
-    followRedirects: followRedirects,
-    maxRedirects: maxRedirects,
-    gzip: gzip,
-    timeout: timeout,
-    socketTimeout: socketTimeout,
-    retry: retry,
-    retryDelay: retryDelay,
-    maxRetries: maxRetries,
-  };
+  return statics.merge(dynamics);
 };
 
-const validPath = function(path: string): boolean {
+const is_valid_path = function(path: string): boolean {
   return isURL(path, { protocols: ['http', 'https'] });
 };
 
-const validateUrl = function(path: string): void {
-  if (!validPath(path)) {
+const enforce_valid_path = function(path: string): void {
+  if (!is_valid_path(path)) {
     throw new Error(MESSAGE_INVALID_URL_FORMAT);
   }
 };
 
-const request = function(method: RequestMethod, path: string, options: ?Object): Object {
-  options = defaultOptions(options);
-
-  validateUrl(path);
-  const out = SyncRequest(method, path, options);
+const request = function(method: RequestMethod, path: string, options: ?Object): Response {
+  enforce_valid_path(path);
+  const out = SyncRequest(method, path, normalize_options(options || {}).toObject());
 
   return {
     url: out.url,

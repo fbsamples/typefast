@@ -22,17 +22,26 @@
  * @flow
  */
 
-const csv = require('csv');
-const xmlParser = require('xml2js').parseString;
+type Dict = {[key: string]: any};
+type DictCallback = (error: Error, data: Dict) => void;
+
+const Csv = require('csv');
+const Xml2js = require('xml2js');
+
+const base64encode = function(string: string): string {
+  return new Buffer(string.toString()).toString('base64');
+};
+
+const csvParser = function(data: string, callback: DictCallback): void {
+  Csv.parse(data, callback);
+};
+
+const xmlParser = function(data: string, callback: DictCallback, options: Dict) {
+  Xml2js.parseString(data, options || {}, callback);
+};
 
 module.exports = {
-  base64encode: function(string: string) {
-    return new Buffer(string.toString()).toString('base64');
-  },
-  csvParser: function(data: string, callback: Function) {
-    csv.parse(data, callback);
-  },
-  xmlParser: function(data: string, callback: Function, options = {}) {
-    xmlParser(data, options, callback);
-  }
+  base64encode: base64encode,
+  csvParser: csvParser,
+  xmlParser: xmlParser,
 };
