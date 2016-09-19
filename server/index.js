@@ -23,12 +23,10 @@
 const parseArgv = require('minimist');
 const {List, Map} = require('immutable');
 
-const TRANSPILE_KEY = 'transpile';
 const MODE_KEY = 'mode';
 const DEFAULT_MODE = 'server';
 
 const passthrou_exclude = new List([
-  TRANSPILE_KEY,
   MODE_KEY
 ]);
 
@@ -37,10 +35,6 @@ const main = function(argv /* :List */) {
     .rest()
     .map(value => value instanceof Array ? value.pop() : value);
 
-  if (opts.get(TRANSPILE_KEY, false)) {
-    require('babel-register');
-    require('babel-polyfill');
-  }
   const mode = opts.get(MODE_KEY, DEFAULT_MODE);
 
   argv = opts.filterNot((value, key) => passthrou_exclude.keyOf(key) != null);

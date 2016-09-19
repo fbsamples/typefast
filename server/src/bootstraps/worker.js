@@ -22,15 +22,33 @@
  * @flow
  */
 
+import type PollingPool from '../scheduler/PollingPool';
+import type PollingThread from '../scheduler/PollingThread';
 import type {Argv} from '../Config';
 
 const Config = require('../Config');
 const Worker = require('../services/Worker');
 
+const print_pool_specs = function(pool: PollingPool): void {
+  const thread_count = pool.getThreads().size;
+  console.log('Worker initialized with:');
+  console.log(` - pid: ${process.pid}`);
+  console.log(` - threads: ${thread_count}`);
+  pool.getThreads().forEach((thread: PollingThread, key: number) => {
+    const queue_name = thread.getQueue().getName();
+    const interval = thread.getInterval();
+    console.log(`  [${key}] queue = ${queue_name}; interval = ${interval}ms`);
+  });
+  console.log('>> Awaiting for routines');
+};
+
 const bootstrap = function(argv: Argv): Worker {
   const inline_config = argv.get('inline-config', '{}').toString();
   const service = new Worker(Config.fromArgv(argv));
-  service.once(Worker.events.INIT, () => service.setServiceInlineConfig(inline_config));
+  service.once(Worker.events.INIT, (pool: PollingPool) => {
+    service.setServiceInlineConfig(inline_config);
+    print_pool_specs(pool);
+  });
 
   return service;
 };
