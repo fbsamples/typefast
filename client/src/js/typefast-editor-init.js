@@ -38,6 +38,7 @@ require('codemirror/mode/javascript/javascript');
 require('codemirror/addon/lint/lint');
 require('codemirror/addon/lint/javascript-lint');
 require('codemirror/addon/hint/show-hint');
+require('codemirror/addon/comment/comment');
 require('./tern/tern-codemirror')(CodeMirror);
 
 const loadingLastScript = 'Loading your last script...';
@@ -82,7 +83,8 @@ module.exports = function(element, onCodeChange, onOptimisationComplete) {
     'Alt-.': function(cm) { server.jumpToDef(cm); },
     'Alt-,': function(cm) { server.jumpBack(cm); },
     'Ctrl-Q': function(cm) { server.rename(cm); },
-    'Ctrl-.': function(cm) { server.selectName(cm); }
+    'Ctrl-.': function(cm) { server.selectName(cm); },
+    'Ctrl-/': function(cm) { cm.toggleComment(); },
   });
   editor.on('keyup', function(cm, event) {
     if (event.keyCode === 190) {
