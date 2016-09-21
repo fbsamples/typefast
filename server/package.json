@@ -4,28 +4,25 @@
   "description": "TypeFast Server application",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint src/",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "transpile": "babel src/ -d build/",
-    "start": "node index.js --mode=server",
-    "dev": "nodemon index.js --transpile --inline-config='{\"debug\": true}'",
-    "worker": "npm start -- --mode=worker",
-    "dev-worker": "npm start -- --transpile --mode=worker",
     "definition-generation": "node bin/fbTypesGenerator.js",
-    "debug": "node debug index.js --transpile"
+    "dev": "nodemon index.js --exec babel-node --mode=server --inline-config='{\"interpreter\": \"babel-node\", \"debug\": true}'",
+    "lint": "eslint src/",
+    "start": "node index.js --mode=server",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "transpile": "babel src/ -d build/"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pruno/typefast.git"
+    "url": "git+https://github.com/facebook/typefast.git"
   },
   "author": {
     "name": "Luca Bruno",
     "url": "https://github.com/pruno"
   },
   "bugs": {
-    "url": "https://github.com/pruno/typefast/issues"
+    "url": "https://github.com/facebook/typefast/issues"
   },
-  "homepage": "https://github.com/pruno/typefast#readme",
+  "homepage": "https://github.com/facebook/typefast#readme",
   "engines": {
     "node": ">=6.0.0"
   },
@@ -50,11 +47,9 @@
     "babel-eslint": "~6.0.4",
     "babel-plugin-syntax-flow": "~6.8.0",
     "babel-plugin-transform-flow-strip-types": "~6.8.0",
-    "babel-polyfill": "~6.8.0",
-    "babel-register": "~6.9.0",
     "eslint": "~2.10.2",
     "eslint-plugin-flowtype": "~2.2.7",
     "fbjs-scripts": "~0.7.0",
-    "nodemon": "~1.9.2"
+    "nodemon": "~1.10.0"
   }
 }

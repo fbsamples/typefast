@@ -85,6 +85,7 @@ class Worker extends AbstractService {
 
   onRoutine(routine: Routine, unlock: Mutator, complete: Mutator): void {
     const id = routine.get('id');
+    const interpreter = this.getConfig().getString('interpreter', 'node');
     const argv = [
       'index.js',
       '--mode', 'runner',
@@ -92,15 +93,10 @@ class Worker extends AbstractService {
       '--inline-config', this.getServiceInlineConfig(),
     ];
 
-    // FIXME @pruno should deprecate the runtime --transpile flag
-    if (process.argv.indexOf('--transpile') !== -1) {
-      argv.push('--transpile');
-    }
-
-    const child = execFile('node', argv);
+    const child = execFile(interpreter, argv);
 
     log(`Routine ${id} Started`);
-    log(argv.join(' '));
+    log(interpreter + ' ' + argv.join(' '));
     routine.set('runner_start_time', new Date());
 
     const bindings = bindStreams(
@@ -142,7 +138,7 @@ class Worker extends AbstractService {
 
     this.getScheduler().pollForRoutines(pool, this.onRoutine.bind(this));
 
-    this.emit(Worker.events.INIT);
+    this.emit(Worker.events.INIT, pool);
 
     // FIXME nicely handle signals
     // this.emit(AbstractService.events.END);
