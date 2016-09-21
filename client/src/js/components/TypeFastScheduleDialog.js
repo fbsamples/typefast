@@ -74,33 +74,9 @@ class TypeFastScheduleDialog extends React.Component {
             <MenuItem key={runType.name} value={runType.value} primaryText={runType.name} />)
           }
         </DropDownMenu>
-        on
-        <div style={{
-          display: (this.props.schedule.interval >= ScheduleRecurence.HOURLY) ?
-          'inline-block' : 'none'
-        }}>
-          <DropDownMenu
-            value={this.props.schedule.minute}
-            onChange={this.props.onMinuteChange}
-          >
-            {(new Array(60)).fill().map((_, i) =>
-              <MenuItem key={i} value={i} primaryText={i.toString()} />)
-            }
-          </DropDownMenu> m
-        </div>
-        <div style={{
-          display: (this.props.schedule.interval >= ScheduleRecurence.DAILY) ?
-          'inline-block' : 'none'
-        }}>
-          <DropDownMenu
-            value={this.props.schedule.hour}
-            onChange={this.props.onHourChange}
-          >
-            {(new Array(24)).fill().map((_, i) =>
-              <MenuItem key={i} value={i} primaryText={i.toString()} />)
-            }
-          </DropDownMenu> h
-        </div>
+        {
+          this.props.schedule.interval == ScheduleRecurence.WEEKLY ? 'on' : 'at'
+        }
         <div style={{
           display: (this.props.schedule.interval >= ScheduleRecurence.WEEKLY) ?
           'inline-block' : 'none'
@@ -113,7 +89,37 @@ class TypeFastScheduleDialog extends React.Component {
               <MenuItem key={day.key} value={day.key} primaryText={day.name} />)
             }
           </DropDownMenu>
+          at
         </div>
+        <div style={{
+          display: (this.props.schedule.interval >= ScheduleRecurence.DAILY) ?
+          'inline-block' : 'none'
+        }}>
+          <DropDownMenu
+            value={this.props.schedule.hour}
+            onChange={this.props.onHourChange}
+          >
+            {(new Array(24)).fill().map((_, i) =>
+              <MenuItem key={i} value={i} primaryText={ i < 10 ? `0${i}`: i.toString()} />)
+            }
+          </DropDownMenu> (H)
+        </div>
+        <div style={{
+          display: (this.props.schedule.interval >= ScheduleRecurence.HOURLY) ?
+          'inline-block' : 'none'
+        }}>
+          <DropDownMenu
+            value={this.props.schedule.minute}
+            onChange={this.props.onMinuteChange}
+          >
+            {(new Array(60)).fill().map((_, i) =>
+              <MenuItem key={i} value={i} primaryText={ i < 10 ? `0${i}`: i.toString()}  />)
+            }
+          </DropDownMenu> {
+            this.props.schedule.interval == ScheduleRecurence.HOURLY ? 'minutes past the hour' : '(M)'
+          }
+        </div>
+
       </Dialog>
     );
   }
