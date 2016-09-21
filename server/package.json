@@ -4,10 +4,9 @@
   "description": "TypeFast Server application",
   "main": "index.js",
   "scripts": {
-    "definition-generation": "node bin/fbTypesGenerator.js",
     "dev": "nodemon index.js --exec babel-node --mode=server --inline-config='{\"interpreter\": \"babel-node\", \"debug\": true}'",
     "lint": "eslint src/",
-    "start": "node index.js --mode=server",
+    "start": "babel-node index.js --mode=server --inline-config='{\"interpreter\": \"babel-node\"}'",
     "test": "echo \"Error: no test specified\" && exit 1",
     "transpile": "babel src/ -d build/"
   },

@@ -4,6 +4,7 @@
   "description": "",
   "scripts": {
     "build": "browserify -t babelify src/js/index.js -o src/build/app.js",
+    "definition-generation": "babel-node bin/fbTypesGenerator.js",
     "lint": "eslint src/",
     "watch": "watchify -t babelify src/js/index.js -o src/build/app.js"
   },
@@ -24,6 +25,7 @@
     "tern": "~0.18.0"
   },
   "devDependencies": {
+    "babel-cli": "~6.8.0",
     "babel-eslint": "~6.1.2",
     "babel-preset-es2015": "~6.9.0",
     "babel-preset-react": "~6.11.1",

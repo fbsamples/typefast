@@ -20,9 +20,6 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-require('babel-register');
-require('babel-polyfill');
-
 const Config = require('../src/Config');
 const {List, Map} = require('immutable');
 
@@ -51,4 +48,3 @@ config.flatten().map((value, key) => {
 });
 
 process.stdout.write(JSON.stringify(data.toJS(), null, 4));
-

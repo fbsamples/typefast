@@ -46,13 +46,13 @@ Following config vars are required for Heroku app:
 * *graph.application_id* - application id from [developers.facebook.com/apps](https://developers.facebook.com/apps)
 * *graph.application_secret* - application secret
 * *graph.business_manager_id* - your business manager id
-* *graph.schema.bundle* - set to da204b3753e6fd7a1845f8763bdf611c.grsb
+* *graph.schema.bundle* - set to the filename of used graph schema bundle: `<HASH>.grsb`
 * *graph.version.0* - major version of Graph API, [check current version](https://developers.facebook.com/docs/graph-api)
 * *graph.version.1* - minor version of Graph API
 * *server.bindings.http.addr* - set to 0.0.0.0
 * *server.bindings.http.is_enabled* - set to true
 * *server.bindings.https.is_enabled* - set to false
-* *server.client.root* - set to /app/client/src
+* *server.client.root* - set to /app/client/build
 
 Please see [server/config/default.json](server/config/default.json) for full list of configuration options available.
 

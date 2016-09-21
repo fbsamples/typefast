@@ -1,0 +1,57 @@
+#!/bin/bash
+
+ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd ../ && pwd )"
+
+function echo_step {
+  echo -e "\n\033[1m[$1]\033[0m"
+}
+
+function echo_cmd {
+  echo -e ">> $1"
+}
+
+function transpile {
+  node ./node_modules/.bin/babel $@ > /dev/null
+}
+
+function install_module {
+  echo_step "Installing $(echo $1 | head -c 1 | tr [a-z] [A-Z]; echo $1 | tail -c +2) Module"
+  cd $1
+  echo_cmd 'Downloading dependencies'
+  npm install > /dev/null
+  echo_cmd 'Transpiling source code'
+  transpile src/ -d src/
+  cd $ROOT_DIR
+}
+
+install_module sdk
+install_module server
+
+# Client has custom install process
+
+echo_step 'Looking for a Graph Schema Bundle'
+GRSB=$(for filename in *; do echo "$filename"; done | grep -m 1 .*\.grsb$)
+if [ ! -f $GRSB ]; then
+  echo_cmd "ERROR: Can't find a Graph Schema Bundle in $ROOT_DIR"
+fi
+GRSB=$ROOT_DIR/$GRSB
+echo_cmd "Found $GRSB"
+
+echo_step 'Installing Client Module'
+cd client
+mkdir -p src/build
+echo_cmd 'Downloading dependencies'
+npm install > /dev/null
+echo_cmd 'Building static analysis specs'
+node bin/fbTypesGenerator.js --inline-config="{\"graph\": {\"schema\": {\"bundle\": \"$GRSB\"}}}" > /dev/null
+echo_cmd 'Building app bundle'
+npm run build > /dev/null
+echo_cmd 'Cloning dependencies + static resources'
+mkdir build
+cp -rp src/font build/font
+cp -rp src/css build/css
+cp -rp src/build build/build
+cp -p src/index.html build/index.html
+cd $ROOT_DIR
+
+echo_step 'Install Completed'

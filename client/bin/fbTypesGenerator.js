@@ -20,16 +20,13 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-require('babel-register');
-require('babel-polyfill');
 const parseArgv = require('minimist');
-
 const fs = require('fs');
-const Config = require('../src/Config');
+const Config = require('../../server/src/Config');
 const {List, Map} = require('immutable');
 const NodeSpec = require('../../sdk/src/specs/NodeSpec');
 const SpecRegistry = require('../../sdk/src/SpecRegistry');
-const {getObject} = require('../src/sandbox/GraphSchemaLoader');
+const {getObject} = require('../../server/src/sandbox/GraphSchemaLoader');
 
 const args = new List(process.argv);
 const opts = new Map(parseArgv(args.takeLast(args.size - 2).toArray()))
@@ -38,7 +35,7 @@ const opts = new Map(parseArgv(args.takeLast(args.size - 2).toArray()))
 
 const config = Config.fromArgv(opts);
 const schema_bundle = config.getString('graph.schema.bundle');
-const outputFilename = '../client/src/js/tern/fb_defs.js';
+const outputFilename = './src/js/tern/fb_defs.js';
 
 function normalizeDescription(description) {
   return description.replace(/\r|\n/, '').replace(/\s+/, ' ');
