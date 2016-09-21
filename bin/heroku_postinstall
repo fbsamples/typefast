@@ -30,12 +30,14 @@ install_module server
 # Client has custom install process
 
 echo_step 'Looking for a Graph Schema Bundle'
+cd grsbs
 GRSB=$(for filename in *; do echo "$filename"; done | grep -m 1 .*\.grsb$)
 if [ ! -f $GRSB ]; then
   echo_cmd "ERROR: Can't find a Graph Schema Bundle in $ROOT_DIR"
 fi
-GRSB=$ROOT_DIR/$GRSB
+GRSB=$ROOT_DIR/grsbs/$GRSB
 echo_cmd "Found $GRSB"
+cd $ROOT_DIR
 
 echo_step 'Installing Client Module'
 cd client

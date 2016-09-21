@@ -12,7 +12,6 @@ TypeFast Server is the backend responsible for:
 * [Node.js](https://nodejs.org/) 6.0.0+
 * [MongoDB](https://www.mongodb.com/community) 3.2.0+
 * An SSL certificate
-* A Graph Schema Bundle (Contact your FB POC to obtain one)
 
 # Install
 

@@ -6,7 +6,7 @@
     "access_token": "ACCESS_TOKEN",
     "business_manager_id": "BUSINESS_MANAGER_ID",
     "schema": {
-      "bundle": null
+      "bundle": "../grsbs/0cc346fffe9d8634ee241dc81286f8b1.grsb"
     }
   },
   "db": {

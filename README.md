@@ -12,10 +12,7 @@ Note: When developing on the Server or Client, SDK components might be required 
  * [Server README](server/README.md)
  * [Client README](client/README.md)
 
-# GRSBs
-
-We are still working on improving the delivery and sync of Graph Schema Bundles.
-To obtain one please contact your TypeFast team point of contact.
+### [Heroku Deployment](/HEROKU.md)
 
 # License
 
