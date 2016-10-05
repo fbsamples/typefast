@@ -28,6 +28,7 @@ import type {Routine} from '../model/Routine';
 import type {Unlock} from './PollingPool';
 
 const {EventEmitter} = require('events');
+const {List} = require('immutable');
 
 class PollingThread extends EventEmitter {
 
@@ -39,11 +40,12 @@ class PollingThread extends EventEmitter {
   queue: Queue;
   timoutHandle: ?number;
 
-  static fromPool(pool: PollingPool, queue: Queue, interval: number): PollingThread {
-    const thread = new PollingThread(pool, queue, interval);
-    pool.addThread(thread);
-
-    return thread;
+  static fromPool(pool: PollingPool, queue: Queue, interval: number, threadCount: number): List<PollingThread> {
+    while (threadCount-- > 0) {
+      const thread = new PollingThread(pool, queue, interval);
+      pool.addThread(thread);
+    }
+    return pool.getThreads();
   }
 
   constructor(pool: PollingPool, queue: Queue, interval: number): void {
