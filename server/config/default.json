@@ -54,10 +54,12 @@
   "scheduler": {
     "queues": {
       "main": {
-        "polling_interval": 60000
+        "polling_interval": 60000,
+        "worker_threads": 10
       },
       "preview": {
-        "polling_interval": 1000
+        "polling_interval": 3000,
+        "worker_threads": 3
       }
     }
   }

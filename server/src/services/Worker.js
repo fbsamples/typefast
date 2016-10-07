@@ -130,10 +130,9 @@ class Worker extends AbstractService {
   init(): void {
     const config = this.getConfig().getMap('scheduler.queues');
 
-    // FIXME this arbitrarly enables only 1 thread per queue at pool concurrency n
     const pool = new PollingPool(config.size);
     config.map((tree: Map<string, any>, name: string) => {
-      PollingThread.fromPool(pool, new Queue(name), tree.get('polling_interval'));
+      PollingThread.fromPool(pool, new Queue(name), tree.get('polling_interval'), tree.get('worker_threads'));
     });
 
     this.getScheduler().pollForRoutines(pool, this.onRoutine.bind(this));
