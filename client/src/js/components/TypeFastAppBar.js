@@ -57,8 +57,13 @@ class TypeFastAppBar extends React.Component {
             />
             <MenuItem
               leftIcon={<FontIcon className="material-icons">help_outline</FontIcon>}
-              primaryText="Help"
+              primaryText="Shortcuts"
               onClick={this.props.onHelpClick}
+            />
+            <MenuItem
+              leftIcon={<FontIcon className="material-icons">feedback</FontIcon>}
+              primaryText="Give Us Feedback"
+              onClick={this.props.onFeedbackClick}
             />
           </IconMenu>
         }
