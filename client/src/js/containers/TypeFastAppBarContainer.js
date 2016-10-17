@@ -44,6 +44,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     onHelpClick: () => {
       dispatch(showHelpModal());
+    },
+    onFeedbackClick: () => {
+      window.open('https://www.messenger.com/t/958162957622543/', '_blank').focus();
     }
   };
 };

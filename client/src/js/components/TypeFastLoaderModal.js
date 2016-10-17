@@ -46,14 +46,12 @@ class TypeFastLoaderModal extends React.Component {
   }
 
   componentDidMount() {
-    let appId = this.props.appId;
     window.fbAsyncInit = function() {
       window.FB.init({
-        appId      : appId,
-        cookie     : true,  // enable cookies to allow the server to access
-                            // the session
-        xfbml      : true,  // parse social plugins on this page
-        version    : 'v2.5' // use graph api version 2.5
+        appId: this.props.appId,
+        cookie: true,
+        xfbml: true,
+        version: 'v2.5',
       });
 
       this.props.facebookAuthStarted();
@@ -62,16 +60,10 @@ class TypeFastLoaderModal extends React.Component {
       }.bind(this));
     }.bind(this);
 
-    // Load the SDK asynchronously
-    (function(d, s, id) {
-      const element = d.getElementsByTagName(s)[0];
-      const fjs = element;
-      let js;
-      if (d.getElementById(id)) {return;}
-      js = d.createElement(s); js.id = id;
-      js.src = '//connect.facebook.net/en_US/sdk.js';
-      fjs.parentNode.insertBefore(js, fjs);
-    }(window.document, 'script', 'facebook-jssdk'));
+    const sdk = document.createElement('script');
+    sdk.id = 'facebook-jssdk';
+    sdk.src = '//connect.facebook.net/en_US/sdk.js';
+    document.body.appendChild(sdk);
   }
 
   statusMessage() {
