@@ -25,24 +25,45 @@ TypeFast Server is the backend responsible for:
     mkdir ssl && cd ssl
     openssl req -x509 -newkey rsa:2048 -keyout key -out crt -days 365 -nodes
 
-#### Setup base configuration
+#### Setup configuration file
+
+Copy file:
 
     cp config/local.dist.json config/local.json
 
-Than edit `config/local.json`, filling all the keys.
+Then edit `config/local.json`, filling all the keys:
 
-Notes:
-  1. graph.schema.bundle -> absolute path to the provided schema bundle
+`application_id` and `application_secret` are available in the [App manager](https://developers.facebook.com/apps/) (under settings).
+
+For `access_token`, create a **admin system user** in business manager. (Remember you have to claim your app in business manager before you can create system users for it). Once you have created an admin system user, generate a token with the `ads_management` permission. Enter this token at `access_token`.
+
+For `business_manager_id` fill in your business_id. You can find this value in the url when you are in business manager.
+
+For `bundle`, provide the absolute path to the provided schema bundle (provided by your FB POC).
 
 # Run
 
-### From source
+You will need to run a TypeFast server and a TypeFast worker.
 
-    npm start
+## Server
+
+### from source
+
+    npm run server
 
 ### From source - Reloading on file changes [dev-only]
 
-    npm run dev
+    npm run dev-server
+
+## Worker
+
+### from source
+
+    npm run worker
+
+### From source - Reloading on file changes [dev-only]
+
+    npm run dev-worker
 
 # [Optional] Transpile for packaging
 

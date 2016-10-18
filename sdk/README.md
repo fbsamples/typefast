@@ -12,17 +12,17 @@ TypeFast SDK is the barebone user-space abstraction available within TypeFast wo
 
     npm install
 
-### Transpile for packaging
-
-To transpile the source and exit:
-
-    npm run-script transpile
-
 # Tests with [Jest](https://facebook.github.io/jest/)
 
     npm test
 
-Note: HTML code coverage files will be built within the `./typefaast/coverage/`
+Note: HTML code coverage files will be built within the `./typefast/coverage/`
+
+# [Optional] Transpile for packaging
+
+To transpile the source and exit:
+
+    npm run-script transpile
 
 # License
 
