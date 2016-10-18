@@ -69,6 +69,23 @@ You will need to run a TypeFast server and a TypeFast worker.
 
     npm run-script transpile
 
+# [Optional] Attaching a debugger
+
+Include ```debug-break``` parameter when running `server` or `worker`. e.g.
+
+    npm run dev-worker -- debug-break
+
+ Which should output: ```Debugger listening on [::]:5858```
+
+  Attach the debugger
+
+     node debug localhost:5858
+
+ And then set a breakpoint and continue execution, e.g.
+
+     debug> sb('Worker.js', 87);
+     debug> c
+
 # License
 
 This software is released under the [Facebook Platform License](https://github.com/facebook/typefast/blob/master/LICENSE).
