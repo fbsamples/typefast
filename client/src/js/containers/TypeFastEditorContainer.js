@@ -27,7 +27,7 @@ import React from 'react';
 
 import TypeFastLogContainer from '../containers/TypeFastLogContainer';
 import TypeFastEditor from '../components/TypeFastEditor';
-import { codeChanged, optimisationComplete } from '../actions/actions';
+import { codeChanged, optimisationComplete, saveScript } from '../actions/actions';
 import { connect } from 'react-redux';
 
 const styles = {
@@ -46,6 +46,7 @@ class TypeFastEditorContainer extends React.Component {
         <TypeFastEditor
           script={this.props.script}
           onCodeChange={this.props.onCodeChange}
+          onCodeSave={this.props.onCodeSave}
           onOptimisationComplete={this.props.onOptimisationComplete}
         />
         <TypeFastLogContainer />
@@ -58,6 +59,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onCodeChange: function(code) {
       dispatch(codeChanged(code));
+    },
+    onCodeSave: function() {
+      dispatch(saveScript());
     },
     onOptimisationComplete: function(optimisations) {
       dispatch(optimisationComplete(optimisations));

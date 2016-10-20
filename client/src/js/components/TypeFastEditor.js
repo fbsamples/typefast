@@ -41,6 +41,7 @@ class TypeFastEditor extends React.Component {
     this.editor = TypeFastEditorInit(
       this.refs.sandbox,
       this.props.onCodeChange,
+      this.props.onCodeSave,
       this.props.onOptimisationComplete
     );
   }

@@ -44,7 +44,7 @@ require('./tern/tern-codemirror')(CodeMirror);
 const loadingLastScript = 'Loading your last script...';
 const sampleCode = '';
 
-module.exports = function(element, onCodeChange, onOptimisationComplete) {
+module.exports = function(element, onCodeChange, onCodeSave, onOptimisationComplete) {
   tern.registerPlugin('fb_optimise', function(server, options) {
     server.on('postInfer', function(ast, scope) {
       FBOptimise.postInfer(ast, scope, onOptimisationComplete);
@@ -85,6 +85,8 @@ module.exports = function(element, onCodeChange, onOptimisationComplete) {
     'Ctrl-Q': function(cm) { server.rename(cm); },
     'Ctrl-.': function(cm) { server.selectName(cm); },
     'Ctrl-/': function(cm) { cm.toggleComment(); },
+    'Ctrl-S': function(cm) { onCodeSave(); },
+    'Cmd-S': function(cm) { onCodeSave(); },
   });
   editor.on('keyup', function(cm, event) {
     if (event.keyCode === 190) {
