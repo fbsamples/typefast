@@ -31,6 +31,7 @@ import TypeFastAppBarContainer from '../containers/TypeFastAppBarContainer';
 import TypeFastHelpContainer from '../containers/TypeFastHelpContainer';
 import TypeFastHistoryContainer from '../containers/TypeFastHistoryContainer';
 import TypeFastLoaderContainer from '../containers/TypeFastLoaderContainer';
+import TypeFastUnsavedChangesContainer from '../containers/TypeFastUnsavedChangesContainer';
 import TypeFastNewScriptContainer from '../containers/TypeFastNewScriptContainer';
 import TypeFastOpenScriptContainer from '../containers/TypeFastOpenScriptContainer';
 import TypeFastScheduleContainer from '../containers/TypeFastScheduleContainer';
@@ -52,6 +53,7 @@ class TypeFastApp extends React.Component {
 
         <TypeFastHelpContainer />
         <TypeFastHistoryContainer />
+        <TypeFastUnsavedChangesContainer />
         <TypeFastNewScriptContainer />
         <TypeFastOpenScriptContainer />
         <TypeFastScheduleContainer />

@@ -22,35 +22,45 @@
  * @flow
  */
 
-import thunkMiddleware from 'redux-thunk';
-import { createStore, applyMiddleware } from 'redux';
-import rootReducer from './reducers/reducers.js';
-import { Provider } from 'react-redux';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import TypeFastApp from './components/TypeFastApp';
-import { serverConfig } from './ServerConfig';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import typeFastUnsavedChangesMiddleware from './middleware/TypeFastUnsavedChangesMiddleware';
 
-injectTapEventPlugin();
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import FontIcon from 'material-ui/FontIcon';
 
-const store = createStore(
-  rootReducer,
-  applyMiddleware(
-    thunkMiddleware,
-    typeFastUnsavedChangesMiddleware
-  )
-);
+class TypeFastUnsavedChangesDialog extends React.Component {
+  render() {
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        secondary={true}
+        onTouchTap={this.props.onHide.bind(this)}
+      />,
+      <FlatButton
+        label="Don't Save"
+        secondary={true}
+        onTouchTap={this.props.onDontSave.bind(this)}
+      />,
+      <FlatButton
+        label="Save"
+        primary={true}
+        onTouchTap={this.props.onSave.bind(this)}
+      />
+    ];
+    return (
+      <Dialog
+        title="You have unsaved changes"
+        actions={actions}
+        modal={false}
+        open={this.props.isShowing}
+        onRequestClose={this.props.onHide}
+      >
+        <div>
+          holla
+        </div>
+      </Dialog>
+    );
+  }
+}
 
-serverConfig.fetch(function() {
-  ReactDOM.render(
-    <Provider store={store}>
-      <MuiThemeProvider>
-        <TypeFastApp />
-      </MuiThemeProvider>
-    </Provider>,
-    document.getElementById('typefast')
-  );
-});
+module.exports = TypeFastUnsavedChangesDialog;

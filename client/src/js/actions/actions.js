@@ -231,12 +231,34 @@ export function hideHelpModal() {
   };
 }
 
+/******************************** UNSAVED CHANGES *****************************/
+
+export const SHOW_UNSAVED_CHANGES_DIALOG = 'SHOW_UNSAVED_CHANGES_DIALOG';
+export function showUnsavedChangesDialog(pendingAction) {
+  return {
+    type: SHOW_UNSAVED_CHANGES_DIALOG,
+    payload: {
+      pendingAction: pendingAction
+    }
+  }
+}
+
+export const HIDE_UNSAVED_CHANGES_DIALOG = 'HIDE_UNSAVED_CHANGES_DIALOG';
+export function hideUnsavedChangesDialog() {
+  return {
+    type: HIDE_UNSAVED_CHANGES_DIALOG
+  }
+}
+
 /******************************** NEW SCRIPT **********************************/
 
 export const SHOW_NEW_SCRIPT_DIALOG = 'SHOW_NEW_SCRIPT_DIALOG';
 export function showNewScriptDialog() {
   return {
-    type: SHOW_NEW_SCRIPT_DIALOG
+    type: SHOW_NEW_SCRIPT_DIALOG,
+    meta: {
+      checkUnsavedChanges: true
+    }
   };
 }
 

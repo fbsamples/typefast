@@ -46,6 +46,9 @@ import {
   SHOW_HELP_MODAL,
   HIDE_HELP_MODAL,
 
+  SHOW_UNSAVED_CHANGES_DIALOG,
+  HIDE_UNSAVED_CHANGES_DIALOG,
+
   SHOW_NEW_SCRIPT_DIALOG,
   HIDE_NEW_SCRIPT_DIALOG,
   LOAD_SAMPLE,
@@ -98,7 +101,7 @@ function typefastApp(state = {
   log: initialLog(),
   runHistory: {},
 
-  needToSave: true,
+  needToSave: false,
   currentScript: defaultScript(),
   currentScriptTitle: defaultScript().title,
   currentSchedule: defaultSchedule(),
@@ -109,6 +112,7 @@ function typefastApp(state = {
 
   samples: [],
   showHelpModal: false,
+  showUnsavedChangesDialog: false,
   showRunHistoryModal: false,
   showOpenScriptDialog: false,
   showNewScriptDialog: false,
@@ -519,6 +523,20 @@ utils.xmlParser(xml.body, function(err, data) {
     case HIDE_HELP_MODAL: {
       return Object.assign({}, state, {
         showHelpModal: false,
+      });
+    }
+
+    case SHOW_UNSAVED_CHANGES_DIALOG: {
+      return Object.assign({}, state, {
+        showUnsavedChangesDialog: true,
+        pendingAction: action.payload.pendingAction
+      });
+    }
+
+    case HIDE_UNSAVED_CHANGES_DIALOG: {
+      return Object.assign({}, state, {
+        showUnsavedChangesDialog: false,
+        pendingAction: undefined
       });
     }
 

@@ -22,35 +22,40 @@
  * @flow
  */
 
-import thunkMiddleware from 'redux-thunk';
-import { createStore, applyMiddleware } from 'redux';
-import rootReducer from './reducers/reducers.js';
-import { Provider } from 'react-redux';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import TypeFastApp from './components/TypeFastApp';
-import { serverConfig } from './ServerConfig';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import typeFastUnsavedChangesMiddleware from './middleware/TypeFastUnsavedChangesMiddleware';
+import { connect } from 'react-redux';
+import {
+  saveScript,
+  hideUnsavedChangesDialog
+} from '../actions/actions.js';
+import TypeFastUnsavedChangesDialog from '../components/TypeFastUnsavedChangesDialog';
 
-injectTapEventPlugin();
+const mapStateToProps = (state, ownProps) => {
+  return {
+    isShowing: state.showUnsavedChangesDialog,
+    pendingAction: state.pendingAction
+  };
+};
 
-const store = createStore(
-  rootReducer,
-  applyMiddleware(
-    thunkMiddleware,
-    typeFastUnsavedChangesMiddleware
-  )
-);
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    onHide() {
+      dispatch(hideUnsavedChangesDialog());
+    },
+    onDontSave() {
+      dispatch(hideUnsavedChangesDialog());
+      dispatch(this.props.pendingAction);
+    },
+    onSave() {
+      dispatch(saveScript());
+      dispatch(hideUnsavedChangesDialog());
+      dispatch(this.props.pendingAction);
+    },
+  };
+};
 
-serverConfig.fetch(function() {
-  ReactDOM.render(
-    <Provider store={store}>
-      <MuiThemeProvider>
-        <TypeFastApp />
-      </MuiThemeProvider>
-    </Provider>,
-    document.getElementById('typefast')
-  );
-});
+const TypeFastUnsavedChangesContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TypeFastUnsavedChangesDialog);
+
+export default TypeFastUnsavedChangesContainer;
