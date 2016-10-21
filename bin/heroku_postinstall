@@ -46,12 +46,6 @@ echo_cmd 'Building static analysis specs'
 node bin/fbTypesGenerator.js --inline-config="{\"graph\": {\"schema\": {\"bundle\": \"$GRSB\"}}}" > /dev/null
 echo_cmd 'Building app bundle'
 npm run build > /dev/null
-echo_cmd 'Cloning dependencies + static resources'
-mkdir build
-cp -rp src/font build/font
-cp -rp src/css build/css
-cp -rp src/build build/build
-cp -p src/index.html build/index.html
 cd $ROOT_DIR
 
 echo_step 'Install Completed'
