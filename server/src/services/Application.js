@@ -29,6 +29,7 @@ import type {Application as ExpressApplication, Request, RequestMethod, Response
 const AbstractService = require('./AbstractService');
 const assert = require('assert');
 const Authentication = require('../server/authentication/Authentication');
+const compression = require('compression');
 const express = require('express');
 const HttpDriver = require('../server/drivers/HttpDriver');
 const HttpsDriver = require('../server/drivers/HttpsDriver');
@@ -61,6 +62,7 @@ class Application extends AbstractService {
       next();
     });
     this.webApplication.use(new Multer().array());
+    this.webApplication.use(compression());
     this.webApplication.disable('etag');
     this.webApplication.disable('x-powered-by');
     if (this.getConfig().getBoolean('server.client.enable_delivery')) {
