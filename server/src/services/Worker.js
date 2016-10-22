@@ -29,6 +29,7 @@ import type {LogEntry} from '../model/schema/routine';
 import type {Interface as ReadlineInterface} from 'readline';
 import type {ReadStream} from 'fs';
 import type {Routine} from '../model/Routine';
+import type {Resolve, Reject} from '../utils/promises';
 
 type StreamBindings = Map<string, ReadlineInterface>;
 
@@ -38,7 +39,7 @@ const PollingThread = require('../scheduler/PollingThread');
 const Queue = require('../scheduler/Queue');
 const Readline = require('readline');
 const {execFile} = require('child_process');
-const {Map} = require('immutable');
+const {List, Map, Set} = require('immutable');
 
 const log = function(message: string): void {
   const now = new Date().toString();
@@ -67,10 +68,14 @@ const freeStreams = function(bindings: StreamBindings): void {
 class Worker extends AbstractService {
 
   serviceInlineConfig: string;
+  children: Set<ChildProcess>;
+  isShuttingDown: bool;
 
   constructor(config: Config): void {
     super(config);
     this.serviceInlineConfig = '{}';
+    this.children = new Set();
+    this.isShuttingDown = false;
   }
 
   setServiceInlineConfig(inline_config: string): this {
@@ -94,6 +99,7 @@ class Worker extends AbstractService {
     ];
 
     const child = execFile(interpreter, argv);
+    this.children = this.children.add(child);
 
     log(`Routine ${id} Started`);
     log(interpreter + ' ' + argv.join(' '));
@@ -113,7 +119,8 @@ class Worker extends AbstractService {
     const intval = this.getConfig().getInteger('sandbox.routine_sync_interval');
     let sync_interval = setInterval(() => sync(() => log(`Routine ${id} Syncd`)), intval);
 
-    child.on('exit', (code) => {
+    child.on('exit', (code: number, signal: string): void => {
+      this.children = this.children.delete(child);
       freeStreams(bindings);
       clearInterval(sync_interval);
       routine.set('runner_end_time', new Date());
@@ -121,10 +128,76 @@ class Worker extends AbstractService {
       // Final sync -> complete schedule (free pool slot) -> *
       sync().then(() => {
         complete()
-          .then((routine: Routine) => log(`Routine ${id} Completed`))
+          .then((routine: Routine): void => {
+            if (signal) {
+              log(`Routine ${id} Killed with signal ${signal}`);
+            } else {
+              log(`Routine ${id} Completed`);
+            }
+          })
           .catch((error: Error) => log(`Error completing routine ${id}`));
       });
     });
+  }
+
+  killChildren(signal: string): void {
+    this.children.forEach((child: ChildProcess): void => {
+      process.kill(child.pid, signal);
+    });
+  }
+
+  waitForChildrenOrExit(timeout: number): Promise<void> {
+    return new Promise(
+      (resolve: Resolve<void>, reject: Reject) => {
+        setTimeout(
+          (): void => {
+            if (this.children.size > 0) {
+              resolve();
+            } else {
+              log('Worker shutting down');
+              this.emit(AbstractService.events.END);
+              process.exit(1);
+            }
+          },
+          timeout
+        );
+      });
+  }
+
+  gracefulShutdown(signal: string, pool: PollingPool): void {
+    if (this.isShuttingDown) {
+      return;
+    }
+    this.isShuttingDown = true;
+
+    log(`Received ${signal}. Stopping polling for new routines\n`);
+    pool.getThreads().forEach((thread: PollingThread): void => {
+      thread.stop();
+    });
+    const shutdown_timeout = this.getConfig().getInteger('worker.shutdown_timeout');
+    const kill_timeout = this.getConfig().getInteger('worker.kill_timeout');
+
+    this.waitForChildrenOrExit(0)
+      .then((): void => {
+        log(`Waiting ${shutdown_timeout} ms`
+          + ` for ${this.children.size} routine(s) to end`);
+      })
+      .then(this.waitForChildrenOrExit.bind(this, shutdown_timeout))
+      .then((): void => {
+        log(`Sending ${signal} to ${this.children.size} routine processes`);
+        this.killChildren(signal);
+      })
+      .then(this.waitForChildrenOrExit.bind(this, kill_timeout))
+      .then((): void => {
+        log(`Killing remaining ${this.children.size} routine processes`);
+        this.killChildren('SIGKILL');
+      })
+      .catch((error: Error): void => {
+        process.nextTick((): void => {
+          throw error;
+        });
+      })
+      .then(() => this.emit(AbstractService.events.END));
   }
 
   init(): void {
@@ -139,8 +212,9 @@ class Worker extends AbstractService {
 
     this.emit(Worker.events.INIT, pool);
 
-    // FIXME nicely handle signals
-    // this.emit(AbstractService.events.END);
+    new List(['SIGINT', 'SIGBREAK', 'SIGTERM']).forEach((signal: string) => {
+      process.on(signal, this.gracefulShutdown.bind(this, signal, pool));
+    });
   }
 }
 
