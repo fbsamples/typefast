@@ -92,7 +92,6 @@ class Worker extends AbstractService {
       '--routine-id', id,
       '--inline-config', this.getServiceInlineConfig(),
     ];
-
     const child = execFile(interpreter, argv);
 
     log(`Routine ${id} Started`);
@@ -113,7 +112,7 @@ class Worker extends AbstractService {
     const intval = this.getConfig().getInteger('sandbox.routine_sync_interval');
     let sync_interval = setInterval(() => sync(() => log(`Routine ${id} Syncd`)), intval);
 
-    child.on('exit', (code) => {
+    child.on('exit', (code: number, signal: string) => {
       freeStreams(bindings);
       clearInterval(sync_interval);
       routine.set('runner_end_time', new Date());
@@ -121,10 +120,24 @@ class Worker extends AbstractService {
       // Final sync -> complete schedule (free pool slot) -> *
       sync().then(() => {
         complete()
-          .then((routine: Routine) => log(`Routine ${id} Completed`))
+          .then((routine: Routine) => {
+            if (signal) {
+              log(`Routine ${id} Killed with signal ${signal}`);
+            } else {
+              log(`Routine ${id} Completed`);
+            }
+          })
           .catch((error: Error) => log(`Error completing routine ${id}`));
       });
     });
+  }
+
+  gracefulShutdown(signal: string, pool: PollingPool): void {
+    log(`Received ${signal}. Stopping polling for new routines\n`);
+    pool.getThreads().forEach((thread: PollingThread) => {
+      thread.stop();
+    });
+    log("Worker shutting down");
   }
 
   init(): void {
@@ -139,8 +152,9 @@ class Worker extends AbstractService {
 
     this.emit(Worker.events.INIT, pool);
 
-    // FIXME nicely handle signals
-    // this.emit(AbstractService.events.END);
+    ['SIGINT', 'SIGTERM'].forEach((signal: string) => {
+      process.on(signal, this.gracefulShutdown.bind(this, signal, pool));
+    });
   }
 }
 
