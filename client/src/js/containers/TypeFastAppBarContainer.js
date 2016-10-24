@@ -22,6 +22,8 @@
  * @flow
  */
 
+import type { Dispatch, State } from 'redux';
+
 import { connect } from 'react-redux';
 import {
   showHelpModal,
@@ -30,30 +32,27 @@ import {
 } from '../actions/actions.js';
 import TypeFastAppBar from '../components/TypeFastAppBar';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state: State, ownProps: Object): Object => {
   return {};
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: Object): Object => {
   return {
-    onNewScriptClick: () => {
+    onNewScriptClick: (): void => {
       dispatch(showNewScriptDialog());
     },
-    onOpenScriptClick: () => {
+    onOpenScriptClick: (): void => {
       dispatch(showOpenScriptDialog());
     },
-    onHelpClick: () => {
+    onHelpClick: (): void => {
       dispatch(showHelpModal());
     },
-    onFeedbackClick: () => {
+    onFeedbackClick: (): void => {
       window.open('https://www.messenger.com/t/958162957622543/', '_blank').focus();
-    }
+    },
   };
 };
 
-const TypeFastAppBarContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TypeFastAppBar);
+const TypeFastAppBarContainer = connect(mapStateToProps, mapDispatchToProps)(TypeFastAppBar);
 
 export default TypeFastAppBarContainer;

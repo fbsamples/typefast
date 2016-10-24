@@ -6,6 +6,7 @@
       "react"
     ],
     "rules": {
+        "comma-dangle": ["warn", "always-multiline"],
         "flowtype/space-after-type-colon": [1, "always"],
         "flowtype/space-before-type-colon": [0, "always"],
         "react/jsx-uses-react": "error",

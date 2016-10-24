@@ -28,24 +28,34 @@
 
 const walk = require('acorn/dist/walk');
 
-module.exports = function(infer) {
+const isEdge = function(node: Object): bool {
+  return ((
+      node.types[0]
+      && node.types[0].retval
+      && node.types[0].retval.proto
+      && node.types[0].retval.proto.name.search(/cursor/) > -1
+    ) || (node.propertyName && node.propertyName.search(/create/) > -1)
+  );
+};
+
+const isCursor = function(node: Object): bool {
+  return node.types[0]
+    && node.types[0].proto
+    && node.types[0].proto.name.indexOf('cursor') > -1;
+};
+
+const determineNodeTypeName = function(objFbType: Object): string {
+  if (objFbType.types[0].name === 'Business') {
+    return objFbType.types[0].name;
+  } else {
+    return objFbType.types[0].proto.name;
+  }
+};
+
+module.exports = function(infer: Object): Object {
   let fieldsAccessed = {};
 
-  function isEdge(node) {
-    return ((node.types[0]
-        && node.types[0].retval
-        && node.types[0].retval.proto
-        && node.types[0].retval.proto.name.search(/cursor/) > -1)
-        || (node.propertyName && node.propertyName.search(/create/) > -1));
-  }
-
-  function isCursor(node) {
-    return node.types[0]
-      && node.types[0].proto
-      && node.types[0].proto.name.indexOf('cursor') > -1;
-  }
-
-  function getURLSafeFieldsAccessed() {
+  const getURLSafeFieldsAccessed = function(): Object {
     let obj = {};
     for (var key in fieldsAccessed) {
       if (fieldsAccessed.hasOwnProperty(key)) {
@@ -53,32 +63,24 @@ module.exports = function(infer) {
       }
     }
     return obj;
-  }
-
-  function determineNodeTypeName(objFbType) {
-    if (objFbType.types[0].name === 'Business') {
-      return objFbType.types[0].name;
-    } else {
-      return objFbType.types[0].proto.name;
-    }
-  }
+  };
 
   return {
     postInfer: function(ast, scope, onOptimisationComplete) {
       fieldsAccessed = {};
       walk.simple(ast, {
-        MemberExpression: function(node, scope) {
+        MemberExpression: (node: Object, scope: Object): void => {
           if (node.object.fbType === undefined) {
             node.object.fbType = infer.expressionType({
               node: node.object,
-              state: scope
+              state: scope,
             });
           }
 
           if (node.property.fbType === undefined) {
             node.property.fbType = infer.expressionType({
               node: node.property,
-              state: scope
+              state: scope,
             });
           }
 
@@ -110,7 +112,8 @@ module.exports = function(infer) {
             if (properties[name] // check its a valid prop
               && !isEdge(properties[name])
               && properties[name].origin === '!Facebook Scripting Definitions' // check its a FB Definition
-              && determineNodeTypeName(objFbType) !== 'Object.prototype' // we dont need to capture these since they are not optimisation values
+              // we dont need to capture these since they are not optimisation values
+              && determineNodeTypeName(objFbType) !== 'Object.prototype'
             ) {
               const nodeName = determineNodeTypeName(objFbType);
               if (!fieldsAccessed[nodeName]) {
@@ -120,15 +123,11 @@ module.exports = function(infer) {
             }
           }
           node.property.parent_object = node.object;
-        }
+        },
       }, infer.searchVisitor, scope);
       onOptimisationComplete(getURLSafeFieldsAccessed());
     },
-    getFieldsAccessed: function() {
-      return fieldsAccessed;
-    },
-    getURLSafeFieldsAccessed: function() {
-      return getURLSafeFieldsAccessed();
-    }
+    getFieldsAccessed: (): Object => fieldsAccessed,
+    getURLSafeFieldsAccessed: (): Object => getURLSafeFieldsAccessed(),
   };
 };

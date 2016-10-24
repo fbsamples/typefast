@@ -22,15 +22,21 @@
  * @flow
  */
 
-import React from 'react';
+import type { Element } from 'react';
 
+import React from 'react';
 import Snackbar from 'material-ui/Snackbar';
 
 const SNACK_DURATION = 1500;
 
 class TypeFastSnackbar extends React.Component {
 
-  render() {
+  static propTypes = {
+    showSaveScheduleSnack: React.PropTypes.bool,
+    showSaveScriptSnack: React.PropTypes.bool,
+  };
+
+  render(): Element<any> {
     return (
       <div>
         <Snackbar

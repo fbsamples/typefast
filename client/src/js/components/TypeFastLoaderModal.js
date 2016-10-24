@@ -22,15 +22,31 @@
  * @flow
  */
 
-import React from 'react';
+import type { Element } from 'react';
 
+type FbjsResponse = { status: string, authResponse: { accessToken: string } };
+
+import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 
 class TypeFastLoaderModal extends React.Component {
 
-  statusChangeCallback(response) {
+  static propTypes = {
+    appId: React.PropTypes.number,
+    facebookAuthFailure: React.PropTypes.func,
+    facebookAuthStarted: React.PropTypes.func,
+    facebookAuthSuccess: React.PropTypes.func,
+    isAuthenticated: React.PropTypes.bool,
+    isAuthenticating: React.PropTypes.bool,
+    isAuthorised: React.PropTypes.bool,
+    isFetching: React.PropTypes.bool,
+    isLoading: React.PropTypes.bool,
+    isRunning: React.PropTypes.bool,
+  };
+
+  statusChangeCallback(response: FbjsResponse): void {
     if (response.status === 'connected') {
       this.props.facebookAuthSuccess(response.authResponse.accessToken);
     } else if (response.status === 'not_authorized') {
@@ -40,7 +56,7 @@ class TypeFastLoaderModal extends React.Component {
     }
   }
 
-  onLoginClicked() {
+  onLoginClicked(): void {
     this.props.facebookAuthStarted();
     window.FB.login(this.statusChangeCallback.bind(this), {scope: 'public_profile,business_management'});
   }
@@ -83,14 +99,14 @@ class TypeFastLoaderModal extends React.Component {
     }
   }
 
-  render() {
+  render(): Element<any> {
     const actions = [
       <FlatButton
         label="Login"
         primary={true}
         onTouchTap={this.onLoginClicked.bind(this)}
         disabled={this.props.isAuthenticating || this.props.isFetching}
-      />
+      />,
     ];
     return (
       <div>

@@ -22,28 +22,27 @@
  * @flow
  */
 
+import type { Dispatch, State } from 'redux';
+
 import { connect } from 'react-redux';
 import { hideRunHistoryModal } from '../actions/actions.js';
 import TypeFastHistoryModal from '../components/TypeFastHistoryModal';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state: State, ownProps: Object): Object => {
   return {
     routines: state.routines[state.currentScript.id] || [],
     isShowing: state.showRunHistoryModal,
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: Object): Object => {
   return {
-    onHide: () => {
+    onHide: (): void => {
       dispatch(hideRunHistoryModal());
     },
   };
 };
 
-const TypeFastHistoryContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TypeFastHistoryModal);
+const TypeFastHistoryContainer = connect(mapStateToProps, mapDispatchToProps)(TypeFastHistoryModal);
 
 export default TypeFastHistoryContainer;

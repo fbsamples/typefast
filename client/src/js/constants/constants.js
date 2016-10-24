@@ -7,7 +7,7 @@ export const ScheduleRecurence = {
 export const SchedulePeriods = [
   {name: 'every hour', value: ScheduleRecurence.HOURLY},
   {name: 'every day', value: ScheduleRecurence.DAILY},
-  {name: 'every week', value: ScheduleRecurence.WEEKLY}
+  {name: 'every week', value: ScheduleRecurence.WEEKLY},
 ];
 
 export const Weekdays = [
@@ -17,5 +17,5 @@ export const Weekdays = [
   {key: 3, name: 'Wednesday'},
   {key: 4, name: 'Thursday'},
   {key: 5, name: 'Friday'},
-  {key: 6, name: 'Saturday'}
+  {key: 6, name: 'Saturday'},
 ];

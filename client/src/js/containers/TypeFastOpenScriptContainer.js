@@ -22,32 +22,31 @@
  * @flow
  */
 
+import type { Dispatch, State } from 'redux';
+
 import { connect } from 'react-redux';
 import { loadScript, hideOpenScriptDialog } from '../actions/actions.js';
 import TypeFastOpenScriptDialog from '../components/TypeFastOpenScriptDialog';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state: State, ownProps: Object): Object => {
   return {
     scripts: state.scripts,
     isShowing: state.showOpenScriptDialog,
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: Object): Object => {
   return {
-    onHide: () => {
+    onHide: (): void => {
       dispatch(hideOpenScriptDialog());
     },
-    onScriptSelect: (scriptId) => {
+    onScriptSelect: (scriptId: string): void => {
       dispatch(loadScript(scriptId));
       dispatch(hideOpenScriptDialog());
-    }
+    },
   };
 };
 
-const TypeFastOpenScriptContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TypeFastOpenScriptDialog);
+const TypeFastOpenScriptContainer = connect(mapStateToProps, mapDispatchToProps)(TypeFastOpenScriptDialog);
 
 export default TypeFastOpenScriptContainer;

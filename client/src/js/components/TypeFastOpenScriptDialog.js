@@ -22,21 +22,33 @@
  * @flow
  */
 
-import React from 'react';
+import type { Element } from 'React';
 
+import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
 import {List, ListItem} from 'material-ui/List';
 
 class TypeFastOpenScriptDialog extends React.Component {
-  render() {
+
+  static propTypes = {
+    isShowing: React.PropTypes.bool,
+    onHide: React.PropTypes.func,
+    onScriptSelect: React.PropTypes.func,
+    scripts: React.PropTypes.objectOf(React.PropTypes.shape({
+      title: React.PropTypes.string,
+      updated_time: React.PropTypes.string,
+    })),
+  };
+
+  render(): Element<any> {
     const actions = [
       <FlatButton
         label="Cancel"
         secondary={true}
         onTouchTap={this.props.onHide}
-      />
+      />,
     ];
     return (
       <Dialog

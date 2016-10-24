@@ -22,21 +22,32 @@
  * @flow
  */
 
+import type { Element } from 'react';
+import type { LogEntry } from './TypeFastHistoryModal';
+
 import Radium from 'radium';
 import React from 'react';
 import dateformat from 'dateformat';
 
 class TypeFastLogWindow extends React.Component {
 
-  getTimebox(entry) {
+  static propTypes = {
+    log: React.PropTypes.arrayOf(React.PropTypes.shape({
+      chunk: React.PropTypes.string,
+      stream: React.PropTypes.oneOf(['stdout', 'stdout']),
+      time: React.PropTypes.string,
+    })),
+  };
+
+  getTimebox(entry: LogEntry): Element<any> {
     const time = dateformat(new Date(entry.time), 'HH:MM:ss.l');
     return (
       <div style={[styles.time_box]}>{`[${time}]`}</div>
     );
   }
 
-  logGenerator() {
-    let elements = this.props.log.map((entry, key) => {
+  logGenerator(): Array<Element<any>> {
+    let elements = this.props.log.map((entry: LogEntry, key: number): Element<any> => {
       const chunk_style = [styles.chunk];
       if (entry.stream === 'stderr') {
         chunk_style.push(styles.error_chunk);
@@ -51,7 +62,7 @@ class TypeFastLogWindow extends React.Component {
     return [].concat.apply([], elements);
   }
 
-  render() {
+  render(): Element<any> {
     return (
       <div style={[styles.container]}>
         <div style={{marginLeft: '15px'}}>
@@ -78,7 +89,7 @@ const styles = {
     width: '64px',
   },
   error_chunk: {
-    color: '#C33C33'
+    color: '#C33C33',
   },
   time_box: {
     color: '#999999',

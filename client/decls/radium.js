@@ -22,35 +22,11 @@
  * @flow
  */
 
-import type { Dispatch, State } from 'redux';
+import type {Component} from 'react';
 
-import { connect } from 'react-redux';
-import {
-  hideNewScriptDialog,
-  loadSample,
-} from '../actions/actions.js';
-import TypeFastNewScriptDialog from '../components/TypeFastNewScriptDialog';
+declare module 'radium' {
 
-const mapStateToProps = (state: State, ownProps: Object): Object => {
-  return {
-    samples: state.samples,
-    isShowing: state.showNewScriptDialog,
-    newScript: state.newScript,
-  };
-};
-
-const mapDispatchToProps = (dispatch: Dispatch, ownProps: Object): Object => {
-  return {
-    onHide: (): void => {
-      dispatch(hideNewScriptDialog());
-    },
-    onSampleClick: (sampleId: number = 0): void => {
-      dispatch(loadSample(sampleId));
-      dispatch(hideNewScriptDialog());
-    },
-  };
-};
-
-const TypeFastNewScriptContainer = connect(mapStateToProps, mapDispatchToProps)(TypeFastNewScriptDialog);
-
-export default TypeFastNewScriptContainer;
+  declare var exports: {
+    (component: Component<any>): Component<any>,
+  }
+}

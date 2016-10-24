@@ -22,15 +22,28 @@
  * @flow
  */
 
-import React from 'react';
+import type { Element } from 'react';
 
+import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
 import { List, ListItem } from 'material-ui/List';
 
 class TypeFastNewScriptDialog extends React.Component {
-  render() {
+
+  static propTypes = {
+    onHide: React.PropTypes.func,
+    onSampleClick: React.PropTypes.func,
+    isShowing: React.PropTypes.bool,
+    samples: React.PropTypes.arrayOf(React.PropTypes.shape({
+      description: React.PropTypes.string,
+      id: React.PropTypes.number,
+      name: React.PropTypes.string,
+    })),
+  };
+
+  render(): Element<any> {
     const actions = [
       <FlatButton
         label="Cancel"
@@ -41,7 +54,7 @@ class TypeFastNewScriptDialog extends React.Component {
         label="Create blank script"
         primary={true}
         onTouchTap={this.props.onSampleClick}
-      />
+      />,
     ];
     return (
       <Dialog

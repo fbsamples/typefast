@@ -22,45 +22,44 @@
  * @flow
  */
 
-import { connect } from 'react-redux';
+import type { Dispatch, State } from 'redux';
 
+import { connect } from 'react-redux';
 import {
   facebookAuthStarted,
   facebookAuthSuccess,
-  facebookAuthFailure
+  facebookAuthFailure,
 } from '../actions/actions.js';
 import TypeFastLoaderModal from '../components/TypeFastLoaderModal';
 import { serverConfig } from '../ServerConfig';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state: State, ownProps: Object): Object => {
   return {
+    // FLOW_FIXME refactor ServerConfig
     appId:  serverConfig.getRawConfig().application_id,
     isAuthenticated: state.isAuthenticated,
     isAuthenticating: state.isAuthenticating,
     isAuthorised: state.isAuthorised,
     isFetching: state.isFetching,
     isLoading: state.isLoading,
-    isRunning: state.isRunning
+    isRunning: state.isRunning,
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: Object): Object => {
   return {
-    facebookAuthStarted: () => {
+    facebookAuthStarted: (): void => {
       dispatch(facebookAuthStarted());
     },
-    facebookAuthSuccess: (token) => {
+    facebookAuthSuccess: (token: string): void => {
       dispatch(facebookAuthSuccess(token));
     },
-    facebookAuthFailure: () => {
+    facebookAuthFailure: (): void => {
       dispatch(facebookAuthFailure());
     },
   };
 };
 
-const TypeFastLoaderContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TypeFastLoaderModal);
+const TypeFastLoaderContainer = connect(mapStateToProps, mapDispatchToProps)(TypeFastLoaderModal);
 
 export default TypeFastLoaderContainer;

@@ -22,22 +22,34 @@
  * @flow
  */
 
-import React from 'react';
+import type { Element } from 'react';
 
+import React from 'react';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
 import TextField from 'material-ui/TextField';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 
 class TypeFastToolbar extends React.Component {
-  titleLengthError() {
+
+  static propTypes = {
+    currentTitle: React.PropTypes.string,
+    onScriptHistory: React.PropTypes.func,
+    onScriptIconClick: React.PropTypes.func,
+    onScriptPreview: React.PropTypes.func,
+    onScriptSave: React.PropTypes.func,
+    onScriptSchedule: React.PropTypes.func,
+    onScriptTitleChange: React.PropTypes.func,
+  };
+
+  titleLengthError(): string {
     if (this.props.currentTitle.length < 3) {
       return 'Minimum 3 chars';
     }
     return '';
   }
 
-  render() {
+  render(): Element<any> {
     return (
       <Toolbar>
         <ToolbarGroup>
@@ -47,7 +59,7 @@ class TypeFastToolbar extends React.Component {
               fontSize: '20px',
               color: 'rgba(0, 0, 0, 0.6)',
               marginTop: '14px',
-              marginRight: '10px'
+              marginRight: '10px',
             }}
           >Title:</span>
           <TextField

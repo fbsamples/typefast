@@ -22,11 +22,13 @@
  * @flow
  */
 
+import type { Dispatch, State } from 'redux';
+
 import { connect } from 'react-redux';
 import { hideErrorModal } from '../actions/actions.js';
 import TypeFastErrorModal from '../components/TypeFastErrorModal';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state: State, ownProps: Object): Object => {
   return {
     isShowing: state.showErrorModal,
     errorAction: state.errorAction,
@@ -34,7 +36,7 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: Object): Object => {
   return {
     onHide: () => {
       dispatch(hideErrorModal());
@@ -42,9 +44,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   };
 };
 
-const TypeFastErrorContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TypeFastErrorModal);
+const TypeFastErrorContainer = connect(mapStateToProps, mapDispatchToProps)(TypeFastErrorModal);
 
 export default TypeFastErrorContainer;

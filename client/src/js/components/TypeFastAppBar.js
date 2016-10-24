@@ -22,8 +22,9 @@
  * @flow
  */
 
-import React from 'react';
+import type { Element } from 'react';
 
+import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
@@ -32,7 +33,15 @@ import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 class TypeFastAppBar extends React.Component {
-  render() {
+
+  static propTypes = {
+    onNewScriptClick: React.PropTypes.func,
+    onOpenScriptClick: React.PropTypes.func,
+    onHelpClick: React.PropTypes.func,
+    onFeedbackClick: React.PropTypes.func,
+  };
+
+  render(): Element<any> {
     return (
       <AppBar
         title={"TypeFast"}
