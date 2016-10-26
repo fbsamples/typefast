@@ -38,7 +38,7 @@ const main = function(argv /* :List */) {
   const mode = opts.get(MODE_KEY, DEFAULT_MODE);
 
   argv = opts.filterNot((value, key) => passthrou_exclude.keyOf(key) != null);
-  const bootstrap = require(`./src/bootstraps/${mode}`);
+  const bootstrap = require(`./bootstraps/${mode}`);
   const service = bootstrap(argv);
 
   service.init();
