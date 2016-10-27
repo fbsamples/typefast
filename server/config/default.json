@@ -64,7 +64,7 @@
     }
   },
   "worker": {
-    "shutdown_timeout_seconds": 8,
-    "kill_timeout_seconds": 8
+    "shutdown_timeout": 8000,
+    "kill_timeout": 8000
   }
 }

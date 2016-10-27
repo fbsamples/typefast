@@ -68,11 +68,13 @@ class Worker extends AbstractService {
 
   serviceInlineConfig: string;
   children: Set<ChildProcess>;
+  isShuttingDown: bool;
 
   constructor(config: Config): void {
     super(config);
     this.serviceInlineConfig = '{}';
     this.children = new Set();
+    this.isShuttingDown = false;
   }
 
   setServiceInlineConfig(inline_config: string): this {
@@ -152,40 +154,49 @@ class Worker extends AbstractService {
               resolve();
             } else {
               log("Worker shutting down");
+              this.emit(AbstractService.events.END);
               process.exit(1);
             }
           },
-          timeout * 1000
+          timeout
         );
       });
   }
 
   gracefulShutdown(signal: string, pool: PollingPool): void {
+    if (this.isShuttingDown) {
+      return;
+    }
+    this.isShuttingDown = true;
+
     log(`Received ${signal}. Stopping polling for new routines\n`);
     pool.getThreads().forEach((thread: PollingThread): void => {
       thread.stop();
     });
-    this.emit(AbstractService.events.END);
-    const shutdown_timeout_seconds =
-      this.getConfig().getInteger('worker.shutdown_timeout_seconds');
-    const kill_timeout_seconds =
-      this.getConfig().getInteger('worker.kill_timeout_seconds')
+    const shutdown_timeout = this.getConfig().getInteger('worker.shutdown_timeout');
+    const kill_timeout = this.getConfig().getInteger('worker.kill_timeout')
 
     this.waitForChildrenOrExit(0)
       .then((): void => {
-        log(`Waiting ${shutdown_timeout_seconds} seconds`
+        log(`Waiting ${shutdown_timeout} ms`
           + ` for ${this.children.size} routine(s) to end`);
       })
-      .then(this.waitForChildrenOrExit.bind(this, shutdown_timeout_seconds))
+      .then(this.waitForChildrenOrExit.bind(this, shutdown_timeout))
       .then((): void => {
         log(`Sending ${signal} to ${this.children.size} routine processes`);
         this.killChildren(signal);
       })
-      .then(this.waitForChildrenOrExit.bind(this, kill_timeout_seconds))
+      .then(this.waitForChildrenOrExit.bind(this, kill_timeout))
       .then((): void => {
         log(`Killing remaining ${this.children.size} routine processes`);
         this.killChildren('SIGKILL');
-      });
+      })
+      .catch((error: Error): void => {
+        process.nextTick((): void => {
+	  throw error;
+	});
+      })
+      .then(() => this.emit(AbstractService.events.END));
   }
 
   init(): void {
