@@ -62,5 +62,9 @@
         "worker_threads": 3
       }
     }
+  },
+  "worker": {
+    "shutdown_timeout": 8000,
+    "kill_timeout": 8000
   }
 }
