@@ -12,7 +12,8 @@
     "server": "npm start",
     "worker": "npm start -- --mode=worker",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "transpile": "babel src/ -d build/"
+    "transpile": "babel src/ -d build/",
+    "prepublish": "npm run transpile"
   },
   "repository": {
     "type": "git",
