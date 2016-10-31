@@ -80,7 +80,7 @@ class Runner extends AbstractService {
       this.emit(Runner.events.INIT);
       // Prioritize service listeners as sanxbox execute syncronously
       process.nextTick(() => {
-        this.getSandbox().run(script.get('code'));
+        this.getSandbox().run(script.get('code'), script.get('title'));
         resolve();
       });
     });
