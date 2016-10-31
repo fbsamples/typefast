@@ -46,7 +46,6 @@ const log = function(message: string): void {
 };
 
 const filterPrivacyInfo = function(line: string, access_token: string, app_secret: string): string{
-  line = line.replace('evalmachine.<anonymous>', 'script_name');
   line = line.replace(access_token, '<ACCESS_TOKEN>');
   line = line.replace(app_secret, '<APP_SECRET>');
   return line;
