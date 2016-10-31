@@ -46,6 +46,9 @@ import {
   SHOW_HELP_MODAL,
   HIDE_HELP_MODAL,
 
+  SHOW_ERROR_MODAL,
+  HIDE_ERROR_MODAL,
+
   SHOW_NEW_SCRIPT_DIALOG,
   HIDE_NEW_SCRIPT_DIALOG,
   LOAD_SAMPLE,
@@ -114,6 +117,10 @@ function typefastApp(state = {
   showNewScriptDialog: false,
   showScheduleDialog: false,
   newSchedule: defaultSchedule(),
+
+  showErrorModal: false,
+  errorAction: null,
+  errorMessage: null,
 
   showSaveScheduleSnack: false,
   showSaveScriptSnack: false
@@ -519,6 +526,20 @@ utils.xmlParser(xml.body, function(err, data) {
     case HIDE_HELP_MODAL: {
       return Object.assign({}, state, {
         showHelpModal: false,
+      });
+    }
+
+    case SHOW_ERROR_MODAL: {
+      return Object.assign({}, state, {
+        showErrorModal: true,
+        errorAction: action.payload.errorAction,
+        errorMessage: action.payload.errorMessage,
+      });
+    }
+
+    case HIDE_ERROR_MODAL: {
+      return Object.assign({}, state, {
+        showErrorModal: false,
       });
     }
 

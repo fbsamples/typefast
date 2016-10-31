@@ -231,6 +231,26 @@ export function hideHelpModal() {
   };
 }
 
+/******************************** ERROR **********************************/
+
+export const SHOW_ERROR_MODAL = 'SHOW_ERROR_MODAL';
+export function showErrorModal(action, error) {
+  return {
+    type: SHOW_ERROR_MODAL,
+    payload: {
+      errorAction: action,
+      errorMessage: error,
+    }
+  };
+}
+
+export const HIDE_ERROR_MODAL = 'HIDE_ERROR_MODAL';
+export function hideErrorModal() {
+  return {
+    type: HIDE_ERROR_MODAL
+  };
+}
+
 /******************************** NEW SCRIPT **********************************/
 
 export const SHOW_NEW_SCRIPT_DIALOG = 'SHOW_NEW_SCRIPT_DIALOG';
