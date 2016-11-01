@@ -46,20 +46,14 @@ const log = function(message: string): void {
   console.log(`[${now}] ${message}`);
 };
 
-const filterPrivacyInfo = function(line: string, access_token: string, app_secret: string): string{
-  line = line.replace(access_token, '<ACCESS_TOKEN>');
-  line = line.replace(app_secret, '<APP_SECRET>');
-  return line;
-}
-
-const bindStreams = function(proc: ChildProcess, access_token: string, app_secret: string, callback: (entry: LogEntry) => void): StreamBindings {
+const bindStreams = function(proc: ChildProcess, callback: (entry: LogEntry) => void): StreamBindings {
   const bindings = new Map({ 'stdout': proc.stdout, 'stderr': proc.stderr }).map(
     (stream: ReadStream, id: string) => Readline.createInterface({ input: stream })
   );
-  let hide = 0;
+
   bindings.forEach(
     (io: ReadlineInterface, id: string) => {
-      io.on('line', (line: string) => {if(line.includes('vm.js')) hide = 1; if(hide === 0) callback({ time: new Date(), stream: id, chunk: filterPrivacyInfo(line, access_token, app_secret) })});
+      io.on('line', (line: string) => callback({ time: new Date(), stream: id, chunk: line }));
     }
   );
 
@@ -113,8 +107,6 @@ class Worker extends AbstractService {
 
     const bindings = bindStreams(
       child,
-      this.getConfig().getString('graph.access_token'),
-      this.getConfig().getString('graph.application_secret'),
       (entry: LogEntry) => routine.get('runner_log').push(entry)
     );
 

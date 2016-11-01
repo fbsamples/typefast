@@ -71,8 +71,8 @@ class Sandbox {
     return this.timeout;
   }
 
-  run(code: string, script_name: string): void {
-    const options = {filename: script_name};
+  run(code: string): void {
+    const options = {};
     const timeout = this.getTimeout();
     if (timeout !== null) {
       options.timeout = timeout;
