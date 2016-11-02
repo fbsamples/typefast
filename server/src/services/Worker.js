@@ -113,6 +113,8 @@ class Worker extends AbstractService {
 
     const bindings = bindStreams(
       child,
+      this.getConfig().getString('graph.access_token'),
+      this.getConfig().getString('graph.application_secret'),
       (entry: LogEntry) => routine.get('runner_log').push(entry)
     );
 
