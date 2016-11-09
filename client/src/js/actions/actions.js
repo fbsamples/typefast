@@ -87,7 +87,8 @@ export function fetchSchedule(scriptId) {
       payload: {
         schedule: response.data
       }
-    }));
+    }))
+    .catch(excep => dispatch(showErrorModal(FETCH_SCHEDULE_REQUEST, excep.message)));
   };
 }
 
@@ -108,7 +109,8 @@ export function fetchRoutines() {
             routines: json
           }
         });
-      });
+      })
+      .catch(excep => dispatch(showErrorModal(FETCHING_ROUTINES_REQUEST, excep.message)));
   };
 }
 
@@ -134,7 +136,8 @@ export function fetchScripts() {
         if (json.payload.scripts.data.length > 0) {
           dispatch(loadScript(json.payload.scripts.data[0].id));
         }
-      });
+      })
+      .catch(excep => dispatch(showErrorModal(FETCHING_SCRIPTS_REQUEST, excep.message)));
   };
 }
 
@@ -310,8 +313,10 @@ export function previewScript() {
       })
       .then(response => handleErrors(response, dispatch))
       .then(response => response.json())
-      .then(response => pollRoutine(response.data[0].id, dispatch, getState));
-    });
+      .then(response => pollRoutine(response.data[0].id, dispatch, getState))
+      .catch(excep => dispatch(showErrorModal(PREVIEW_SCRIPT_REQUEST, excep.message)));
+    })
+    .catch(excep => dispatch(showErrorModal(PREVIEW_SCRIPT_REQUEST, excep.message)));
   };
 }
 
@@ -336,7 +341,8 @@ function pollRoutine(routineId, dispatch, getState) {
         pollRoutine(routineId, dispatch, getState);
       }, 1000);
     }
-  });
+  })
+  .catch(excep => dispatch(showErrorModal(PREVIEW_SCRIPT_REQUEST, excep.message)));
 }
 
 export const SAVE_SCRIPT_REQUEST = 'SAVE_SCRIPT_REQUEST';
@@ -365,7 +371,8 @@ export function saveScript() {
         script: response
       }
     }))
-    .then(response => dispatch(loadScript(response.payload.script.id)));
+    .then(response => dispatch(loadScript(response.payload.script.id)))
+    .catch(excep => dispatch(showErrorModal(SAVE_SCRIPT_REQUEST, excep.message)));
   };
 }
 
@@ -474,7 +481,8 @@ export function saveSchedule() {
           }
         });
         dispatch(hideScheduleDialog());
-      });
+      })
+      .catch(excep => dispatch(showErrorModal(SAVE_SCHEDULE_REQUEST, excep.message)));
     });
   };
 }
