@@ -1,2 +1,2 @@
-src/build
-src/js/tern/fb_defs.js
+/public/static
+/src/js/tern/fb_defs.js

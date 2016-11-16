@@ -14,7 +14,7 @@
   "server": {
     "client": {
       "enable_delivery": true,
-      "root": "../client/src"
+      "root": "../client/public"
     },
     "bindings": {
       "https": {

@@ -41,6 +41,12 @@ require('codemirror/addon/hint/show-hint');
 require('codemirror/addon/comment/comment');
 require('./tern/tern-codemirror')(CodeMirror);
 
+// Pack global CSS dependencies
+require('codemirror/lib/codemirror.css');
+require('codemirror/addon/lint/lint.css');
+require('codemirror/addon/hint/show-hint.css');
+require('codemirror/addon/tern/tern.css');
+
 const loadingLastScript = 'Loading your last script...';
 const sampleCode = '';
 
