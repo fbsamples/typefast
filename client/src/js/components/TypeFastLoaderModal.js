@@ -42,7 +42,7 @@ class TypeFastLoaderModal extends React.Component {
 
   onLoginClicked() {
     this.props.facebookAuthStarted();
-    window.FB.login(this.statusChangeCallback.bind(this), {scope: 'public_profile,business_management'});
+    window.FB.login(this.statusChangeCallback.bind(this), {scope: 'public_profile'});
   }
 
   componentDidMount() {
@@ -51,7 +51,7 @@ class TypeFastLoaderModal extends React.Component {
         appId: this.props.appId,
         cookie: true,
         xfbml: true,
-        version: 'v2.5',
+        version: 'v2.8',
       });
 
       this.props.facebookAuthStarted();
