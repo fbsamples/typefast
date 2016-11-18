@@ -22,7 +22,6 @@ Generate these definitions:
 
 ### Build
 
-    mkdir -p src/build
     npm run build
 
 # Run
@@ -31,10 +30,10 @@ Once the TypeFast server is running, you can access the client via https://local
 
 ### From source - Reloading on file changes
 
-TypeFast use a build tool chain to package and transpile all the JSX files and ES6 javascript into a single file. When developing on the UI you can make sure that any changes to the source file are automatically recompiled by running the following commands from the client directory root:
+TypeFast uses webpack to package and transpile all the JSX files and ES6 javascript into a single file. When developing on the UI you can make sure that any changes to the source file are automatically recompiled by running the following commands from the client directory root:
 
 ```
-  npm run watch
+  npm run dev
 ```
 
 # Development Notes
