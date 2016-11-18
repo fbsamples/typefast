@@ -13,6 +13,7 @@
   "dependencies": {
     "codemirror": "~5.15.2",
     "dateformat": "^1.0.12",
+    "immutable": "^3.8.1",
     "jshint": "~2.9.2",
     "material-ui": "~0.15.4",
     "radium": "~0.18.1",
