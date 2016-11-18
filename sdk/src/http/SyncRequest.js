@@ -24,7 +24,7 @@
 
 const spawnSync = require('child_process').spawnSync;
 
-function syncRequest(method, url, options): Object {
+function syncRequest(method: string, url: string, options: Object): Object {
   const req = JSON.stringify({
     method: method,
     url: url,

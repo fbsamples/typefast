@@ -22,51 +22,51 @@
  * @flow
  */
 
+import type { Dispatch, State } from 'redux';
+
 import { connect } from 'react-redux';
 import {
   changeScriptTitle,
   previewScript,
   saveScript,
   showRunHistoryModal,
-  showScheduleDialog
+  showScheduleDialog,
 } from '../actions/actions.js';
 import TypeFastToolbar from '../components/TypeFastToolbar';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state: State, ownProps: Object): Object => {
   return {
     isRunning: state.isRunning,
     isSaving: state.isSaving,
     currentTitle: state.currentScriptTitle,
-    needToSave: state.needToSave
+    needToSave: state.needToSave,
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: Object): Object => {
   return {
-    onScriptSave: () => {
+    onScriptSave: (): void => {
       dispatch(saveScript());
     },
-    onScriptPreview: () => {
+    onScriptPreview: (): void => {
       dispatch(previewScript());
     },
-    onScriptSchedule: () => {
+    onScriptSchedule: (): void => {
       dispatch(showScheduleDialog());
     },
-    onScriptHistory: () => {
+    onScriptHistory: (): void => {
       dispatch(showRunHistoryModal());
     },
-    onScriptTitleChange: (e) => {
-      dispatch(changeScriptTitle(e.target.value));
+    onScriptTitleChange: (event: SyntheticEvent) => {
+      // FLOW_UNSAFE accessing DOM element
+      dispatch(changeScriptTitle(event.target.value));
     },
     onScriptIconClick: () => {
       document.getElementById('script_name').focus();
-    }
+    },
   };
 };
 
-const TypeFastToolbarContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TypeFastToolbar);
+const TypeFastToolbarContainer = connect(mapStateToProps, mapDispatchToProps)(TypeFastToolbar);
 
 export default TypeFastToolbarContainer;

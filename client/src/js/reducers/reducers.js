@@ -22,6 +22,8 @@
  * @flow
  */
 
+import type {Action, State} from 'redux';
+
 import {
   FETCHING_SCRIPTS_REQUEST, FETCHING_SCRIPTS_SUCCESS,
   SAVE_SCRIPT_REQUEST, SAVE_SCRIPT_SUCCESS,
@@ -61,16 +63,15 @@ import {
   SET_NEW_SCHEDULE_INTERVAL,
   SET_NEW_SCHEDULE_DAY,
   SET_NEW_SCHEDULE_PAUSED,
-  NEW_SCHEDULE_REQUEST
-} from '../actions/actions.js';
+  NEW_SCHEDULE_REQUEST,
+} from '../actions/actions';
 import { ScheduleRecurence } from '../constants/constants';
 
 function defaultScript() {
   return {
     title: 'Untitled',
     optimisations: [],
-    code: `/*jshint esversion: 6 */
-`,
+    code: '/*jshint esversion: 6 */' + String.fromCharCode(10),
   };
 }
 
@@ -90,12 +91,12 @@ function initialLog() {
   return [];
 }
 
-function typefastApp(state = {
+function typefastApp(state: State = {
   isLoading: true,
   isSaving: false,
   isFetching: false,
   isRunning: false,
-  scripts: [],
+  scripts: {},
   schedules: [],
   routines: [],
   log: initialLog(),
@@ -123,8 +124,8 @@ function typefastApp(state = {
   errorMessage: null,
 
   showSaveScheduleSnack: false,
-  showSaveScriptSnack: false
-}, action) {
+  showSaveScriptSnack: false,
+}, action: Action): State {
   let needToSave;
   switch (action.type) {
     case LOAD_SCRIPT:
@@ -161,32 +162,32 @@ function typefastApp(state = {
         scripts: updatedScripts,
         scriptCount: Object.keys(updatedScripts).length,
         needToSave: false,
-        showSaveScriptSnack: true
+        showSaveScriptSnack: true,
       });
 
     case SAVE_SCHEDULE_SUCCESS:
       return Object.assign({}, state, {
         currentSchedule: state.newSchedule,
-        showSaveScheduleSnack: true
+        showSaveScheduleSnack: true,
       });
 
     case FACEBOOK_AUTH_SUCCESS:
       return Object.assign({}, state, {
         isAuthenticated: true,
         isAuthenticating: false,
-        accessToken: action.payload.accessToken
+        accessToken: action.payload.accessToken,
       });
 
     case FACEBOOK_AUTH_FAILURE:
       return Object.assign({}, state, {
         isAuthenticated: false,
-        isAuthenticating: false
+        isAuthenticating: false,
       });
 
     case FACEBOOK_AUTH_STARTED:
       return Object.assign({}, state, {
         isAuthenticated: false,
-        isAuthenticating: true
+        isAuthenticating: true,
       });
 
     case FETCHING_SCRIPTS_REQUEST:
@@ -212,8 +213,12 @@ function typefastApp(state = {
 
     case FETCHING_SCRIPTS_SUCCESS:
       let scripts = action.payload.scripts.data.sort((a, b) => {
-        if (a.updated_time > b.updated_time) return -1;
-        if (a.updated_time < b.updated_time) return 1;
+        if (a.updated_time > b.updated_time) {
+          return -1;
+        }
+        if (a.updated_time < b.updated_time) {
+          return 1;
+        }
         return 0;
       });
       scripts = scripts.reduce(
@@ -226,7 +231,7 @@ function typefastApp(state = {
         scripts: scripts,
         currentScript: defaultScript(),
         currentScriptTitle: defaultScript().title,
-        scriptCount: Object.keys(scripts).length
+        scriptCount: Object.keys(scripts).length,
       });
 
     case FETCH_SCHEDULE_SUCCESS:
@@ -253,13 +258,13 @@ function typefastApp(state = {
     case PREVIEW_SCRIPT_SUCCESS:
       return Object.assign({}, state, {
         log: action.payload.log,
-        isRunning: !action.payload.is_completed
+        isRunning: !action.payload.is_completed,
       });
 
     case PREVIEW_SCRIPT_REQUEST:
       return Object.assign({}, state, {
         log: [],
-        isRunning: true
+        isRunning: true,
       });
 
     case SCRIPT_CODE_CHANGED:
@@ -272,7 +277,7 @@ function typefastApp(state = {
 
     case OPTIMISATIONS_COMPLETE: {
       return Object.assign({}, state, {
-        optimisations: action.payload.optimisations
+        optimisations: action.payload.optimisations,
       });
     }
 
@@ -433,7 +438,7 @@ business.getowned_ad_accounts().forEach(function(account) {
     console.log(audience.id);
   }
 });
-            `
+            `,
           },
           {
             id: 5,
@@ -497,7 +502,7 @@ function Twilio(accountSid, authToken) {
 utils.csvParse(csv.body, function(err, data) {
   console.log(err, data);
 });
-            `
+            `,
           },
           {
             id: 7,
@@ -508,8 +513,8 @@ utils.csvParse(csv.body, function(err, data) {
 utils.xmlParser(xml.body, function(err, data) {
 	console.log(data);
 });
-            `
-          }
+            `,
+          },
           // TODO: add samples here
           // Format: {id, name, description, code}
           // id should be >0
@@ -545,20 +550,20 @@ utils.xmlParser(xml.body, function(err, data) {
 
     case SHOW_NEW_SCRIPT_DIALOG: {
       return Object.assign({}, state, {
-        showNewScriptDialog: true
+        showNewScriptDialog: true,
       });
     }
 
     case HIDE_NEW_SCRIPT_DIALOG: {
       return Object.assign({}, state, {
-        showNewScriptDialog: false
+        showNewScriptDialog: false,
       });
     }
 
     case SHOW_SCHEDULE_DIALOG: {
       return Object.assign({}, state, {
         showScheduleDialog: true,
-        newSchedule: state.currentSchedule
+        newSchedule: state.currentSchedule,
       });
     }
 
@@ -570,6 +575,7 @@ utils.xmlParser(xml.body, function(err, data) {
 
     case LOAD_SAMPLE: {
       let currentScript = defaultScript();
+      // FLOW_FIXME migrate to Map state
       const sample = state.samples.filter(s => s.id === action.payload.sampleId);
       if (sample.length > 0) {
         currentScript.code = sample[0].code;
@@ -579,47 +585,47 @@ utils.xmlParser(xml.body, function(err, data) {
         currentScriptTitle: currentScript.title,
         editorValue: currentScript.code,
         optimisations: currentScript.optimisations,
-        currentSchedule: defaultSchedule()
+        currentSchedule: defaultSchedule(),
       });
     }
 
     case SET_NEW_SCHEDULE_PAUSED: {
       return Object.assign({}, state, {
         newSchedule: Object.assign({}, state.newSchedule, {
-          is_paused: action.payload.schedulePaused
-        })
+          is_paused: action.payload.schedulePaused,
+        }),
       });
     }
 
     case SET_NEW_SCHEDULE_INTERVAL: {
       return Object.assign({}, state, {
         newSchedule: Object.assign({}, state.newSchedule, {
-          interval: action.payload.scheduleInterval
-        })
+          interval: action.payload.scheduleInterval,
+        }),
       });
     }
 
     case SET_NEW_SCHEDULE_MINUTE: {
       return Object.assign({}, state, {
         newSchedule: Object.assign({}, state.newSchedule, {
-          minute: action.payload.scheduleMinute
-        })
+          minute: action.payload.scheduleMinute,
+        }),
       });
     }
 
     case SET_NEW_SCHEDULE_HOUR: {
       return Object.assign({}, state, {
         newSchedule: Object.assign({}, state.newSchedule, {
-          hour: action.payload.scheduleHour
-        })
+          hour: action.payload.scheduleHour,
+        }),
       });
     }
 
     case SET_NEW_SCHEDULE_DAY: {
       return Object.assign({}, state, {
         newSchedule: Object.assign({}, state.newSchedule, {
-          day: action.payload.scheduleDay
-        })
+          day: action.payload.scheduleDay,
+        }),
       });
     }
 
@@ -642,7 +648,7 @@ utils.xmlParser(xml.body, function(err, data) {
       return Object.assign({}, state, {
         newSchedule: Object.assign({}, state.newSchedule, {
           recurrence: recurrence,
-        })
+        }),
       });
     }
 
@@ -653,7 +659,7 @@ utils.xmlParser(xml.body, function(err, data) {
       );
       return Object.assign({}, state, {
         needToSave: needToSave,
-        currentScriptTitle: action.payload.title
+        currentScriptTitle: action.payload.title,
       });
     }
 

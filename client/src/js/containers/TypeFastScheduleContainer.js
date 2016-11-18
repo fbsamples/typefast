@@ -22,6 +22,8 @@
  * @flow
  */
 
+import type { Dispatch, State } from 'redux';
+
 import { connect } from 'react-redux';
 import {
   hideScheduleDialog,
@@ -30,46 +32,44 @@ import {
   setNewScheduleMinute,
   setNewScheduleHour,
   setNewScheduleDay,
-  setNewSchedulePaused
+  setNewSchedulePaused,
 } from '../actions/actions.js';
 import TypeFastScheduleDialog from '../components/TypeFastScheduleDialog';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state: State, ownProps: Object): Object => {
   return {
     isShowing: state.showScheduleDialog,
-    schedule: state.newSchedule
+    schedule: state.newSchedule,
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: Object): Object => {
   return {
-    onHide: () => {
+    onHide: (): void => {
       dispatch(hideScheduleDialog());
     },
-    onEnabledChange: (e) => {
-      dispatch(setNewSchedulePaused(!e.target.checked));
+    onEnabledChange: (event: SyntheticEvent): void => {
+      // FLOW_UNSAFE accessing DOM element
+      dispatch(setNewSchedulePaused(!event.target.checked));
     },
-    onIntervalChange: (e, i, v) => {
-      dispatch(setNewScheduleInterval(v));
+    onIntervalChange: (event: SyntheticEvent, interval: number): void => {
+      dispatch(setNewScheduleInterval(interval));
     },
-    onMinuteChange: (e, v) => {
-      dispatch(setNewScheduleMinute(v));
+    onMinuteChange: (proxy: SyntheticEvent, minute: number): void => {
+      dispatch(setNewScheduleMinute(minute));
     },
-    onHourChange: (e, v) => {
-      dispatch(setNewScheduleHour(v));
+    onHourChange: (proxy: SyntheticEvent, hour: number): void => {
+      dispatch(setNewScheduleHour(hour));
     },
-    onDayChange: (e, v, t) => {
-      dispatch(setNewScheduleDay(v));
+    onDayChange: (proxy: SyntheticEvent, day: number): void => {
+      dispatch(setNewScheduleDay(day));
     },
-    onApply: () => {
+    onApply: (): void => {
       dispatch(savingScheduleRequest());
-    }
+    },
   };
 };
 
-const TypeFastScheduleContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TypeFastScheduleDialog);
+const TypeFastScheduleContainer = connect(mapStateToProps, mapDispatchToProps)(TypeFastScheduleDialog);
 
 export default TypeFastScheduleContainer;

@@ -50,7 +50,12 @@ require('codemirror/addon/tern/tern.css');
 const loadingLastScript = 'Loading your last script...';
 const sampleCode = '';
 
-module.exports = function(element, onCodeChange, onCodeSave, onOptimisationComplete) {
+module.exports = function(
+  element: HTMLDivElement,
+  onCodeChange: (code: string) => void,
+  onCodeSave: () => void,
+  onOptimisationComplete: (optimisations: Object) => void,
+) {
   tern.registerPlugin('fb_optimise', function(server, options) {
     server.on('postInfer', function(ast, scope) {
       FBOptimise.postInfer(ast, scope, onOptimisationComplete);
@@ -71,7 +76,7 @@ module.exports = function(element, onCodeChange, onCodeSave, onOptimisationCompl
     defs: [ecma5, ecma6, fbdefs],
     plugins: {
       fb_optimise: true,
-    }
+    },
   });
 
   const runAnalysis = function() {
@@ -114,15 +119,15 @@ module.exports = function(element, onCodeChange, onCodeSave, onOptimisationCompl
   runAnalysis();
 
   return {
-    setText: function(code) {
+    setText: (code: string): void => {
       if (!code) { return; }
       editor.setValue(code);
     },
-    setLoadingText: function() {
+    setLoadingText: (): void => {
       editor.setValue(loadingLastScript);
     },
-    setWelcomeText: function() {
+    setWelcomeText: (): void => {
       editor.setValue(sampleCode);
-    }
+    },
   };
 };

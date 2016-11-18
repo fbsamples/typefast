@@ -22,6 +22,8 @@
  * @flow
  */
 
+import type { Element } from 'react';
+
 import React from 'react';
 import Radium from 'radium';
 
@@ -32,12 +34,15 @@ const styles = {
     width: '50%',
     float: 'left',
     height: '100%',
-    overflow: 'scroll'
-  }
+    overflow: 'scroll',
+  },
 };
 
 class TypeFastEditor extends React.Component {
-  componentDidMount() {
+
+  editor: Object; // FIXME implement an interface typefast-editor-init interface
+
+  componentDidMount(): void {
     this.editor = TypeFastEditorInit(
       this.refs.sandbox,
       this.props.onCodeChange,
@@ -46,7 +51,7 @@ class TypeFastEditor extends React.Component {
     );
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(): void {
     if (this.editor) {
       if (this.props.isFetching) {
         this.editor.setLoadingText();
@@ -58,7 +63,7 @@ class TypeFastEditor extends React.Component {
     }
   }
 
-  render() {
+  render(): Element<any> {
     return (
       <div style={[styles.container]}>
         <div ref="sandbox" id="sandbox"></div>

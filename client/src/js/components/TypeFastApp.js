@@ -22,11 +22,11 @@
  * @flow
  */
 
+import type { Element } from 'react';
+
 import  React  from 'react';
 import { connect } from 'react-redux';
-
 import TypeFastEditorContainer from '../containers/TypeFastEditorContainer';
-
 import TypeFastAppBarContainer from '../containers/TypeFastAppBarContainer';
 import TypeFastHelpContainer from '../containers/TypeFastHelpContainer';
 import TypeFastErrorContainer from '../containers/TypeFastErrorContainer';
@@ -39,7 +39,8 @@ import TypeFastSnackbarContainer from '../containers/TypeFastSnackbarContainer';
 import TypeFastToolbarContainer from '../containers/TypeFastToolbarContainer';
 
 class TypeFastApp extends React.Component {
-  render() {
+
+  render(): Element<any> {
     return (
       <div>
         <div style={{position: 'fixed', width: '100%', zIndex: '5'}}>

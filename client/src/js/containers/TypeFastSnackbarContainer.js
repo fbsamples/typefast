@@ -22,23 +22,22 @@
  * @flow
  */
 
+import type { Dispatch, State } from 'redux';
+
 import { connect } from 'react-redux';
 import TypeFastSnackbar from '../components/TypeFastSnackbar';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state: State, ownProps: Object): Object => {
   return {
     showSaveScriptSnack: state.showSaveScriptSnack,
-    showSaveScheduleSnack: state.showSaveScheduleSnack
+    showSaveScheduleSnack: state.showSaveScheduleSnack,
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: Object): Object => {
   return {};
 };
 
-const TypeFastSnackbarContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TypeFastSnackbar);
+const TypeFastSnackbarContainer = connect(mapStateToProps, mapDispatchToProps)(TypeFastSnackbar);
 
 export default TypeFastSnackbarContainer;

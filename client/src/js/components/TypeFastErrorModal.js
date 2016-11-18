@@ -22,21 +22,22 @@
  * @flow
  */
 
-import React from 'react';
+import type { Element } from 'react';
 
+import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import {Table, TableBody, TableRow, TableRowColumn} from 'material-ui/Table';
 
 class TypeFastErrorModal extends React.Component {
-  render() {
+
+  render(): Element<any> {
     const actions = [
       <FlatButton
         label="Dismiss"
         secondary={true}
         keyboardFocused={true}
         onTouchTap={this.props.onHide}
-      />
+      />,
     ];
     return (
       <Dialog

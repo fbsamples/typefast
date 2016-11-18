@@ -22,27 +22,26 @@
  * @flow
  */
 
+import type { Dispatch, State } from 'redux';
+
 import { connect } from 'react-redux';
 import { hideHelpModal } from '../actions/actions.js';
 import TypeFastHelpModal from '../components/TypeFastHelpModal';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state: State, ownProps: Object): Object => {
   return {
     isShowing: state.showHelpModal,
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: Object): Object => {
   return {
-    onHide: () => {
+    onHide: (): void => {
       dispatch(hideHelpModal());
     },
   };
 };
 
-const TypeFastHelpContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TypeFastHelpModal);
+const TypeFastHelpContainer = connect(mapStateToProps, mapDispatchToProps)(TypeFastHelpModal);
 
 export default TypeFastHelpContainer;

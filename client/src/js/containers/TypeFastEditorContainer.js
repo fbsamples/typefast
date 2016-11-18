@@ -22,9 +22,10 @@
  * @flow
  */
 
+import type { Dispatch, State } from 'redux';
+
 import Radium from 'radium';
 import React from 'react';
-
 import TypeFastLogContainer from '../containers/TypeFastLogContainer';
 import TypeFastEditor from '../components/TypeFastEditor';
 import { codeChanged, optimisationComplete, saveScript } from '../actions/actions';
@@ -35,11 +36,11 @@ const styles = {
     position: 'absolute',
     top: '120px',
     bottom: '0',
-    width: '100%'
-  }
+    width: '100%',
+  },
 };
 
-class TypeFastEditorContainer extends React.Component {
+class TypeFastEditorContainerComponent extends React.Component {
   render() {
     return (
       <div style={[styles.container]}>
@@ -55,24 +56,26 @@ class TypeFastEditorContainer extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onCodeChange: function(code) {
-      dispatch(codeChanged(code));
-    },
-    onCodeSave: function() {
-      dispatch(saveScript());
-    },
-    onOptimisationComplete: function(optimisations) {
-      dispatch(optimisationComplete(optimisations));
-    }
-  };
-};
-
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: State, ownProps: Object): Object => {
   return {
     script: state.currentScript,
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Radium(TypeFastEditorContainer));
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: Object): Object => {
+  return {
+    onCodeChange: (code: string): void => {
+      dispatch(codeChanged(code));
+    },
+    onCodeSave: (): void => {
+      dispatch(saveScript());
+    },
+    onOptimisationComplete: (optimisations: Object): void => {
+      dispatch(optimisationComplete(optimisations));
+    },
+  };
+};
+
+const TypeFastEditorContainer = connect(mapStateToProps, mapDispatchToProps)(Radium(TypeFastEditorContainerComponent));
+
+export default TypeFastEditorContainer;

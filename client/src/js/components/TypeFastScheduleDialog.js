@@ -22,19 +22,37 @@
  * @flow
  */
 
-import React from 'react';
+import type { Element } from 'react';
 
-import DatePicker from 'material-ui/DatePicker';
+import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import FlatButton from 'material-ui/FlatButton';
 import MenuItem from 'material-ui/MenuItem';
 import { SchedulePeriods, ScheduleRecurence, Weekdays } from '../constants/constants.js';
-import TimePicker from 'material-ui/TimePicker';
 import Toggle from 'material-ui/Toggle';
 
 class TypeFastScheduleDialog extends React.Component {
-  render() {
+
+  static propTypes = {
+    isShowing: React.PropTypes.bool,
+    onApply: React.PropTypes.func,
+    onDayChange: React.PropTypes.func,
+    onEnabledChange: React.PropTypes.func,
+    onHide: React.PropTypes.func,
+    onHourChange: React.PropTypes.func,
+    onMinuteChange: React.PropTypes.func,
+    onIntervalChange: React.PropTypes.func,
+    schedule: React.PropTypes.shape({
+      day: React.PropTypes.number,
+      hour: React.PropTypes.number,
+      interval: React.PropTypes.number,
+      is_paused: React.PropTypes.bool,
+      minute: React.PropTypes.number,
+    }),
+  };
+
+  render(): Element<any> {
     const actions = [
       <FlatButton
         label="Cancel"
@@ -79,7 +97,7 @@ class TypeFastScheduleDialog extends React.Component {
         }
         <div style={{
           display: (this.props.schedule.interval >= ScheduleRecurence.WEEKLY) ?
-          'inline-block' : 'none'
+          'inline-block' : 'none',
         }}>
           <DropDownMenu
             value={this.props.schedule.day}
@@ -93,7 +111,7 @@ class TypeFastScheduleDialog extends React.Component {
         </div>
         <div style={{
           display: (this.props.schedule.interval >= ScheduleRecurence.DAILY) ?
-          'inline-block' : 'none'
+          'inline-block' : 'none',
         }}>
           <DropDownMenu
             value={this.props.schedule.hour}
@@ -106,7 +124,7 @@ class TypeFastScheduleDialog extends React.Component {
         </div>
         <div style={{
           display: (this.props.schedule.interval >= ScheduleRecurence.HOURLY) ?
-          'inline-block' : 'none'
+          'inline-block' : 'none',
         }}>
           <DropDownMenu
             value={this.props.schedule.minute}

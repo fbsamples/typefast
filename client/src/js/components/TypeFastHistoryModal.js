@@ -22,34 +22,54 @@
  * @flow
  */
 
+import type { Element } from 'react';
+
+export type LogStream = | 'stdout' | 'stderr';
+export type LogEntry = { chunk: string, stream: LogStream, time: string };
+
 import React from 'react';
 import dateFormat from 'dateformat';
-
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import {List, ListItem} from 'material-ui/List';
 import TypeFastCustomListItem from '../components/TypeFastCustomListItem';
 
 class TypeFastHistoryModal extends React.Component {
-  timeTaken(start, end) {
+
+  static propTypes = {
+    isShowing: React.PropTypes.bool,
+    onHide: React.PropTypes.func,
+    routines: React.PropTypes.arrayOf(React.PropTypes.shape({
+      runner_end_time: React.PropTypes.string,
+      runner_log: React.PropTypes.arrayOf(React.PropTypes.shape({
+        chunk: React.PropTypes.string,
+        stream: React.PropTypes.oneOf(['stdout', 'stdout']),
+        time: React.PropTypes.string,
+      })),
+      runner_start_time: React.PropTypes.string,
+      visible_from: React.PropTypes.string,
+    })),
+  };
+
+  timeTaken(start: string, end: string): number {
     const seconds = Math.floor((new Date(end) - new Date(start)) / 1000);
     return seconds;
   }
 
-  formatOutputStreams(streamArray) {
-    return streamArray.reduce(function(prev, curr, index) {
+  formatOutputStreams(streamArray: Array<LogEntry>): Array<Element<any>> {
+    return streamArray.reduce((prev: Array<Element<any>>, curr: LogEntry, index: number) => {
       prev.push(<p key={index}>{dateFormat(curr.time)} - {curr.chunk}</p>);
       return prev;
     }, []);
   }
 
-  render() {
+  render(): Element<any> {
     const actions = [
       <FlatButton
         label="Cancel"
         secondary={true}
         onTouchTap={this.props.onHide}
-      />
+      />,
     ];
     return (
       <Dialog
@@ -72,7 +92,7 @@ class TypeFastHistoryModal extends React.Component {
                   <div>
                     {this.formatOutputStreams(curr.runner_log)}
                   </div>
-                </TypeFastCustomListItem>
+                </TypeFastCustomListItem>,
               ]}
             />
           )}

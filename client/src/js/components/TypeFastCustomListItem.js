@@ -22,10 +22,13 @@
  * @flow
  */
 
+import type { Element } from 'react';
+
 import React from 'react';
 
 class TypeFastCustomListItem extends React.Component {
-  render() {
+
+  render(): Element<any> {
     return (
       <div>{this.props.children}</div>
     );

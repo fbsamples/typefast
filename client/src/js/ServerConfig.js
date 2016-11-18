@@ -24,18 +24,21 @@
 import fetch from 'isomorphic-fetch';
 
 class ServerConfig {
-  fetch(cb) {
+
+  rawConfig: ?Object;
+
+  fetch(callback: () => void): void {
     fetch('/config')
       .then(function(response) {
         return response.json();
       })
       .then(function(response) {
         this.rawConfig = response;
-        cb();
+        callback();
       }.bind(this));
   }
 
-  getRawConfig() {
+  getRawConfig(): ?Object {
     return this.rawConfig;
   }
 }

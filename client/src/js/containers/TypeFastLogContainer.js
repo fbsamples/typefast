@@ -22,24 +22,21 @@
  * @flow
  */
 
+import type { Dispatch, State } from 'redux';
+
 import { connect } from 'react-redux';
 import TypeFastLogWindow from '../components/TypeFastLogWindow';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state: State, ownProps: Object): Object => {
   return {
     log: state.log,
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-
-  };
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: Object): Object => {
+  return {};
 };
 
-const TypeFastLogContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TypeFastLogWindow);
+const TypeFastLogContainer = connect(mapStateToProps, mapDispatchToProps)(TypeFastLogWindow);
 
 export default TypeFastLogContainer;
