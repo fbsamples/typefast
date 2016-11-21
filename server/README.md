@@ -39,7 +39,7 @@ For `access_token`, create a **admin system user** in business manager. (Remembe
 
 For `business_manager_id` fill in your business_id. You can find this value in the url when you are in business manager.
 
-For `bundle`, provide the absolute path to the provided schema bundle (provided by your FB POC).
+For `bundle`, provide the absolute path to the provided schema bundle (more info [here](README.md#grsbs)).
 
 # Run
 
