@@ -4,11 +4,11 @@
   "description": "TypeFast Server application",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js --exec babel-node --mode=server --inline-config='{\"interpreter\": \"babel-node\", \"debug\": true}'",
+    "dev": "nodemon src/index.js --exec babel-node --mode=server --inline-config='{\"interpreter\": \"babel-node\", \"debug\": true}'",
     "dev-server": "npm run dev",
     "dev-worker": "npm run dev -- --mode=worker",
     "lint": "eslint src/",
-    "start": "babel-node index.js --mode=server --inline-config='{\"interpreter\": \"babel-node\"}'",
+    "start": "node build/index.js --mode=server --inline-config='{\"interpreter\": \"babel-node\"}'",
     "server": "npm start",
     "worker": "npm start -- --mode=worker",
     "test": "echo \"Error: no test specified\" && exit 1",

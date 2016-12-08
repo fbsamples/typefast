@@ -92,7 +92,7 @@ class Worker extends AbstractService {
     const id = routine.get('id');
     const interpreter = this.getConfig().getString('interpreter', 'node');
     const argv = [
-      'index.js',
+      'src/index.js',
       '--mode', 'runner',
       '--routine-id', id,
       '--inline-config', this.getServiceInlineConfig(),
