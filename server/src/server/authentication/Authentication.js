@@ -40,22 +40,31 @@ const MESSAGE_USER_NOT_IN_BM = 'Unauthorized user. Please ensure they are added 
 
 class Authentication {
 
+  appSecret: string;
   business_manager_id: string;
   system_access_token: string;
 
-  constructor(business_manager_id: string, system_access_token: string): void {
+  constructor(business_manager_id: string, system_access_token: string, app_secret: string): void {
+    this.appSecret = app_secret;
     this.system_access_token = system_access_token;
     this.business_manager_id = business_manager_id;
   }
 
+  getAuthParams(access_token: string): Object {
+    return {
+      access_token: access_token,
+      appsecret_proof: Crypto.createHmac('sha256', this.appSecret).update(access_token).digest('hex'),
+    };
+  }
+
   willFetchBusinessRoles(): Promise<Map<number, boolean>> {
-    const access_token = this.system_access_token;
+    const auth_params = this.getAuthParams(this.system_access_token);
     const ids = {};
 
     return new Promise((resolve: Resolve<Map<number, boolean>>, reject: Reject) => {
       function callApi(url) {
         Graph.get(
-          url, { access_token: access_token },
+          url, auth_params,
           (err: Object, response: Object) => {
             if (response && response.data) {
               Object.keys(response.data).forEach(function(key) {
@@ -85,7 +94,7 @@ class Authentication {
   willFetchUserData(user_access_token: string): Promise<number> {
     return new Promise((resolve: Resolve<number>, reject: Reject) => {
       Graph.get(
-        '/me', {access_token: user_access_token},
+        '/me', this.getAuthParams(user_access_token),
         (err: Object, response: Object) => {
           if (err) {
             reject(new Error(MESSAGE_INVALID_ACCESS_TOKEN));

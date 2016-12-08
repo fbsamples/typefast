@@ -52,7 +52,8 @@ class Application extends AbstractService {
     this.router = new Router(this);
     this.authentication = new Authentication(
       config.getString('graph.business_manager_id'),
-      config.getString('graph.access_token')
+      config.getString('graph.access_token'),
+      config.getString('graph.application_secret'),
     );
 
     // Middleware
