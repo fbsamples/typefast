@@ -35,12 +35,15 @@ class TypeFastLoaderModal extends React.Component {
 
   static propTypes = {
     appId: React.PropTypes.number,
+    errorAction: React.PropTypes.string,
+    errorMessage: React.PropTypes.string,
     facebookAuthFailure: React.PropTypes.func,
     facebookAuthStarted: React.PropTypes.func,
     facebookAuthSuccess: React.PropTypes.func,
     isAuthenticated: React.PropTypes.bool,
     isAuthenticating: React.PropTypes.bool,
     isAuthorised: React.PropTypes.bool,
+    isError: React.PropTypes.bool,
     isFetching: React.PropTypes.bool,
     isLoading: React.PropTypes.bool,
     isRunning: React.PropTypes.bool,
@@ -92,6 +95,12 @@ class TypeFastLoaderModal extends React.Component {
         return <p>You are not authorised in your companies Business Manager to use TypeFast.
           Please contact your manager for permission</p>;
       }
+      if (this.props.isError) {
+        return <p>
+          <p>{'An Error Occurred While Performing:'  + this.props.errorAction}</p>
+          <p>{'Message: ' + this.props.errorMessage}</p>
+        </p>;
+      }
       return <p>Logged In!</p>;
     } else {
       return <p>To use TypeFast you will need to login to your Facebook Account
@@ -99,10 +108,17 @@ class TypeFastLoaderModal extends React.Component {
     }
   }
 
+  getButtonLabel() {
+    if (this.props.isError) {
+      return 'Refresh';
+    }
+    return 'Login';
+  }
+
   render(): Element<any> {
     const actions = [
       <FlatButton
-        label="Login"
+        label={this.getButtonLabel()}
         primary={true}
         onTouchTap={this.onLoginClicked.bind(this)}
         disabled={this.props.isAuthenticating || this.props.isFetching}

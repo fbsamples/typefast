@@ -37,9 +37,12 @@ const mapStateToProps = (state: State, ownProps: Object): Object => {
   return {
     // FLOW_FIXME refactor ServerConfig
     appId:  serverConfig.getRawConfig().application_id,
+    errorAction: state.errorAction,
+    errorMessage: state.errorMessage,
     isAuthenticated: state.isAuthenticated,
     isAuthenticating: state.isAuthenticating,
     isAuthorised: state.isAuthorised,
+    isError: state.isError,
     isFetching: state.isFetching,
     isLoading: state.isLoading,
     isRunning: state.isRunning,

@@ -29,7 +29,6 @@ import { connect } from 'react-redux';
 import TypeFastEditorContainer from '../containers/TypeFastEditorContainer';
 import TypeFastAppBarContainer from '../containers/TypeFastAppBarContainer';
 import TypeFastHelpContainer from '../containers/TypeFastHelpContainer';
-import TypeFastErrorContainer from '../containers/TypeFastErrorContainer';
 import TypeFastHistoryContainer from '../containers/TypeFastHistoryContainer';
 import TypeFastLoaderContainer from '../containers/TypeFastLoaderContainer';
 import TypeFastNewScriptContainer from '../containers/TypeFastNewScriptContainer';
@@ -53,7 +52,6 @@ class TypeFastApp extends React.Component {
         <TypeFastEditorContainer />
 
         <TypeFastHelpContainer />
-        <TypeFastErrorContainer />
         <TypeFastHistoryContainer />
         <TypeFastNewScriptContainer />
         <TypeFastOpenScriptContainer />

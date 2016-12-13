@@ -25,7 +25,7 @@
 import type {Action, State} from 'redux';
 
 import {
-  FETCHING_SCRIPTS_REQUEST, FETCHING_SCRIPTS_SUCCESS,
+  FETCHING_SCRIPTS_SUCCESS,
   SAVE_SCRIPT_REQUEST, SAVE_SCRIPT_SUCCESS,
   SCRIPT_CODE_CHANGED,
   OPTIMISATIONS_COMPLETE,
@@ -33,7 +33,7 @@ import {
   LOAD_SCRIPT,
   FACEBOOK_AUTH_STARTED, FACEBOOK_AUTH_SUCCESS, FACEBOOK_AUTH_FAILURE,
   UNAUTHORISED,
-  FETCH_SCHEDULE_SUCCESS,
+  FETCHING_SCHEDULE_SUCCESS,
   SAVE_SCHEDULE_SUCCESS,
   FETCHING_ROUTINES_SUCCESS,
 
@@ -48,8 +48,9 @@ import {
   SHOW_HELP_MODAL,
   HIDE_HELP_MODAL,
 
-  SHOW_ERROR_MODAL,
-  HIDE_ERROR_MODAL,
+  SHOW_ERROR,
+  FETCHING_START,
+  FETCHING_FINISH,
 
   SHOW_NEW_SCRIPT_DIALOG,
   HIDE_NEW_SCRIPT_DIALOG,
@@ -110,6 +111,7 @@ function typefastApp(state: State = {
   accessToken: null,
   isAuthenticated: false,
   isAuthenticating: false,
+  isAuthorised: true,
 
   samples: [],
   showHelpModal: false,
@@ -119,7 +121,7 @@ function typefastApp(state: State = {
   showScheduleDialog: false,
   newSchedule: defaultSchedule(),
 
-  showErrorModal: false,
+  isError: false,
   errorAction: null,
   errorMessage: null,
 
@@ -186,13 +188,9 @@ function typefastApp(state: State = {
 
     case FACEBOOK_AUTH_STARTED:
       return Object.assign({}, state, {
+        isError: false,
         isAuthenticated: false,
         isAuthenticating: true,
-      });
-
-    case FETCHING_SCRIPTS_REQUEST:
-      return Object.assign({}, state, {
-        isFetching: true,
       });
 
     case FETCHING_ROUTINES_SUCCESS:
@@ -226,15 +224,13 @@ function typefastApp(state: State = {
         {}
       );
       return Object.assign({}, state, {
-        isFetching: false,
-        isLoading: false,
         scripts: scripts,
         currentScript: defaultScript(),
         currentScriptTitle: defaultScript().title,
         scriptCount: Object.keys(scripts).length,
       });
 
-    case FETCH_SCHEDULE_SUCCESS:
+    case FETCHING_SCHEDULE_SUCCESS:
       let currentSchedule = defaultSchedule();
       if (action.payload.schedule.length > 0) {
         currentSchedule = Object.assign(currentSchedule, action.payload.schedule[0]);
@@ -534,18 +530,29 @@ utils.xmlParser(xml.body, function(err, data) {
       });
     }
 
-    case SHOW_ERROR_MODAL: {
+    case SHOW_ERROR: {
       return Object.assign({}, state, {
-        showErrorModal: true,
+        isError: true,
         errorAction: action.payload.errorAction,
         errorMessage: action.payload.errorMessage,
       });
     }
 
-    case HIDE_ERROR_MODAL: {
+    case FETCHING_START: {
       return Object.assign({}, state, {
-        showErrorModal: false,
+        isFetching: true,
       });
+    }
+
+    case FETCHING_FINISH: {
+      let payload = {
+        isFetching: false,
+        isLoading: false,
+      };
+      if (state.isError) {
+        payload.isLoading = true;
+      }
+      return Object.assign({}, state, payload);
     }
 
     case SHOW_NEW_SCRIPT_DIALOG: {
