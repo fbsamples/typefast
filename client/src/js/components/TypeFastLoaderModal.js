@@ -41,6 +41,7 @@ class TypeFastLoaderModal extends React.Component {
     isAuthenticated: React.PropTypes.bool,
     isAuthenticating: React.PropTypes.bool,
     isAuthorised: React.PropTypes.bool,
+    isError: React.PropTypes.bool,
     isFetching: React.PropTypes.bool,
     isLoading: React.PropTypes.bool,
     isRunning: React.PropTypes.bool,
@@ -99,10 +100,17 @@ class TypeFastLoaderModal extends React.Component {
     }
   }
 
+  getButtonLabel() {
+    if (this.props.isError) {
+      return 'Refresh';
+    }
+    return 'Login';
+  }
+
   render(): Element<any> {
     const actions = [
       <FlatButton
-        label="Login"
+        label={this.getButtonLabel()}
         primary={true}
         onTouchTap={this.onLoginClicked.bind(this)}
         disabled={this.props.isAuthenticating || this.props.isFetching}
@@ -116,6 +124,7 @@ class TypeFastLoaderModal extends React.Component {
           title="Loading..."
           modal={true}
           open={this.props.isLoading}
+          style={{zIndex: 900}}
         >
           <div>{this.statusMessage()}</div>
         </Dialog>

@@ -33,13 +33,14 @@ const mapStateToProps = (state: State, ownProps: Object): Object => {
     isShowing: state.showErrorModal,
     errorAction: state.errorAction,
     errorMessage: state.errorMessage,
+    errorStack: state.errorStack,
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: Object): Object => {
   return {
-    onHide: () => {
-      dispatch(hideErrorModal());
+    onRefresh: () => {
+      window.location.reload();
     },
   };
 };
