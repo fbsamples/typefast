@@ -1,3 +1,5 @@
+** THIS REPO HAS BEEN ARCHIVED AND IS NO LONGER BEING ACTIVELY MAINTAINED **
+
 # TypeFast
 
 An auto-deployable scripting environment that enables people to quickly leverage powerful automation tools.
