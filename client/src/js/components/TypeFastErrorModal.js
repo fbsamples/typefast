@@ -33,10 +33,10 @@ class TypeFastErrorModal extends React.Component {
   render(): Element<any> {
     const actions = [
       <FlatButton
-        label="Dismiss"
+        label="Refresh"
         secondary={true}
         keyboardFocused={true}
-        onTouchTap={this.props.onHide}
+        onTouchTap={this.props.onRefresh}
       />,
     ];
     return (
@@ -46,14 +46,24 @@ class TypeFastErrorModal extends React.Component {
           'An Error Occurred While Performing: ' + this.props.errorAction
         }
         actions={actions}
-        modal={false}
+        modal={true}
         open={this.props.isShowing}
         onRequestClose={this.props.onHide}
         bodyStyle={{paddingBottom: '0px'}}
         titleStyle={{marginBottom: '0px'}}
         actionsContainerStyle={{marginTop: '0px'}}
+        style={{zIndex: 1000}}
       >
         <p>{'Message: ' + this.props.errorMessage}</p>
+        <div style={{display: (this.props.errorStack.length > 0) ? 'inline' : 'none'}}>
+          Stack trace:<br /><code style={{fontSize: '9pt'}}>
+            {
+              this.props.errorStack.map((line, number) => {
+                return (<span key={number}>{line}<br /></span>);
+              })
+            }
+          </code>
+        </div>
       </Dialog>
     );
   }

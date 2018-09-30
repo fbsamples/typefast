@@ -51,29 +51,61 @@ function makeFormData(object: Object, getState: Function): FormData {
   return form;
 }
 
-function handleErrors(response: Response, dispatch: Dispatch): Response {
+function preProcessErrors(response: Response, dispatch: Dispatch): Response {
   if (!response.ok) {
     if (response.status === 401) {
       dispatch(unauthorised());
     }
-    throw Error(response.statusText);
   }
   return response;
 }
 
+function postProcessErrors(action: string, data: Object, dispatch: Dispatch): Object {
+  if (data.error) {
+    let errorPayload = {
+      message: data.error.debug_message || data.error.user_message || data.error.message,
+      stack: [],
+    };
+    if (data.error.stack && data.error.stack.length > 0) {
+      errorPayload.stack = data.error.stack;
+    }
+    dispatch(showErrorModal(action, errorPayload));
+    throw Error(errorPayload.message);
+  }
+  return data;
+}
+
 function fetchData(dispatch: Dispatch): void {
-  dispatch(fetchScripts());
-  dispatch(fetchRoutines());
+  dispatch(fetchingStart());
   dispatch(fetchSamples());
+
+  Promise.all([
+    dispatch(fetchScripts()),
+    dispatch(fetchRoutines()),
+  ]).then(() => dispatch(fetchingFinish()));
 }
 
 /******************************** FETCH **********************************/
 
-export const FETCH_SCHEDULE_REQUEST = 'FETCH_SCHEDULE_REQUEST';
-export const FETCH_SCHEDULE_SUCCESS = 'FETCH_SCHEDULE_SUCCESS';
+export const FETCHING_START = 'FETCHING_START';
+export function fetchingStart() {
+  return {
+    type: FETCHING_START,
+  };
+}
+
+export const FETCHING_FINISH = 'FETCHING_FINISH';
+export function fetchingFinish() {
+  return {
+    type: FETCHING_FINISH,
+  };
+}
+
+export const FETCHING_SCHEDULE_REQUEST = 'FETCH_SCHEDULE_REQUEST';
+export const FETCHING_SCHEDULE_SUCCESS = 'FETCH_SCHEDULE_SUCCESS';
 export function fetchSchedule(script_id: string): Thunk<Promise<void>> {
   return function(dispatch: Dispatch, get_state: GetState): Promise<void> {
-    dispatch({type: FETCH_SCHEDULE_REQUEST});
+    dispatch({type: FETCHING_SCHEDULE_REQUEST});
     return fetch(
       makeUrl('/schedules', get_state, { script_id: script_id, queue_name: 'main' }), {
         method: 'GET',
@@ -81,15 +113,16 @@ export function fetchSchedule(script_id: string): Thunk<Promise<void>> {
           'Accept': 'application/json',
         },
       })
-    .then(response => handleErrors(response, dispatch))
-    .then(response => response.json())
-    .then(response => dispatch({
-      type: FETCH_SCHEDULE_SUCCESS,
+    .then((response: Response) => preProcessErrors(response, dispatch))
+    .then((response: Response) => response.json())
+    .then((content: Object) => postProcessErrors(FETCHING_SCHEDULE_REQUEST, content, dispatch))
+    .then((content: Object) => dispatch({
+      type: FETCHING_SCHEDULE_SUCCESS,
       payload: {
-        schedule: response.data,
+        schedule: content.data,
       },
     }))
-    .catch(excep => dispatch(showErrorModal(FETCH_SCHEDULE_REQUEST, excep.message)));
+    .catch((e: Error) => {});
   };
 }
 
@@ -99,8 +132,9 @@ export function fetchRoutines(): Thunk<Promise<void>> {
   return function(dispatch: Dispatch, get_state: GetState): Promise<void> {
     dispatch({type: FETCHING_ROUTINES_REQUEST});
     return fetch(makeUrl('/routines', get_state, {queue_name: 'main'}))
-      .then((response: Response) => handleErrors(response, dispatch))
+      .then((response: Response) => preProcessErrors(response, dispatch))
       .then((response: Response) => response.json())
+      .then((content: Object) => postProcessErrors(FETCHING_ROUTINES_REQUEST, content, dispatch))
       .then((content: Object) => {
         dispatch({
           type: FETCHING_ROUTINES_SUCCESS,
@@ -109,7 +143,7 @@ export function fetchRoutines(): Thunk<Promise<void>> {
           },
         });
       })
-      .catch(excep => dispatch(showErrorModal(FETCHING_ROUTINES_REQUEST, excep.message)));
+      .catch((e: Error) => {});
   };
 }
 
@@ -119,8 +153,9 @@ export function fetchScripts(): Thunk<Promise<void>> {
   return function(dispatch: Dispatch, get_state: GetState): Promise<void> {
     dispatch({type: FETCHING_SCRIPTS_REQUEST});
     return fetch(makeUrl('/scripts', get_state))
-      .then((response) => handleErrors(response, dispatch))
+      .then((response: Response) => preProcessErrors(response, dispatch))
       .then((response: Response) => response.json())
+      .then((content: Object) => postProcessErrors(FETCHING_SCRIPTS_REQUEST, content, dispatch))
       .then((content: Object) => {
         dispatch({
           type: FETCHING_SCRIPTS_SUCCESS,
@@ -135,7 +170,7 @@ export function fetchScripts(): Thunk<Promise<void>> {
           dispatch(loadScript(content.data[0].id));
         }
       })
-      .catch(excep => dispatch(showErrorModal(FETCHING_SCRIPTS_REQUEST, excep.message)));
+      .catch((e: Error) => {});
   };
 }
 
@@ -235,12 +270,12 @@ export function hideHelpModal(): Action {
 /******************************** ERROR **********************************/
 
 export const SHOW_ERROR_MODAL = 'SHOW_ERROR_MODAL';
-export function showErrorModal(action: string, error: string) {
+export function showErrorModal(action: string, data: Object) {
   return {
     type: SHOW_ERROR_MODAL,
     payload: {
       errorAction: action,
-      errorMessage: error,
+      errorData: data,
     },
   };
 }
@@ -303,6 +338,8 @@ export function loadScript(script_id: string): Thunk<Promise<void>> {
   };
 }
 
+export const PREVIEW_SCRIPT_REQUEST = 'PREVIEW_SCRIPT_REQUEST';
+export const PREVIEW_SCRIPT_SUCCESS = 'PREVIEW_SCRIPT_SUCCESS';
 export function previewScript(): Thunk<Promise<void>> {
   return function(dispatch: Dispatch, get_state: GetState): Promise<void> {
     dispatch({type: PREVIEW_SCRIPT_REQUEST});
@@ -316,8 +353,9 @@ export function previewScript(): Thunk<Promise<void>> {
         script_id: get_state().currentScript.id,
       }, get_state),
     })
-    .then((response: Response) => handleErrors(response, dispatch))
+    .then((response: Response) => preProcessErrors(response, dispatch))
     .then((response: Response) => response.json())
+    .then((content: Object) => postProcessErrors(PREVIEW_SCRIPT_REQUEST, content, dispatch))
     .then((content: Object) => {
       const query = {
         queue_name: 'preview',
@@ -329,38 +367,36 @@ export function previewScript(): Thunk<Promise<void>> {
           'Accept': 'application/json',
         },
       })
-      .then((response: Response) => handleErrors(response, dispatch))
+      .then((response: Response) => preProcessErrors(response, dispatch))
       .then((response: Response) => response.json())
+      .then((content: Object) => postProcessErrors(FETCHING_ROUTINES_REQUEST, content, dispatch))
       .then((content: Object) => pollRoutine(content.data[0].id, dispatch, get_state))
-      .catch((error: Error) => dispatch(showErrorModal(PREVIEW_SCRIPT_REQUEST, error.message)));
+      .catch((e: Error) => {});
     })
-    .catch((error: Error) => dispatch(showErrorModal(PREVIEW_SCRIPT_REQUEST, error.message)));
+    .catch((e: Error) => {});
   };
 }
 
-export const PREVIEW_SCRIPT_REQUEST = 'PREVIEW_SCRIPT_REQUEST';
-export const PREVIEW_SCRIPT_SUCCESS = 'PREVIEW_SCRIPT_SUCCESS';
 function pollRoutine(routineId, dispatch, getState) {
   fetch(makeUrl('/routines/' + routineId, getState))
-  .then((response) => handleErrors(response, dispatch))
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(response) {
+  .then((response: Response) => preProcessErrors(response, dispatch))
+  .then((response: Response) => response.json())
+  .then((content: Object) => postProcessErrors(PREVIEW_SCRIPT_REQUEST, content, dispatch))
+  .then((content: Object) => {
     dispatch({
       type: PREVIEW_SCRIPT_SUCCESS,
       payload: {
-        log: response.runner_log,
-        is_completed: response.is_completed,
+        log: content.runner_log,
+        is_completed: content.is_completed,
       },
     });
-    if (!response.is_completed) {
+    if (!content.is_completed) {
       setTimeout(function() {
         pollRoutine(routineId, dispatch, getState);
       }, 1000);
     }
   })
-  .catch(excep => dispatch(showErrorModal(PREVIEW_SCRIPT_REQUEST, excep.message)));
+  .catch((e: Error) => {});
 }
 
 export const SAVE_SCRIPT_REQUEST = 'SAVE_SCRIPT_REQUEST';
@@ -381,16 +417,17 @@ export function saveScript(): Thunk<Promise<void>> {
         title: get_state().currentScriptTitle,
       }, get_state),
     })
-    .then(response => handleErrors(response, dispatch))
-    .then(response => response.json())
-    .then(response => dispatch({
+    .then((response: Response) => preProcessErrors(response, dispatch))
+    .then((response: Response) => response.json())
+    .then((content: Object) => postProcessErrors(SAVE_SCRIPT_REQUEST, content, dispatch))
+    .then((content: Object) => dispatch({
       type: SAVE_SCRIPT_SUCCESS,
       payload: {
-        script: response,
+        script: content,
       },
     }))
-    .then(response => dispatch(loadScript(response.payload.script.id)))
-    .catch(excep => dispatch(showErrorModal(SAVE_SCRIPT_REQUEST, excep.message)));
+    .then((content: Object) => dispatch(loadScript(content.payload.script.id)))
+    .catch((e: Error) => {});
   };
 }
 
@@ -490,18 +527,19 @@ export function saveSchedule(): Thunk<Promise<void>> {
             start_time: currentSchedule.start_time,
           }, get_state),
         })
-        .then(response => handleErrors(response, dispatch))
-        .then(response => response.json())
-        .then(function(response) {
+        .then((response: Response) => preProcessErrors(response, dispatch))
+        .then((response: Response) => response.json())
+        .then((content: Object) => postProcessErrors(SAVE_SCHEDULE_REQUEST, content, dispatch))
+        .then((content: Object) => {
           dispatch({
             type: SAVE_SCHEDULE_SUCCESS,
             payload: {
-              schedule: response,
+              schedule: content,
             },
           });
           dispatch(hideScheduleDialog());
         })
-        .catch((error: Error) => dispatch(showErrorModal(SAVE_SCHEDULE_REQUEST, error.message)));
+        .catch((e: Error) => {});
       });
   };
 }
